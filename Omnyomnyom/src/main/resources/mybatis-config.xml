@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<settings>
+	<!-- db로 전달된 데티어가 null인 경우 DB입력시에 빈칸이 아닌 null이 입력되도록 함 -->
+		<setting name="jdbcTypeForNull" value="NULL"/>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	<!-- api에서 상세내용 확인해보기 -->
+	</settings>
+  <typeAliases>
+  	<package name="com.soda.onn"></package> 
+  </typeAliases>
+  	<!-- <package name="com.kh.spring"></package> --><!-- 패키지 아래 모든 클래스를 등록 알리아스는 패키지이름의 소문자. ex)ProductioInfo > productInfo -->
+  
+</configuration>

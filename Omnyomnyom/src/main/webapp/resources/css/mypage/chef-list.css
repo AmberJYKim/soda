@@ -1,0 +1,43 @@
+.chef-content{
+	margin-bottom : 15px;
+}
+.che-list-p p{
+	line-height: 1em;
+}
+.chef_list_img{
+	width: 100px;
+}
+.chef_list_chek_btn{
+	margin-top: 20px;
+	margin: auto;
+}
+.ac_btn{
+	width: 40px;
+	padding: auto;
+}
+.th_border{
+border-bottom: 1px solid black;
+}
+.font-17{
+font-size: 17px;
+}
+.nav_text{
+font-weight: 600;
+color: hsl(0, 0%, 69%);
+}
+.selected_nav{
+color: #355752;
+}
+.section{
+padding-top: 150px;
+}
+.border_bottom{
+border-bottom: 2px solid black;
+}
+.wait-ment{
+	color:red;
+	font-size: small;
+}
+.floatRight span{
+	float: right;
+}
