@@ -1,0 +1,27 @@
+package com.soda.onn.oneday.model.vo;
+
+import java.io.Serializable;
+import java.sql.Date;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Setter
+@Getter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class ReservationCancel extends Reservation implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
+	private String cancelReason;
+
+	public ReservationCancel(int reservationNo, Oneday oneday, Date regDate, int personnel, String cancel,
+			String cancelReason) {
+		super(reservationNo, oneday, regDate, personnel, cancel);
+		this.cancelReason = cancelReason;
+	}
+}

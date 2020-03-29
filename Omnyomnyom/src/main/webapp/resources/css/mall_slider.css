@@ -138,8 +138,7 @@
 }
 
 .goods-add-product-title {
-    font-size: 13px;
-    font-weight: 900;
+    font-size: 18px;
     line-height: 1.8
 }
 
@@ -173,13 +172,13 @@
 
 .goods-add-product-move.goods-add-product-move-right {
     right: 0;
-    background-image: url(https://res.kurly.com/pc/etc/old/images/common/slide-sub-right-button-black.png);
+    background-image: url(https://res.kurly.com/pc/etc/old/images/common/slide-sub-right-button-white.png);
     background-position: right
 }
 
 .goods-add-product-move.goods-add-product-move-left {
     left: 0;
-    background-image: url(https://res.kurly.com/pc/etc/old/images/common/slide-sub-left-button-black.png);
+    background-image: url(https://res.kurly.com/pc/etc/old/images/common/slide-sub-left-button-white.png);
     background-position: left
 }
 
@@ -239,7 +238,6 @@
     font-size: 14px;
     position: absolute;
     left: 10px;
-    bottom: 10px
 }
 
 .goods-add-product-item-oriprice {
@@ -1233,7 +1231,9 @@
     background-color: #ddd
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5),
+only screen and (min-resolution: 1.5dppx) {
     .bnr_header .btn_top_bnr {
         background-image: url(https://res.kurly.com/pc/ico/1908/ico_close_fff_84x84.png);
         background-size: 42px 42px
@@ -6169,7 +6169,9 @@ table.extra-information td {
     transform: rotate(-180deg)
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5),
+only screen and (min-resolution: 1.5dppx) {
     #showCertify .tit_certify .ico {
         background-image: url(https://res.kurly.com/pc/service/goods/1904/ico_certify_x2.png);
         background-size: 40px 28px
