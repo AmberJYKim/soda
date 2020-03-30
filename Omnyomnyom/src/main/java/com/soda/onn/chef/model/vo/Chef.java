@@ -19,11 +19,11 @@ public class Chef implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private String memberId;
-	private String chefProfile;
-	private String chefSns;
-	private String chefContent;
 	private String chefMainvideo;
-	private String businessInfo;
+	private String chefSns;
+	private String chefProfile;
 	private String menyPrCategory;
 	private Date regDate;
+	private String businessInfo;
+	private String chefContent;
 }
