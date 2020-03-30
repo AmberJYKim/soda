@@ -18,7 +18,7 @@ public class Reservation implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private int reservationNo;
-	
+	private String memberId;
 	private Oneday oneday;
 	private Date regDate;
 	private int personnel;

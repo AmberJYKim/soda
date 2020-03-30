@@ -25,6 +25,7 @@ public class Oneday  implements Serializable{
 	private String onedayContent;
 	private int latitude;
 	private int longitude;
+	private int detailedAddr;
 	private int onedayTime;
 	private int onedayMaxper;
 	private int onedayMinper;
