@@ -4088,7 +4088,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 
 .input__field--yoshiko {
     width: 100%;
-    background-color: #d0d1d0;
+    background-color: #eff0ef;
     border: 2px solid transparent;
     -webkit-transition: background-color 0.25s, border-color 0.25s;
     transition: background-color 0.25s, border-color 0.25s;
@@ -4180,9 +4180,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
     
     color: #4949E7;
     font-weight:800;
-    margin-top:28px;
-    text-align: center;
-    vertical-align: middle;
+    /* margin-top:14px; */
 }
 
 .event-details .ed-meta {
