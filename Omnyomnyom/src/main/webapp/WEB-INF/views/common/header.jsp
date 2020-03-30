@@ -122,12 +122,12 @@
                             <div class="overlay-container">
                                 <div class="overlay">
                                     <div class="overlay-panel overlay-left">
-                                        <h1>OmNymNym 회원가입</h1>
+                                        <h1>OmNyomNyom 회원가입</h1>
                                         <p></p>
                                         <button class="ghost" id="signIn">로그인</button>
                                     </div>
                                     <div class="overlay-panel overlay-right">
-                                        <h1>OmNymNym 오서오세요</h1>
+                                        <h1>OmNyomNyom 오서오세요</h1>
                                         <p>옴뇸뇸에 오신 것을 환영합니다.</p>
                                         <button class="ghost" id="signUp">회원가입</button>
                                     </div>
@@ -169,7 +169,7 @@
                     <li><a href="about.html" class="active">레시피</a>
                         <ul class="sub-menu">
                             <li><a href="classes.html">메뉴</a></li>
-                            <li><a href="classes-details.html">냉장고 재료</a></li>
+                            <li><a href="${pageContext.request.contextPath}/recipe/ingredientsSelection.do">냉장고 재료</a></li>
                         </ul>
                     </li>
                     <li><a href="oneday_main.html">뇸뇸몰</a></li>
