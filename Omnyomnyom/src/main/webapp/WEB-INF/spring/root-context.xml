@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						https://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+						
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		<!-- #6.1. myBatis(JDBC)설정 연결 설정하기 -->
@@ -53,6 +58,6 @@
 	</bean>
 
 	<!-- #12.2. @Transactional이 붙은 메소드를 대상으로 Transaction Advice를 적용함. **설정수정할부분-->
-<!-- 	<tx:annotation-driven transaction-manager="transactionManager" />
-		 -->
+ 	<tx:annotation-driven transaction-manager="transactionManager" />
+		 
 </beans>

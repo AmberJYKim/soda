@@ -186,7 +186,6 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-
 		<!-- #9.query와 resultSet을 logging할 수 있는 log4jdbc-remix 라이브러리추가 -->
 		<!-- https://mvnrepository.com/artifact/org.lazyluke/log4jdbc-remix/0.2.7 -->
 		<dependency>

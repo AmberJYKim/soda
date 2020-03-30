@@ -15,17 +15,20 @@ public class MemberDAOImpl  implements MemberDAO{
 
 	@Override
 	public int insertMember(Member member) {
-		return sqlSession.insert("member.insertMember", member);
+//		return sqlSession.insert("member.insertMember", member);
+		return 1;
 	}
 
 	@Override
 	public Member selectMember(String col, String value) {
-		return sqlSession.selectOne("member.selectMember","리턴파라미터 다시 만드셈");
+//		return sqlSession.selectOne("member.selectMember","리턴파라미터 다시 만드셈");
+		return new Member();
 	}
 
 	@Override
 	public Member selectOne(String memberId) {
-		return sqlSession.selectOne("member.selectOne",memberId);
+//		return sqlSession.selectOne("member.selectOne",memberId);
+		return new Member();
 	}
 
 }

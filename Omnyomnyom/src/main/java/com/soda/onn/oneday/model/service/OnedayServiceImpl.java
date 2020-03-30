@@ -1,10 +1,13 @@
 package com.soda.onn.oneday.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.soda.onn.oneday.model.dao.OnedayDAO;
 import com.soda.onn.oneday.model.vo.Oneday;
+import com.soda.onn.oneday.model.vo.Reservation;
 
 @Service
 public class OnedayServiceImpl implements OnedayService {
@@ -25,6 +28,12 @@ public class OnedayServiceImpl implements OnedayService {
 	@Override
 	public Oneday selectOne(int onedayNo) {
 		return onedayDAO.selectOne(onedayNo);
+	}
+
+
+	@Override
+	public List<Reservation> selectReservationList(int cPage, int numPerPage) {
+		return onedayDAO.selectReservationList(cPage,numPerPage);
 	}
 	
 	

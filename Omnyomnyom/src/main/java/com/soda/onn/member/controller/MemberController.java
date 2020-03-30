@@ -3,6 +3,7 @@ package com.soda.onn.member.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,16 +17,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
 @RequestMapping("/member")
+@Controller
 public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	//로그인요청
 	@GetMapping("/login")
@@ -42,25 +45,32 @@ public class MemberController {
 		else
 			redirectAttributes.addAttribute("msg", "아이디와 비밀번호를 다시 한번 확인해주세요");
 		
+		
+		
 		return request.getHeader("referer");
 	}
 
 	
 	@GetMapping("/logout")
 	public String logout(SessionStatus sessionStatus) {
-		return "";
+		
+		String str = "1111";
+		String bstr = bcryptPasswordEncoder.encode(str);
+		log.debug(str);
+		log.debug(bstr);
+		
+		return "redirect:/";
 	}
 	
 	
 	//회원가입용 AJAX 메소드
 	@GetMapping("/enroll.do")
 	@ResponseBody
-	public boolean enroll(@RequestParam("") String col,
+	public void enroll(@RequestParam("") String col,
 					   @RequestParam("") String value) {
 		
 		Member member = memberService.selectMember(col,value);
 		
-		return member!=null?false:true;
 	}	
 	
 	

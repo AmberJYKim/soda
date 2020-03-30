@@ -23,6 +23,42 @@
 	
 	<context:component-scan base-package="com.soda.onn" />
 	
+	<!-- #8. interceptor 등록 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/admin/**"/>
+			<beans:bean id="AdminInterceptor"
+						class="com.soda.onn.common.interceptor.AdminInterceptor"/>
+		</interceptor>
+	</interceptors>
 	
+	
+    <!-- #11.1 파일업로드를 처리할 Resolver클래스 빈등록(빈이름 주의) -->
+	<beans:bean id="multipartResolver" 
+				class="org.springframework.web.multipart.commons.CommonsMultipartResolver">   
+		<beans:property name="maxUploadSize" value="-1" /> <!-- multipart/form-data 요청당 최대 파일 크기는 50MB이다. default: -1(제한없음)-->
+		<beans:property name="maxUploadSizePerFile" value="-1" /> <!-- 파일하나당 최대용량은 10MB이다. 기본값: -1(제한없음) -->
+	</beans:bean>
+	
+	<!-- #13.1 jsonView Bean 및 viewResolver 등록 -->
+	<!-- 요청한 viewName과 실제bean이름을 매핑해주는 BeanNameViewResolver를 사용함. -->
+    <!-- bean아이디는 viewResolver로 반드시 지정. 처리순서를 1로 우선처리되도록함. -->
+	<beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView"/>
+    <beans:bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+        <beans:property name="order" value="1"/>
+    </beans:bean>   
+	
+    <!-- #14.1 @Responsebody사용을 위한 의존 : 빈등록 (스프링 5.x.x => MappingJackson2HttpMessageConverter) -->
+	<beans:bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+
+	<!-- Handler에서 return한 자바객체를 그대로 응답에 쓰기 -->
+	<beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<beans:property name="messageConverters">
+			<beans:list>
+				<beans:ref bean="jacksonMessageConverter"/>
+                <beans:bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
 	
 </beans:beans>

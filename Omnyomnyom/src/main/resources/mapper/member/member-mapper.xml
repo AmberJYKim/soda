@@ -5,6 +5,6 @@
 <mapper namespace="member">
 
 <select id="selectMember" resultType="Member">
-	돌아가서 DAO 리턴 파라미터값 바꾸세요
+	<!-- 돌아가서 DAO 리턴 파라미터값 바꾸세요 -->
 </select>
 </mapper>
