@@ -9,7 +9,7 @@
 </jsp:include>
 <!-- 해당 페이지 css -->
  <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/class_reservation.css" />
-
+<!--  -->
     <!-- Event Details Section -->
     <section class="event-details-section spad overflow-hidden">
         <div class="tm-section-2">

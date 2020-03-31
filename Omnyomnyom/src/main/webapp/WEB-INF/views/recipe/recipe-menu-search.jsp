@@ -394,7 +394,7 @@
             <div class="tab-pane fade" id="kor-6" role="tabpanel" aria-labelledby="profile-tab">
                 7 분식
             </div>
-    </section>
+    </section><!--  -->
     
     	
 
