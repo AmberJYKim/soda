@@ -3,4 +3,23 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="chef">
+
+<select id="selectChefList" resultType="chef">
+	select
+		*
+	from
+		tb_chef
+	order by
+		regdate
+</select>
+
+<select id="selectChefRequestList" resultType="chefRequest">
+	select
+		*
+	from
+		tb_chef_req
+	order by
+		regdate
+</select>
+
 </mapper>

@@ -1,5 +1,9 @@
 package com.soda.onn.member.model.service;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +22,19 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Member selectMember(String col, String value) {
-		return memberDAO.selectMember(col, value);
+	public Member selectMember(Map<String, String> map) {
+		return memberDAO.selectMember(map);
 	}
 
 	@Override
 	public Member selectOne(String memberId) {
 		return memberDAO.selectOne(memberId);
-		}
+	}
+
+	@Override
+	public List<Member> selectMemberList(RowBounds rowBounds) {
+		return memberDAO.selectMemberList(rowBounds);
+	}
 
 
 	
