@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/util.css" />
 
     <!-- Main Stylesheets -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
+    <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" /> --%>
     <!-- login.css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/login.css" />
 
@@ -168,12 +168,12 @@
                 <ul class="main-menu">
                     <li><a href="about.html" class="active">레시피</a>
                         <ul class="sub-menu">
-                            <li><a href="classes.html">메뉴</a></li>
+                            <li><a href="${pageContext.request.contextPath }/recipe/recipe-menu-search.do">메뉴</a></li>
                             <li><a href="classes-details.html">냉장고 재료</a></li>
                         </ul>
                     </li>
                     <li><a href="oneday_main.html">뇸뇸몰</a></li>
-                    <li><a href="oneday_main.html">셰프</a></li>
+                    <li><a href="${pageContext.request.contextPath}/chef/cheflist.do">셰프</a></li>
                     <li><a href="oneday_main.html">원데이 클래스</a></li>
                     <li><a href="contact.html">사이트 안내</a>
                         <ul class="sub-menu">

@@ -3828,3 +3828,95 @@ only screen and (min-width: 576px) and (max-width: 767px),
 .contact-form {
     padding-top: 10px;
 }
+        .chef-home-video {
+            width: 440px;
+            height: 250px;
+        }
+        
+        .chef-home-details {
+            margin-top: 70px;
+        }
+        
+        .chefhome_title {
+            margin-top: 70px;
+        }
+        
+        #chef-details {
+            padding: 0px;
+            margin-top: 70px;
+        }
+        
+        #chef-home-text {
+            margin-top: 70px;
+        }
+        
+        #chef-home-textarea {
+            padding: 20px 40px;
+        }
+        
+        @media (min-width: 1200px) {
+            .container {
+                width: 1100px;
+            }
+        }
+        
+        #upload-video {
+            margin-top: 50px;
+        }
+        
+        #fav-video {
+            margin-top: 50px;
+        }
+        
+        #video-upload-video {
+            margin-top: 100px;
+        }
+        
+        .upload-video {
+            margin-top: 30px;
+            list-style: none;
+        }
+        
+        .table-striped {
+            text-align: center;
+            width: 100%;
+        }
+        
+        #notice {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        
+        .classes-item-warp {
+            margin-top: 100px;
+        }
+        
+        .notice_content {
+            list-style: none;
+            float: left;
+        }
+        
+        ul.notice_content li {
+            display: inline-block;
+        }
+        
+        .notice_content {
+            font-weight: 400;
+            color: #007bff;
+            text-decoration: none;
+            /* text-align: left; */
+            float: left;
+            font-size: 15px;
+            border: 0px;
+            background: none;
+            color: white;
+        }
+        
+        .notice_header {
+            background: #e73828;
+        }
+        
+        .upvideo {
+            margin-bottom: 40px;
+        }

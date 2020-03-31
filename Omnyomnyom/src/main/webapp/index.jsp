@@ -7,6 +7,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
 	<jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
 </jsp:include>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
  <!-- 로그인 메뉴 -->
     <!-- main.css, util.css추가 -->
     <!-- ${pageContext.request.contextPath }/resources/images/ui에 다수의 png 추가 -->

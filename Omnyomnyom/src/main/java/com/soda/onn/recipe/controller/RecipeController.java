@@ -2,6 +2,7 @@ package com.soda.onn.recipe.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.soda.onn.recipe.model.service.RecipeService;
@@ -16,6 +17,23 @@ public class RecipeController {
 	@Autowired
 	private RecipeService recipeService;
 	
+	@GetMapping("/recipe-details.do")
+	public void recipedetails() {
+		
+	}
+	@GetMapping("/recipeUpload.do")
+	public void recipeUpload() {
+		
+	}
+	@GetMapping("/recipeUpdate.do")
+	public void recipeUpdate() {
+		
+	}
+	
+	@GetMapping("/recipe-menu-search.do")
+	public void recipemenusearch() {
+		
+	}
 	
 	
 }
