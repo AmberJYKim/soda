@@ -1,5 +1,9 @@
 package com.soda.onn.member.model.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,20 +19,22 @@ public class MemberDAOImpl  implements MemberDAO{
 
 	@Override
 	public int insertMember(Member member) {
-//		return sqlSession.insert("member.insertMember", member);
-		return 1;
+		return sqlSession.insert("member.insertMember", member);
 	}
 
 	@Override
-	public Member selectMember(String col, String value) {
-//		return sqlSession.selectOne("member.selectMember","리턴파라미터 다시 만드셈");
-		return new Member();
+	public Member selectMember(Map<String, String> map) {
+		return sqlSession.selectOne("member.selectMember",map);
 	}
 
 	@Override
 	public Member selectOne(String memberId) {
-//		return sqlSession.selectOne("member.selectOne",memberId);
-		return new Member();
+		return sqlSession.selectOne("member.selectOne",memberId);
+	}
+
+	@Override
+	public List<Member> selectMemberList(RowBounds rowBounds) {
+		return sqlSession.selectList("member.selectMemberList",null,rowBounds);
 	}
 
 }

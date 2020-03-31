@@ -1,5 +1,22 @@
-    <link rel="stylesheet" href="/css/chefList.css" />
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<fmt:requestEncoding value="utf-8"/> <!-- 인코딩설정 안해주면 한글 깨짐  -->
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param value="" name="pageTitle"/>
+</jsp:include>
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chefList.css" />
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
+<script>
+function go_chefpage() {
+	location.href = "${pageContext.request.contextPath}/chef/chefpage.do";
+}
+
+
+</script>
 
     <section class="page-top-section page-sp set-bg" data-setbg="img/page-top-bg.jpg">
         <div class="container">
@@ -48,7 +65,7 @@
             <div class="row">
                 <div class="col-xs-6 col-sm-3 placeholder chef_list">
                     <div class="image_overflow_hidden">
-                        <img src="${pageContext.request.contextPath }/resources/img/1508_008.jpg" class="" alt="">
+                        <img src="/img/1508_008.jpg" class="" alt="">
                     </div>
                     <br>
                     <div class="row">
@@ -124,8 +141,8 @@
 
             <div class="row" id="Ylist">
                 <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
-                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p>
+                    <a href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
+                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
                     <div class="row">
                         <div class="col-8">
                             <img src="/img/1508_008.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">
@@ -137,8 +154,8 @@
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
-                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p>
+                    <a href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
+                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
                     <div class="row">
                         <div class="col-8">
                             <img src="/img/1508_008.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">
@@ -150,8 +167,8 @@
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
-                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p>
+                    <a href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
+                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
                     <div class="row">
                         <div class="col-8">
                             <img src="/img/1508_008.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">
@@ -163,8 +180,8 @@
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
-                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p>
+                    <a href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
+                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
                     <div class="row">
                         <div class="col-8">
                             <img src="/img/1508_008.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">
@@ -174,7 +191,8 @@
                             <span>조회수 250</span>
                         </div>
                     </div>
-                    <p class="chef-Thumbnail-link"> &nbsp;&nbsp; 채널로 이동 &nbsp;&nbsp;</p>
+                  <!--   <p class="chef-Thumbnail-link" onclick="go_chefpage();"> &nbsp;&nbsp; 채널로 이동 &nbsp;&nbsp;</p> -->
+                	<input type="button" class="chef-Thumbnail-link" onclick="go_chefpage();" value="채널로 이동">
                 </div>
             </div>
             <div class="row">
@@ -266,81 +284,5 @@
         </script>
     </section>
 
-    <!-- Footer Section -->
-    <footer class="footer-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget">
-                        <div class="about-widget">
-                            <img src="/img/logo-3.png" alt="">
-                            <p>Lorem ipsum dolor sit amet, consec-tetur adipiscing elit sed.</p>
-                            <ul>
-                                <li><i class="material-icons">phone</i>(965) 436 3274</li>
-                                <li><i class="material-icons">email</i>ahana.yoga@gmail.com</li>
-                                <li><i class="material-icons">map</i>184 Main Collins Street</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget pl-0 pl-lg-5">
-                        <h2 class="fw-title">Company</h2>
-                        <ul>
-                            <li><a href="#">Online Education</a></li>
-                            <li><a href="#">Gallery</a></li>
-                            <li><a href="#">Special Issues</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-sm-6">
-                    <div class="footer-widget">
-                        <h2 class="fw-title">About Us</h2>
-                        <ul>
-                            <li><a href="#">Our Vision</a></li>
-                            <li><a href="#">Our Mission</a></li>
-                            <li><a href="#">Meet The Team</a></li>
-                            <li><a href="#">Introduce</a></li>
-                            <li><a href="#">Customer Service</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="footer-widget pl-0 pl-lg-5">
-                        <h2 class="fw-title">Open time</h2>
-                        <ul>
-                            <li><i class="material-icons">alarm_on</i>Mon - Fri: 6:30am - 07:45pm</li>
-                            <li><i class="material-icons">alarm_on</i>Sat - Sun: 8:30am - 05:45pm</li>
-                        </ul>
-                        <form class="infor-form">
-                            <input type="text" placeholder="Your Email">
-                            <button><img src="/img/icons/send.png" alt=""></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="footer-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-md-8 text-md-right">
-                        <div class="copyright">
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;
-                            <script>
-                                document.write(new Date().getFullYear());
-                            </script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

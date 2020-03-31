@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.soda.onn.oneday.model.vo.Oneday;
+import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.Reservation;
 
 @Repository
@@ -32,13 +33,13 @@ public class OnedayDAOImpl implements OnedayDAO{
 	}
 
 	@Override
-	public List<Reservation> selectReservationList(int cPage, int numPerPage) {
-		
-		int offset = (cPage-1)*numPerPage;
-		int limit = numPerPage;
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		
+	public List<Reservation> selectReservationList(RowBounds rowBounds) {
 		return sqlSession.selectList("oneday.selectReservationList", null, rowBounds);
+	}
+
+	@Override
+	public List<OnedayReview> selectOnedayReviewList(RowBounds rowBounds) {
+		return sqlSession.selectList("oneday.selectOnedayReviewList", null, rowBounds);
 	}
 
 

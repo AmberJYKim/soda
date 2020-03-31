@@ -2,11 +2,13 @@ package com.soda.onn.oneday.model.service;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.soda.onn.oneday.model.dao.OnedayDAO;
 import com.soda.onn.oneday.model.vo.Oneday;
+import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.Reservation;
 
 @Service
@@ -32,8 +34,13 @@ public class OnedayServiceImpl implements OnedayService {
 
 
 	@Override
-	public List<Reservation> selectReservationList(int cPage, int numPerPage) {
-		return onedayDAO.selectReservationList(cPage,numPerPage);
+	public List<Reservation> selectReservationList(RowBounds rowBounds) {
+		return onedayDAO.selectReservationList(rowBounds);
+	}
+
+	@Override
+	public List<OnedayReview> selectOnedayReviewList(RowBounds rowBounds) {
+		return onedayDAO.selectOnedayReviewList(rowBounds);
 	}
 	
 	

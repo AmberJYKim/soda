@@ -5,6 +5,35 @@
 <mapper namespace="member">
 
 <select id="selectMember" resultType="Member">
-	<!-- 돌아가서 DAO 리턴 파라미터값 바꾸세요 -->
+	select
+		*
+	from
+		tb_member
+	where
+	<if test="memberId != ''">
+		member_id = #{memberId}
+	</if>
+	<if test="memberNick != ''">
+		member_nick = #{memberNick}
+	</if>
 </select>
+
+<select id="selectOne" resultType="Member">
+	select
+		*
+	from
+		tb_member
+	where
+		member_id = #{memberId}
+</select>
+
+<select id="selectMemberList" resultType="Member">
+	select
+		*
+	from
+		tb_member
+	order by 
+		regdate
+</select>
+
 </mapper>
