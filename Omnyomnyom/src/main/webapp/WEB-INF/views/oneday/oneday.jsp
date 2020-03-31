@@ -44,6 +44,7 @@ function oneday_search(){
                             <i class="material-icons">search</i>
                             <input type="text" placeholder="">
                         </div>
+                       <!--  -->
                         <input class="site-btn sb-gradient" type="button" value="클래스 검색" onclick="oneday_search();">
                     </form>
                 </div>
