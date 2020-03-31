@@ -6,7 +6,7 @@
 <fmt:requestEncoding value="utf-8"/> <!-- 인코딩설정 안해주면 한글 깨짐  -->
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="pageTitle"/>
-</jsp:include>
+</jsp:include><!--  -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/resources/css/mall_slider.css" />
     <script>

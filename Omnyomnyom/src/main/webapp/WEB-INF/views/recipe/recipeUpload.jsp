@@ -64,7 +64,7 @@
 	 <!-- Page top Section end -->
 
 	                                                                            
-	<!-- 레시피 영상  Section -->
+	<!-- 레시피 영상  Section --><!--  -->
 	<section class="classes-details-section spad overflow-hidden">
 		<div class="container">
 			<div class="row">

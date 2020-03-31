@@ -7,7 +7,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="pageTitle"/>
 </jsp:include>
-    <!-- Main Stylesheets -->
+    <!-- Main Stylesheets --><!--  -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/recipeUpdate.css">
     
     <script>
