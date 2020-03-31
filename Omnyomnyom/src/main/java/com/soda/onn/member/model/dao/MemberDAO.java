@@ -17,4 +17,6 @@ public interface MemberDAO {
 
 	List<Member> selectMemberList(RowBounds rowBounds);
 
+	int selectMemberListCnt();
+
 }

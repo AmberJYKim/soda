@@ -3,10 +3,6 @@ package com.soda.onn.member.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,24 +39,27 @@ public class MemberController {
 	public String login(@RequestParam("loginId") String memberId,
 	    			    @RequestParam("loginPassword") String memberPwd,
 	    			    Model model,
-	    			    RedirectAttributes redirectAttributes,
-	    			    HttpServletRequest request){
+	    			    RedirectAttributes redirectAttributes){
 		
 		Member member = memberService.selectOne(memberId);
 		
 		if(member != null) {
 			
-			if(bcrypt.matches(memberPwd, member.getMemberPwd()))
+			if(bcrypt.matches(memberPwd, member.getMemberPwd())) {
 				model.addAttribute("memberLoggedIn", member);
-			
-			else 
-				redirectAttributes.addAttribute("msg", "아이디와 비밀번호를 다시 한번 확인해주세요");
+				log.debug(member.getMemberNick()+"("+member.getMemberId()+")님이 로그인을 했습니다.");
+			}else {
+				redirectAttributes.addFlashAttribute("msg", "입력한 아이디 또는 비밀번호가 일치하지 않습니다.");
+				
+			}
 			
 		}else {
-			redirectAttributes.addAttribute("msg", "아이디와 비밀번호를 다시 한번 확인해주세요");
+			redirectAttributes.addFlashAttribute("msg", "입력한 아이디 또는 비밀번호가 일치하지 않습니다.");
 		}
 		
-		return request.getHeader("referer");
+		log.info("현재 로그인 실패시 addFlashAttribute 작동하지 않음.");
+		
+		return "redirect:/";
 	}
 
 	
