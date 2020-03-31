@@ -609,10 +609,10 @@ td {
 
 .check .number {
     position: absolute;
-    top: 50px;
-    right: 50px;
+    top: 3px;
+    right: 15px;
     color: #4949e7;
-    font-size: 40px;
+    font-size: 15px;
 }
 
 .check .info {

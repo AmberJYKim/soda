@@ -92,7 +92,7 @@
                                 </div>
                                 <!-- 셰프 프로필 -->
                                 <div class="col-lg-7">
-                                    <div class="trainer-details" id="chef-details">
+                                    <div class="trainer-details infobox" id="chef-details">
                                         <div class="trainer-info">
                                             <div class=" col-lg-5 pull-left">
                                                 <!-- 셰프프로필 사진  -->
@@ -106,7 +106,7 @@
                                                     <a href="#"><i class="fa fa-linkedin"></i></a>
                                                 </div>
                                             </div>
-                                            <div class="td-right col-lg-7">
+                                            <div class="td-right col-lg-7 chefinfo">
                                                 <h3>채널명 (셰프닉네임)</h3>
                                                 <h6>셰프 아이디</h6>
                                                 <ul>
