@@ -16,7 +16,7 @@ public interface OnedayDAO {
 
 	Oneday selectOne(int onedayNo);
 
-	List<Reservation> selectReservationList(RowBounds rowBounds);
+	List<Reservation> selectReservationList(String memberId, RowBounds rowBounds);
 
 	List<OnedayReview> selectOnedayReviewList(RowBounds rowBounds);
 

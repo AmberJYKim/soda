@@ -22,4 +22,13 @@
 		regdate
 </select>
 
+<select id="selectChefRequest" resultType="chefRequest">
+	select
+		*
+	from
+		TB_chef_req
+	where
+		member_id = #{memberId}
+</select>
+
 </mapper>

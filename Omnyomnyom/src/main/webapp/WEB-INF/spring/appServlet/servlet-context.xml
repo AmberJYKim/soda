@@ -30,6 +30,11 @@
 			<beans:bean id="AdminInterceptor"
 						class="com.soda.onn.common.interceptor.AdminInterceptor"/>
 		</interceptor>
+		<interceptor>
+			<mapping path="/mypage/**"/>
+			<beans:bean id="MemberInterceptor"
+						class="com.soda.onn.common.interceptor.MemberInterceptor"/>
+		</interceptor>
 	</interceptors>
 	
 	

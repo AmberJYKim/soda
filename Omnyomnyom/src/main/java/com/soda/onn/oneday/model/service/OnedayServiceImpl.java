@@ -34,8 +34,8 @@ public class OnedayServiceImpl implements OnedayService {
 
 
 	@Override
-	public List<Reservation> selectReservationList(RowBounds rowBounds) {
-		return onedayDAO.selectReservationList(rowBounds);
+	public List<Reservation> selectReservationList(String memberId, RowBounds rowBounds) {
+		return onedayDAO.selectReservationList(memberId, rowBounds);
 	}
 
 	@Override

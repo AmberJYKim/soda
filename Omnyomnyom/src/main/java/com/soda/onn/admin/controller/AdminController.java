@@ -82,7 +82,7 @@ public class AdminController {
 		
 		rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		
-		List<Reservation> reservationList = onedayService.selectReservationList(rowBounds);
+		List<Reservation> reservationList = onedayService.selectReservationList(null, rowBounds);
 		mav.addObject("reservationList", reservationList);
 		mav.setViewName("admin/reservationList");
 		

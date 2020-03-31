@@ -9,6 +9,11 @@
 		*
 	from
 		tb_reservation 
+	<where>
+		<if test="memberId != null AND memberId = ''">
+		member_id = #{memberId}
+		</if>
+	</where>
 	order by 
 		reservation_no desc
 </select>

@@ -47,16 +47,18 @@ public class MemberController {
 		
 		
 		Member member = memberService.selectOne(memberId);
-		log.debug("member={}",member);
+		System.out.println("sysout"+member);
+		log.info("member={}",member);
 		if(member != null) {
 			String inputPwd = bcrypt.encode(memberPwd);
-			
+			log.debug("1");
 			if(member.getMemberPwd().equals(inputPwd))
 				model.addAttribute("memberLoggedIn", member);
 			else 
 				redirectAttributes.addAttribute("msg", "아이디와 비밀번호를 다시 한번 확인해주세요");
 			
 		}else {
+			log.debug("3");
 			redirectAttributes.addAttribute("msg", "아이디와 비밀번호를 다시 한번 확인해주세요");
 		}
 		
@@ -98,7 +100,8 @@ public class MemberController {
 						 RedirectAttributes redirectAttributes) {
 		
 		ModelAndView mav = new ModelAndView();
-		
+		log.debug("member={}",member);
+
 		member.setMemberPwd(bcrypt.encode(member.getMemberPwd()));
 
 		//회원추가
