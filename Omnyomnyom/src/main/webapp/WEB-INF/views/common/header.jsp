@@ -99,7 +99,7 @@
                                 </form>
                             </div>
                             <div class="form-container sign-in-container">
-                                <form action="" method="get">
+                                <form action="${pageContext.request.contextPath }/member/login" method="get">
                                     <h1>로그인</h1>
                                     <!-- <div class="social-container">
                                         
@@ -110,7 +110,7 @@
                                         <label for="saveId" style="float: left; font-size: 15px; margin-top:5px;">아이디 저장</label> </p>
                                     <!-- 아이디/비밀번호 찾기 페이지 -->
                                     <a href="">아이디/비밀번호 찾기</a>
-                                    <button>옴뇸뇸 로그인</button>
+                                    <button type="submit">옴뇸뇸 로그인</button>
                                     <div class="td-social">
                                         <a href="#"><i class="fa fa-facebook"></i></a>
                                         <a href="#"><i class="fa fa-instagram"></i></a>

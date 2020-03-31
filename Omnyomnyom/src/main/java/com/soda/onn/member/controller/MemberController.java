@@ -39,26 +39,23 @@ public class MemberController {
 	
 	//로그인요청
 	@GetMapping("/login")
-	public String login(@RequestParam("memberId") String memberId,
-	    			    @RequestParam("memberPwd") String memberPwd,
+	public String login(@RequestParam("loginId") String memberId,
+	    			    @RequestParam("loginPassword") String memberPwd,
 	    			    Model model,
 	    			    RedirectAttributes redirectAttributes,
 	    			    HttpServletRequest request){
 		
-		
 		Member member = memberService.selectOne(memberId);
-		System.out.println("sysout"+member);
-		log.info("member={}",member);
+		
 		if(member != null) {
-			String inputPwd = bcrypt.encode(memberPwd);
-			log.debug("1");
-			if(member.getMemberPwd().equals(inputPwd))
+			
+			if(bcrypt.matches(memberPwd, member.getMemberPwd()))
 				model.addAttribute("memberLoggedIn", member);
+			
 			else 
 				redirectAttributes.addAttribute("msg", "아이디와 비밀번호를 다시 한번 확인해주세요");
 			
 		}else {
-			log.debug("3");
 			redirectAttributes.addAttribute("msg", "아이디와 비밀번호를 다시 한번 확인해주세요");
 		}
 		
@@ -101,8 +98,10 @@ public class MemberController {
 		
 		ModelAndView mav = new ModelAndView();
 		log.debug("member={}",member);
+		String memberPwd = member.getMemberPwd();
 
-		member.setMemberPwd(bcrypt.encode(member.getMemberPwd()));
+		String bcryptPwd = bcrypt.encode(memberPwd);
+		member.setMemberPwd(bcryptPwd);
 
 		//회원추가
 		int result = memberService.insertMember(member);
