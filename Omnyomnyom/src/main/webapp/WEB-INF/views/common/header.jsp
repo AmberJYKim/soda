@@ -168,23 +168,13 @@
                 <ul class="main-menu">
                     <li><a href="about.html" class="active">레시피</a>
                         <ul class="sub-menu">
-<<<<<<< HEAD
                             <li><a href="${pageContext.request.contextPath }/recipe/recipe-menu-search.do">메뉴</a></li>
-                            <li><a href="classes-details.html">냉장고 재료</a></li>
-=======
-                            <li><a href="classes.html">메뉴</a></li>
                             <li><a href="${pageContext.request.contextPath}/recipe/ingredientsSelection.do">냉장고 재료</a></li>
->>>>>>> branch 'master' of https://github.com/AmberJYKim/soda.git
                         </ul>
                     </li>
                     <li><a href="oneday_main.html">뇸뇸몰</a></li>
-<<<<<<< HEAD
                     <li><a href="${pageContext.request.contextPath}/chef/cheflist.do">셰프</a></li>
-                    <li><a href="oneday_main.html">원데이 클래스</a></li>
-=======
-                    <li><a href="oneday_main.html">셰프</a></li>
                     <li><a href="${pageContext.request.contextPath}/oneday/oneday.do">원데이 클래스</a></li>
->>>>>>> branch 'master' of https://github.com/AmberJYKim/soda.git
                     <li><a href="contact.html">사이트 안내</a>
                         <ul class="sub-menu">
                             <li><a href="classes.html">사이트 소개</a></li>
