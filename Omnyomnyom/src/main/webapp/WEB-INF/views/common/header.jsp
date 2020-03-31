@@ -73,14 +73,14 @@
                         <img src="" alt="" width="300px" style="margin-bottom: 30px;">
                         <div class="login_container" id="login_container">
                             <div class="form-container sign-up-container">
-                                <form action="" method="POST" onsubmit="return validate();">
+                                <form action="${pageContext.request.contextPath }/member/enroll" method="POST" >
                                     <h1>회원가입</h1>
                                     <!-- <div class="social-container">
                                     
                                         </div> -->
-                                    <input type="text" placeholder="아이디를 입력하세요" id="memberid" name="memeberid" onblur="emailValidate();" required/>
+                                    <input type="text" placeholder="아이디를 입력하세요" id="memberid" name="memberId" onblur="emailValidate();" required/>
                                     <span class="error" id="errorId"></span>
-                                    <input type="password" name="password" id="password_" placeholder="Password" onblur="pwValidate();" required />
+                                    <input type="password" name="memberPwd" id="password_" placeholder="Password" onblur="pwValidate();" required />
                                     <span class="error" id="errorPw"></span>
                                     <input type="password" id="password_2" placeholder="Confirm Password" onblur="isEqualPwd();" required>
                                     <span class="error" id="errorPwChk"></span>
@@ -88,14 +88,14 @@
                                     <span class="error" id="errorEmail"></span>
                                     <input type="text" name="memberName" id="memberName" placeholder="Name" required>
                                     <span class="error" id="errorName"></span>
-                                    <input type="text" placeholder="닉네임을 입력하세요" name="nickname" id="nickname" maxlength="" required>
+                                    <input type="text" placeholder="닉네임을 입력하세요" name="memberNick" id="nickname" maxlength="" required>
                                     <span class="error" id="errorPhone"></span>
                                     <input type="tel" placeholder="Phone Number(-없이)" name="phone" id="phone" maxlength="11" required>
                                     <span class="error" id="errorPhone"></span>
-                                    <input type="date" name="birthday" id="brithday" required>
+                                    <input type="number" name="ssn" id="brithday" required>
                                     <input type="address" name="address" id="address" placeholder="주소를 입력하세요" required>
                                     <span class="error" id="errorName"></span>
-                                    <button type="submit">회원가입</button>
+                                    <button type="submit" >회원가입</button>
                                 </form>
                             </div>
                             <div class="form-container sign-in-container">

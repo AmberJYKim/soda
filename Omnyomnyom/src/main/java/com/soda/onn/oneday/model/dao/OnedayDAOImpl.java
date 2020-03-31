@@ -33,8 +33,8 @@ public class OnedayDAOImpl implements OnedayDAO{
 	}
 
 	@Override
-	public List<Reservation> selectReservationList(RowBounds rowBounds) {
-		return sqlSession.selectList("oneday.selectReservationList", null, rowBounds);
+	public List<Reservation> selectReservationList(String memberId, RowBounds rowBounds) {
+		return sqlSession.selectList("oneday.selectReservationList", memberId, rowBounds);
 	}
 
 	@Override

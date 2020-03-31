@@ -26,4 +26,5 @@ public class Chef implements Serializable{
 	private Date regDate;
 	private String businessInfo;
 	private String chefContent;
+	
 }
