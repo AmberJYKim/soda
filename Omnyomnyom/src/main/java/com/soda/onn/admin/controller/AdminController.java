@@ -2,6 +2,8 @@ package com.soda.onn.admin.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import com.soda.onn.admin.model.service.AdminService;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
+import com.soda.onn.common.base.PageBar;
 import com.soda.onn.mall.model.service.MallService;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.service.MemberService;
@@ -116,17 +119,27 @@ public class AdminController {
 	}
 		
 	@GetMapping("/memberList")
-	public ModelAndView memberList(@RequestParam(value="cPage", defaultValue="1") int cPage) {
+	public ModelAndView memberList(@RequestParam(value="cPage", defaultValue="1") int cPage,
+								   HttpServletRequest request) {
 		
-		int numPerPage = 15;
 		ModelAndView mav = new ModelAndView();
 		
+		final int numPerPage = 2;
+		final int pageBarSize = 5;
+		int pageStart = ((cPage - 1)/pageBarSize) * pageBarSize +1;
+		int pageEnd = pageStart+pageBarSize-1;
+		
 		rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
+		int totalCount = memberService.selectMemberListCnt();
+		int totalPage =  (int)Math.ceil((double)totalCount/numPerPage);
+		String url = request.getRequestURL().toString();
+		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
 		
 		List<Member> memberList = memberService.selectMemberList(rowBounds);
+		
+		mav.addObject("paging", paging);
 		mav.addObject("memberList", memberList);
 		mav.setViewName("admin/memberList");
-		
 		return mav;
 	}
 	

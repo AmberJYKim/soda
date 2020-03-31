@@ -21,7 +21,7 @@
 	)
 </insert>
 
-<select id="selectMember" resultType="Member">
+<select id="selectMember" resultType="member">
 	select
 		*
 	from
@@ -29,13 +29,13 @@
 	where
 	<if test="memberId != ''">
 		member_id = #{memberId}
-	</if>
+	</if> 
 	<if test="memberNick != ''">
 		member_nick = #{memberNick}
 	</if>
 </select>
 
-<select id="selectOne" resultType="Member">
+<select id="selectOne" resultType="member">
 	select
 		*
 	from
@@ -44,13 +44,20 @@
 		member_id = #{memberId}
 </select>
 
-<select id="selectMemberList" resultType="Member">
+<select id="selectMemberList" resultType="member">
 	select
 		*
 	from
 		tb_member
 	order by 
 		regdate
+</select>
+
+<select id="selectMemberListCnt" resultType="String">
+	select
+		count(*)
+	from
+		tb_member
 </select>
 
 </mapper>

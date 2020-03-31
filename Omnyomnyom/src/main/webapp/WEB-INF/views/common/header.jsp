@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="utf-8">
 
@@ -43,10 +45,18 @@
     <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
     <!-- 회원가입 js -->
     <script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
-    
 </head>
 
 <body>
+    <c:if test="${not empty msg}">
+	<script>
+		(()=>{
+			alert("${msg}");
+		}));
+	</script>
+	</c:if>
+	<% session.removeAttribute("msg"); %>
+	    
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -99,7 +109,7 @@
                                 </form>
                             </div>
                             <div class="form-container sign-in-container">
-                                <form action="" method="get">
+                                <form action="${pageContext.request.contextPath }/member/login" method="get">
                                     <h1>로그인</h1>
                                     <!-- <div class="social-container">
                                         
@@ -110,7 +120,7 @@
                                         <label for="saveId" style="float: left; font-size: 15px; margin-top:5px;">아이디 저장</label> </p>
                                     <!-- 아이디/비밀번호 찾기 페이지 -->
                                     <a href="">아이디/비밀번호 찾기</a>
-                                    <button>옴뇸뇸 로그인</button>
+                                    <button type="submit">옴뇸뇸 로그인</button>
                                     <div class="td-social">
                                         <a href="#"><i class="fa fa-facebook"></i></a>
                                         <a href="#"><i class="fa fa-instagram"></i></a>
@@ -172,7 +182,7 @@
                             <li><a href="${pageContext.request.contextPath}/recipe/ingredientsSelection.do">냉장고 재료</a></li>
                         </ul>
                     </li>
-                    <li><a href="oneday_main.html">뇸뇸몰</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mall/productList.do">뇸뇸몰</a></li>
                     <li><a href="${pageContext.request.contextPath}/chef/chefList.do">셰프</a></li>
                     <li><a href="${pageContext.request.contextPath}/oneday/oneday.do">원데이 클래스</a></li>
                     <li><a href="contact.html">사이트 안내</a>
@@ -187,3 +197,111 @@
         </div>
     </header>
     <!-- Header Section end -->
+    
+    	<!-- Main Stylesheets -->
+	<c:if test="${memberLoggedIn != null}">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/info.css"/>
+	
+	<!-- Infor Model -->
+	<div class="infor-model-warp">
+		<div class="infor-model d-flex align-items-center">
+			<div class="infor-close">
+				<i class="material-icons">close</i>
+			</div>
+			<div class="infor-middle">
+				<!-- 로그인 후 간단한 회원정보 출력해줌 -->
+				<a href="#" class="infor-logo">
+					<img src="img/user.png" alt="">
+				</a>
+				<p><a href="#">백종원 님</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+
+				<!-- 바로가기기능 -->
+				<div class="insta-imgs">
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+							
+								<p>예약확인</p>
+							</div>
+						</div>
+					</div>
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+							
+								<p>구매목록</p>
+							</div>
+						</div>
+					</div>
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+								
+								<p>장바구니</p>
+							</div>
+						</div>
+					</div>
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+							
+								<p>스크랩 목록</p>
+							</div>
+						</div>
+					</div>
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+							
+								<p>셰프신청</p>
+							</div>
+						</div>
+					</div>
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+						
+								<p>문의내역</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 알림창 -->
+				
+					<p>알리미</p>
+				
+						<div class="toast-header">
+						  <img src="img/onn_logo_red.png" class="rounded mr-2" alt="..." style="width: 50px; height: 50px;">
+						  <strong class="mr-auto">새로운 알림이 있습니다!</strong>
+						  <small>11 mins ago</small>
+						  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						  </button>
+						</div>
+						<div class="toast-body">
+						  Hello, world! This is a toast message.
+						</div>
+				
+				<script>
+				$('#myToast').on('hidden.bs.toast', function () {
+				// do something...
+				})
+				</script>  
+
+				<div class="insta-social">
+					<a href="#"><i class="fa fa-linkedin"></i></a>
+					<a href="#"><i class="fa fa-twitter"></i></a>
+					<a href="#"><i class="fa fa-instagram"></i></a>
+					<a href="#"><i class="fa fa-facebook"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Infor Model end -->
+	</c:if>                            
