@@ -8,7 +8,12 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
 	<jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
 </jsp:include>
-
+<script>
+function oneday_search(){
+	
+	location.href="${pageContext.request.contextPath }/oneday/search.do";
+}
+</script>
     <section class="page-top-section page-sp set-bg" data-setbg="">
         <div class="container">
             <div class="row">
@@ -39,7 +44,8 @@
                             <i class="material-icons">search</i>
                             <input type="text" placeholder="">
                         </div>
-                        <button class="site-btn sb-gradient"><a href="${pageContext.request.contextPath }/oneday/search.do">클래스 검색</a></button>
+                       <!--  -->
+                        <input class="site-btn sb-gradient" type="button" value="클래스 검색" onclick="oneday_search();">
                     </form>
                 </div>
             </div>
