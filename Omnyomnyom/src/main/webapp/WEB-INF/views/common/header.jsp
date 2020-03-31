@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/util.css" />
 
     <!-- Main Stylesheets -->
-    <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" /> --%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
     <!-- login.css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/login.css" />
 
@@ -173,7 +173,7 @@
                         </ul>
                     </li>
                     <li><a href="oneday_main.html">뇸뇸몰</a></li>
-                    <li><a href="${pageContext.request.contextPath}/chef/cheflist.do">셰프</a></li>
+                    <li><a href="${pageContext.request.contextPath}/chef/chefList.do">셰프</a></li>
                     <li><a href="${pageContext.request.contextPath}/oneday/oneday.do">원데이 클래스</a></li>
                     <li><a href="contact.html">사이트 안내</a>
                         <ul class="sub-menu">

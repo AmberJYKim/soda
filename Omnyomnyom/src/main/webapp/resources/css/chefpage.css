@@ -2781,7 +2781,15 @@ only screen and (min-width: 576px) and (max-width: 767px),
         margin-right: 0;
     }
 }
-
+.chefinfo{
+	float: right;
+	top : -80px;
+	
+}
+.infobox {
+    max-height: 252px;
+   
+}
 .trainer-details .td-right {
     overflow: hidden;
     margin-bottom: 30px;

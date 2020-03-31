@@ -15,8 +15,8 @@ public class ChefController {
 	@Autowired
 	private ChefService chefservice;
 	
-	@GetMapping("/cheflist.do")
-	public void cheflist() {
+	@GetMapping("/chefList.do")
+	public void chefList() {
 		
 	}
 	@GetMapping("/chefpage.do")
