@@ -11,4 +11,6 @@ public interface ChefDAO {
 
 	List<ChefRequest> selectChefRequestList();
 
+	ChefRequest selectChefRequest(String memberId);
+
 }

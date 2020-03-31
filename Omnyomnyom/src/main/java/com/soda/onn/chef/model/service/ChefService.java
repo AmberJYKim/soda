@@ -11,5 +11,7 @@ public interface ChefService {
 
 	List<ChefRequest> selectChefRequestList();
 
+	ChefRequest selectChefRequest(String memberId);
+
 
 }
