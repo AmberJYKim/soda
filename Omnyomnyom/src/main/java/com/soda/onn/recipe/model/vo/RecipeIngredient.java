@@ -22,4 +22,5 @@ public class RecipeIngredient implements Serializable {
 	private int ingredientNo;
 	private int minWeight;
 	private String ingredientName;
+	private String FileName;
 }

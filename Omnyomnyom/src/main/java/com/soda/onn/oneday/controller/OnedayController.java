@@ -27,6 +27,45 @@ public class OnedayController {
 	@Autowired
 	private OnedayService onedayService;
 	
+//	원데이 클래스 메인뷰로 이동 
+	@GetMapping("/oneday.do")
+	public String oneday() {
+		return "oneday/oneday";
+	}
+	
+//	클래스 검색 결과뷰 로 이동 
+	@GetMapping("/search.do")
+	public String search() {
+		return "oneday/oneday_search";
+	}
+	
+//	원데이 클래스 디테일뷰 로 이동 
+	@GetMapping("/detail.do")
+	public String detail() {
+		return "oneday/oneday_detail";
+	}
+	
+//	원데이 클래스 예약뷰로 이동 
+	@GetMapping("/reservation.do")
+	public String reservation() {
+		return "oneday/oneday_reservation";
+	}
+//	원데이 클래스 예약 동의뷰로 이동 
+	@GetMapping("/agree.do")
+	public String agree() {
+		return "oneday/oneday_agree";
+	}
+//	원데이 클래스 예약 결제뷰로 이동 
+	@GetMapping("/pay.do")
+	public String pay() {
+		return "oneday/oneday_pay";
+	}
+//	원데이 클래스 예약완료 뷰로 이동 
+	@PostMapping("/result.do")
+	public String result() {
+		return "oneday/oneday_result";
+	}
+	
 	
 	//원데이클래스 개설 뷰 제공
 	@GetMapping("/insert")
@@ -75,12 +114,7 @@ public class OnedayController {
 		return "";
 	}
 	
-	//
 	
-	
-	//
-	
-	//
 	
 	
 	

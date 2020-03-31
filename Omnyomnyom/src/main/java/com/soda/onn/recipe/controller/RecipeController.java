@@ -35,5 +35,10 @@ public class RecipeController {
 		
 	}
 	
+	@GetMapping("/ingredientsSelection.do")
+	public String selectedIngredientsList() {
+		return "recipe/ingredientsSelection";
+	}
+	
 	
 }
