@@ -36,64 +36,28 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th> </th>
                                 <th>아이디</th>
                                 <th>닉네임</th>
                                 <th>이메일</th>
+                                <th>가입일</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-
+                        	<c:if test="${memberList != null }">
+                        	<c:forEach items="${memberList}" var="member" >
+	                            <tr class="user-select-area">
+	                                <td class="user-id">${member.memberId }</td>
+	                                <td>${member.memberNick }</td>
+	                                <td>${member.email }</td>
+	                                <td scope="row">${member.regDate}</td>
+	                            </tr>
+                            </c:forEach>
+							</c:if>
                         </tbody>
                     </table>
-                    <div class="site-pagination pt-3.5">
-                        <a href="#" class="active">1</a>
-                        <a href="#">2</a>
-                        <a href="#"><i class="material-icons">keyboard_arrow_right</i></a>
-                    </div>
-
+					<c:if test="${paging != null }">
+						${paging}
+					</c:if>
                 </div>
             </div>
         </div>

@@ -53,4 +53,11 @@
 		regdate
 </select>
 
+<select id="selectMemberListCnt" resultType="String">
+	select
+		count(*)
+	from
+		tb_member
+</select>
+
 </mapper>

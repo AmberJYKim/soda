@@ -17,4 +17,6 @@ public interface MemberService {
 
 	List<Member> selectMemberList(RowBounds rowBounds);
 
+	int selectMemberListCnt();
+
 }
