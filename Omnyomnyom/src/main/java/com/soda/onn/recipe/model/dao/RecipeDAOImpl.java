@@ -13,8 +13,7 @@ public class RecipeDAOImpl  implements RecipeDAO{
 
 	@Override
 	public List<String> selectIngSubCtg(String mainCtg) {
-		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList("recipe.selectIngSubCtg", mainCtg);
 	}
 	
 	
