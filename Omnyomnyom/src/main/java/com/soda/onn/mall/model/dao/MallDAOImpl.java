@@ -17,13 +17,23 @@ public class MallDAOImpl implements MallDAO {
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<IngredientMall> selectIngredientList(RowBounds rowBounds) {
-		return sqlSession.selectList("mall.selectIngredientList", rowBounds);
+	public List<IngredientMall> selectIngredientList(String column) {
+		return sqlSession.selectList("mall.selectIngredientList", column);
 	}
 
 	@Override
 	public List<BuyHistory> selectBuyList(String memberId) {
 		return sqlSession.selectList("mall.selectBuyList", memberId);
+	}
+
+	@Override
+	public int selectBuyHistoryListCnt() {
+		return Integer.parseInt(sqlSession.selectOne("mall.selectBuyHistoryListCnt"));
+	}
+
+	@Override
+	public List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds) {
+		return sqlSession.selectList("mall.selectBuyHistoryList",null, rowBounds);
 	}
 
 }

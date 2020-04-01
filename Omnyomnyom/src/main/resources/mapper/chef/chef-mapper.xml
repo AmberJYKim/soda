@@ -31,4 +31,11 @@
 		member_id = #{memberId}
 </select>
 
+<select id="selectChefRequestListCnt" resultType="string">
+	select
+		count(*)
+	from 
+		tb_chef_req
+</select>
+
 </mapper>
