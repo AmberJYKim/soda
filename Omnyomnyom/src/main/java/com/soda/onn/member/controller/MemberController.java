@@ -3,6 +3,8 @@ package com.soda.onn.member.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -38,25 +40,27 @@ public class MemberController {
 	@GetMapping("/login")
 	public String login(@RequestParam("loginId") String memberId,
 	    			    @RequestParam("loginPassword") String memberPwd,
-	    			    Model model,
+	    			    HttpSession session,
 	    			    RedirectAttributes redirectAttributes){
-		
+		log.debug("로그인 접근");
 		Member member = memberService.selectOne(memberId);
+		log.debug("memberId={}",memberId);
 		
 		if(member != null) {
+			log.debug("회원객체 존재");
 			
 			if(bcrypt.matches(memberPwd, member.getMemberPwd())) {
-				model.addAttribute("memberLoggedIn", member);
+				session.setAttribute("memberLoggedIn", member);
 				log.debug(member.getMemberNick()+"("+member.getMemberId()+")님이 로그인을 했습니다.");
 			}else {
+				log.debug("비밀번호 틀림");
 				redirectAttributes.addFlashAttribute("msg", "입력한 아이디 또는 비밀번호가 일치하지 않습니다.");
-				
 			}
 			
 		}else {
+			log.debug("아이디 틀림");
 			redirectAttributes.addFlashAttribute("msg", "입력한 아이디 또는 비밀번호가 일치하지 않습니다.");
 		}
-		
 		log.info("현재 로그인 실패시 addFlashAttribute 작동하지 않음.");
 		
 		return "redirect:/";

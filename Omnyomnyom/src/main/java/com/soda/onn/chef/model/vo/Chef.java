@@ -22,7 +22,7 @@ public class Chef implements Serializable{
 	private String chefMainvideo;
 	private String chefSns;
 	private String chefProfile;
-	private String menyPrCategory;
+	private String ChefCategory;
 	private Date regDate;
 	private String businessInfo;
 	private String chefContent;
