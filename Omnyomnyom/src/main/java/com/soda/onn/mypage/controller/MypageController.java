@@ -11,12 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.mall.model.service.MallService;
 import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.mypage.model.service.MypageService;
+import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Reservation;
 
@@ -74,7 +76,13 @@ public class MypageController {
 	}
 	
 	@GetMapping("/scrapList")
-	public void scrapList() {
+	public ModelAndView scrapList(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		String memberId = (String)session.getAttribute("memberLoggedIn");
 		
+		List<Scrap> scrapList = mypageService.selectScrapList(memberId);
+		mav.setViewName("mypage/scrapList");
+		mav.addObject("scrapList", scrapList);
+		return mav;
 	}
 }
