@@ -40,21 +40,26 @@ public class MallController {
 		return "mall/productDetail";
 	}
 	
-// 뇸뇸몰 상품 배송지정보 등록 페이이동 
+// 뇸뇸몰 상품 배송지정보 등록 페이지 이동 
 		@GetMapping("/delivery.do")
 		public String delivery() {
 			return "mall/mallDelivery";
 		}
 
-// 뇸뇸몰 상품 결제정 등록 페이이동 
+// 뇸뇸몰 상품 결제정 등록 페이지 이동 
 		 @GetMapping("/paymentInfo.do")
 		 public String paymentInfo() {
 				return "mall/mallPaymentInfo";
 		 }
 
-// 뇸뇸몰 상품 결제정 등록 페이이동 
+// 뇸뇸몰 상품 결제정 등록 페이지 이동 
 		  @GetMapping("/mallResult.do")
 		  public String mallResult() {
 				return "mall/mallResult";
-		  }		 
+		  }		
+// 뇸뇸몰 상품등록 페이지 이동 
+		  @GetMapping("/productInsert.do")
+		  public String productInsert() {
+				return "mall/productInsert";
+		  }
 }
