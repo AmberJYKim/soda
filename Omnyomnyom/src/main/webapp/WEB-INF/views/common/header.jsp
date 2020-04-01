@@ -44,15 +44,16 @@
     
     <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
     <!-- 회원가입 js -->
+    <c:if test="${memberLoggedIn == null }">
     <script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
+    </c:if>
 </head>
-
 <body>
     <c:if test="${not empty msg}">
 	<script>
 		(()=>{
 			alert("${msg}");
-		}));
+		});
 	</script>
 	</c:if>
 	<% session.removeAttribute("msg"); %>
@@ -61,7 +62,6 @@
     <div id="preloder">
         <div class="loader"></div>
     </div>
-
     <!-- Header Section -->
     <header class="header-section">
         <div class="header-bottom">
@@ -73,9 +73,10 @@
                     <img src="${pageContext.request.contextPath }/resources/images/icons/search.png" class="logo" alt="">
                 </div>
                 <!-- 로그인버튼 -->
-                <div class="hb-switch" id="search-switch">
+                <div class="hb-switch" id="toast">
                     <a href="#ex1" rel="modal:open"><img src="${pageContext.request.contextPath }/resources/images/icons/login.png" alt=""></a>
                 </div>
+           		<c:if test="${memberLoggedIn == null }">
 
                 <!-- 로그인/회원가입 form start -->
                 <div class="hb-switch" id="infor-switch">
@@ -173,6 +174,7 @@
                     </div>
                 </div>
                 <!-- 로그인/회원가입 form end-->
+               </c:if>
             </div>
             <div class="container">
                 <ul class="main-menu">
@@ -213,7 +215,7 @@
 				<a href="#" class="infor-logo">
 					<img src="img/user.png" alt="">
 				</a>
-				<p><a href="#">백종원 님</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+				<p><a href="#">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
 
 				<!-- 바로가기기능 -->
 				<div class="insta-imgs">

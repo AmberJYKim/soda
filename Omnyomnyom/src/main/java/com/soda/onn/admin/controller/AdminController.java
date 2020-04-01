@@ -47,9 +47,13 @@ public class AdminController {
 	@Autowired
 	private MallService mallService;
 	
+	final int NUMPERPAGE = 15;
+	final int PAGEBARSIZE = 10;
+
 	
 	private RowBounds rowBounds = null;
 	
+	//셰프목록
 	@GetMapping("/chefList")
 	public ModelAndView chefList() {
 		ModelAndView mav = new ModelAndView();
@@ -61,29 +65,33 @@ public class AdminController {
 		return mav;
 	}
 	
+	//셰프신청목록
 	@GetMapping("/chefRequestList")
 	public ModelAndView chefRequestList() {
 		ModelAndView mav = new ModelAndView();
 		
-		List<ChefRequest> chefRequestList = chefService.selectChefRequestList();
+		List<ChefRequest> chefRequestList = chefService.selectChefRequestList(); 
 		mav.addObject("chefRequestList", chefRequestList);
 		mav.setViewName("admin/chefRequestList");
 		
 		return mav;
 	}
 
+	//신고목록
 	@GetMapping("/reportList")
 	public void reportList() {
 		
 	}
 	
+	
+	//예약현황목록
 	@GetMapping("/reservationList")
 	public ModelAndView reservationList(@RequestParam(value="cPage", defaultValue="1") int cPage) {
-		
-		int numPerPage = 15;
+		log.debug("미완성");
+
 		ModelAndView mav = new ModelAndView();
 		
-		rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
 		
 		List<Reservation> reservationList = onedayService.selectReservationList(null, rowBounds);
 		mav.addObject("reservationList", reservationList);
@@ -92,12 +100,13 @@ public class AdminController {
 		return mav;
 	}
 	
+	//재료목록
 	@GetMapping("/ingredientList")
 	public ModelAndView ingredientList(@RequestParam(value="cPage", defaultValue="1") int cPage) {
-		int numPerPage = 15;
 		ModelAndView mav = new ModelAndView();
-		
-		rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
+		log.debug("미완성");
+
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
 		
 		List<IngredientMall> ingredientList = mallService.selectIngredientList(rowBounds);
 		mav.addObject("ingredientList", ingredientList);
@@ -106,11 +115,11 @@ public class AdminController {
 		return mav;
 	}
 
+	//판매번호로그
 	@GetMapping("/mallManage")
 	public ModelAndView mallManage(@RequestParam(value="cPage", defaultValue="1") int cPage) {
-		int numPerPage = 15;
 		ModelAndView mav = new ModelAndView();
-
+		log.debug("미완성");
 		//판매현황
 		
 		
@@ -118,20 +127,19 @@ public class AdminController {
 
 	}
 		
+	//회원목록
 	@GetMapping("/memberList")
 	public ModelAndView memberList(@RequestParam(value="cPage", defaultValue="1") int cPage,
 								   HttpServletRequest request) {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		final int numPerPage = 2;
-		final int pageBarSize = 5;
-		int pageStart = ((cPage - 1)/pageBarSize) * pageBarSize +1;
-		int pageEnd = pageStart+pageBarSize-1;
+		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+		int pageEnd = pageStart+PAGEBARSIZE-1;
 		
-		rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
 		int totalCount = memberService.selectMemberListCnt();
-		int totalPage =  (int)Math.ceil((double)totalCount/numPerPage);
+		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
 		String url = request.getRequestURL().toString();
 		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
 		
@@ -143,13 +151,14 @@ public class AdminController {
 		return mav;
 	}
 	
+	//후기목록
 	@GetMapping("/onedayReviewList")
 	public ModelAndView onedayReviewList(@RequestParam(value="cPage", defaultValue="1") int cPage) {
-		
-		int numPerPage = 15;
+		log.debug("미완성");
+
 		ModelAndView mav = new ModelAndView();
 		
-		rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
 		
 		List<OnedayReview> onedayReviewList = onedayService.selectOnedayReviewList(rowBounds);
 		mav.addObject("onedayReview", onedayReviewList);
