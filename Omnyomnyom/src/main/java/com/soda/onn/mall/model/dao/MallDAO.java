@@ -9,8 +9,12 @@ import com.soda.onn.mall.model.vo.IngredientMall;
 
 public interface MallDAO {
 
-	List<IngredientMall> selectIngredientList(RowBounds rowBounds);
+	List<IngredientMall> selectIngredientList(String column);
 
 	List<BuyHistory> selectBuyList(String memberId);
+
+	int selectBuyHistoryListCnt();
+
+	List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds);
 
 }
