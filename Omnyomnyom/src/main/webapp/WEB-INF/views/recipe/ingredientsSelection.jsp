@@ -8,20 +8,56 @@
 	<jsp:param value="냉장고 재료로 레시피 검색!" name="pageTitle" />
 </jsp:include>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/recipe-search(Ingredients).css">
-      <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/recipe-search(Ingredients).css">
+<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
     
-        <section class="page-top-section page-sp set-bg" data-setbg="img/page-top-bg.jpg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-7 m-auto text-white">
-                        <h2>냉장고 재료로 레시피 검색</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    </div>
-                </div>
+<section class="page-top-section page-sp set-bg" data-setbg="img/page-top-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 m-auto text-white">
+                <h2>냉장고 재료로 레시피 검색</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
+<script>
+$(() => {
+	console.log('jquery로드 완료');
+	/* 메인 카테고리 선택에 따른 변경 */
+	$(".main-ctg-menu p").on('click', function(){
+	
+		console.log($(this));
+		console.log($(this).html());
+		let mainCtg = {'mainCtg' : $(this).html()};
+		console.log('mainCtg', mainCtg);
 
+		
+		
+		$(".main-ctg-menu p").removeClass("active");
+	 	$(this).addClass("active");
+		
+		
+		
+		$.ajax({
+			url:"${pageContext.request.contextPath}/recipe/getSubCtg",
+			method : "GET",
+			data: mainCtg,
+			success : data =>{
+				console.log(data);
+			},
+			error : (x,s,e) =>{
+				console.log(x,s,e);
+			}
+		});
+		
+		
+	});
+	
+	
+	
+});
+</script>
 <section class="overflow-hidden spad">
 
 	<div class="container col-md-12">
