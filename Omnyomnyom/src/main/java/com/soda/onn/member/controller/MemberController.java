@@ -3,10 +3,8 @@ package com.soda.onn.member.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,35 +40,39 @@ public class MemberController {
 	@GetMapping("/login")
 	public String login(@RequestParam("loginId") String memberId,
 	    			    @RequestParam("loginPassword") String memberPwd,
-	    			    Model model,
-	    			    RedirectAttributes redirectAttributes,
-	    			    HttpServletRequest request){
-		
+	    			    HttpSession session,
+	    			    RedirectAttributes redirectAttributes){
+		log.debug("로그인 접근");
 		Member member = memberService.selectOne(memberId);
+		log.debug("memberId={}",memberId);
 		
 		if(member != null) {
+			log.debug("회원객체 존재");
 			
-			if(bcrypt.matches(memberPwd, member.getMemberPwd()))
-				model.addAttribute("memberLoggedIn", member);
-			
-			else 
-				redirectAttributes.addAttribute("msg", "아이디와 비밀번호를 다시 한번 확인해주세요");
+			if(bcrypt.matches(memberPwd, member.getMemberPwd())) {
+				session.setAttribute("memberLoggedIn", member);
+				log.debug(member.getMemberNick()+"("+member.getMemberId()+")님이 로그인을 했습니다.");
+			}else {
+				log.debug("비밀번호 틀림");
+				redirectAttributes.addFlashAttribute("msg", "입력한 아이디 또는 비밀번호가 일치하지 않습니다.");
+			}
 			
 		}else {
-			redirectAttributes.addAttribute("msg", "아이디와 비밀번호를 다시 한번 확인해주세요");
+			log.debug("아이디 틀림");
+			redirectAttributes.addFlashAttribute("msg", "입력한 아이디 또는 비밀번호가 일치하지 않습니다.");
 		}
+		log.info("현재 로그인 실패시 addFlashAttribute 작동하지 않음.");
 		
-		return request.getHeader("referer");
+		return "redirect:/";
 	}
 
 	
 	@GetMapping("/logout")
-	public String logout(SessionStatus sessionStatus,
-						 @ModelAttribute("memberLoggedIn") Member member) {
-		log.debug("_______________로그아웃 처리");
+	public String logout(HttpSession session) {
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		log.debug(member.getMemberNick()+"("+member.getMemberId()+")님이 로그아웃 하셨습니다.");
 		
-		if(!sessionStatus.isComplete())
-			sessionStatus.setComplete();
+		session.removeAttribute("memberLoggedIn");
 		
 		return "redirect:/";
 	}

@@ -17,13 +17,23 @@ public class MallServiceImpl implements MallService {
 	private MallDAO mallDAO;
 	
 	@Override
-	public List<IngredientMall> selectIngredientList(RowBounds rowBounds) {
-		return mallDAO.selectIngredientList(rowBounds);
+	public List<IngredientMall> selectIngredientList(String column) {
+		return mallDAO.selectIngredientList(column);
 	}
 
 	@Override
 	public List<BuyHistory> selectBuyList(String memberId) {
 		return mallDAO.selectBuyList(memberId);
+	}
+
+	@Override
+	public int selectBuyHistoryListCnt() {
+		return mallDAO.selectBuyHistoryListCnt();
+	}
+
+	@Override
+	public List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds) {
+		return mallDAO.selectBuyHistoryList(rowBounds);
 	}
 
 

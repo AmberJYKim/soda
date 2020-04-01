@@ -21,79 +21,37 @@
     <div class="container">
         <div class="section">
             <div class="row">
-                <div class="col side_nav">
-                    <p class="nav_text selected_nav ">회원목록</p>
-                    <p class="nav_text ">셰프목록</p>
-                    <p class="nav_text ">신고목록</p>
-                    <p class="nav_text ">셰프신청목록</p>
-                    <p class="nav_text ">재고관리</p>
-                    <p class="nav_text">1:1 문의</p>
-
-                </div>
+				<jsp:include page="/WEB-INF/views/common/adminSidenav.jsp">
+					<jsp:param value="예약목록" name="sidanav"/>
+				</jsp:include>
                 <div class="col-10">
                     <h4 class="border_bottom">회원목록</h4>
                     <br>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th> </th>
                                 <th>아이디</th>
                                 <th>닉네임</th>
                                 <th>이메일</th>
+                                <th>가입일</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-                            <tr class="user-select-area">
-                                <th scope="row">1</th>
-                                <td class="user-id">1jong</td>
-                                <td>1종원</td>
-                                <td>1jong@jong.com</td>
-                            </tr>
-
+                        	<c:if test="${memberList != null }">
+                        	<c:forEach items="${memberList}" var="member" >
+	                            <tr class="user-select-area">
+	                                <td class="user-id">${member.memberId }</td>
+	                                <td>${member.memberNick }</td>
+	                                <td>${member.email }</td>
+	                                <td scope="row">${member.regDate}</td>
+	                            </tr>
+                            </c:forEach>
+							</c:if>
                         </tbody>
                     </table>
-                    <div class="site-pagination pt-3.5">
-                        <a href="#" class="active">1</a>
-                        <a href="#">2</a>
-                        <a href="#"><i class="material-icons">keyboard_arrow_right</i></a>
-                    </div>
-
+					<c:if test="${paging != null }">
+						${paging}
+					</c:if>
                 </div>
             </div>
         </div>

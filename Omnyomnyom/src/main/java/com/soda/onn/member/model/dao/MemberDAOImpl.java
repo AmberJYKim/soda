@@ -37,4 +37,9 @@ public class MemberDAOImpl  implements MemberDAO{
 		return sqlSession.selectList("member.selectMemberList",null,rowBounds);
 	}
 
+	@Override
+	public int selectMemberListCnt() {
+		return Integer.parseInt(sqlSession.selectOne("member.selectMemberListCnt"));
+	}
+
 }

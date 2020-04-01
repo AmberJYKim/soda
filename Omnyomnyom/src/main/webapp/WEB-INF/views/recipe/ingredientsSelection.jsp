@@ -8,184 +8,56 @@
 	<jsp:param value="냉장고 재료로 레시피 검색!" name="pageTitle" />
 </jsp:include>
 
-<style>
-.major li {
-	border: black solid 1px;
-}
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/recipe-search(Ingredients).css">
+<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
+    
+<section class="page-top-section page-sp set-bg" data-setbg="img/page-top-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 m-auto text-white">
+                <h2>냉장고 재료로 레시피 검색</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+$(() => {
+	console.log('jquery로드 완료');
+	/* 메인 카테고리 선택에 따른 변경 */
+	$(".main-ctg-menu p").on('click', function(){
+	
+		console.log($(this));
+		console.log($(this).html());
+		let mainCtg = {'mainCtg' : $(this).html()};
+		console.log('mainCtg', mainCtg);
 
-.major, .sub {
-	display: inline-block;
-}
-
-.selected-container {
-	border-radius: 0 18px 18px 0;
-	background-color: rgba(205, 92, 92, 0.2);
-}
-
-.category-container, .sub, .row {
-	border: blueviolet;
-	border-radius: 20px;
-}
-
-.sub-container {
-	border: indianred solid 5px;
-	border-radius: 20px;
-}
-
-.large-ctg-box {
-	border: black solid 1px;
-	display: inline-block;
-}
-
-.selected-ingredients {
-	margin-top: 15px;
-	height: 80%;
-}
-
-/* 메인 카테고리 관련 */
-.main-ctg-menu {
-	list-style: none;
-	text-align: center;
-	padding-top: 15px;
-}
-
-@media only screen and (min-width: 768px) and (max-width: 991px) , only screen
-		and (min-width: 576px) and (max-width: 767px) , ( max-width : 576px) {
-	.main-ctg-menu {
-		display: none;
-	}
-}
-
-.main-ctg-menu li {
-	display: inline-block;
-	margin-right: 50px;
-	position: relative;
-}
-
-.main-ctg-menu li>p:hover {
-	color: rgba(205, 92, 92, 0.753);
-}
-
-@media only screen and (min-width: 992px) and (max-width: 1200px) {
-	.main-ctg-menu li {
-		margin-right: 15px;
-	}
-}
-
-.main-ctg-menu li:last-child {
-	margin-right: 0;
-}
-
-.main-ctg-menu li>p {
-	display: block;
-	padding-bottom: 5px;
-	font-size: 15px;
-	font-weight: 600;
-	text-transform: uppercase;
-	color: gray;
-}
-
-.main-ctg-menu li>p.active {
-	color: indianred;
-}
-
-/* 서브 카테고리 관련 */
-.sub-ctg-menu {
-	list-style: none;
-	text-align: center;
-	padding-top: 15px;
-}
-
-@media only screen and (min-width: 768px) and (max-width: 991px) , only screen
-		and (min-width: 576px) and (max-width: 767px) , ( max-width : 576px) {
-	.sub-ctg-menu {
-		display: none;
-	}
-}
-
-.sub-ctg-menu li {
-	display: inline-block;
-	margin-right: 50px;
-	position: relative;
-}
-
-@media only screen and (min-width: 992px) and (max-width: 1200px) {
-	.sub-ctg-menu li {
-		margin-right: 15px;
-	}
-}
-
-.sub-ctg-menu li:last-child {
-	margin-right: 0;
-}
-
-.sub-ctg-menu li>p {
-	display: block;
-	padding-bottom: 5px;
-	font-size: 14px;
-	font-weight: 600;
-	text-transform: uppercase;
-	color: gray;
-}
-
-.sub-ctg-menu li>p.active {
-	border-bottom: 3px solid indianred;
-}
-
-.sub-ctg-menu li>p:hover {
-	border-bottom: 3px solid rgba(205, 92, 92, 0.753);
-}
-
-/* 이미지 태그 관련 */
-.ingredimg {
-	border-radius: 50%;
-	width: 100px;
-	height: 100px;
-}
-
-.ingredimg:hover {
-	box-shadow: 0px 0px 0px 3px rgba(255, 123, 123, 0.465);
-}
-
-.ingredimg.active {
-	box-shadow: 0px 0px 0px 3px indianred;
-}
-
-/* 재료각각영역텍스트 */
-.inner {
-	padding-top: 15px;
-	text-align: center;
-}
-
-/* 선택된 재료 관련 */
-.giving-spaces {
-	margin-top: 10px;
-	color: crimson;
-}
-
-.selected-ingredients>p {
-	display: inline-block;
-	padding: 3px;
-}
-
-.ing-paging {
-	padding-top: 20px;
-	padding-bottom: 20px;
-}
-
-.btnforseach {
-	margin: auto;
-	border-radius: 10px;
-	border: 1px solid indianred;
-	background-color: indianred;
-	color: white;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	font-weight: 600;
-	font-size: 14px;
-}
-</style>
-
+		
+		
+		$(".main-ctg-menu p").removeClass("active");
+	 	$(this).addClass("active");
+		
+		
+		
+		$.ajax({
+			url:"${pageContext.request.contextPath}/recipe/getSubCtg",
+			method : "GET",
+			data: mainCtg,
+			success : data =>{
+				console.log(data);
+			},
+			error : (x,s,e) =>{
+				console.log(x,s,e);
+			}
+		});
+		
+		
+	});
+	
+	
+	
+});
+</script>
 <section class="overflow-hidden spad">
 
 	<div class="container col-md-12">

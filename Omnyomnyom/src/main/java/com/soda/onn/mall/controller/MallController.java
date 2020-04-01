@@ -16,7 +16,14 @@ public class MallController {
 
 	@Autowired
 	private MallService mallService;
-
+	
+//	뇸뇸몰 Main 이동 
+	@GetMapping("/productList.do")
+	public String productList() {
+		return "mall/mallMain";
+	}
+	
+	
 	@GetMapping("/shoppingBasket.do")
 	public String shoppingBasketList() {
 		return "mall/shoppingBasket";
@@ -27,4 +34,32 @@ public class MallController {
 		return "mall/selectedProductList";
 	}
 	
+// 뇸뇸몰 상품 상세페이지 이동 
+	@GetMapping("/productDetail.do")
+	public String productDetail() {
+		return "mall/productDetail";
+	}
+	
+// 뇸뇸몰 상품 배송지정보 등록 페이지 이동 
+		@GetMapping("/delivery.do")
+		public String delivery() {
+			return "mall/mallDelivery";
+		}
+
+// 뇸뇸몰 상품 결제정 등록 페이지 이동 
+		 @GetMapping("/paymentInfo.do")
+		 public String paymentInfo() {
+				return "mall/mallPaymentInfo";
+		 }
+
+// 뇸뇸몰 상품 결제정 등록 페이지 이동 
+		  @GetMapping("/mallResult.do")
+		  public String mallResult() {
+				return "mall/mallResult";
+		  }		
+// 뇸뇸몰 상품등록 페이지 이동 
+		  @GetMapping("/productInsert.do")
+		  public String productInsert() {
+				return "mall/productInsert";
+		  }
 }

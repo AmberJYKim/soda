@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="utf-8">
 
@@ -42,31 +44,50 @@
     
     <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
     <!-- 회원가입 js -->
+    <c:if test="${memberLoggedIn == null }">
     <script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
-    
+    </c:if>
 </head>
-
 <body>
+    <c:if test="${not empty msg}">
+	<script>
+		(()=>{
+			alert("${msg}");
+		});
+	</script>
+	</c:if>
+	<% session.removeAttribute("msg"); %>
+	    
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
-
     <!-- Header Section -->
     <header class="header-section">
         <div class="header-bottom">
             <a href="index.html" class="site-logo">
                 <img src="${pageContext.request.contextPath }/resources/images/onn_logo_red.png" alt="" class="main_logo">
             </a>
-            <div class="hb-right">
+            <div class="hb-right" style="z-index: 1000;">
                 <div class="hb-switch" id="search-switch">
                     <img src="${pageContext.request.contextPath }/resources/images/icons/search.png" class="logo" alt="">
                 </div>
                 <!-- 로그인버튼 -->
-                <div class="hb-switch" id="search-switch">
-                    <a href="#ex1" rel="modal:open"><img src="${pageContext.request.contextPath }/resources/images/icons/login.png" alt=""></a>
-                </div>
-
+	                <div class="hb-switch" id="${memberLoggedIn != '' ?'infor-switch':'search-switch' }" >
+	                    <a href="#ex1" rel="modal:open" ><img src="${pageContext.request.contextPath }/resources/images/icons/login.png" alt=""></a>
+	                </div>
+           		<c:if test="${memberLoggedIn != null or memberLoggedIn == ''}">
+           		<button type="button" onclick="logout();">로그아웃</button>
+           		<script>
+           		function logout(){
+           			location.href = "${pageContext.request.contextPath}/member/logout";
+           			console.log('1');
+           		}
+           		</script>
+           		</c:if>
+           		
+           		<c:if test="${memberLoggedIn == null }">
+           		
                 <!-- 로그인/회원가입 form start -->
                 <div class="hb-switch" id="infor-switch">
                     <div id="ex1" class="modal">
@@ -134,35 +155,11 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- 에이젝스, jsp에서 -->
-                        <!-- <script>
-                    //아이디 사용여부
-                    $("#email").keyup(function(e){
-                        let email = $(this).val().trim();
-                        $.ajax({
-                            url: "",
-                            data: {email: email},
-                            dataType : "text",
-                            success: function(data){
-                                //입력한 이메일이 DB에 있는지 없는지에 따른 결과를 출력한다.
-                                if(data==0){
-                                    $("#errorEmail").html("사용가능한 이메일입니다.");
-                                }else{
-                                    $("#errorEmail").html("<font color='red'>사용중인 이메일입니다.</font>");
-                                }
-                            },
-                            error: function(){
-                                alert("에러가 발생했습니다. 관리자에게 문의 하세요");
-                            }
-                        });
-                    });
-                    </script> -->
-
-
 
                     </div>
                 </div>
-                <!-- 로그인/회원가입 form end-->
+                <!-- 로그	인/회원가입 form end-->
+               </c:if>
             </div>
             <div class="container">
                 <ul class="main-menu">
@@ -172,7 +169,7 @@
                             <li><a href="${pageContext.request.contextPath}/recipe/ingredientsSelection.do">냉장고 재료</a></li>
                         </ul>
                     </li>
-                    <li><a href="oneday_main.html">뇸뇸몰</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mall/productList.do">뇸뇸몰</a></li>
                     <li><a href="${pageContext.request.contextPath}/chef/chefList.do">셰프</a></li>
                     <li><a href="${pageContext.request.contextPath}/oneday/oneday.do">원데이 클래스</a></li>
                     <li><a href="contact.html">사이트 안내</a>
@@ -187,3 +184,110 @@
         </div>
     </header>
     <!-- Header Section end -->
+    
+    	<!-- Main Stylesheets -->
+	<c:if test="${memberLoggedIn != null}">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/info.css"/>
+	<!-- Infor Model -->
+	<div class="infor-model-warp">
+		<div class="infor-model d-flex align-items-center">
+			<div class="infor-close">
+				<i class="material-icons">close</i>
+			</div>
+			<div class="infor-middle">
+				<!-- 로그인 후 간단한 회원정보 출력해줌 -->
+				<a href="#" class="infor-logo">
+					<img src="img/user.png" alt="">
+				</a>
+				<p><a href="#">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+
+				<!-- 바로가기기능 -->
+				<div class="insta-imgs">
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+							
+								<p>예약확인</p>
+							</div>
+						</div>
+					</div>
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+							
+								<p>구매목록</p>
+							</div>
+						</div>
+					</div>
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+								
+								<p>장바구니</p>
+							</div>
+						</div>
+					</div>
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+							
+								<p>스크랩 목록</p>
+							</div>
+						</div>
+					</div>
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+							
+								<p>셰프신청</p>
+							</div>
+						</div>
+					</div>
+					<div class="insta-item">
+						<div class="insta-img">
+							<img src="img/infor/back.PNG" alt="">
+							<div class="insta-hover">
+						
+								<p>문의내역</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 알림창 -->
+				
+					<p>알리미</p>
+				
+						<div class="toast-header">
+						  <img src="img/onn_logo_red.png" class="rounded mr-2" alt="..." style="width: 50px; height: 50px;">
+						  <strong class="mr-auto">새로운 알림이 있습니다!</strong>
+						  <small>11 mins ago</small>
+						  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						  </button>
+						</div>
+						<div class="toast-body">
+						  Hello, world! This is a toast message.
+						</div>
+				
+				<script>
+				$('#myToast').on('hidden.bs.toast', function () {
+				// do something...
+				})
+				</script>  
+
+				<div class="insta-social">
+					<a href="#"><i class="fa fa-linkedin"></i></a>
+					<a href="#"><i class="fa fa-twitter"></i></a>
+					<a href="#"><i class="fa fa-instagram"></i></a>
+					<a href="#"><i class="fa fa-facebook"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Infor Model end -->
+	</c:if>                            

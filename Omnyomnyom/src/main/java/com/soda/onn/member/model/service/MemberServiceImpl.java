@@ -36,6 +36,11 @@ public class MemberServiceImpl implements MemberService{
 		return memberDAO.selectMemberList(rowBounds);
 	}
 
+	@Override
+	public int selectMemberListCnt() {
+		return memberDAO.selectMemberListCnt();
+	}
+
 
 	
 }

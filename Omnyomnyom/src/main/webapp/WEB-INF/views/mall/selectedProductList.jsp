@@ -181,7 +181,7 @@
 								</div>
 							</div>
 							<div class="col order">
-								<button type="button" class="btn btn-primary">결제하기</button>
+								<input type="button" class="btn btn-primary" value="결제하기" onclick="mallPay();">
 							</div>
 						</div>
 
@@ -194,6 +194,11 @@
 		</div>
 </section>
 <!-- Event Details Section end -->
+<script>
+function mallPay(){
+	location.href="${pageContext.request.contextPath }/mall/delivery.do";
+}
+</script>
 
 
 
