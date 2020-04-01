@@ -17,15 +17,9 @@
     <div class="container">
         <div class="section">
             <div class="row">
-                <div class="col side_nav">
-                    <p class="nav_text ">회원목록</p>
-                    <p class="nav_text ">셰프목록</p>
-                    <p class="nav_text ">신고목록</p>
-                    <p class="nav_text">셰프신청목록</p>
-                    <p class="nav_text selected_nav">재고관리</p>
-                    <p class="nav_text">1:1 문의</p>
-
-                </div>
+				<jsp:include page="/WEB-INF/views/common/adminSidenav.jsp">
+					<jsp:param value="예약목록" name="sidanav"/>
+				</jsp:include>
                 <div class="col-10">
                     <h4 class="border_bottom">재고관리</h4>
                     <br>
