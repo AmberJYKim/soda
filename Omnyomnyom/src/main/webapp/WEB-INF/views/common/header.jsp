@@ -68,16 +68,26 @@
             <a href="index.html" class="site-logo">
                 <img src="${pageContext.request.contextPath }/resources/images/onn_logo_red.png" alt="" class="main_logo">
             </a>
-            <div class="hb-right">
+            <div class="hb-right" style="z-index: 1000;">
                 <div class="hb-switch" id="search-switch">
                     <img src="${pageContext.request.contextPath }/resources/images/icons/search.png" class="logo" alt="">
                 </div>
                 <!-- 로그인버튼 -->
-                <div class="hb-switch" id="toast">
-                    <a href="#ex1" rel="modal:open"><img src="${pageContext.request.contextPath }/resources/images/icons/login.png" alt=""></a>
-                </div>
+	                <div class="hb-switch" id="${memberLoggedIn != '' ?'infor-switch':'search-switch' }" >
+	                    <a href="#ex1" rel="modal:open" ><img src="${pageContext.request.contextPath }/resources/images/icons/login.png" alt=""></a>
+	                </div>
+           		<c:if test="${memberLoggedIn != null or memberLoggedIn == ''}">
+           		<button type="button" onclick="logout();">로그아웃</button>
+           		<script>
+           		function logout(){
+           			location.href = "${pageContext.request.contextPath}/member/logout";
+           			console.log('1');
+           		}
+           		</script>
+           		</c:if>
+           		
            		<c:if test="${memberLoggedIn == null }">
-
+           		
                 <!-- 로그인/회원가입 form start -->
                 <div class="hb-switch" id="infor-switch">
                     <div id="ex1" class="modal">
@@ -145,35 +155,10 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- 에이젝스, jsp에서 -->
-                        <!-- <script>
-                    //아이디 사용여부
-                    $("#email").keyup(function(e){
-                        let email = $(this).val().trim();
-                        $.ajax({
-                            url: "",
-                            data: {email: email},
-                            dataType : "text",
-                            success: function(data){
-                                //입력한 이메일이 DB에 있는지 없는지에 따른 결과를 출력한다.
-                                if(data==0){
-                                    $("#errorEmail").html("사용가능한 이메일입니다.");
-                                }else{
-                                    $("#errorEmail").html("<font color='red'>사용중인 이메일입니다.</font>");
-                                }
-                            },
-                            error: function(){
-                                alert("에러가 발생했습니다. 관리자에게 문의 하세요");
-                            }
-                        });
-                    });
-                    </script> -->
-
-
 
                     </div>
                 </div>
-                <!-- 로그인/회원가입 form end-->
+                <!-- 로그	인/회원가입 form end-->
                </c:if>
             </div>
             <div class="container">
@@ -203,7 +188,6 @@
     	<!-- Main Stylesheets -->
 	<c:if test="${memberLoggedIn != null}">
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/info.css"/>
-	
 	<!-- Infor Model -->
 	<div class="infor-model-warp">
 		<div class="infor-model d-flex align-items-center">
