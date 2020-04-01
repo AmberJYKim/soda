@@ -26,5 +26,29 @@
 	order by 
 		review_no desc
 </select>
+<select id="insertOneday" resultType="oneday">
+	insert into 
+	tb_onedayclass 
+		values (
+				seq_oneday_class.nextval,
+				#{memberId},
+				#{onedayName},
+				#{price},
+				#{onedayContent},
+				#{latitude},
+				#{longitude},
+				#{detailedAddr},
+				#{onedayTime},
+				#{onedayMaxper},
+				#{onedayMinper},
+				#{onedayImg},
+				<!-- gson 배열로 받음 -->
+				#{menuList}
+				
+			)
+		
+
+</select>
+
 
 </mapper>

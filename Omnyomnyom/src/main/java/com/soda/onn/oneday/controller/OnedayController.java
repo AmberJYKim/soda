@@ -1,20 +1,33 @@
 package com.soda.onn.oneday.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
+import com.soda.onn.common.util.Utils;
 import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.oneday.model.service.OnedayService;
+import com.soda.onn.oneday.model.vo.Attachment;
 import com.soda.onn.oneday.model.vo.Oneday;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +44,18 @@ public class OnedayController {
 	@GetMapping("/oneday.do")
 	public String oneday() {
 		return "oneday/oneday";
+	}
+//	원데이 클래스 생성뷰로 이동
+	@GetMapping("/class_insert.do")
+	public void classinsert() {
+		
+		log.debug("oneday_insert @ onedayController = 원데이클래스 등록 페이지로 이동합니다!");
+	}
+	
+//	클래스 관리 페이지로 이동
+	@GetMapping("/class_manager.do")
+	public void classManager() {
+		
 	}
 	
 //	클래스 검색 결과뷰 로 이동 
@@ -68,29 +93,72 @@ public class OnedayController {
 	
 	
 	//원데이클래스 개설 뷰 제공
-	@GetMapping("/insert")
-	public String insert(HttpSession session,
-			 RedirectAttributes redirectAttributes) {
-
-		Member member = (Member)session.getAttribute("멤버 로그드 뭐시기");
-		
-		if(member != null && "C".equals(member.getMemberRoll())) 
-			return "클래스 개설 jsp로 갑시다";
-		
-		redirectAttributes.addFlashAttribute("msg", "셰프만 만들 수 있어요!");
-		return "redirect:/";
-	}
-
+	/*
+	 * @GetMapping("/class_insert.do") public String insert(HttpSession session,
+	 * RedirectAttributes redirectAttributes) {
+	 * 
+	 * Member member = (Member)session.getAttribute("멤버 로그드 뭐시기");
+	 * 
+	 * if(member != null && "C".equals(member.getMemberRoll())) return
+	 * "oneday/class_insert";
+	 * 
+	 * redirectAttributes.addFlashAttribute("msg", "셰프만 만들 수 있어요!"); return
+	 * "redirect:/"; }
+	 */
 	
 	//원데이클래스 Insert 하기
-	@PostMapping("/insert")
-	public ModelAndView insert(Oneday oneday) {
+	@PostMapping("/insert.do")
+	public ModelAndView insert(@ModelAttribute Oneday oneday, 
+											   ModelAndView mav, 
+											   RedirectAttributes redirectAttributes,
+							   @RequestParam(value="onedayTimeM", defaultValue = "0")int onedayTimeM,
+							   @RequestParam(value="onedayImgFile", required = false) MultipartFile onedayImg,
+							   HttpServletRequest request) {
+		log.debug("원데이클래스 등록 절차를 시작합니다!");
+		//파일 처리
+		List<Attachment> addImgList = new ArrayList<>();
+		if(!onedayImg.isEmpty()) {
+			String originalFileName = onedayImg.getOriginalFilename();
+			String renamedFileName = Utils.getRenamedFileName(originalFileName);			
+			
+			//파일 이동시킴
+			String saveDirectory = request.getServletContext().getRealPath("/resources/upload/onedayclass");
+			
+			try {
+				
+				onedayImg.transferTo(new File(saveDirectory, renamedFileName));
+			} catch (IllegalStateException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			//실제 데이터 -> db 저장
+			Attachment addImg = new Attachment();
+			addImg.setOriginalFileName(originalFileName);
+			addImg.setRenamedFileName(renamedFileName);
+			log.debug("addImg={}",addImg);
+			addImgList.add(addImg);
+			
+			oneday.setOnedayImg(renamedFileName);
+		}
+		
+		//이미지 확인
+		log.debug("addImgList={}", addImgList);
 		
 		
 		int result = onedayService.insertOneday(oneday);
+		log.debug("oneday@controller=" + oneday);
 		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("완료시 처리해줄 주소");
+
+
+		String msg = "";
+		Log.debug(msg);
+		redirectAttributes.addFlashAttribute("msg", result>0?"원데이 클래스 등록완료!":"원데이클래스 등록실패!");
+		
+		//requestParam으로 value값, defaultValue 값 => 변수 선언해줌
+		
+		mav.addObject("onedayTimeM", onedayTimeM);
+		mav.setViewName("redirect:/");
 		
 		return mav;
 	}
