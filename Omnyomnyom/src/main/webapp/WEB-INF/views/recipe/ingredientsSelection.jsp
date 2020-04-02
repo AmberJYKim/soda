@@ -9,7 +9,7 @@
 </jsp:include>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/recipe-search(Ingredients).css">
-<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
+<!-- <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet"> -->
     
 <section class="page-top-section page-sp set-bg" data-setbg="img/page-top-bg.jpg">
     <div class="container">
@@ -22,11 +22,16 @@
     </div>
 </section>
 <script>
+
 $(() => {
 	console.log('jquery로드 완료');
 	/* 메인 카테고리 선택에 따른 변경 */
 	$(".main-ctg-menu p").on('click', function(){
-	
+		console.log($(this).attr('class'));
+		/* 이미 선택된 분류라면 아래의 코드 수행하지 않음 */
+	 	if($(this).hasClass("active"))
+			return; 
+		
 		console.log($(this));
 		console.log($(this).html());
 		let mainCtg = {'mainCtg' : $(this).html()};
@@ -41,10 +46,29 @@ $(() => {
 		
 		$.ajax({
 			url:"${pageContext.request.contextPath}/recipe/getSubCtg",
+			dataType: "json",
 			method : "GET",
 			data: mainCtg,
 			success : data =>{
-				console.log(data);
+				
+				/* 서브 카테고리 교체작업 */
+				let subCtgList = ' '; 
+				$.each(data,function(index, item){
+					
+					if(index == 0){
+						subCtgList += '<li> <p class="active">'+item+'</p> </li>';
+					}else{
+					subCtgList += '<li> <p>'+item+'</p> </li>';
+					}
+					
+					console.log(item);
+				});
+
+				$(".sub-ctg-menu").empty;
+				$(".sub-ctg-menu").html(subCtgList);
+				 
+				
+				
 			},
 			error : (x,s,e) =>{
 				console.log(x,s,e);
@@ -53,7 +77,57 @@ $(() => {
 		
 		
 	});
+	/* 파일패스용 전역변수  */
 	
+	/* 서브 카테고리 클릭 이벤트 설정 */
+	$(document).on('click', '.sub-ctg-menu li>p', function(){
+		console.log($(this));
+		console.log($(this).html());
+		let subCtg = {'subCtg' : $(this).html()};
+		console.log('subCtg', subCtg);
+		$(".sub-ctg-menu p").removeClass("active");
+		$(this).addClass("active");
+		
+	 	
+		$.ajax({
+			url:"${pageContext.request.contextPath}/recipe/getIng",
+			dataType: "json",
+			method : "GET",
+			data: subCtg,
+			success : data =>{
+				console.log(data);
+				/* 재료 불러오기 및 교체작업*/
+				/* let ingredients = ' '; 
+				$.each(data,function(index, item){
+					
+					if(index == 0){
+						subCtgList += '<li> <p class="active">'+item+'</p> </li>';
+					}else{
+					subCtgList += '<li> <p>'+item+'</p> </li>';
+					}
+					
+					console.log(item);
+				});
+
+				
+				ingredients =+ '<div class="row first-row">
+								<div class="col-md-2 inner">
+								<img src="${pageContext.request.contextPath }/resources/images/icons/login.png" alt="ingredient img">
+									<p>#</p>
+								</div>
+								</div>';
+								
+				$(".sub-ctg-menu").empty;
+				$(".sub-ctg-menu").html(subCtgList);
+ */				 		
+			},
+			error : (x,s,e) =>{
+				console.log(x,s,e);
+			}
+		}); 
+		
+		
+	});
 	
 	
 });
@@ -63,8 +137,12 @@ $(() => {
 	<div class="container col-md-12">
 		<div class="container">
 			<ul class="main-ctg-menu">
+			
 				<li>
-					<p class="active">채소/과일</p>
+					<p class="active">인기재료</p>
+				</li>
+				<li>
+					<p >채소/과일</p>
 				</li>
 				<li>
 					<p>육류</p>
@@ -86,6 +164,7 @@ $(() => {
 				</li>
 			</ul>
 		</div>
+		
 		<div class="row sub-container">
 			<div class="bx container col-md-9">
 				<div class="container">
@@ -93,28 +172,10 @@ $(() => {
 						<li>
 							<p class="active">인기재료</p>
 						</li>
-						<li>
-							<p>과일</p>
-						</li>
-						<li>
-							<p>잎채소</p>
-						</li>
-						<li>
-							<p>열매채소</p>
-						</li>
-						<li>
-							<p>뿌리채소</p>
-						</li>
-						<li>
-							<p>버섯</p>
-						</li>
-						<li>
-							<p>나물/허브류</p>
-						</li>
 					</ul>
 				</div>
 				<!-- 첫번쨰 재료줄 -->
-				<div class="row">
+				<div class="row first-row">
 					<div class="col-md-2 inner">
 						<img
 							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/과일/건포도.jpg"

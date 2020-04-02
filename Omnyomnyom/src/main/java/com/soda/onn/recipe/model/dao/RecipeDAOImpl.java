@@ -6,6 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.soda.onn.mall.model.vo.Ingredient;
+
 @Repository
 public class RecipeDAOImpl  implements RecipeDAO{
 	
@@ -14,6 +16,11 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	@Override
 	public List<String> selectIngSubCtg(String mainCtg) {
 		return sqlSession.selectList("recipe.selectIngSubCtg", mainCtg);
+	}
+
+	@Override
+	public List<Ingredient> selectIngredients(String subCtg) {
+		return sqlSession.selectList("recipe.selectIngredients", subCtg);
 	}
 	
 	

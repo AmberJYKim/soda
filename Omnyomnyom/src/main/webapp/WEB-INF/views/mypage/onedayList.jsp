@@ -65,6 +65,8 @@
 
 	</div>
 	<script>
+
+	
 		$(function(){
 			$(".side_nav").children().click(function(){
 				// console.log($(this).html());
