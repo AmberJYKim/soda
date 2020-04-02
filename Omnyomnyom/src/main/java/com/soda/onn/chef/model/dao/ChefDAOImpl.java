@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,7 @@ import com.soda.onn.chef.model.vo.ChefRequest;
 public class ChefDAOImpl implements ChefDAO {
 
 	@Autowired
-	private SqlSession sqlSession;
+	private SqlSessionTemplate sqlSession;
 	
 	@Override
 	public List<Chef> selectChefList() {
@@ -34,6 +35,11 @@ public class ChefDAOImpl implements ChefDAO {
 	@Override
 	public int selectChefRequestListCnt() {
 		return Integer.parseInt(sqlSession.selectOne("chef.selectChefRequestListCnt"));
+	}
+
+	@Override
+	public int chefReuqest(ChefRequest chefRequest) {
+		return sqlSession.insert("chef.chefRequest",chefRequest);
 	}
 
 }

@@ -17,4 +17,6 @@ public interface ChefDAO {
 
 	int selectChefRequestListCnt();
 
+	int chefReuqest(ChefRequest chefRequest);
+
 }

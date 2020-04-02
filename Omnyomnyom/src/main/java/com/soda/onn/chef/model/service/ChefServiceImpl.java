@@ -37,5 +37,13 @@ public class ChefServiceImpl implements ChefService {
 		return chefDAO.selectChefRequestListCnt();
 	}
 
+	@Override
+	public int chefRequest(ChefRequest chefRequest) {
+		
+		return chefDAO.chefReuqest(chefRequest);
+	}
+
+	
+
 	
 }

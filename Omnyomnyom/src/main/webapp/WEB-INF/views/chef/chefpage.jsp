@@ -39,6 +39,12 @@
     	location.href="${pageContext.request.contextPath}/recipe/recipeUpdate.do";
 		
 	};
+	function classManage() {
+		location.href="${pageContext.request.contextPath}/oneday/class_manager.do";
+	};
+	function classUpload(){
+		location.href="${pageContext.request.contextPath}/oneday/class_insert.do";
+	}
     
     </script>		
     <section class="page-top-section page-sp set-bg" data-setbg="">
@@ -409,8 +415,8 @@
                                 <h6 class="">인기 클래스</h6>
                             </div>
                             <div class="col-lg-6">
-                                <button type="button" class="btn btn-outline-danger">클래스 관리</button>
-                                <button type="button" class="btn btn-outline-danger">클래스 업로드</button>
+                                <input type="button" class="btn btn-outline-danger" onclick="classManage();" value="클래스 관리">
+                                <input type="button" class="btn btn-outline-danger" onclick="classUpload();" value="클래스 업로드">
                             </div>
                         </div>
                         <div class="row">

@@ -52,7 +52,7 @@ h4 {
 }
 
 h5 {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 h6 {
@@ -3949,7 +3949,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
     transform: translate(-50%, -50%);
     width: 200px;
     height: 40px;
-    background: #4949E7;
+    background: linear-gradient(145deg, #fdb07d 0%, #f65d5d 100%);
     text-align: center;
     line-height: 40px;
     color: #fff;
