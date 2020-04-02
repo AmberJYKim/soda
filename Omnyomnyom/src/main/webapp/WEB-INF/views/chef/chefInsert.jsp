@@ -31,7 +31,7 @@
                 // init Tagify script on the above inputs
                 tagify = new Tagify(input, {
                     whitelist: ["한식", "중식", "일식", "양식", "밀식", "즉석식", "기타식", "건강식"],
-                    maxTags: 10,
+                    maxTags: 3,
                     dropdown: {
                         maxItems: 20, // <- mixumum allowed rendered suggestions
                         classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
