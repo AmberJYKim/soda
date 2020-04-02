@@ -38,4 +38,20 @@
 		tb_chef_req
 </select>
 
+<insert id="chefRequest" >
+	insert into 
+	 	TB_chef_req
+	 values(
+	 #{chefId},
+	 #{chefProfile},
+	 #{sns},
+	 #{chefContent},
+	 #{chefApVideo},
+	 #{menuPrCategory},
+	 #{businessInfo},
+	 default,
+	 default
+	 ) 
+</insert>
+
 </mapper>

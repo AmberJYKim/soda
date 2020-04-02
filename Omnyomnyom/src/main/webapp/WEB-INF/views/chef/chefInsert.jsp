@@ -1,15 +1,46 @@
+<%@page import="com.soda.onn.member.model.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/>
-<jsp:include page="/WEB-INF/views/common/header.jsp"> 
-<jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
-</jsp:include>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/chefInsert.css" />
+<!-- 해시태그부분 소스 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism.min.css">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/prism.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/tagify.css">
+    <script src="${pageContext.request.contextPath }/resources/js/tagify.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/js/jQuery.tagify.min.js"></script>
+ 
+ 
+	<jsp:include page="/WEB-INF/views/common/header.jsp"> 
+	<jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
+	</jsp:include>
 
+  
+    <!--  해당 페이지 css-->
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/chefInsert.css" />
+
+<!-- Event Details Section end -->
+ <script data-name="dropdown-tags">
+        $(function() {
+
+            var input = document.querySelector('input[name="menuPrCategory"]'),
+                // init Tagify script on the above inputs
+                tagify = new Tagify(input, {
+                    whitelist: ["한식", "중식", "일식", "양식", "밀식", "즉석식", "기타식", "건강식"],
+                    maxTags: 10,
+                    dropdown: {
+                        maxItems: 20, // <- mixumum allowed rendered suggestions
+                        classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+                        enabled: 0, // <- show suggestions on focus
+                        closeOnSelect: false // <- do not hide the suggestions dropdown once an item has been selected
+                    }
+                });
+        });
+ </script>
  <script>
         window.onload = function() {
             //비디오 불러오기 후 처리
@@ -162,12 +193,20 @@
         </svg>
 
     </section>
+    <script>
+   
+    </script>
     <!-- 페이지 titile end -->
     <!-- Event Details Section -->
     <section class="event-details-section spad overflow-hidden">
         <div class="container">
-            <form action="">
-
+            <form action="${pageContext.request.contextPath}/chef/chefInsert" 
+            	  method="POST"
+            	  onsubmit=""
+            	  enctype="multipart/form-data">
+              <%-- <%Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
+              	System.out.println(memberLoggedIn.getMemberId());%> --%>
+				 <input type="text" name="chefId" value="${memberLoggedIn.memberId}" hidden/> 
                 <hr>
                 <h3 class="mall_isnert_title title_auto">주 종목 등록</h3>
                 <p class="title_info">셰프님의 주 종목을 3가지까지만 등록해주세요.</p>
@@ -177,8 +216,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">주 종목</span>
                     </div>
-                    <!-- <input class="form-control" name='basic' value="" placeholder="해시태그를 입력하세요." aria-label="Username" aria-describedby="basic-addon1" autofocus> -->
-                    <input class="form-control" name="input-custom-dropdown" class="some_class_name" value="" aria-label="Username" aria-describedby="basic-addon1" autofocus>
+                    <input type="text" class="form-control" name="menuPrCategory" class="some_class_name"  aria-label="Username" aria-describedby="basic-addon1">
                 </div>
 
                 <div class="row" style="margin-top:100px;">
@@ -190,7 +228,7 @@
                         <p style="font-size: 10px; color:red;">*규격은 200px*200px 입니다.</p>
                         <div class="chef_img">
                             <div id="uploadbtn" onclick="upload(this)">Upload Files</div>
-                            <input type='file' id="imgInput" hidden/>
+                            <input type='file' name="chefProfileimg" id="imgInput" hidden/>
                             <img src="#" alt="" id="image_section">
                         </div>
 
@@ -204,7 +242,7 @@
                         <p style="font-size: 10px; color:red; margin-left:5px; float: right; position:relative; top: 25px;">*채널명은 닉네임과 동일하게 진행됩니다.</p>
                         <span class="input input--yoshiko">
                                     <!-- 클래스명 input -->
-                                    <input class="input__field input__field--yoshiko" type="text" id="input-class-name" value="백종원의 요리비책" readonly />
+                                    <input class="input__field input__field--yoshiko" type="text" id="input-class-name" name="chefNickName" value="${memberLoggedIn.memberNick }" readonly />
                                     <!-- 클래스명 라벨 -->
                                     <label class="input__label input__label--yoshiko" for="input-class-name">
                                         <span class="input__label-content input__label-content--yoshiko" data-content="채널명(닉네임)">채널명(닉네임)</span>
@@ -215,24 +253,24 @@
                         <p style="font-size: 10px; color:red; margin-left:5px; float: right; position:relative; top: 25px;">*운영하시는 사업장을 홍보해 드립니다. (업장명/주소)</p>
                         <span class="input input--yoshiko">
                                     <!-- 클래스명 input -->
-                                    <input class="input__field input__field--yoshiko" type="text" id="input-class-name" />
+                                    <input class="input__field input__field--yoshiko" name="businessInfo" type="text" id="input-class-name" />
                                     <!-- 클래스명 라벨 -->
                                     <label class="input__label input__label--yoshiko" for="input-class-name">
                                         <span class="input__label-content input__label-content--yoshiko" data-content="사업장 정보">사업장 정보</span>
                         </label>
                         </span>
                     </div>
-                    <!-- snn 정보 등록  -->
+                    <!-- sns 정보 등록  -->
                     <div class="col-lg-12">
                         <hr>
                         <h3 class="mall_isnert_title title_auto">SNN 등록</h3>
-                        <p class="title_info">셰프님의 snn의 아이디를 등록해 주세요.</p>
+                        <p class="title_info">셰프님의 sns의 아이디를 등록해 주세요.</p>
                         <hr>
                     </div>
                     <div class="col-lg-6">
                         <span class="input input--yoshiko">
                             <!-- 클래스명 input -->
-                            <input class="input__field input__field--yoshiko" type="text" id="input-class-name" />
+                            <input class="input__field input__field--yoshiko"  type="text" name="sns" id="input-class-name" />
                             <!-- 클래스명 라벨 -->
                             <label class="input__label input__label--yoshiko" for="input-class-name">
                                 <span class="input__label-content input__label-content--yoshiko" data-content="페이스북">페이스북</span>
@@ -242,7 +280,7 @@
                     <div class="col-lg-6">
                         <span class="input input--yoshiko">
                             <!-- 클래스명 input -->
-                            <input class="input__field input__field--yoshiko" type="text" id="input-class-name" />
+                            <input class="input__field input__field--yoshiko" type="text" name="sns" id="input-class-name" />
                             <!-- 클래스명 라벨 -->
                             <label class="input__label input__label--yoshiko" for="input-class-name">
                                 <span class="input__label-content input__label-content--yoshiko" data-content="인스타그램">인스타그램</span>
@@ -263,7 +301,7 @@
                         <!-- 영상으로 업로드  -->
                         <div class="vidoe_upload" id="video_upload">
                             <div id="vidoe_uploadbtn" class="uploadbtn" onclick="videoUpload(this)">Upload Files</div>
-                            <input name="uploadFile" type='file' id="videoInput" hidden/>
+                            <input  type='file' id="videoInput" name="chefApVideoimg" hidden/>
                             <!-- <img src="#" alt="" id="image_section"> -->
                             <video alt="" controls id="video_section">
                                 <!-- <source class="image_section_src" src="#" type='video/webm; codecs="vp8.0, vorbis"'>
@@ -286,30 +324,13 @@
                 <h3 class="mall_isnert_title title_auto">자기소개 등록</h3>
                 <p class="title_info">셰프님의 간략한 자기 소개 부탁드립니다. </p>
                 <hr>
-                <textarea cols="118" rows="10"></textarea>
+                <textarea cols="118" rows="10" name="chefContent"></textarea>
                 <div class="sb-widget">
                     <!-- 셰프 신청버튼 -->
-                    <button class="site-btn sb-gradient reservation_class"><a href="class_reservation.html">등록하기</a></button>
+                    <input type="submit" class="site-btn sb-gradient reservation_class" value="등록하기">
                 </div>
             </form>
         </div>
     </section>
-    <!-- Event Details Section end -->
- <script data-name="dropdown-tags">
-        (function() {
-
-            var input = document.querySelector('input[name="input-custom-dropdown"]'),
-                // init Tagify script on the above inputs
-                tagify = new Tagify(input, {
-                    whitelist: ["한식", "중식", "일식", "양식", "밀식", "즉석식", "기타식", "건강식"],
-                    maxTags: 10,
-                    dropdown: {
-                        maxItems: 20, // <- mixumum allowed rendered suggestions
-                        classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
-                        enabled: 0, // <- show suggestions on focus
-                        closeOnSelect: false // <- do not hide the suggestions dropdown once an item has been selected
-                    }
-                })
-        })()
-    </script>
+  
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
