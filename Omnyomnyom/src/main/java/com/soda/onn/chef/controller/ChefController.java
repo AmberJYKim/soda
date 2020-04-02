@@ -23,6 +23,10 @@ public class ChefController {
 	public void chefpage() {
 		
 	}
+	
+	@GetMapping("/chefInsert")
+	public void chefInsert() {
 		
+	}
 
 }
