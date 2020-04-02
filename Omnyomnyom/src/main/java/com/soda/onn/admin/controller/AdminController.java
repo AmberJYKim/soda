@@ -6,10 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.GsonFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -126,10 +124,10 @@ public class AdminController {
 	
 	//재료목록
 	@GetMapping("/ingredientList")
-	public void ingredientList() {	}
+	public void ingredientList() {}
 	
 	//재료목록 Ajax
-	@PutMapping("/ingredientList")
+	@GetMapping("/ingredientList.A")
 	@ResponseBody 
 	public List<IngredientMall> ingredientListA(@RequestParam(value = "column",defaultValue = "과일") String column) {
 		ModelAndView mav = new ModelAndView();

@@ -85,4 +85,10 @@ public class MypageController {
 		mav.addObject("scrapList", scrapList);
 		return mav;
 	}
+	
+	@GetMapping("/onedayReservation")
+	public ModelAndView onedayReservation(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
 }

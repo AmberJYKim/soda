@@ -13,8 +13,8 @@
 		<div class="section">
 			<div class="row">
 				<div class="col side_nav">
-					<p class="nav_text ">내 정보보기</p>
-					<p class="nav_text selected_nav">예약목록</p>
+					<p class="nav_text">내 정보보기</p>
+					<p class="nav_text">예약목록</p>
 					<p class="nav_text">구매목록</p>
 					<p class="nav_text">셰프 문의</p>
 					<p class="nav_text">1:1 문의</p>
