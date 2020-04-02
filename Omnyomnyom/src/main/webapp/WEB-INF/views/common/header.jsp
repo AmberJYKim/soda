@@ -49,6 +49,7 @@
     </c:if>
 </head>
 <body>
+
     <c:if test="${not empty msg}">
 	<script>
 		(()=>{
@@ -91,7 +92,6 @@
                 <!-- 로그인/회원가입 form start -->
                 <div class="hb-switch" id="infor-switch">
                     <div id="ex1" class="modal">
-                        <img src="" alt="" width="300px" style="margin-bottom: 30px;">
                         <div class="login_container" id="login_container">
                             <div class="form-container sign-up-container">
                                 <form action="${pageContext.request.contextPath }/member/enroll" method="POST" >

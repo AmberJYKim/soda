@@ -37,4 +37,9 @@ public class ChefDAOImpl implements ChefDAO {
 		return Integer.parseInt(sqlSession.selectOne("chef.selectChefRequestListCnt"));
 	}
 
+	@Override
+	public int chefReuqest(ChefRequest chefRequest) {
+		return sqlSession.insert("chef.chefRequest",chefRequest);
+	}
+
 }

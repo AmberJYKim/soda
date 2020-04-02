@@ -17,5 +17,9 @@ public interface ChefService {
 
 	int selectChefRequestListCnt();
 
+	int chefRequest(ChefRequest chefRequest);
+
+
+
 
 }
