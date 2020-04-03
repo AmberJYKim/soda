@@ -8,4 +8,35 @@
 		from TB_Ingredient
 		where ingredient_name like '%'||#{ingr}||'%'
 	</select>
+	<insert id="recipeUpload" parameterType="recipe">
+		insert into 
+			TB_recipe
+		values(
+			seq_recipe.nextval,
+			#{recipeName},
+			#{recipeId},
+			#{timeline},
+			#{menuName},
+			#{chefNick},
+			#{chefId},
+			#{cookingTime},
+			#{category},
+			#{recipeContent},
+			default,
+			default
+		)
+		<selectKey keyProperty="recipeNo" resultType="_int" order="AFTER">
+			select seq_recipe.currval from dual
+		</selectKey>
+	</insert>
+	<insert id="recipeIngrUpload" parameterType="recipeIngredient">
+		insert into
+			tb_rec_Ingredients
+		values(
+			#{recipeNo},
+			#{ingredientNo},
+			#{minWeight},
+			#{ingredientName}
+		)
+	</insert>
 </mapper>
