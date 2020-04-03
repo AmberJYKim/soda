@@ -1,6 +1,7 @@
 package com.soda.onn.chef.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
@@ -18,6 +19,8 @@ public interface ChefService {
 	int selectChefRequestListCnt();
 
 	int chefRequest(ChefRequest chefRequest);
+
+	int chefRequestUpdate(Map<String, String> chefReq);
 
 
 

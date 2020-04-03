@@ -4,26 +4,41 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="chef">
 
-<select id="selectChefList" resultType="chef">
+<update id="chefRequestUpdate">
+	update 
+		tb_chef_req
+	set
+		chef_req_ok	= #{variable}
+	where
+		member_id = #{chefId}
+</update>
+
+<select id="selectChefList" resultMap="chefReqMap">
 	select
 		*
 	from
 		(select *
 		 from tb_member m
 		 where member_roll = 'C') m
-		join  tb_chef c on c.member_id = m.member_id
+		join  tb_chef c on using(member_id)
+		order by
+		c.regdate
+</select>
+
+<select id="selectChefRequestList" resultMap="chefReqMap">
+	select
+		*
+	from
+		tb_chef_req c
+		join tb_member m using(member_id)
 	order by
 		c.regdate
 </select>
 
-<select id="selectChefRequestList" resultType="chefRequest">
-	select
-		*
-	from
-		tb_chef_req
-	order by
-		regdate
-</select>
+<resultMap type="chefRequest" id="chefReqMap" >
+	<result column="member_id" property="chefId"/>
+	<result column="member_nick" property="chefNickName"/>
+</resultMap>
 
 <select id="selectChefRequest" resultType="chefRequest">
 	select
@@ -56,5 +71,4 @@
 	 default
 	 ) 
 </insert>
-
 </mapper>
