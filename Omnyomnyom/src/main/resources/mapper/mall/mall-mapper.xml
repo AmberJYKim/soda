@@ -13,13 +13,29 @@
 		member_id = #{memberId}
 </select>
 
-<select id="selectIngredientList" resultType="ingredientMall">
+<select id="selectIngredientList" resultType="IngredientMall">
 	select
 		*
 	from
-		tb_Ingredient_mall
+		tb_Ingredient i
+		join tb_ingredient_mall im on i.ingredient_no = im.ingredient_no
+	where
+		i.ing_cd_category	= #{column}
 </select>
 
+
+<select id="selectBuyHistoryListCnt" resultType="string">
+	select
+		count(*)
+	from
+		tb_buy_list 
+</select>
+<select id="selectBuyHistoryList" resultType="buyHistory">
+	select
+		*
+	from
+		tb_buy_list 
+</select>
 
 
 </mapper>

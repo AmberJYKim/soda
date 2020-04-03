@@ -52,7 +52,7 @@
 		$("#image_section").hide();
 
 		//CK에디터 불러오기
-		CKEDITOR.replace('editor1');
+		CKEDITOR.replace('onedayContent');
 		
 		if (!String.prototype.trim) {
 			(function() {

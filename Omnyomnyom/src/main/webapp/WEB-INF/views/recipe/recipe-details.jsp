@@ -9,6 +9,8 @@
 </jsp:include><!--  -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/resources/css/mall_slider.css" />
+   	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/datepicker.min.css" />
+   	
     <script>
         var tag = document.createElement('script'); //이거 뭔지 모름
         tag.src = "https://www.youtube.com/iframe_api"; //api 주소

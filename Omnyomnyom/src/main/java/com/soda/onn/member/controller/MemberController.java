@@ -70,12 +70,11 @@ public class MemberController {
 
 	
 	@GetMapping("/logout")
-	public String logout(SessionStatus sessionStatus,
-						 @ModelAttribute("memberLoggedIn") Member member) {
-		log.debug("_______________로그아웃 처리");
+	public String logout(HttpSession session) {
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		log.debug(member.getMemberNick()+"("+member.getMemberId()+")님이 로그아웃 하셨습니다.");
 		
-		if(!sessionStatus.isComplete())
-			sessionStatus.setComplete();
+		session.removeAttribute("memberLoggedIn");
 		
 		return "redirect:/";
 	}
