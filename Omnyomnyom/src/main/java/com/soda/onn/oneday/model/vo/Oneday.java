@@ -18,10 +18,10 @@ public class Oneday  implements Serializable{
 	 
 	private static final long serialVersionUID = 1L;
 
-	private int onedayNo; //시퀀스
+	private int onedayclassNo; //시퀀스
 	private String memberId;
 	private String onedayName; // 원데이 클래스명 
-	private int price; //가격
+	private int onedayPrice; //가격
 	private String onedayContent;
 	private double latitude; //위도
 	private double longitude; //경도
@@ -32,6 +32,6 @@ public class Oneday  implements Serializable{
 	private String onedayImg; //사진 파일명
 	private String menuList;
 	
-	private List<OnedayTime> onedayTimeList; 
+	private List<OnedayTime> onedayTimeList; // 일정 저장
 	
 }

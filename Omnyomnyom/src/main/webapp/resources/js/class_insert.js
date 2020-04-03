@@ -1,5 +1,11 @@
 	//온로드 함수
 	window.onload = function() {
+		
+		$("#input-date").datepicker({
+			onSelect: function onSelect(dattte){
+				console.log("찍힌 시간"+dattte);
+			}
+		});
 		//이미지 불러오기 후 처리
 		function readURL(input) {
 			if (input.files && input.files[0]) {
@@ -96,8 +102,8 @@
 		let $inputDimeList = $("#input-date-list")
 		$inputDimeList
 				.append("<div class='row m-auto'>"
-						+ "<input class='col-9' id='input-class-date' type='text' value='"
-						+ $inputDate.val()
+						+ "<input class='col-9' id='input-class-date' name='classdate' type='text' value='"
+						+ substring_($inputDate.val())
 						+ "' readonly/>"
 						+ "<button class='col site-btn sb-gradient px-3 ml-3' style='min-width: 0;' type='button' onclick='removeClassTime(this);'>제거</button>"
 						+ "</div>");
@@ -107,4 +113,9 @@
 	function removeClassTime(bt) {
 		let $bt = $(bt);
 		$bt.parent().remove();
+	}
+	
+	function substring_(something){
+		var substred = something.substr();
+		return substred;
 	}

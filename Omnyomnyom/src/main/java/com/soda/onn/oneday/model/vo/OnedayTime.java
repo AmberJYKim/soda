@@ -19,7 +19,10 @@ public class OnedayTime implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int onedayTimeNo;
-	private Oneday oneday;
+	private int onedayNoo;
+	private Oneday oneday; //예약할때 사용.
 	private Date onedayTimeDate;
-	private int onedayTimeHour;
+	/* private int onedayTimeHour; */
 }
+//DEBUG: com.soda.onn.oneday.controller.OnedayController - sss={}04/08/2020 05:10 pm
+

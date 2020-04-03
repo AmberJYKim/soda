@@ -43,7 +43,7 @@
 		location.href="${pageContext.request.contextPath}/oneday/class_manager.do";
 	};
 	function classUpload(){
-		location.href="${pageContext.request.contextPath}/oneday/class_insert.do";
+		location.href="${pageContext.request.contextPath}/oneday/class_insert";
 	}
     
     </script>		

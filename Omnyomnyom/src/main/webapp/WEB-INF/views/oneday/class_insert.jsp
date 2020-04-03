@@ -144,7 +144,7 @@
 								<span class="input input--yoshiko col-9 p-0"> <!-- 클래스 날짜 input -->
 									<input
 									class="input__field input__field--yoshiko datepicker-here"
-									type="text" id="input-date" name="classdate" data-language='kr'
+									type="text" id="input-date" data-language='kr' data-date-format='yyyy-mm-dd' data-time-format='hh:ii'
 									data-timepicker="true" autocomplete="off" />
 								</span>
 

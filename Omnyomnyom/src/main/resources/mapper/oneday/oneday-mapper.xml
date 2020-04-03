@@ -26,14 +26,14 @@
 	order by 
 		review_no desc
 </select>
-<select id="insertOneday" resultType="oneday">
+<insert id="insertOneday">
 	insert into 
 	tb_onedayclass 
 		values (
 				seq_oneday_class.nextval,
 				#{memberId},
 				#{onedayName},
-				#{price},
+				#{onedayPrice},
 				#{onedayContent},
 				#{latitude},
 				#{longitude},
@@ -44,11 +44,32 @@
 				#{onedayImg},
 				<!-- gson 배열로 받음 -->
 				#{menuList}
-				
 			)
-		
+			<selectKey keyProperty="onedayclassNo" resultType="_int" order="AFTER">
+				select seq_oneday_class.currval from dual
+			</selectKey>			
+</insert>
 
+<insert id="insertTime">
+	insert into
+		tb_onedayclasstime
+			values(
+				seq_oneday_time.nextval,
+				#{onedayNoo},
+				#{onedayTimeDate}
+			)
+</insert>
+
+<select id="selectDateList"  resultType="Oneday">
+
+	select * from TB_onedayclass
 </select>
+
+
+<select id="selectTimeList" resultType="OnedayTime">
+	select*from tb_onedayclasstime
+</select>
+
 
 
 </mapper>
