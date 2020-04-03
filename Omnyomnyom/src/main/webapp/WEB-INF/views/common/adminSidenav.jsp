@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<fmt:requestEncoding value="utf-8"/>
 				<div class="col side_nav">
 					<a href="${pageContext.request.contextPath}/admin/chefRequestList"><p class="nav_text ${param.sidenav eq '셰프신청목록'? 'selected_nav':''}">셰프신청목록</p></a>
 					<a href="${pageContext.request.contextPath}/admin/ingredientList"><p class="nav_text ${param.sidenav eq '재고관리'? 'selected_nav':''}">재고관리</p></a>

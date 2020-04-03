@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
-	<jsp:param value="" name="pageTitle"/>
+	<jsp:param value="회원목록" name="pageTitle"/>
 </jsp:include>
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mypage/user-list.css" />
 
@@ -22,7 +22,7 @@
         <div class="section">
             <div class="row">
 				<jsp:include page="/WEB-INF/views/common/adminSidenav.jsp">
-					<jsp:param value="예약목록" name="sidanav"/>
+					<jsp:param value="회원목록" name="sidenav"/>
 				</jsp:include>
                 <div class="col-10">
                     <h4 class="border_bottom">회원목록</h4>

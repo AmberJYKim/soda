@@ -8,9 +8,12 @@
 	select
 		*
 	from
-		tb_chef
+		(select *
+		 from tb_member m
+		 where member_roll = 'C') m
+		join  tb_chef c on c.member_id = m.member_id
 	order by
-		regdate
+		c.regdate
 </select>
 
 <select id="selectChefRequestList" resultType="chefRequest">
@@ -37,5 +40,21 @@
 	from 
 		tb_chef_req
 </select>
+
+<insert id="chefRequest" >
+	insert into 
+	 	TB_chef_req
+	 values(
+	 #{chefId},
+	 #{chefProfile},
+	 #{sns},
+	 #{chefContent},
+	 #{chefApVideo},
+	 #{menuPrCategory},
+	 #{businessInfo},
+	 default,
+	 default
+	 ) 
+</insert>
 
 </mapper>
