@@ -64,7 +64,6 @@ $(() => {
 					console.log(item);
 				});
 
-				$(".sub-ctg-menu").empty;
 				$(".sub-ctg-menu").html(subCtgList);
 				 
 				
