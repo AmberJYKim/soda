@@ -16,28 +16,32 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChefRequest extends Chef implements Serializable{
+public class ChefRequest implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	
+	private String chefId;
+	private String chefNickName;
+	private String chefProfile;
+	private String sns;
+	private String chefContent;
+	private String chefApVideo;
+	private String menuPrCategory;
+	private String businessInfo;
 	private Date reqDate;
 	private String chefReqOk;
-	private String chefReqVideo;
-	private String memberName;
-	private String memberNick;
-	private String email;
-	private String phone;
 	
-	public ChefRequest(String memberId, String chefMainvideo, String chefSns, String chefProfile, String menyPrCategory,
-			Date regDate, String businessInfo, String chefContent, Date reqDate, String chefReqOk, String chefReqVideo,
-			String memberName, String memberNick, String email, String phone) {
-		super(memberId, chefMainvideo, chefSns, chefProfile, menyPrCategory, regDate, businessInfo, chefContent);
-		this.reqDate = reqDate;
-		this.chefReqOk = chefReqOk;
-		this.chefReqVideo = chefReqVideo;
-		this.memberName = memberName;
-		this.memberNick = memberNick;
-		this.email = email;
-		this.phone = phone;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
+
+	
+	
+	
+	
+	
+	
+	
+
 }

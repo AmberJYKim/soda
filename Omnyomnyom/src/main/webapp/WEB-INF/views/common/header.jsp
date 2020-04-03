@@ -1,3 +1,8 @@
+<%@page import="java.util.Enumeration"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -44,14 +49,121 @@
     
     <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
     <!-- 회원가입 js -->
-    <c:if test="${memberLoggedIn == null }">
+    <c:if test="${empty memberLoggedIn}">
     <script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
+	
+	<script>
+		//사용 가능한 아이디, 닉네임인지 확인 하는 스크립트
+		$(document).ready(function(){
+		
+				//memberId input창에서 아이디를 입력 할 경우
+				$("#memberId").on("keyup", function(){
+					console.log("memberId keyup");  /* 여기는 값 들어옴 */
+					memberId = $(this).val().trim();
+					
+					console.log($(this).val());  /* 실시간으로 아이디 값 들어오는거 확인 */
+					
+					//아이디 글자수 검사
+					//아이디 재작성시
+					if(memberId.length < 4){
+						/* $(".guide.error").hide();
+						$(".guide.ok").show(); */
+						$("#idDuplicateCheck").val(1);
+						return;
+					} 
+					
+					signupFun(this);
+				});
+				
+				//memberNick input창에서 닉네임을 입력 할 경우
+				$("#memberNick").on("keyup", function(){
+					console.log("memberNick keyup");
+					memberNick = $(this).val().trim();
+					
+					console.log($(this).val());
+					
+					/* if(memberNick .length < 4){
+						$(".nickGuide.error").hide();
+						$(".nickGuide.ok").show();
+						$("#nickDuplicateCheck").val(1);
+						return;
+					} */
+					/* console.log($(this).val()); */
+					
+					
+					signupFun(this);
+				});
+					
+				
+				//ajax 실행 메소드
+				function signupFun(e){
+					$.ajax({
+						url:"${pageContext.request.contextPath}/member/checkMember/"+$(e).attr('id')+"/"+$(e).val(),
+						type: "GET",
+						
+						
+						success: data => {
+							console.log(data);
+							
+							
+						if($(e).attr('id') == "memberId"){
+							
+							if(data.isUsable != "ok"){
+								$(".guide.error").hide();
+								$(".guide.ok").show();
+								$("#idDuplicateCheck").val(1);
+							}
+							else{
+								$(".guide.error").show();
+								$(".guide.ok").hide();
+								$("#idDuplicateCheck").val(0);
+							}
+						}
+						
+						
+						if($(e).attr('id') == "memberNick"){
+							
+							if(data.isUsable != "ok"){
+								$(".nickGuide.error").hide();
+								$(".nickGuide.ok").show();
+								$("#idDuplicateCheck").val(1);
+							}
+							else{
+								$(".nickGuide.error").show();
+								$(".nickGuide.ok").hide();
+								$("#idDuplicateCheck").val(0);
+							}
+						}
+							
+							
+							
+							
+						},
+						error: (x,s,e) => {
+							console.log(x,s,e);
+						}
+					});
+				}
+			});				
+	</script>
+	
     </c:if>
+    
+    
+    
+	<style>
+	div#memberId-container{position:relative; padding:0px;}
+div#memberId-container span.guide {display:none;}
+div#memberId-container span.ok{color:green;}
+div#memberId-container span.error{color:red;}
+	
+	</style>
 </head>
 <body>
+
     <c:if test="${not empty msg}">
 	<script>
-		(()=>{
+		$(()=>{
 			alert("${msg}");
 		});
 	</script>
@@ -76,7 +188,7 @@
 	                <div class="hb-switch" id="${memberLoggedIn != '' ?'infor-switch':'search-switch' }" >
 	                    <a href="#ex1" rel="modal:open" ><img src="${pageContext.request.contextPath }/resources/images/icons/login.png" alt=""></a>
 	                </div>
-           		<c:if test="${memberLoggedIn != null or memberLoggedIn == ''}">
+           		<c:if test="${not empty memberLoggedIn}">
            		<button type="button" onclick="logout();">로그아웃</button>
            		<script>
            		function logout(){
@@ -86,37 +198,60 @@
            		</script>
            		</c:if>
            		
-           		<c:if test="${memberLoggedIn == null }">
+           		<c:if test="${empty memberLoggedIn}">
            		
                 <!-- 로그인/회원가입 form start -->
                 <div class="hb-switch" id="infor-switch">
                     <div id="ex1" class="modal">
-                        <img src="" alt="" width="300px" style="margin-bottom: 30px;">
                         <div class="login_container" id="login_container">
                             <div class="form-container sign-up-container">
-                                <form action="${pageContext.request.contextPath }/member/enroll" method="POST" >
+                                <form action="${pageContext.request.contextPath }/member/enroll" method="POST" onsubmit="return enrollValidate();">
                                     <h1>회원가입</h1>
                                     <!-- <div class="social-container">
                                     
                                         </div> -->
-                                    <input type="text" placeholder="아이디를 입력하세요" id="memberid" name="memberId" onblur="emailValidate();" required/>
+                                  <div id="memberId-container">
+                                    <input type="text" placeholder="아이디를 입력하세요" id="memberId" name="memberId" required/>
+                                    <span class="guide ok">이 아이디는 사용가능합니다.</span>
+									<span class="guide error">이 아이디는 사용할 수 없습니다.</span>
+									<input type="hidden" name="idDuplicateCheck"
+							   			   id="idDuplicateCheck" value="0" />
                                     <span class="error" id="errorId"></span>
-                                    <input type="password" name="memberPwd" id="password_" placeholder="Password" onblur="pwValidate();" required />
+                                  </div>
+                                    
+                                    <input type="password" name="memberPwd" id="password" placeholder="Password"  required >
                                     <span class="error" id="errorPw"></span>
-                                    <input type="password" id="password_2" placeholder="Confirm Password" onblur="isEqualPwd();" required>
+                                    
+                                    <input type="password" id="password_2" placeholder="Confirm Password"  required>
                                     <span class="error" id="errorPwChk"></span>
-                                    <input type="email" placeholder="Email" id="email" name="email" onblur="emailValidate();" required/>
+                                    
+                                    <input type="email" placeholder="Email" id="email" name="email"  required/>
                                     <span class="error" id="errorEmail"></span>
+                                    
                                     <input type="text" name="memberName" id="memberName" placeholder="Name" required>
                                     <span class="error" id="errorName"></span>
-                                    <input type="text" placeholder="닉네임을 입력하세요" name="memberNick" id="nickname" maxlength="" required>
-                                    <span class="error" id="errorPhone"></span>
+                                   
+                                  <div id="memberId-container">
+                                    <input type="text" placeholder="닉네임을 입력하세요" id="memberNick" name="memberNick" required/>
+                                    <span class="nickGuide ok">이 닉네임은 사용가능합니다.</span>
+									<span class="nickGuide error">이 닉네임은 사용할 수 없습니다.</span>
+									<input type="hidden" name="nickidDuplicateCheck"
+							   			   id="nickDuplicateCheck" value="0" />
+                                    <span class="error" id="errorId"></span>
+                                  </div>
+                                  
+                                    
+                                    
                                     <input type="tel" placeholder="Phone Number(-없이)" name="phone" id="phone" maxlength="11" required>
                                     <span class="error" id="errorPhone"></span>
-                                    <input type="number" name="ssn" id="brithday" required>
+                                    
+                                    <input type="number" name="ssn" id="ssn" required>
+                                   
                                     <input type="address" name="address" id="address" placeholder="주소를 입력하세요" required>
                                     <span class="error" id="errorName"></span>
+                                    
                                     <button type="submit" >회원가입</button>
+                                    <!-- <input type="button" id="enrollBtn" value="회원가입"> -->
                                 </form>
                             </div>
                             <div class="form-container sign-in-container">
@@ -186,7 +321,7 @@
     <!-- Header Section end -->
     
     	<!-- Main Stylesheets -->
-	<c:if test="${memberLoggedIn != null}">
+	<c:if test="${not empty memberLoggedIn}">
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/info.css"/>
 	<!-- Infor Model -->
 	<div class="infor-model-warp">
@@ -203,60 +338,186 @@
 
 				<!-- 바로가기기능 -->
 				<div class="insta-imgs">
-					<div class="insta-item">
-						<div class="insta-img">
-							<img src="img/infor/back.PNG" alt="">
-							<div class="insta-hover">
+							<!-- 유저 등급에 따른 리모컨 분기처리 -->
+					<c:choose>
+						<c:when test="${memberLoggedIn.memberRoll eq 'A' }">
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+										<a href="${pageContext.request.contextPath }/admin/mallManage"> 
+										<p>주문내역확인</p>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+										<a href="${pageContext.request.contextPath }/admin/mallManage"> 
+										<p>상품관리</p>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+										<a href="${pageContext.request.contextPath }/admin/chefRequestList"> 
+										<p>셰프신청목록</p>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+										<a href="${pageContext.request.contextPath }/admin/reportList"> 
+										<p>신고현황</p>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+										<a href="${pageContext.request.contextPath }/admin/memberList"> 
+										<p>회원조회</p>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+										<a href="${pageContext.request.contextPath }/admin/qnaMsg"> 
+										<p>문의내역</p>
+										</a>
+									</div>
+								</div>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<c:if test="${memberLoggedIn.memberRoll eq 'C' }">
+									
+								<div class="insta-item">
+									<div class="insta-img">
+										<img src="img/infor/back.PNG" alt="">
+										<div class="insta-hover">
+										<a href="${pageContext.request.contextPath }/chef/chefpage">
+											<p>채널가기</p>
+										</a>
+										</div>
+									</div>
+								</div>
+								<div class="insta-item">
+									<div class="insta-img">
+										<img src="img/infor/back.PNG" alt="">
+										<div class="insta-hover">
+										<a href="${pageContext.request.contextPath }/recipe/recipeUpload">
+											<p>레시피 등록</p>
+										</a>
+										</div>
+									</div>
+								</div>
+								<div class="insta-item">
+									<div class="insta-img">
+										<img src="img/infor/back.PNG" alt="">
+										<div class="insta-hover">
+										<a href="${pageContext.request.contextPath }/oneday/insert">
+											<p>원데이 등록</p>
+										</a>
+										</div>
+									</div>
+								</div>
+							</c:if>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath }/mypage/ondayList">
+										<p>예약확인</p>
+									</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath }/mypage/buyList">
+										<p>구매목록</p>
+									</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath }/mypage/shoppingBasket">
+										<p>장바구니</p>
+									</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath }/mypage/scarpList">
+										<p>스크랩 목록</p>
+									</a>
+									</div>
+								</div>
+							</div>
 							
-								<p>예약확인</p>
+							<c:if test="${memberLoggedIn.memberRoll eq 'C' }">
+								<div class="insta-item">
+									<div class="insta-img">
+										<img src="img/infor/back.PNG" alt="">
+										<div class="insta-hover">
+										<a href="${pageContext.request.contextPath }/mypage/onedayReservation">
+											<p>예약현황</p>
+										</a>
+										</div>
+									</div>
+								</div>
+							</c:if>
+
+							<c:if test="${memberLoggedIn.memberRoll eq 'M' }">
+								<div class="insta-item">
+									<div class="insta-img">
+										<img src="img/infor/back.PNG" alt="">
+										<div class="insta-hover">
+										<a href="${pageContext.request.contextPath }/mypage/chefRequest">
+											<p>셰프신청</p>
+										</a>
+										</div>
+									</div>
+								</div>
+							</c:if>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath }/mypage/qnaMsg">
+										<p>문의내역</p>
+									</a>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-					<div class="insta-item">
-						<div class="insta-img">
-							<img src="img/infor/back.PNG" alt="">
-							<div class="insta-hover">
-							
-								<p>구매목록</p>
-							</div>
-						</div>
-					</div>
-					<div class="insta-item">
-						<div class="insta-img">
-							<img src="img/infor/back.PNG" alt="">
-							<div class="insta-hover">
-								
-								<p>장바구니</p>
-							</div>
-						</div>
-					</div>
-					<div class="insta-item">
-						<div class="insta-img">
-							<img src="img/infor/back.PNG" alt="">
-							<div class="insta-hover">
-							
-								<p>스크랩 목록</p>
-							</div>
-						</div>
-					</div>
-					<div class="insta-item">
-						<div class="insta-img">
-							<img src="img/infor/back.PNG" alt="">
-							<div class="insta-hover">
-							
-								<p>셰프신청</p>
-							</div>
-						</div>
-					</div>
-					<div class="insta-item">
-						<div class="insta-img">
-							<img src="img/infor/back.PNG" alt="">
-							<div class="insta-hover">
-						
-								<p>문의내역</p>
-							</div>
-						</div>
-					</div>
+						</c:otherwise>
+					</c:choose>
+					
+					
+					
+
 				</div>
 				<!-- 알림창 -->
 				

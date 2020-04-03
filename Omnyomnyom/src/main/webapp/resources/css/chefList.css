@@ -164,9 +164,9 @@ section .row .image_overflow_hidden img{
 
 section .row button{
 	padding: 5px 10px;
-	color: white;
+	color: gray;
 	border: none;
-	background-color: #e73828;
+
 }
 .chef-List{
 	margin-top: 80px;
@@ -258,7 +258,7 @@ section .row button{
 
 /* buttons */
 .btn-outline-danger{
-
+    color:white;
     float: right;
 }
 
@@ -1848,7 +1848,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 .event-filter-warp {
     padding: 35px 45px;
     border-radius: 13px;
-    margin-top: -60px;
+    margin-top: -30px;
     position: relative;
     background: #fff;
     -webkit-box-shadow: 0px 5px 6px rgba(72, 105, 114, 0.15);
