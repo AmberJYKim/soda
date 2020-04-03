@@ -25,7 +25,7 @@ import com.soda.onn.member.model.vo.Member;
 import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 import lombok.extern.slf4j.Slf4j;
-import oracle.net.aso.i;
+//import oracle.net.aso.i;
 
 @Slf4j
 @RequestMapping("/member")
