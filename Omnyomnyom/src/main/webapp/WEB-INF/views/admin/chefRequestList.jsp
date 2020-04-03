@@ -13,7 +13,7 @@
 		<div class="section">
 			<div class="row">
 				<jsp:include page="/WEB-INF/views/common/adminSidenav.jsp">
-					<jsp:param value="예약목록" name="sidanav"/>
+					<jsp:param value="셰프신청목록" name="sidenav"/>
 				</jsp:include>
 				<div class="col-10">
 					<h4 class="border_bottom">셰프신청목록</h4>

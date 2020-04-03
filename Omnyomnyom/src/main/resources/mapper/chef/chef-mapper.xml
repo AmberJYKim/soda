@@ -14,9 +14,9 @@
 		*
 	from
    		tb_member M  join tb_chef C
-    using (member_id)
+      using (member_id)
 	order by
-		regdate
+		c.regdate
 </select>
 
 <select id="selectChefRequestList" resultType="chefRequest">

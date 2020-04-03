@@ -103,7 +103,7 @@
         width: 800px;
         max-width: 100%;
         min-height: 550px;
-        top: -30px;
+        top: 0px;
     }
     
     .login_container .form-container {
@@ -239,3 +239,15 @@
     .overlay p {
         color: #DDDDDD;
     }
+    
+    
+	
+		
+		span.guide {display:none;}
+		span.ok{color:green;}
+		span.error{color:red;}
+		
+		
+		span.nickGuide {display:none;}
+		
+			
