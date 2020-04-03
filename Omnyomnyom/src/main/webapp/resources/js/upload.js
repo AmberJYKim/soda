@@ -1,75 +1,74 @@
 //온로드 함수
-window.onload = function() {
-            //이미지 불러오기 후 처리
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var imgFile = $(input).val();
-                     var fileForm = /(.*?)\.(mp4|mov|mpeg4|avi|wmv)$/i;
-                     var maxSize = 64 * 1000 * 1000 * 1000;
-                     var fileSize;
+$(function() {
+	// 이미지 불러오기 후 처리
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+			var imgFile = $(input).val();
+			var fileForm = /(.*?)\.(mp4|mov|mpeg4|avi|wmv)$/i;
+			var maxSize = 64 * 1000 * 1000 * 1000;
+			var fileSize;
 
-                     if (imgFile != "" && imgFile != null) {
-                         fileSize = input.files[0].size;
-                         if (!imgFile.match(fileForm)) {
-                             alert("비디오 파일(mp4,mov,mpeg4,avi,wmv)만 업로드 가능");
-                             $(input).val(null);
-                           return;
-                         } else if (fileSize > maxSize) {
-                             alert("파일 사이즈는 64GB까지 가능");
-                             $(input).val(null);
-                             return;
-                         }
-                     }
+			if (imgFile != "" && imgFile != null) {
+				fileSize = input.files[0].size;
+				if (!imgFile.match(fileForm)) {
+					alert("비디오 파일(mp4,mov,mpeg4,avi,wmv)만 업로드 가능");
+					$(input).val(null);
+					return;
+				} else if (fileSize > maxSize) {
+					alert("파일 사이즈는 64GB까지 가능");
+					$(input).val(null);
+					return;
+				}
+			}
 
+			var reader = new FileReader();
 
-                    var reader = new FileReader();
+			reader.onload = function(e) {
+				// $('#image_section').show();
+				// $('.image_section_src').attr('src', e.target.result).show();
+				$('#video_section').attr('src', e.target.result).show();
+				let $uploadbtn = $("#uploadbtn");
+				$uploadbtn.html("");
+				$uploadbtn.addClass("uploading");
+				setTimeout(function() {
+					$uploadbtn.removeClass('uploading');
+					$uploadbtn.html("Upload Files");
+				}, 1200);
+			};
 
-                    reader.onload = function (e) {
-//                    	$('#image_section').show();
-//                        $('.image_section_src').attr('src', e.target.result).show();
-                    	$('#video_section').attr('src', e.target.result).show();
-                        let $uploadbtn = $("#uploadbtn");
-                        $uploadbtn.html("");
-                        $uploadbtn.addClass("uploading");
-                        setTimeout(function(){
-                            $uploadbtn.removeClass('uploading');
-                            $uploadbtn.html("Upload Files");
-                        },1200);
-                    };
+			reader.readAsDataURL(input.files[0]);
+		} else {
+			$('#video_section').hide();
+		}
+	}
 
-                    reader.readAsDataURL(input.files[0]);
-                } else {
-                    $('#video_section').hide();
-                }
-            }
+	// 이미지 불러오기
+	$("#videoInput").change(function() {
 
-            //이미지 불러오기
-            $("#videoInput").change(function () {
-                
-                readURL(this);
-            });
+		readURL(this);
+	});
 
-            //시작시 이미지
-            $("#video_section").hide();
+	// 시작시 이미지
+	$("#video_section").hide();
 
-            //CK에디터 불러오기
-            CKEDITOR.replace( 'editor1' );
+	// CK에디터 불러오기
+	CKEDITOR.replace('editor1');
 
-        };
+});
 
-        //이미지 불러오기 버튼 처리
-        function upload(ref) {
-            $("#videoInput").click();        
-        };
-
+// 이미지 불러오기 버튼 처리
+function upload(ref) {
+	$("#videoInput").click();
+};
 
 
-var tag = document.createElement('script');//이거 뭔지 모름
-tag.src = "https://www.youtube.com/iframe_api";//api 주소
-var firstScriptTag = document.getElementsByTagName('script')[0];//이거 뭔지 모름
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);//이거 뭔지 모름
-var player;//유튜브 api 전역변수
-var setVideoId = "t4Es8mwdYlE";//유튜브영상 ID
+
+var tag = document.createElement('script');// 이거 뭔지 모름
+tag.src = "https://www.youtube.com/iframe_api";// api 주소
+var firstScriptTag = document.getElementsByTagName('script')[0];// 이거 뭔지 모름
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);// 이거 뭔지 모름
+var player;// 유튜브 api 전역변수
+var setVideoId = "t4Es8mwdYlE";// 유튜브영상 ID
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('testPTag',{
               videoId: setVideoId,
@@ -77,14 +76,14 @@ function onYouTubeIframeAPIReady() {
 }
 
 
-//유튜브 영상 redirect
+// 유튜브 영상 redirect
 function hreflink(s){
   player.loadVideoById(setVideoId, s);
 }
 
 
 
-//해시태그부분
+// 해시태그부분
 
 	// if IE, add IE tagify's polyfills
 	!function( d ) {
@@ -277,7 +276,8 @@ function hreflink(s){
 // 클래스 날짜 추가
 function addIngredient(){
     let $inputIngredient = $("#input-ingredient");
-	let $inputIngMass = $("#input-ing-mass")
+	let $inputIngMass = $("#input-ing-mass");
+	let $inputIngNumber = $("#input-ing-number");
     if($inputIngredient.val() == "" || $inputIngredient.val() == null){
     	alert("재료명을 입력하세요.");
         return;
@@ -287,13 +287,15 @@ function addIngredient(){
     	return;
     }
     let $inputDimeList = $("#input-date-list")
+    console.log("로그");
     $inputDimeList.append("<div class='row m-auto'>"
                             +'<span class="input col-4 p-0">'
-                            +'<input class="form-control" type="text" autocomplete="off" value="'+ $inputIngredient.val() +'" readonly/>'
+                            +'<input name="ingr_name" class="form-control" type="text" autocomplete="off" value="'+ $inputIngredient.val() +'" readonly/>'
 							+'</span>'
-							+'<span class="input input--yoshiko col-4 p-0">'
-                            +'<input class="form-control" type="text" autocomplete="off" value="'+ $inputIngMass.val() +'" readonly/>'
+							+'<span class="input col-4 p-0">'
+                            +'<input name="ingr_mass" class="form-control" type="text" autocomplete="off" value="'+ $inputIngMass.val() +'" readonly/>'
 							+'</span>'
+							+'<input name="ingr_number" type="number" hidden value="'+$inputIngNumber.val()+'">'
                             +'<div class="col py-1 pr-0 input">'
 							+'<i class="fa fa-lg fa-minus-circle" style="min-width: 100%;" onclick="removeClassTime(this);" type="button"></i>'
                         	// +'<button class="site-btn sb-gradient px-3" style="min-width: 100%;" type="button" onclick="removeClassTime(this);">제거</button>'

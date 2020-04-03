@@ -62,9 +62,111 @@
 			  border-color: gold;
 			}
 			</style>	
+<style>
+ul#autoComplete{
+	display:none;
+	background-color: white;
+    min-width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    position: absolute;
+}
 
+ul#autoComplete li{
+	padding:0 10px;
+	list-style:none;
+	cursor:pointer;
+}
 
+ul#autoComplete li.sel{
+	background:lightseagreen;
+	color:white;
+}
 
+span.srchval{
+	color:red;
+}
+</style>
+<script>
+$(function(){
+	let $autoComplete = $("#autoComplete");
+
+$("#input-ingredient").keyup(function(e){
+	let $sel = $(".sel");
+	let $li = $("#autoComplete li");
+	
+	if(e.key == 'ArrowDown'){
+		if($sel.length == 0){
+			$li.first().addClass("sel");
+		}else {
+			$sel.removeClass("sel").next().addClass("sel");
+		}
+		
+	}else if(e.key == 'ArrowUp'){
+		if($sel.length == 0){
+			$li.last().addClass("sel");
+		}else {
+			$sel.removeClass("sel").prev().addClass("sel");
+		}
+	}else if(e.key == 'Enter'){
+		//요소 선택
+		$(this).val($sel.text());
+		$("#input-ing-number").val($sel.children("input").val());
+		//검색어 목록 삭제
+		$autoComplete.hide().children().remove();
+		
+	}else{
+		let srchName = $(this).val().trim();
+		console.log(srchName);
+		<%--
+		if(srchName.length == 0)
+			return;
+		--%>
+		
+		$.ajax({
+			url:"<%=request.getContextPath()%>/recipe/"+ srchName + "/ajax",
+			dataType : "json",
+			success : function(data) {
+							console.log(data);//'김' 입력시, "김유정,김선일,김소현..."
+							if (data.length == 0) {
+								$autoComplete.hide();
+							} else {
+
+								let html = "";
+								$.each(data, function(idx, ingr) {
+										html += "<li><span>" + 
+												ingr.ingredientName.replace(srchName,"<span class='srchval'>" + srchName+ '</span>')+ 
+												"</span><input type='number' value="+
+												ingr.ingredientNo+
+												" hidden/></li>";
+								});
+								$autoComplete.html(html).show();
+
+								//마우스 입력 추가
+								$autoComplete.children("li").click(function() {
+																	$("#input-ingredient").val($(this).text());
+																	$("#input-ing-number").val($(this).children("input").val());
+																	$autoComplete.hide().children().remove();
+																}
+															).hover(function() {
+																	$(this).siblings().removeClass("sel");
+																	$(this).addClass("sel");
+																}, function() {
+																	$(this).removeClass("sel");
+																}
+															);
+
+							}
+
+							},
+							error : function(x, s, e) {
+								console.log(x, s, e);
+							}
+						});
+					}
+				});
+	});
+</script>
 
 	<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
 	
@@ -114,7 +216,7 @@
 								  <span class="input-group-text" id="basic-addon1">URL</span>
 								</div>
 								<!-- <input class="form-control" name='basic' value="" placeholder="해시태그를 입력하세요." aria-label="Username" aria-describedby="basic-addon1" autofocus> -->
-								<input class="form-control" name="recipeId`" class="some_class_name" placeholder="해당 영상의 URL을 입력하세요." value="" aria-label="Username" aria-describedby="basic-addon1" autofocus>
+								<input class="form-control" name="recipeId" class="some_class_name" placeholder="해당 영상의 URL을 입력하세요." value="" aria-label="Username" aria-describedby="basic-addon1" >
 							</div>
 							<hr>
 								<div class="input-group mb-3">
@@ -129,7 +231,7 @@
 									  <span class="input-group-text" id="basic-addon1">음식 이름</span>
 									</div>
 									<!-- <input class="form-control" name='basic' value="" placeholder="해시태그를 입력하세요." aria-label="Username" aria-describedby="basic-addon1" autofocus> -->
-									<input class="form-control" name="menuName" class="some_class_name" placeholder="음식의 이름을 입력하세요." value="" aria-label="Username" aria-describedby="basic-addon1" autofocus>
+									<input class="form-control" name="menuName" class="some_class_name" placeholder="음식의 이름을 입력하세요." value="" aria-label="Username" aria-describedby="basic-addon1" >
 								</div>
 							<hr>
 								<!-- 재료입력 -->
@@ -140,7 +242,9 @@
                                 <div class="row m-auto">
                                 <span class="input col-4 p-0">
                                     <input class="form-control" type="text" id="input-ingredient" autocomplete="off" placeholder="재료명을 입력하세요."/>
+                                	<ul id="autoComplete"></ul>
 								</span>
+								<input type="number" id="input-ing-number" hidden/>
 								<span class="input col-4 p-0">
                                     <input class="form-control" type="text" id="input-ing-mass" autocomplete="off" placeholder="계량을 입력하세요."/>
                                 </span>
