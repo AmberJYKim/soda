@@ -2,6 +2,8 @@ package com.soda.onn.chef.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,11 +54,27 @@ public class ChefController {
 	@PostMapping("/chefInsert")
 	public String chefRequest(ChefRequest chefRequest,
 							HttpServletRequest request,
+							@RequestParam (value="facebook") String facebook,
+							@RequestParam(value ="insta") String insta,
 							@RequestParam(value="chefProfileimg",required=true) MultipartFile chefProfile,
 							@RequestParam(value="chefApVideoimg", required=true) MultipartFile chefApVideo,
 							RedirectAttributes redirectAttribute) {
 		
-		System.out.println(chefRequest);
+//		System.out.println(chefRequest);
+//		
+//		log.debug("facebook={}",facebook);
+//		log.debug("insta={}",insta);
+
+		// sns map객체 -> gson으로 넘
+		Map<String,String> snsMap = new HashMap<String, String>();
+		snsMap.put("facebook", facebook);
+		snsMap.put("insta ", insta);
+
+		Gson gson = new Gson();
+		String snsGson = gson.toJson(snsMap);
+		
+		chefRequest.setSns(snsGson);
+		
 		
 		//프로필 사진 닉네임으로 파일명 저장하기; 
 		String profileOriginalFileName = chefProfile.getOriginalFilename();
@@ -88,8 +106,7 @@ public class ChefController {
 //        }
 //		
 		
-		log.debug("chefReuqest = {}",chefRequest);
-		
+
 		int result = chefservice.chefRequest(chefRequest);
 		String msg=result > 0 ? "셰프신청이 완료되었습니다.":"셰프신청에 실패하셨습니다.";
 		redirectAttribute.addFlashAttribute("msg", msg);

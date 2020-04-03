@@ -2,6 +2,7 @@ package com.soda.onn.chef.model.vo;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 import com.soda.onn.member.model.vo.Member;
 
