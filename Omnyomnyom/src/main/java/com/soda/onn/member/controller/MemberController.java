@@ -122,6 +122,7 @@ public class MemberController {
 	}
 
 	
+	//회원가입 ajax 메소드
 //	@GetMapping("/{memberNick}/checkMember")
 	@GetMapping("/checkMember/{key}/{value}")
 	@ResponseBody
