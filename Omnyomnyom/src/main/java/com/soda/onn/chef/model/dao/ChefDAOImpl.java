@@ -1,6 +1,7 @@
 package com.soda.onn.chef.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -45,5 +46,10 @@ public class ChefDAOImpl implements ChefDAO {
 	
 
 	
+
+	@Override
+	public int chefRequestUpdate(Map<String, String> chefReq) {
+		return sqlSession.update("chef.chefRequestUpdate", chefReq);
+	}
 
 }

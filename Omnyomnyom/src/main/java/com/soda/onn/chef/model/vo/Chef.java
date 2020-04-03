@@ -26,19 +26,19 @@ public class Chef extends Member implements Serializable{
 	private String chefMainvideo;
 	private String chefSns;
 	private String chefProfile;
-	private String chefCategory;
+	private String menuPrCategory;
 	private Date chefRegDate;
 	private String businessInfo;
 	private String chefContent;
 	
 	public Chef(String memberId, String memberPwd, String memberNick, String memberName, String phone, String email,
 			String ssn, String memberRoll, Date regDate, String address, String chefMainvideo, String chefSns,
-			String chefProfile, String chefCategory, Date chefRegDate, String businessInfo, String chefContent) {
+			String chefProfile, String menuPrCategory, Date chefRegDate, String businessInfo, String chefContent) {
 		super(memberId, memberPwd, memberNick, memberName, phone, email, ssn, memberRoll, regDate, address);
 		this.chefMainvideo = chefMainvideo;
 		this.chefSns = chefSns;
 		this.chefProfile = chefProfile;
-		this.chefCategory = chefCategory;
+		this.menuPrCategory = menuPrCategory;
 		this.chefRegDate = chefRegDate;
 		this.businessInfo = businessInfo;
 		this.chefContent = chefContent;

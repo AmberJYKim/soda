@@ -150,7 +150,7 @@
     <!-- Header Section -->
     <header class="header-section">
         <div class="header-bottom">
-            <a href="index.html" class="site-logo">
+            <a href="${pageContext.request.contextPath}" class="site-logo">
                 <img src="${pageContext.request.contextPath }/resources/images/onn_logo_red.png" alt="" class="main_logo">
             </a>
             <div class="hb-right" style="z-index: 1000;">

@@ -20,6 +20,8 @@ public interface ChefService {
 
 	int chefRequest(ChefRequest chefRequest);
 
+	int chefRequestUpdate(Map<String, String> chefReq);
+
 
 
 

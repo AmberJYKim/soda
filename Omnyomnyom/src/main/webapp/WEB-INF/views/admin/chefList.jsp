@@ -35,7 +35,7 @@
                     
                     <%
                     	List<Chef> chefList = (List<Chef>)request.getAttribute("chefList");
-                    
+                    	
                     	for(Chef chef : chefList){
                     %>
 	                    <div class="col-6 row chef-content">
@@ -46,7 +46,7 @@
 	                        <div class="col-4 che-list-p">
 	                            <p><%=((Member)chef).getMemberNick()%></p>
 	                            <p><%=((Member)chef).getEmail()%></p>
-	                            <p><%=chef.getChefCategory() %></p>
+	                            <p><%=chef.getMenuPrCategory() %></p>
 	                        </div>
 	                        <div class="col-2"></div>
 	                    </div>

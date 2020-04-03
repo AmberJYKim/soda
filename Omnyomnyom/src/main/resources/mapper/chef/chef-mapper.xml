@@ -4,6 +4,14 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="chef">
 
+<update id="chefRequestUpdate">
+	update 
+		tb_chef_req
+	set
+		chef_req_ok	= #{variable}
+	where
+		member_id = #{chefId}
+</update>
 <resultMap type="chef" id="chefMap" >
 <result column="member_id" property="chefId"/>
 <result column="member_nick" property="chefNickName"/>
@@ -19,14 +27,20 @@
 		c.regdate
 </select>
 
-<select id="selectChefRequestList" resultType="chefRequest">
+<select id="selectChefRequestList" resultMap="chefReqMap">
 	select
 		*
 	from
-		tb_chef_req
+		tb_chef_req c
+		join tb_member m using(member_id)
 	order by
-		regdate
+		c.regdate
 </select>
+
+<resultMap type="chefRequest" id="chefReqMap" >
+	<result column="member_id" property="chefId"/>
+	<result column="member_nick" property="chefNickName"/>
+</resultMap>
 
 <select id="selectChefRequest" resultType="chefRequest">
 	select
@@ -59,7 +73,6 @@
 	 default
 	 ) 
 </insert>
-
 <resultMap type="chefRequest" id="chefReqMap">
 	<result column = "chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
 </resultMap>
