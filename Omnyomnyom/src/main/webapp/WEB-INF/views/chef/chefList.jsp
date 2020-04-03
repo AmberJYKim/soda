@@ -22,8 +22,8 @@ function go_chefpage() {
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 m-auto text-white">
-                    <h2>셰프별 검색</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <h2>CHEF CHANNAL</h2>
+                    <p>셰프채널 </p>
                 </div>
             </div>
         </div>
