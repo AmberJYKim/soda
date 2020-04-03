@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.soda.onn.chef.model.service.ChefService;
+import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.common.util.ChefRequestUtils;
 
@@ -37,8 +39,11 @@ public class ChefController {
 	private ChefService chefservice;
 	
 	@GetMapping("/chefList.do")
-	public void chefList() {
+	public void chefLis(ModelAndView mav) {
 		
+		List<Chef> chefList = chefservice.selectChefAllList();
+		mav.addObject("chefList", chefList);
+		mav.setViewName("/chef/chefList");
 	}
 	@GetMapping("/chefpage.do")
 	public void chefpage() {
@@ -65,7 +70,7 @@ public class ChefController {
 //		log.debug("facebook={}",facebook);
 //		log.debug("insta={}",insta);
 
-		// sns map객체 -> gson으로 넘
+		// sns map객체 -> gson으로 넘김 
 		Map<String,String> snsMap = new HashMap<String, String>();
 		snsMap.put("facebook", facebook);
 		snsMap.put("insta ", insta);

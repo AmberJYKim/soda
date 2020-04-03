@@ -4,14 +4,17 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="chef">
 
-<select id="selectChefList" resultType="chef">
-	select
+<resultMap type="chef" id="chefMap" >
+<result column="member_id" property="chefId"/>
+<result column="member_nick" property="chefNickName"/>
+</resultMap>
+
+<select id="selectChefAllList" resultMap="chefMap">
+	select 
 		*
 	from
-		(select *
-		 from tb_member m
-		 where member_roll = 'C') m
-		join  tb_chef c on c.member_id = m.member_id
+   		tb_member M  join tb_chef C
+      using (member_id)
 	order by
 		c.regdate
 </select>

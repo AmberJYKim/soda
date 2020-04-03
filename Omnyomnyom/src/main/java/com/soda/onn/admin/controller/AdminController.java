@@ -60,7 +60,7 @@ public class AdminController {
 	public ModelAndView chefList() {
 		ModelAndView mav = new ModelAndView();
 		
-		List<Chef> chefList = chefService.selectChefList();
+		List<Chef> chefList = chefService.selectChefAllList();
 		mav.addObject("chefList", chefList);
 		mav.setViewName("admin/chefList");
 		

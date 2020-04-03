@@ -21,6 +21,8 @@ public class Chef extends Member implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
+	private String chefId;
+	private String chefNickName;
 	private String chefMainvideo;
 	private String chefSns;
 	private String chefProfile;
