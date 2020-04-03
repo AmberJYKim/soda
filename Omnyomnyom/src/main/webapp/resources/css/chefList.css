@@ -164,9 +164,9 @@ section .row .image_overflow_hidden img{
 
 section .row button{
 	padding: 5px 10px;
-	color: white;
+	color: gray;
 	border: none;
-	background-color: #e73828;
+
 }
 .chef-List{
 	margin-top: 80px;
@@ -258,7 +258,7 @@ section .row button{
 
 /* buttons */
 .btn-outline-danger{
-
+    color:white;
     float: right;
 }
 
