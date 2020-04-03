@@ -239,3 +239,9 @@
     .overlay p {
         color: #DDDDDD;
     }
+    
+div#memberId-container{position:relative; padding:0px;}
+div#memberId-container span.guide {display:none;}
+div#memberId-container span.nickGuide {display:none;}
+div#memberId-container span.ok{color:green;}
+div#memberId-container span.error{color:red;}

@@ -51,7 +51,113 @@
     <!-- 회원가입 js -->
     <c:if test="${empty memberLoggedIn}">
     <script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
+	
+	<script>
+		//사용 가능한 아이디, 닉네임인지 확인 하는 스크립트
+		$(document).ready(function(){
+		
+				//memberId input창에서 아이디를 입력 할 경우
+				$("#memberId").on("keyup", function(){
+					console.log("memberId keyup");  /* 여기는 값 들어옴 */
+					memberId = $(this).val().trim();
+					
+					console.log($(this).val());  /* 실시간으로 아이디 값 들어오는거 확인 */
+					
+					//아이디 글자수 검사
+					//아이디 재작성시
+					if(memberId.length < 4){
+						/* $(".guide.error").hide();
+						$(".guide.ok").show(); */
+						$("#idDuplicateCheck").val(1);
+						return;
+					} 
+					
+					signupFun(this);
+				});
+				
+				//memberNick input창에서 닉네임을 입력 할 경우
+				$("#memberNick").on("keyup", function(){
+					console.log("memberNick keyup");
+					memberNick = $(this).val().trim();
+					
+					console.log($(this).val());
+					
+					/* if(memberNick .length < 4){
+						$(".nickGuide.error").hide();
+						$(".nickGuide.ok").show();
+						$("#nickDuplicateCheck").val(1);
+						return;
+					} */
+					/* console.log($(this).val()); */
+					
+					
+					signupFun(this);
+				});
+					
+				
+				//ajax 실행 메소드
+				function signupFun(e){
+					$.ajax({
+						url:"${pageContext.request.contextPath}/member/checkMember/"+$(e).attr('id')+"/"+$(e).val(),
+						type: "GET",
+						
+						
+						success: data => {
+							console.log(data);
+							
+							
+						if($(e).attr('id') == "memberId"){
+							
+							if(data.isUsable != "ok"){
+								$(".guide.error").hide();
+								$(".guide.ok").show();
+								$("#idDuplicateCheck").val(1);
+							}
+							else{
+								$(".guide.error").show();
+								$(".guide.ok").hide();
+								$("#idDuplicateCheck").val(0);
+							}
+						}
+						
+						
+						if($(e).attr('id') == "memberNick"){
+							
+							if(data.isUsable != "ok"){
+								$(".nickGuide.error").hide();
+								$(".nickGuide.ok").show();
+								$("#idDuplicateCheck").val(1);
+							}
+							else{
+								$(".nickGuide.error").show();
+								$(".nickGuide.ok").hide();
+								$("#idDuplicateCheck").val(0);
+							}
+						}
+							
+							
+							
+							
+						},
+						error: (x,s,e) => {
+							console.log(x,s,e);
+						}
+					});
+				}
+			});				
+	</script>
+	
     </c:if>
+    
+    
+    
+	<style>
+	div#memberId-container{position:relative; padding:0px;}
+div#memberId-container span.guide {display:none;}
+div#memberId-container span.ok{color:green;}
+div#memberId-container span.error{color:red;}
+	
+	</style>
 </head>
 <body>
 
@@ -99,29 +205,53 @@
                     <div id="ex1" class="modal">
                         <div class="login_container" id="login_container">
                             <div class="form-container sign-up-container">
-                                <form action="${pageContext.request.contextPath }/member/enroll" method="POST" >
+                                <form action="${pageContext.request.contextPath }/member/enroll" method="POST" onsubmit="return enrollValidate();">
                                     <h1>회원가입</h1>
                                     <!-- <div class="social-container">
                                     
                                         </div> -->
-                                    <input type="text" placeholder="아이디를 입력하세요" id="memberid" name="memberId" onblur="emailValidate();" required/>
+                                  <div id="memberId-container">
+                                    <input type="text" placeholder="아이디를 입력하세요" id="memberId" name="memberId" required/>
+                                    <span class="guide ok">이 아이디는 사용가능합니다.</span>
+									<span class="guide error">이 아이디는 사용할 수 없습니다.</span>
+									<input type="hidden" name="idDuplicateCheck"
+							   			   id="idDuplicateCheck" value="0" />
                                     <span class="error" id="errorId"></span>
-                                    <input type="password" name="memberPwd" id="password_" placeholder="Password" onblur="pwValidate();" required />
+                                  </div>
+                                    
+                                    <input type="password" name="memberPwd" id="password" placeholder="Password"  required >
                                     <span class="error" id="errorPw"></span>
-                                    <input type="password" id="password_2" placeholder="Confirm Password" onblur="isEqualPwd();" required>
+                                    
+                                    <input type="password" id="password_2" placeholder="Confirm Password"  required>
                                     <span class="error" id="errorPwChk"></span>
-                                    <input type="email" placeholder="Email" id="email" name="email" onblur="emailValidate();" required/>
+                                    
+                                    <input type="email" placeholder="Email" id="email" name="email"  required/>
                                     <span class="error" id="errorEmail"></span>
+                                    
                                     <input type="text" name="memberName" id="memberName" placeholder="Name" required>
                                     <span class="error" id="errorName"></span>
-                                    <input type="text" placeholder="닉네임을 입력하세요" name="memberNick" id="nickname" maxlength="" required>
-                                    <span class="error" id="errorPhone"></span>
+                                   
+                                  <div id="memberId-container">
+                                    <input type="text" placeholder="닉네임을 입력하세요" id="memberNick" name="memberNick" required/>
+                                    <span class="nickGuide ok">이 닉네임은 사용가능합니다.</span>
+									<span class="nickGuide error">이 닉네임은 사용할 수 없습니다.</span>
+									<input type="hidden" name="nickidDuplicateCheck"
+							   			   id="nickDuplicateCheck" value="0" />
+                                    <span class="error" id="errorId"></span>
+                                  </div>
+                                  
+                                    
+                                    
                                     <input type="tel" placeholder="Phone Number(-없이)" name="phone" id="phone" maxlength="11" required>
                                     <span class="error" id="errorPhone"></span>
-                                    <input type="number" name="ssn" id="brithday" required>
+                                    
+                                    <input type="number" name="ssn" id="ssn" required>
+                                   
                                     <input type="address" name="address" id="address" placeholder="주소를 입력하세요" required>
                                     <span class="error" id="errorName"></span>
+                                    
                                     <button type="submit" >회원가입</button>
+                                    <!-- <input type="button" id="enrollBtn" value="회원가입"> -->
                                 </form>
                             </div>
                             <div class="form-container sign-in-container">
