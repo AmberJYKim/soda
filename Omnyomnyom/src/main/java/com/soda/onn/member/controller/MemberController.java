@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,7 @@ import com.soda.onn.member.model.vo.Member;
 import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.net.aso.i;
 
 @Slf4j
 @RequestMapping("/member")
@@ -103,6 +105,7 @@ public class MemberController {
 		ModelAndView mav = new ModelAndView();
 		log.debug("member={}",member);
 		String memberPwd = member.getMemberPwd();
+		
 
 		String bcryptPwd = bcrypt.encode(memberPwd);
 		member.setMemberPwd(bcryptPwd);
@@ -120,5 +123,35 @@ public class MemberController {
 	}
 
 	
+//	@GetMapping("/{memberNick}/checkMember")
+	@GetMapping("/checkMember/{key}/{value}")
+	@ResponseBody
+	public Map<String, String> checkId2(@PathVariable("key") String key, 
+										@PathVariable("value") String value,
+			Model model) {
+//		log.debug("memberId={}", memberId);
+//		log.debug("memberId={}", key, value);
+		
+		System.out.println("key = " + key);
+		System.out.println("value = " + value);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(key, value);
+		
+		log.debug("회원가입 Ajax 진입");
+		Member checkMember = memberService.selectMember(map);
+			
+//		System.out.println("checkMember@controller = " + checkMember);
+		String isUsable = "";
+		if(checkMember != null) {
+			isUsable = "ok";
+		}
+		System.out.println("ok인가 아닌가 " + isUsable);
+		map.put("isUsable", isUsable);
+//		log.debug("checkMember={}", checkMember);
+		
+		
+		return map;
+	}
 
 }
