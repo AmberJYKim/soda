@@ -10,7 +10,7 @@ import com.soda.onn.chef.model.vo.ChefRequest;
 
 public interface ChefDAO {
 
-	List<Chef> selectChefList();
+	List<Chef> selectChefAllList();
 
 	List<ChefRequest> selectChefRequestList(RowBounds rowBounds);
 

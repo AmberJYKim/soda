@@ -12,16 +12,18 @@
 	where
 		member_id = #{chefId}
 </update>
+<resultMap type="chef" id="chefMap" >
+<result column="member_id" property="chefId"/>
+<result column="member_nick" property="chefNickName"/>
+</resultMap>
 
-<select id="selectChefList" resultMap="chefReqMap">
-	select
+<select id="selectChefAllList" resultMap="chefMap">
+	select 
 		*
 	from
-		(select *
-		 from tb_member m
-		 where member_roll = 'C') m
-		join  tb_chef c on using(member_id)
-		order by
+   		tb_member M  join tb_chef C
+      using (member_id)
+	order by
 		c.regdate
 </select>
 
@@ -56,7 +58,7 @@
 		tb_chef_req
 </select>
 
-<insert id="chefRequest" >
+<insert id="chefRequest">
 	insert into 
 	 	TB_chef_req
 	 values(
@@ -71,4 +73,8 @@
 	 default
 	 ) 
 </insert>
+<resultMap type="chefRequest" id="chefReqMap">
+	<result column = "chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
+</resultMap>
+
 </mapper>
