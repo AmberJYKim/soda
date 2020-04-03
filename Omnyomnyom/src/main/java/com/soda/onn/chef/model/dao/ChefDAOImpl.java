@@ -17,11 +17,12 @@ public class ChefDAOImpl implements ChefDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
+	
 	@Override
-	public List<Chef> selectChefList() {
-		return sqlSession.selectList("chef.selectChefList");
+	public List<Chef> selectChefAllList() {
+		
+		return sqlSession.selectList("chef.selectChefAllList");
 	}
-
 	@Override
 	public List<ChefRequest> selectChefRequestList(RowBounds rowBounds) {
 		return sqlSession.selectList("chef.selectChefRequestList", null, rowBounds);
@@ -41,5 +42,8 @@ public class ChefDAOImpl implements ChefDAO {
 	public int chefReuqest(ChefRequest chefRequest) {
 		return sqlSession.insert("chef.chefRequest",chefRequest);
 	}
+	
+
+	
 
 }

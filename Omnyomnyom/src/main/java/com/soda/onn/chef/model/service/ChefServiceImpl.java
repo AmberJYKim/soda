@@ -18,8 +18,8 @@ public class ChefServiceImpl implements ChefService {
 	private ChefDAO chefDAO;
 	
 	@Override
-	public List<Chef> selectChefList() {
-		return chefDAO.selectChefList();
+	public List<Chef> selectChefAllList() {
+		return chefDAO.selectChefAllList();
 	}
 
 	@Override
