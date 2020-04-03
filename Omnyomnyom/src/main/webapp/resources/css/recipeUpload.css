@@ -3918,12 +3918,6 @@ input.videotime {
     width: 25%;
 }
 
-.oneday_class_img img {
-    border-radius: 12px;
-    margin-bottom: 0px;
-    min-width: 100%;
-}
-
 .event-details {
     padding-right: 20px;
     margin-bottom: 50px;
@@ -4839,8 +4833,8 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .oneday_class_img {
-    width: 700px;
-    height: 470px;
+    width: 100%;
+    height: 367px;
     border-radius: 12px;
     margin-bottom: 10px;
     border: 1px solid rgb(189, 189, 189);
@@ -4851,13 +4845,13 @@ only screen and (min-width: 576px) and (max-width: 767px),
     color: #f65d5d;
 }
 
-.oneday_class_img img {
-    width: 700px;
-    height: 470px;
+.oneday_class_img video{
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
     border-radius: 12px;
-    min-width: 100%;
-    min-height: 100%;
-    opacity: 0.5;
+	position: absolute;
 }
 
 

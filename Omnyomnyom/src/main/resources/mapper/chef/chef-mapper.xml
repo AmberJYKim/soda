@@ -12,17 +12,19 @@
 	where
 		member_id = #{chefId}
 </update>
+
 <resultMap type="chef" id="chefMap" >
-<result column="member_id" property="chefId"/>
-<result column="member_nick" property="chefNickName"/>
+	<result column="member_id" property="chefId"/>
+	<result column="member_nick" property="chefNickName"/>
 </resultMap>
 
 <select id="selectChefAllList" resultMap="chefMap">
 	select 
-		*
+		C.*, 
+		M.member_nick 
 	from
-   		tb_member M  join tb_chef C
-      using (member_id)
+	 	tb_chef C 
+		join tb_member M  on C.member_Id = M.member_Id	
 	order by
 		c.regdate
 </select>
@@ -40,6 +42,7 @@
 <resultMap type="chefRequest" id="chefReqMap" >
 	<result column="member_id" property="chefId"/>
 	<result column="member_nick" property="chefNickName"/>
+	<result column="chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
 </resultMap>
 
 <select id="selectChefRequest" resultType="chefRequest">
@@ -73,8 +76,6 @@
 	 default
 	 ) 
 </insert>
-<resultMap type="chefRequest" id="chefReqMap">
-	<result column = "chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
-</resultMap>
+
 
 </mapper>
