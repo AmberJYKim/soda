@@ -20,7 +20,7 @@ public class RecipeIngredient implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int ingredientNo;
-	private int minWeight;
+	private String minWeight;
 	private String ingredientName;
-	private String FileName;
+	private int recipeNo;
 }

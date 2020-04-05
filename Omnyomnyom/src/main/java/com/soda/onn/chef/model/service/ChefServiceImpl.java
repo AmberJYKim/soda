@@ -1,6 +1,7 @@
 package com.soda.onn.chef.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class ChefServiceImpl implements ChefService {
 	private ChefDAO chefDAO;
 	
 	@Override
-	public List<Chef> selectChefList() {
-		return chefDAO.selectChefList();
+	public List<Chef> selectChefAllList() {
+		return chefDAO.selectChefAllList();
 	}
 
 	@Override
@@ -39,8 +40,12 @@ public class ChefServiceImpl implements ChefService {
 
 	@Override
 	public int chefRequest(ChefRequest chefRequest) {
-		
 		return chefDAO.chefReuqest(chefRequest);
+	}
+
+	@Override
+	public int chefRequestUpdate(Map<String, String> chefReq) {
+		return chefDAO.chefRequestUpdate(chefReq);
 	}
 
 	

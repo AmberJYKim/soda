@@ -62,16 +62,19 @@ function go_chefpage() {
                 </div>
             </div>
 
+<!-- 셰프리스트  -->
             <div class="row">
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
+            
+            <c:forEach items="${chefList}" var="chef">
+                <div class="col-xs-6 col-sm-3 plsaceholder chef_list">
                     <div class="image_overflow_hidden">
-                        <img src="/img/1508_008.jpg" class="" alt="">
+                        <img src="${pageContext.request.contextPath}/resources/images/${chef.chefProfile}" class="" alt="">
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-1"></div>
                         <div class="col-6">
-                            <h4>1종원</h4>
+                            <h4>${chef.memv}</h4>
 
                             <span class="color-2">#한식</span>
                             <span class="color-2">#중식</span>
@@ -81,63 +84,10 @@ function go_chefpage() {
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <div class="image_overflow_hidden">
-                        <img src="/img/1508_008.jpg" class="" alt="">
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-6">
-                            <h4>1종원</h4>
-
-                            <span class="color-2">#한식</span>
-                            <span class="color-2">#중식</span>
-                        </div>
-                        <div class="col-4 align-self-center">
-                            <button type="button">채널</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <div class="image_overflow_hidden">
-                        <img src="/img/1508_008.jpg" class="" alt="">
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-6">
-                            <h4>1종원</h4>
-
-                            <span class="color-2">#한식</span>
-                            <span class="color-2">#중식</span>
-                        </div>
-                        <div class="col-4 align-self-center">
-                            <button type="button">채널</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <div class="image_overflow_hidden">
-                        <img src="/img/1508_008.jpg" class="" alt="">
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-6">
-                            <h4>1종원</h4>
-
-                            <span class="color-2">#한식</span>
-                            <span class="color-2">#중식</span>
-                        </div>
-                        <div class="col-4 align-self-center">
-                            <button type="button">채널</button>
-                        </div>
-                    </div>
-                </div>
+               </c:forEach>      
             </div>
 
-
+<!-- 셰프클릭시 해당 셰프영상 밑에 뜨 -->
 
             <div class="row" id="Ylist">
                 <div class="col-xs-6 col-sm-3 placeholder chef_list">
@@ -195,81 +145,8 @@ function go_chefpage() {
                 	<input type="button" class="chef-Thumbnail-link" onclick="go_chefpage();" value="채널로 이동">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <div class="image_overflow_hidden">
-                        <img src="/img/1508_008.jpg" class="" alt="">
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-6">
-                            <h4>1종원</h4>
-
-                            <span class="color-2">#한식</span>
-                            <span class="color-2">#중식</span>
-                        </div>
-                        <div class="col-4 align-self-center">
-                            <button type="button">채널</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <div class="image_overflow_hidden">
-                        <img src="/img/1508_008.jpg" class="" alt="">
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-6">
-                            <h4>1종원</h4>
-
-                            <span class="color-2">#한식</span>
-                            <span class="color-2">#중식</span>
-                        </div>
-                        <div class="col-4 align-self-center">
-                            <button type="button">채널</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <div class="image_overflow_hidden">
-                        <img src="/img/1508_008.jpg" class="" alt="">
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-6">
-                            <h4>1종원</h4>
-
-                            <span class="color-2">#한식</span>
-                            <span class="color-2">#중식</span>
-                        </div>
-                        <div class="col-4 align-self-center">
-                            <button type="button">채널</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <div class="image_overflow_hidden">
-                        <img src="/img/1508_008.jpg" class="" alt="">
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-6">
-                            <h4>1종원</h4>
-
-                            <span class="color-2">#한식</span>
-                            <span class="color-2">#중식</span>
-                        </div>
-                        <div class="col-4 align-self-center">
-                            <button type="button">채널</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            
+         </div>
         <!-- end-->
         <script>
             $(() => {
