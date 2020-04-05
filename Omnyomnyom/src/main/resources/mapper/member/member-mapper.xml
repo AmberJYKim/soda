@@ -27,10 +27,10 @@
 	from
 		tb_member
 	where
-	<if test="memberId != ''">
+	<if test="memberId != null">
 		member_id = #{memberId}
 	</if> 
-	<if test="memberNick != ''">
+	<if test="memberNick != null">
 		member_nick = #{memberNick}
 	</if>
 </select>

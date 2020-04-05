@@ -31,7 +31,7 @@
                 // init Tagify script on the above inputs
                 tagify = new Tagify(input, {
                     whitelist: ["한식", "중식", "일식", "양식", "밀식", "즉석식", "기타식", "건강식"],
-                    maxTags: 10,
+                    maxTags: 3,
                     dropdown: {
                         maxItems: 20, // <- mixumum allowed rendered suggestions
                         classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
@@ -270,7 +270,7 @@
                     <div class="col-lg-6">
                         <span class="input input--yoshiko">
                             <!-- 클래스명 input -->
-                            <input class="input__field input__field--yoshiko"  type="text" name="sns" id="input-class-name" />
+                            <input class="input__field input__field--yoshiko"  type="text" name="facebook" id="input-class-name" />
                             <!-- 클래스명 라벨 -->
                             <label class="input__label input__label--yoshiko" for="input-class-name">
                                 <span class="input__label-content input__label-content--yoshiko" data-content="페이스북">페이스북</span>
@@ -280,7 +280,7 @@
                     <div class="col-lg-6">
                         <span class="input input--yoshiko">
                             <!-- 클래스명 input -->
-                            <input class="input__field input__field--yoshiko" type="text" name="sns" id="input-class-name" />
+                            <input class="input__field input__field--yoshiko" type="text" name="insta" id="input-class-name" />
                             <!-- 클래스명 라벨 -->
                             <label class="input__label input__label--yoshiko" for="input-class-name">
                                 <span class="input__label-content input__label-content--yoshiko" data-content="인스타그램">인스타그램</span>

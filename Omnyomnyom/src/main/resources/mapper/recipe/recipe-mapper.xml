@@ -16,6 +16,43 @@
 	<select id="selectIngredientsCnt" resultType="_int">
 		select count(*) from tb_ingredient where ing_cd_category = #{subCtg}
 	</select>
+  
 	
-	
+	<select id="ingredientAjax" resultType="ingredient">
+		select *
+		from TB_Ingredient
+		where ingredient_name like '%'||#{ingr}||'%'
+	</select>
+	<insert id="recipeUpload" parameterType="recipe">
+		insert into 
+			TB_recipe
+		values(
+			seq_recipe.nextval,
+			#{recipeName},
+			#{recipeId},
+			#{timeline},
+			#{menuName},
+			#{chefNick},
+			#{chefId},
+			#{cookingTime},
+			#{category},
+			#{recipeContent},
+			default,
+			default
+		)
+		<selectKey keyProperty="recipeNo" resultType="_int" order="AFTER">
+			select seq_recipe.currval from dual
+		</selectKey>
+	</insert>
+	<insert id="recipeIngrUpload" parameterType="recipeIngredient">
+		insert into
+			tb_rec_Ingredients
+		values(
+			#{recipeNo},
+			#{ingredientNo},
+			#{minWeight},
+			#{ingredientName}
+		)
+	</insert>
+  
 </mapper>

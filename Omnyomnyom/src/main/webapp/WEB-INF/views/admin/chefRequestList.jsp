@@ -21,102 +21,77 @@
 <!-----------------------------------------출력 구간---------------------------------------------------------------->
 					<c:if test="${chefRequestList != null}" >
 					<c:forEach items="${chefRequestList}" var="chefRequest">
-						<div class="col-12 row">
+						<div class="col-12 row" id="${chefRequest.chefId}">
 							<div class="col-2">
 								<!-- <img src="1508_008.jpg" alt="" class="chef_list_img"> -->
- 								<img src="${pageContext.request.contextPath}/resources/images/chef/${chefRequest.profile}" alt="${chefRequest.memberNick}" class="chef_list_img">
+ 								<img src="${pageContext.request.contextPath}/resources/images/upload/profile/${chefRequest.chefProfile}" alt="${chefRequest.chefId}" class="chef_list_img">
 							</div>
 							<div class="col-4">
-								<p>이름 : ${chefRequest.memberName}</p> 
-								<p>닉네임 : ${chefRequest.memberNick}</p>
-								<p>이메일 : ${chefRequest.email }</p>
+								<p>닉네임 : ${chefRequest.chefNickName}</p>
+								<p>아이디 : ${chefRequest.chefId}</p> 
+								<%-- <p>이메일 : ${chefRequest.email }</p> --%>
 							</div>
 	
 							<div class="col-4">
-								<p>연락처 : ${chefRequest.email }</p>
-								<p>대표 장르 : ${chefRequest.category}</p>
-								<p>대표 채널/영상 : <a href="${chefRequest.chefReqVideo }">링크</a> </p>
+								<%-- <p>연락처 : ${chefRequest.email }</p> --%>
+								<p>대표 장르 : <jstr>${chefRequest.menuPrCategory}</jstr></p>
+								<p>대표 채널/영상 : <a href="${chefRequest.chefApVideo }">링크</a> </p>
 							</div>
 							<c:choose>
-								<c:when test="${empty chefRequest.chefReqOk }">
-									<c:when test="${chefRequest.chefReqOk eq 'Y'}">
-										<div class="col-2 chef_list_chek_btn ">
-											<img src="img/admin/chek.png" alt="" class="ac_btn">
-										</div>
-									</c:when>
-									<c:when test="${chefRequest.chefReqOk eq 'N'}">
-										<div class="col-2 chef_list_chek_btn ">
-											<img src="img/admin/cc.png" alt="" class="ac_btn">
-										</div>
-									</c:when>
+								<c:when test="${chefRequest.chefReqOk eq 'W'}">
+									<div class="col chef_list_chek_btn ">
+										<img src="${pageContext.request.contextPath }/resources/images/icons/chek.png" alt="" class="ac_ok_btn">
+									</div>
+									<div class="col chef_list_chek_btn ">
+										<!-- &nbsp;&nbsp;&nbsp;&nbsp; -->
+										<img src="${pageContext.request.contextPath }/resources/images/icons/cc.png" alt="" class="ac_no_btn">
+									</div>
+								</c:when>
+								<c:when test="${chefRequest.chefReqOk eq 'Y'}">
+									<div class="col chef_list_chek_btn ">
+										<img src="${pageContext.request.contextPath }/resources/images/icons/chek.png" alt="" class="ac_btn">
+									</div>
 								</c:when>
 								<c:otherwise>
-										<div class="col-1 chef_list_chek_btn ">
-											<img src="img/admin/chek.png" alt="" class="ac_btn">
-										</div>
-								
-										<div class="col-1 chef_list_chek_btn ">
-											<img src="img/admin/cc.png" alt="" class="ac_btn">
-										</div>
+									<div class="col-1 chef_list_chek_btn ">
+										<img src="${pageContext.request.contextPath }/resources/images/icons/cc.png" alt="" class="ac_btn">
+									</div>
 								</c:otherwise>
 							</c:choose>
 						</div>
 					</c:forEach>
+					${paging }
 					</c:if>
 <!-----------------------------------------출력 구간---------------------------------------------------------------->
-					
-					<br>
-					<div class="col-12 row">
-						<div class="col-2">
-							<img src="1508_008.jpg" alt="" class="chef_list_img">
-						</div>
-						<div class="col-4">
-							<p>이름 : 52종원</p> 
-							<p>닉네임 : 백종원</p>
-							<p>이메일 : 51Jong@cook.com</p>
-						</div>
-
-						<div class="col-4">
-							<p>연락처 : 010-8888-0909</p>
-							<p>대표 장르 : 한식, 퓨전</p>
-							<p>대표 채널/영상 : <a href="https://www.youtube.com/channel/UCyn-K7rZLXjGl7VXGweIlcA">링크</a> </p>
-						</div>
-						<div class="col-1 chef_list_chek_btn ">
-							<img src="img/admin/chek.png" alt="" class="ac_btn">
-						</div>
-						<div class="col-1 chef_list_chek_btn ">
-							<img src="img/admin/cc.png" alt="" class="ac_btn">
-						</div>
-					</div>
-
-					<br>
-					<div class="col-12 row">
-						<div class="col-2">
-							<img src="1508_008.jpg" alt="" class="chef_list_img">
-						</div>
-						<div class="col-4">
-							<p>이름 : 53종원</p> 
-							<p>닉네임 : 백종원</p>
-							<p>이메일 : 51Jong@cook.com</p>
-						</div>
-
-						<div class="col-4">
-							<p>연락처 : 010-8888-0909</p>
-							<p>대표 장르 : 한식, 퓨전</p>
-							<p>대표 채널/영상 : <a href="https://www.youtube.com/channel/UCyn-K7rZLXjGl7VXGweIlcA">링크</a> </p>
-						</div>
-						<div class="col-1 chef_list_chek_btn ">
-							<img src="img/admin/chek.png" alt="" class="ac_btn">
-						</div>
-						<div class="col-1 chef_list_chek_btn ">
-							<img src="img/admin/cc.png" alt="" class="ac_btn">
-						</div>
-					</div>
+					<script>
+					$(function(){
+			            $("jstr").each(function(index,jstr){
+			            	$(this).html($(this).html().replace(/\{|\}|\[|\]|\"|:|value/g,""));
+			            });
+			            
+						$(".ac_ok_btn").on("click",function(){
+							$("#variable").val("Y");
+							$("#chefId").val($(this).parent().parent().attr('id'));
+							$("#request_put").submit();
+						});
+						
+						$(".ac_no_btn").on("click",function(){
+							$("#variable").val("N");
+							$("#chefId").val($(this).parent().parent().attr('id'));
+							$("#request_put").submit();
+						});
+					});
+					</script>
 
 				</div>
 			</div>
 		</div>
 	</div>
+	<form style="display: none" action="${pageContext.request.contextPath }/admin/chefRequest" method="POST" id="request_put">
+	  <input type="hidden" id="chefId" name="chefId" value=""/>
+	  <input type="hidden" id="variable" name="variable" value=""/>
+	</form>
+	
 
 
 
