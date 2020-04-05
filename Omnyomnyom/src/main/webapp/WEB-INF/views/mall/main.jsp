@@ -318,6 +318,7 @@
     $(".catch-click-event").find("p").on("click",function(){
         $(this).addClass("active");
         $(this).parent().siblings().find("p").removeClass("active");
+        console.log($(this).text());
     });
 	
     $(".product_container").on("click",function(){
