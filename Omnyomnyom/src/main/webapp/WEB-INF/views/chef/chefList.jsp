@@ -58,26 +58,25 @@ function go_chefpage() {
             <div class="row">
                 <div class="col-lg-12 listbutton">
                     <button type="button" class="btn btn-outline-danger">인기순</button>
-                    <button type="button" class="btn btn-outline-danger">가나다순</button>
+                    <button type="button" class="btn btn-outline-danger">전체</button>
                 </div>
             </div>
 
 <!-- 셰프리스트  -->
             <div class="row">
-            
-            <c:forEach items="${chefList}" var="chef">
-                <div class="col-xs-6 col-sm-3 plsaceholder chef_list">
+            <c:forEach items="${chefList}" var="chef" >
+                <div class="col-xs-6 col-sm-3 plsaceholder chef_list" style="margin-top:50px;">
                     <div class="image_overflow_hidden">
-                        <img src="${pageContext.request.contextPath}/resources/images/${chef.chefProfile}" class="" alt="">
+                       <img src="${pageContext.request.contextPath}/resources/upload/profile/${chef.chefProfile}" class="" alt="">
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-1"></div>
                         <div class="col-6">
-                            <h4>${chef.memv}</h4>
-
-                            <span class="color-2">#한식</span>
-                            <span class="color-2">#중식</span>
+                            <h6>${chef.chefNickName}</h6>
+                            <c:forEach items="${chef.chefCategoryList}" var="vs">
+                            	<span class="color-2">#${vs}</span>
+                            </c:forEach>
                         </div>
                         <div class="col-4 align-self-center">
                             <button type="button">채널</button>
