@@ -10,6 +10,9 @@ public interface RecipeDAO {
 
 	List<String> selectIngSubCtg(String mainCtg);
 
+	List<Ingredient> selectIngredients(String subCtg, int cPage, int numPerPage);
+
+	int selectIngredientsCnt(String subCtg);
 	List<Ingredient> ingredientAjax(String ingr);
 
 	int recipeUpload(Recipe recipe);

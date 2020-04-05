@@ -10,7 +10,11 @@ public interface RecipeService {
 
 	List<String> selectIngSubCtg(String mainCtg);
 
-	int recipeUpload(Recipe recipe, List<RecipeIngredient> ingredientList);
+	List<Ingredient> selectIngredients(String subCtg, int cPage, int nUMPERPAGE);
+
+	int selectIngredientsCnt(String subCtg);
+
+  int recipeUpload(Recipe recipe, List<RecipeIngredient> ingredientList);
 
 	List<Ingredient> ingredientAjax(String ingr);
 
