@@ -1,31 +1,34 @@
 package com.soda.onn.member.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.soda.onn.common.base.PageBar;
 import com.soda.onn.member.model.service.MemberService;
+import com.soda.onn.member.model.vo.DingDong;
 import com.soda.onn.member.model.vo.Member;
-import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 import lombok.extern.slf4j.Slf4j;
-//import oracle.net.aso.i;
 
 @Slf4j
 @RequestMapping("/member")
@@ -69,6 +72,7 @@ public class MemberController {
 	}
 
 	
+	//로그 아웃
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		Member member = (Member)session.getAttribute("memberLoggedIn");
@@ -78,23 +82,6 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
-	
-	
-	//회원가입용 AJAX 메소드
-	@GetMapping("/enroll.do")
-	@ResponseBody
-	public Boolean enroll(@RequestParam("") String col,
-					   @RequestParam("") String value) {
-		
-		Boolean chkBool = true;
-		Map<String, String> map = new HashMap<String, String>();
-		map.put(col, value);
-		Member member = memberService.selectMember(map);
-		if(member != null)
-			chkBool = false;
-			
-		return chkBool;
-	}	
 	
 	//회원가입요청
 	@PostMapping("/enroll")
@@ -123,14 +110,11 @@ public class MemberController {
 
 	
 	//회원가입 ajax 메소드
-//	@GetMapping("/{memberNick}/checkMember")
 	@GetMapping("/checkMember/{key}/{value}")
 	@ResponseBody
 	public Map<String, String> checkId2(@PathVariable("key") String key, 
 										@PathVariable("value") String value,
 			Model model) {
-//		log.debug("memberId={}", memberId);
-//		log.debug("memberId={}", key, value);
 		
 		System.out.println("key = " + key);
 		System.out.println("value = " + value);
@@ -141,17 +125,88 @@ public class MemberController {
 		log.debug("회원가입 Ajax 진입");
 		Member checkMember = memberService.selectMember(map);
 			
-//		System.out.println("checkMember@controller = " + checkMember);
 		String isUsable = "";
 		if(checkMember != null) {
 			isUsable = "ok";
 		}
 		System.out.println("ok인가 아닌가 " + isUsable);
 		map.put("isUsable", isUsable);
-//		log.debug("checkMember={}", checkMember);
-		
 		
 		return map;
 	}
-
+	
+	//회원이 알림 읽었을 경우 (1 : 안 읽음, 0 : 읽음) 알림 읽음을 1 -> 0 변환
+	@PutMapping("/dingdong/{memberId}")
+	@ResponseBody
+	public void dingdongAjax(@PathVariable("memberId") String memberId,
+							 @RequestParam("dingdongNo") int dingdongNo){
+		
+		System.out.println("회원이 알림을 읽었습니다.");
+		log.debug("memberId={}", memberId);
+		log.debug("dongdongNo={}", dingdongNo);
+		
+		
+		int dingdongRead = memberService.updateDingdong(dingdongNo);
+	}
+	
+	//회원에게 알림이 추가 됐을 경우
+	@PostMapping("/dingdong/{memberId}")
+	@ResponseBody
+	public void insertDingdong(@PathVariable("memberId") String memberId) {
+		
+		System.out.println("회원에게 알림이 추가 됐습니다.");
+		log.debug("memberId={}", memberId);
+		int dingdongPlus = memberService.insertDingdong(memberId);
+		
+	}
+	
+	//회원 알림
+	@GetMapping("dingdong/{size}")
+	@ResponseBody
+	public Map<String, Object> dingdongList(@PathVariable("size") String size,
+													@RequestParam(value="cPage", defaultValue="1") int cPage,
+													@RequestParam("memberId") String memberId,
+													HttpServletRequest request){
+		
+				System.out.println("회원 알림 메소드에 들어왔스니다");
+		
+				Map<String, Object> resultMap =  new HashMap<String, Object>();
+				Map<String, String> params =  new HashMap<String, String>();
+				Map<String, Object> map = new HashMap<String, Object>();
+				List<DingDong> list = new ArrayList<DingDong>();
+				
+				
+				int NUMPERPAGE = 0;
+				int PAGEBARSIZE = 0;
+				
+					if(size.equals("small")) {
+						NUMPERPAGE = 5;
+						PAGEBARSIZE = 1;
+					}
+					else {
+						NUMPERPAGE = 10;
+						PAGEBARSIZE = 1;
+					}
+					
+				int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+				int pageEnd = pageStart+PAGEBARSIZE-1;
+					
+					params.put("dingMemberId", memberId);
+					params.put("size", size);
+				
+				List<DingDong> reulstList = memberService.listDingdongTest();
+				System.out.println(reulstList);
+				
+				int totalCount = memberService.selectDingdongListCnt();
+				int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+				String url = request.getRequestURL().toString()+"이 페이지에대한 링크";
+				String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		
+				map.put("paging",paging);
+				
+				resultMap.put("list", reulstList);
+				resultMap.put("map", map);
+					
+				return resultMap;
+	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
+import com.soda.onn.member.model.vo.DingDong;
 import com.soda.onn.member.model.vo.Member;
 
 public interface MemberService {
@@ -18,5 +19,26 @@ public interface MemberService {
 	List<Member> selectMemberList(RowBounds rowBounds);
 
 	int selectMemberListCnt();
+
+	int updateDingdong(int dingdongNo);;
+
+	int insertDingdong(String memberId);
+	
+	List<DingDong> listDingdong(Map<String, String> params);
+	
+	List<DingDong> listDingdongTest();
+
+	int selectDingdongListCnt();
+
+
+
+	
+
+	
+
+
+	
+
+	
 
 }

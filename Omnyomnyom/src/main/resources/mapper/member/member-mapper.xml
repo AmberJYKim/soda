@@ -60,4 +60,47 @@
 		tb_member
 </select>
 
+<update id="updateDingdong">
+	update
+		tb_dingdong
+	set
+		dingdong_read = 0
+	where
+		dingdong_no = #{dingdongNo}
+</update>
+
+<insert id="insertDingdong">
+	insert into
+		tb_dingdong
+	values{
+		#{dongdongNo},
+		#{memberId},
+		#{dingdongContent},
+		#{dingdongLink},
+		#{dingdongRead},
+		#{regDate}
+	}
+</insert>
+
+<select id="dingdongList" resultType="dingdong">
+	select
+		*
+	from
+		tb_dingdong
+</select>
+
+<select id="selectDingdongListCnt" resultType="String">
+	select
+		count(*)
+	from
+		tb_dingdong
+</select>
+
+<select id="dingdongListTest" resultType="dingdong">
+	select
+		*
+	from
+		tb_dingdong
+</select>
+
 </mapper>
