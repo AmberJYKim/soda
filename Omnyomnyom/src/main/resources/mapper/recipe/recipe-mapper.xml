@@ -11,4 +11,11 @@
 	<select id="selectIngredients" resultType="Ingredient">
 		select * from tb_ingredient where ing_cd_category = #{subCtg}
 	</select>
+	
+	
+	<select id="selectIngredientsCnt" resultType="_int">
+		select count(*) from tb_ingredient where ing_cd_category = #{subCtg}
+	</select>
+	
+	
 </mapper>

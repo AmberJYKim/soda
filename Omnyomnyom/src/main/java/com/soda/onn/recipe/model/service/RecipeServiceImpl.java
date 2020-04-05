@@ -16,13 +16,17 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public List<String> selectIngSubCtg(String mainCtg) {
-		
 		return recipeDAO.selectIngSubCtg(mainCtg);
 	}
 
 	@Override
-	public List<Ingredient> selectIngredients(String subCtg) {
-		return recipeDAO.selectIngredients(subCtg);
+	public List<Ingredient> selectIngredients(String subCtg, int cPage, int numPerPage) {
+		return recipeDAO.selectIngredients(subCtg, cPage, numPerPage);
+	}
+
+	@Override
+	public int selectIngredientsCnt(String subCtg) {
+		return recipeDAO.selectIngredientsCnt(subCtg);
 	}
 
 }

@@ -8,6 +8,8 @@ public interface RecipeService {
 
 	List<String> selectIngSubCtg(String mainCtg);
 
-	List<Ingredient> selectIngredients(String subCtg);
+	List<Ingredient> selectIngredients(String subCtg, int cPage, int nUMPERPAGE);
+
+	int selectIngredientsCnt(String subCtg);
 
 }

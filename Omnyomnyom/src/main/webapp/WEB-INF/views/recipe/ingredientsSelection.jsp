@@ -78,7 +78,7 @@ $(() => {
 	});
 	/* 파일패스용 전역변수  */
 	
-	/* 서브 카테고리 클릭 이벤트 설정 */
+	/* 서브 카테고리 클릭 이벤트 설정 & 재료 불러오기 */
 	$(document).on('click', '.sub-ctg-menu li>p', function(){
 		console.log($(this));
 		console.log($(this).html());
@@ -87,46 +87,97 @@ $(() => {
 		$(".sub-ctg-menu p").removeClass("active");
 		$(this).addClass("active");
 		
-	 	
+		
+		//액티브있는거 검사해서, 서브에저장하고, 리무드,애드 클래스하고
+		//전달할객체셋에 넣기
+		//페이징에서도 동일하게 사용하기
+		
+		//전달할 cpage설정
+		/* if($(this).hasClass("active")){
+			cpage = 1;
+		}else{
+			cpgae = $(this).text();
+		}
+		 */
+		
 		$.ajax({
 			url:"${pageContext.request.contextPath}/recipe/getIng",
 			dataType: "json",
 			method : "GET",
 			data: subCtg,
 			success : data =>{
-				console.log(data);
+				console.log(data,"success");
+				let ingList = data.ingList;
+				let ingCnt = data.ingData;
 				/* 재료 불러오기 및 교체작업*/
-				/* let ingredients = ' '; 
-				$.each(data,function(index, item){
-					
-					if(index == 0){
-						subCtgList += '<li> <p class="active">'+item+'</p> </li>';
-					}else{
-					subCtgList += '<li> <p>'+item+'</p> </li>';
+				$(".firstline").empty();
+				$(".secondline").empty();
+				$.each(ingList,function(index, item){
+					if(index < 6){
+						let ingredients =   '<div class="col-md-2 inner">'+
+											'<img src="${pageContext.request.contextPath }/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="ingredient img" class="ingredimg">'+
+											'<p>'+item.ingredientName+'</p>'+
+											'</div>';
+						$(".firstline").append(ingredients);
 					}
-					
-					console.log(item);
+					else if (index >=6){
+						let ingredients = '<div class="col-md-2 inner">'+
+											'<img src="${pageContext.request.contextPath }/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="ingredient img" class="ingredimg">'+
+											'<p>'+item.ingredientName+'</p>'+
+											'</div>';
+						
+						$(".secondline").append(ingredients);
+					} 
+						//이미지 추가 후 선택된재료 검사하여 있는경우 add class active
+						
+						//페이지바 추가
 				});
-
-				
-				ingredients =+ '<div class="row first-row">
-								<div class="col-md-2 inner">
-								<img src="${pageContext.request.contextPath }/resources/images/icons/login.png" alt="ingredient img">
-									<p>#</p>
-								</div>
-								</div>';
-								
-				$(".sub-ctg-menu").empty;
-				$(".sub-ctg-menu").html(subCtgList);
- */				 		
 			},
 			error : (x,s,e) =>{
 				console.log(x,s,e);
 			}
 		}); 
+	});
+
+	/* 재료 이미지 선택에 따른 선택된 재료 태그란 추가 */
+	$(document).on('click', 'div.ingline>div.inner', function(){
+		console.log($(this));
+		let tag = {'tag' : $(this).html()};
+		console.log('tag', tag);
 		
+		//이미 선택된 재료라면 다시 클릭 시 제거되도록 제공
+		if(!$(this).children('img').hasClass("active")){
+			//선택되지 않은 경우
+			console.log($(this));
+			$(this).children('img').addClass("active");
+			let tname = $(this).children('p').text();
+			
+			let tags = '<p class="'+tname+'" onclick="tagDel();"> <i class="fab fa-slack-hash" />'+tname+'<small><i class="fas fa-times"></i></small><p>';
+			$(".selected-ingredients").append(tags);
+		}
+		else{
+			//이미 선택된 경우
+			$(this).children('img').removeClass("active");
+			let tname = $(this).children('p').text();
+			
+			$(".selected-ingredients").children('p.'+tname).remove();
+		}
+	});
+	
+	//태그 클릭 시 삭제이벤트
+	$(document).on('click', '.selected-ingredients>p', function(){
+		let tname = $(this).text();
+		
+		//아아아 어떻게잡냐고오오오오,.................ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
+		//console.log($(".div.ingline>div.inner").children('p.'+tname));
+		console.log("tag선택 텍스트",$(this).text());
+		
+		$(this).remove;
+		//$(".div.ingline>div.inner").children('p.'+tname).prev('img').removeClass('active');
 		
 	});
+
+	//커서아이콘주기
 	
 	
 });
@@ -174,84 +225,18 @@ $(() => {
 					</ul>
 				</div>
 				<!-- 첫번쨰 재료줄 -->
-				<div class="row first-row">
-					<div class="col-md-2 inner">
-						<img
-							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/과일/건포도.jpg"
-							alt="" class="ingredimg">
-						<p>#</p>
-					</div>
-					<div class="col-md-2 inner">
-						<img src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/과일/딸기.jpg"
-							alt="" class="ingredimg">
-						<p>#</p>
-					</div>
-					<div class="col-md-2 inner">
-						<img
-							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/나물허브/돌나물.png"
-							alt="" class="ingredimg">
-						<p>#돌나물</p>
-					</div>
-					<div class="col-md-2 inner">
-						<img
-							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/버섯/건표고버섯.jfif"
-							alt="" class="ingredimg">
-						<p>#돌나물</p>
-					</div>
-					<div class="col-md-2 inner">
-						<img
-							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/열매채소/가지.jpg"
-							alt="" class="ingredimg">
-						<p>#돌나물</p>
-					</div>
-					<div class="col-md-2 inner">
-						<img
-							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/잎채소/갓.jfif"
-							alt="" class="ingredimg">
-						<p>#돌나물</p>
-					</div>
+				<div class="row firstline ingline">
+			
 				</div>
 				<!-- 두번쨰 재료줄 -->
-				<div class="row">
-					<div class="col-md-2 inner">
-						<img
-							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/과일/건포도.jpg"
-							alt="" class="ingredimg">
-						<p>#돌나물</p>
-					</div>
-					<div class="col-md-2 inner">
-						<img src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/과일/딸기.jpg"
-							alt="" class="ingredimg active">
-						<p>#돌나물</p>
-					</div>
-					<div class="col-md-2 inner">
-						<img
-							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/나물허브/돌나물.png"
-							alt="" class="ingredimg">
-						<p>#돌나물</p>
-					</div>
-					<div class="col-md-2 inner">
-						<img
-							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/버섯/건표고버섯.jfif"
-							alt="" class="ingredimg active">
-						<p>#돌나물</p>
-					</div>
-					<div class="col-md-2 inner">
-						<img
-							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/열매채소/가지.jpg"
-							alt="" class="ingredimg">
-						<p>#돌나물</p>
-					</div>
-					<div class="col-md-2 inner">
-						<img
-							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스/채소과일/잎채소/갓.jfif"
-							alt="" class="ingredimg">
-						<p>#돌나물</p>
-					</div>
+				<div class="row secondline ingline">
+			
 				</div>
-
+				<!-- 재료리스트 페이징 -->
 				<div class="row ing-paging text-center">
 					<ul class="pagination justify-content-center col">
+					
+
 						<li class="page-item disabled"><a class="page-link" href="#"
 							tabindex="-1">Previous</a></li>
 						<li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -267,11 +252,9 @@ $(() => {
 				<div>
 					<h5 class="giving-spaces">선택한 재료 태그 </h5>
 				</div>
+				<!-- 선택된 재료 담는 div -->
 				<div class="selected-ingredients">
-					<p># 콩나물</p>
-					<p># 불고기</p>
-					<p># 참나물</p>
-					<p># 어묵</p>
+			
 
 				</div>
 				<div class="col">

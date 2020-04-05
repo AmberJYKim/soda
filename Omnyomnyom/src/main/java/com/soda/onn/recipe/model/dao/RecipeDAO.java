@@ -8,6 +8,8 @@ public interface RecipeDAO {
 
 	List<String> selectIngSubCtg(String mainCtg);
 
-	List<Ingredient> selectIngredients(String subCtg);
+	List<Ingredient> selectIngredients(String subCtg, int cPage, int numPerPage);
+
+	int selectIngredientsCnt(String subCtg);
 
 }
