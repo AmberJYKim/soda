@@ -43,11 +43,11 @@ function oneday_search(){
                         </div>
                         <div class="ef-item">
                             <i class="material-icons">map</i>
-                            <input type="text" id="" name="" placeholder="위치로 검색">
+                            <input type="text" id="detailedAddr" name="detailedAddr" placeholder="위치로 검색">
                         </div>
                         <div class="ef-item">
                             <i class="material-icons">search</i>
-                            <input type="text" id="" name="" placeholder="검색어를 입력하세요.">
+                            <input type="text" id="onedayName" name="onedayName" placeholder="검색어를 입력하세요.">
                         </div>
                        <!-- 아무것도 입력하지 않으면 업로드 순 -->
                        <!-- 해당 값 입력시 입력 값에 대한 정보 불러옴 -->

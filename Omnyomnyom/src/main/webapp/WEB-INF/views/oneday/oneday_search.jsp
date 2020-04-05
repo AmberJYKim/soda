@@ -31,15 +31,15 @@
                     <form class="event-filter-form" method="post" action="${pageContext.request.contextPath }/oneday/oneday_search">
                         <div class="ef-item">
                             <i class="material-icons">event_available</i>
-                            <input type="text" placeholder="날짜로 검색" class="event-date">
+                            <input type="text" id="onedayTimeDate" name="onedayTimeDate" placeholder="날짜로 검색" class="event-date">
                         </div>
                         <div class="ef-item">
                             <i class="material-icons">map</i>
-                            <input type="text" placeholder="위치로 검색">
+                            <input type="text" id="detailedAddr" name="detailedAddr" placeholder="위치로 검색">
                         </div>
                         <div class="ef-item">
                             <i class="material-icons">search</i>
-                            <input type="text" placeholder="">
+                            <input type="text" id="onedayName" name="onedayName" placeholder="검색어를 입력하세요">
                         </div>
                         <input class="site-btn sb-gradient" type="submit" value="클래스 검색">
                     </form>
@@ -70,7 +70,8 @@
             </div>
             <!-- 클래스 목록들 start -->
             <div class="row">
-            <c:forEach items="${list }" var="oneday">
+            <c:forEach items="${list }" var="oneday" varStatus="vs">
+                                <c:if test="${vs.count == 1}">
                 <div class="col-md-3">
                     <div class="classes-item-warp">
                         <div class="classes-item item_rate">
@@ -79,13 +80,17 @@
                             </div>
                             <div class="ci-text">
                                 <h4>${oneday.onedayName}</h4>
+                                <p>${vs.count}</p>
                                 <c:forEach items="${timelist }" var="tl">
-                                <div class="ci-metas" style="display: none">
+                                <div class="ci-metas">
+                                 <if test="${tl.onedayNoo eq oneday.onedayclassNo}">
                                     <div class="ci-meta"><i class="material-icons">event_available</i>${tl.onedayTimeDate }</div>
-                                    <div class="ci-meta"><i class="material-icons"><%-- ${tl.onedayTimeDate } --%></i></div>
+                                    <%-- <div class="ci-meta"><i class="material-icons">${tl.onedayNoo}</i></div> --%>
+                                </if>
+                                
                                 </div>
                                 </c:forEach>
-                                <p>${oneday.onedayContent }</p>
+                                <p>${oneday.onedayclassNo}</p>
                             </div>
                             <div class="ci-bottom">
                                 <div class="ci-author">
@@ -100,6 +105,7 @@
                         </div>
                     </div>
                 </div>
+                                </c:if>
             </c:forEach>
             </div>
             <div class="site-pagination pt-3.5">

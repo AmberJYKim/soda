@@ -2,6 +2,7 @@ package com.soda.onn.oneday.model.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.One;
 import org.apache.ibatis.session.RowBounds;
 import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class OnedayServiceImpl implements OnedayService {
 		if(result>0)
 			for(OnedayTime onedayTime:otiList) {
 				onedayTime.setOnedayNoo(oneday.getOnedayclassNo());
+				
 				Log.debug("원데이클래스 no = " + onedayTime);
 				onedayDAO.insertTime(onedayTime);
 			}
@@ -60,14 +62,23 @@ public class OnedayServiceImpl implements OnedayService {
 
 	@Override
 	public List<Oneday> selectDateList() {
-		// TODO Auto-generated method stub
-		return onedayDAO.selectDateList();
+		List<Oneday> list = onedayDAO.selectDateList(); // 54
+		
+		for (Oneday one : list) {
+			one.setOnedayTimeList(onedayDAO.selectTimeOne(one.getOnedayclassNo()));
+////			원데이 클래스의 넘버를 매개변수로하는  OnedayTime을 selectOne하는 것.
+////			거기에서 불러온 값을 Oenday의 private List<OnedayTime> onedayTimeList;에 담음.
+		
+		}
+	
+		return list;
+		
 	}
 
 
 	@Override
 	public List<OnedayTime> selectTimeList() {
-		// TODO Auto-generated method stub
+		
 		return onedayDAO.selectTimeList();
 	}
 

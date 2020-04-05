@@ -9,6 +9,7 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 	<!-- api에서 상세내용 확인해보기 -->
+	
 	</settings>
   <typeAliases>
   	<package name="com.soda.onn"></package> 

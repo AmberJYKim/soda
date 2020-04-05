@@ -27,5 +27,7 @@ public interface OnedayDAO {
 
 	List<OnedayTime> selectTimeList();
 
+	List<OnedayTime> selectTimeOne(int onedayclassNo);
+
 
 }

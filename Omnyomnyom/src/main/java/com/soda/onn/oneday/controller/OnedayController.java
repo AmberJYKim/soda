@@ -73,18 +73,27 @@ public class OnedayController {
 	
 //	클래스 검색
 	@PostMapping("/oneday_search")
-	public ModelAndView search(@ModelAttribute Oneday oneday, OnedayTime onedayTime, 
+	public ModelAndView search(@ModelAttribute 
 			   					ModelAndView mav) {
 		
 		List<Oneday> list = onedayService.selectDateList();
 		
 		List<OnedayTime> timelist = onedayService.selectTimeList();
-		log.debug("search@list={}", list);
-		log.debug("search@timelist={}", timelist);
+		/*
+		 * log.debug("search@list={}", list); log.debug("search@timelist={}", timelist);
+		 */
+		
+		System.out.println("oneday ====" +list);
+		System.out.println("timelist ====" +timelist);
 		
 		mav.addObject("list", list);
 		mav.addObject("timelist",timelist);
 		return mav;
+		/*
+		 * 1. 원데이, 원데이 일정 join
+		 * 2. 일자검색 -> 원데이 타임 where
+		 * 3. 명,레시피,위치 등 -> 원데이 where
+		 */
 	}
 	
 //	원데이 클래스 디테일뷰 로 이동 
@@ -136,7 +145,7 @@ public class OnedayController {
 	//원데이클래스 Insert 하기
 	@PostMapping("/insert.do")
 	public ModelAndView insert(@ModelAttribute Oneday oneday, 
-											   ModelAndView mav, 
+											   ModelAndView mav,
 											   RedirectAttributes redirectAttributes,
 							   @RequestParam(value="onedayTimeM", defaultValue = "0")int onedayTimeM,
 							   @RequestParam(value="onedayImgFile", required = false) MultipartFile onedayImg,

@@ -60,6 +60,11 @@ public class OnedayDAOImpl implements OnedayDAO{
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("oneday.selectTimeList");
 	}
+	@Override
+	public List<OnedayTime> selectTimeOne(int onedayclassNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("oneday.selectTimeOne", onedayclassNo);
+	}
 
 
 

@@ -62,14 +62,56 @@
 
 <select id="selectDateList"  resultType="Oneday">
 
-	select * from TB_onedayclass
+<!-- select * from tb_onedayclass -->
+	
+select * from 
+(select * from
+tb_onedayclasstime oct
+left join
+TB_onedayclass oc on oct.onedayclass_no = oc.onedayclass_no
+<where>
+	<if test="detailedAddr != null">
+		and detailed_addr like #{detailedAddr}
+	</if>
+	<if test="onedayName != null">
+		and oneday_name like #{onedayName}
+	</if>
+
+	<if test="onedayTimeList != null">	
+	<foreach collection="onedayTimedate" item="item">
+		or onedayTime_date like #{item}
+	</foreach>
+	</if>
+
+</where>)
+<!-- <where>	
+<if test="onedayTimeList != null">	
+	<foreach collection="onedayTimedate" item="item">
+		and onedayTime_date like #{item}
+	</foreach>
+	</if>
+</where> -->
+		
 </select>
 
 
-<select id="selectTimeList" resultType="OnedayTime">
+<select id="selectTimeList" resultMap="timeCollection">
 	select*from tb_onedayclasstime
 </select>
 
+
+
+<select id="selectTimeOne" resultMap="timeCollection">
+	select * from tb_onedayclasstime
+	where onedayclass_no = #{onedayclassNo}
+</select>
+
+
+<resultMap type="OnedayTime" id="timeCollection">
+	<result column="onedayclass_no" property="onedayNoo"/>
+	
+
+</resultMap>
 
 
 </mapper>
