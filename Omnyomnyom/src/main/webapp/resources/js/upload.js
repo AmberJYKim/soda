@@ -1,73 +1,74 @@
 //온로드 함수
-window.onload = function() {
-            //이미지 불러오기 후 처리
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var imgFile = $(input).val();
-                     var fileForm = /(.*?)\.(jpg|jpeg|png)$/i;
-                     var maxSize = 5 * 1024 * 1024;
-                     var fileSize;
+$(function() {
+	// 이미지 불러오기 후 처리
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+			var imgFile = $(input).val();
+			var fileForm = /(.*?)\.(mp4|mov|mpeg4|avi|wmv)$/i;
+			var maxSize = 64 * 1000 * 1000 * 1000;
+			var fileSize;
 
-                     if (imgFile != "" && imgFile != null) {
-                         fileSize = input.files[0].size;
-                         if (!imgFile.match(fileForm)) {
-                             alert("이미지 파일만 업로드 가능");
-                             $(input).val(null);
-                           return;
-                         } else if (fileSize > maxSize) {
-                             alert("파일 사이즈는 5MB까지 가능");
-                             $(input).val(null);
-                             return;
-                         }
-                     }
+			if (imgFile != "" && imgFile != null) {
+				fileSize = input.files[0].size;
+				if (!imgFile.match(fileForm)) {
+					alert("비디오 파일(mp4,mov,mpeg4,avi,wmv)만 업로드 가능");
+					$(input).val(null);
+					return;
+				} else if (fileSize > maxSize) {
+					alert("파일 사이즈는 64GB까지 가능");
+					$(input).val(null);
+					return;
+				}
+			}
+
+			var reader = new FileReader();
+
+			reader.onload = function(e) {
+				// $('#image_section').show();
+				// $('.image_section_src').attr('src', e.target.result).show();
+				$('#video_section').attr('src', e.target.result).show();
+				let $uploadbtn = $("#uploadbtn");
+				$uploadbtn.html("");
+				$uploadbtn.addClass("uploading");
+				setTimeout(function() {
+					$uploadbtn.removeClass('uploading');
+					$uploadbtn.html("Upload Files");
+				}, 1200);
+			};
+
+			reader.readAsDataURL(input.files[0]);
+		} else {
+			$('#video_section').hide();
+		}
+	}
+
+	// 이미지 불러오기
+	$("#videoInput").change(function() {
+
+		readURL(this);
+	});
+
+	// 시작시 이미지
+	$("#video_section").hide();
+
+	// CK에디터 불러오기
+//	CKEDITOR.replace('editor1');
+
+});
+
+// 이미지 불러오기 버튼 처리
+function upload(ref) {
+	$("#videoInput").click();
+};
 
 
-                    var reader = new FileReader();
 
-                    reader.onload = function (e) {
-                        $('#image_section').attr('src', e.target.result).show();
-                        let $uploadbtn = $("#uploadbtn");
-                        $uploadbtn.html("");
-                        $uploadbtn.addClass("uploading");
-                        setTimeout(function(){
-                            $uploadbtn.removeClass('uploading');
-                            $uploadbtn.html("Upload Files");
-                        },1200);
-                    };
-
-                    reader.readAsDataURL(input.files[0]);
-                } else {
-                    $('#image_section').hide();
-                }
-            }
-
-            //이미지 불러오기
-            $("#imgInput").change(function () {
-                
-                readURL(this);
-            });
-
-            //시작시 이미지
-            $("#image_section").hide();
-
-            //CK에디터 불러오기
-            CKEDITOR.replace( 'editor1' );
-
-        };
-
-        //이미지 불러오기 버튼 처리
-        function upload(ref) {
-            $("#imgInput").click();        
-        };
-
-
-
-var tag = document.createElement('script');//이거 뭔지 모름
-tag.src = "https://www.youtube.com/iframe_api";//api 주소
-var firstScriptTag = document.getElementsByTagName('script')[0];//이거 뭔지 모름
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);//이거 뭔지 모름
-var player;//유튜브 api 전역변수
-var setVideoId = "t4Es8mwdYlE";//유튜브영상 ID
+var tag = document.createElement('script');// 이거 뭔지 모름
+tag.src = "https://www.youtube.com/iframe_api";// api 주소
+var firstScriptTag = document.getElementsByTagName('script')[0];// 이거 뭔지 모름
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);// 이거 뭔지 모름
+var player;// 유튜브 api 전역변수
+var setVideoId = "t4Es8mwdYlE";// 유튜브영상 ID
 function onYouTubeIframeAPIReady() {
   player = new YT.Player('testPTag',{
               videoId: setVideoId,
@@ -75,14 +76,14 @@ function onYouTubeIframeAPIReady() {
 }
 
 
-//유튜브 영상 redirect
+// 유튜브 영상 redirect
 function hreflink(s){
   player.loadVideoById(setVideoId, s);
 }
 
 
 
-//해시태그부분
+// 해시태그부분
 
 	// if IE, add IE tagify's polyfills
 	!function( d ) {
@@ -229,20 +230,20 @@ function hreflink(s){
 	
 	
 
-	$(function(){
-	var input = document.querySelector('input[name="input-custom-dropdown"]'),
-		// init Tagify script on the above inputs
-		tagify = new Tagify(input, {
-		  whitelist: ["A# .NET", "A# (Axiom)", "A-0 System", "A+", "A++", "ABAP", "ABC", "ABC ALGOL", "ABSET", "ABSYS", "ACC", "Accent", "Ace DASL", "ACL2", "Avicsoft", "ACT-III", "Action!", "ActionScript", "Ada", "Adenine", "Agda", "Agilent VEE", "Agora", "AIMMS", "Alef", "ALF", "ALGOL 58", "ALGOL 60", "ALGOL 68", "ALGOL W", "Alice", "Alma-0", "AmbientTalk", "Amiga E", "AMOS", "AMPL", "Apex (Salesforce.com)", "APL", "AppleScript", "Arc", "ARexx", "Argus", "AspectJ", "Assembly language", "ATS", "Ateji PX", "AutoHotkey", "Autocoder", "AutoIt", "AutoLISP / Visual LISP", "Averest", "AWK", "Axum", "Active Server Pages", "ASP.NET", "B", "Babbage", "Bash", "BASIC", "bc", "BCPL", "BeanShell", "Batch (Windows/Dos)", "Bertrand", "BETA", "Bigwig", "Bistro", "BitC", "BLISS", "Blockly", "BlooP", "Blue", "Boo", "Boomerang", "Bourne shell (including bash and ksh)", "BREW", "BPEL", "B", "C--", "C++ – ISO/IEC 14882", "C# – ISO/IEC 23270", "C/AL", "Caché ObjectScript", "C Shell", "Caml", "Cayenne", "CDuce", "Cecil", "Cesil", "Céu", "Ceylon", "CFEngine", "CFML", "Cg", "Ch", "Chapel", "Charity", "Charm", "Chef", "CHILL", "CHIP-8", "chomski", "ChucK", "CICS", "Cilk", "Citrine (programming language)", "CL (IBM)", "Claire", "Clarion", "Clean", "Clipper", "CLIPS", "CLIST", "Clojure", "CLU", "CMS-2", "COBOL – ISO/IEC 1989", "CobolScript – COBOL Scripting language", "Cobra", "CODE", "CoffeeScript", "ColdFusion", "COMAL", "Combined Programming Language (CPL)", "COMIT", "Common Intermediate Language (CIL)", "Common Lisp (also known as CL)", "COMPASS", "Component Pascal", "Constraint Handling Rules (CHR)", "COMTRAN", "Converge", "Cool", "Coq", "Coral 66", "Corn", "CorVision", "COWSEL", "CPL", "CPL", "Cryptol", "csh", "Csound", "CSP", "CUDA", "Curl", "Curry", "Cybil", "Cyclone", "Cython", "Java", "Javascript", "M2001", "M4", "M#", "Machine code", "MAD (Michigan Algorithm Decoder)", "MAD/I", "Magik", "Magma", "make", "Maple", "MAPPER now part of BIS", "MARK-IV now VISION:BUILDER", "Mary", "MASM Microsoft Assembly x86", "MATH-MATIC", "Mathematica", "MATLAB", "Maxima (see also Macsyma)", "Max (Max Msp – Graphical Programming Environment)", "Maya (MEL)", "MDL", "Mercury", "Mesa", "Metafont", "Microcode", "MicroScript", "MIIS", "Milk (programming language)", "MIMIC", "Mirah", "Miranda", "MIVA Script", "ML", "Model 204", "Modelica", "Modula", "Modula-2", "Modula-3", "Mohol", "MOO", "Mortran", "Mouse", "MPD", "Mathcad", "MSIL – deprecated name for CIL", "MSL", "MUMPS", "Mystic Programming L"],
-		  maxTags: 10,
-		  dropdown: {
-			maxItems: 20,           // <- mixumum allowed rendered suggestions
-			classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
-			enabled: 0,             // <- show suggestions on focus
-			closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
-		  }
-		});
-	});
+//	$(function(){
+//	var input = document.querySelector('input[name="input-custom-dropdown"]'),
+//		// init Tagify script on the above inputs
+//		tagify = new Tagify(input, {
+//		  whitelist: ["한식/찜", "중식/찜", "일식/찜", "A+", "A++", "ABAP", "ABC", "ABC ALGOL", "ABSET", "ABSYS", "ACC", "Accent", "Ace DASL", "ACL2", "Avicsoft", "ACT-III", "Action!", "ActionScript", "Ada", "Adenine", "Agda", "Agilent VEE", "Agora", "AIMMS", "Alef", "ALF", "ALGOL 58", "ALGOL 60", "ALGOL 68", "ALGOL W", "Alice", "Alma-0", "AmbientTalk", "Amiga E", "AMOS", "AMPL", "Apex (Salesforce.com)", "APL", "AppleScript", "Arc", "ARexx", "Argus", "AspectJ", "Assembly language", "ATS", "Ateji PX", "AutoHotkey", "Autocoder", "AutoIt", "AutoLISP / Visual LISP", "Averest", "AWK", "Axum", "Active Server Pages", "ASP.NET", "B", "Babbage", "Bash", "BASIC", "bc", "BCPL", "BeanShell", "Batch (Windows/Dos)", "Bertrand", "BETA", "Bigwig", "Bistro", "BitC", "BLISS", "Blockly", "BlooP", "Blue", "Boo", "Boomerang", "Bourne shell (including bash and ksh)", "BREW", "BPEL", "B", "C--", "C++ – ISO/IEC 14882", "C# – ISO/IEC 23270", "C/AL", "Caché ObjectScript", "C Shell", "Caml", "Cayenne", "CDuce", "Cecil", "Cesil", "Céu", "Ceylon", "CFEngine", "CFML", "Cg", "Ch", "Chapel", "Charity", "Charm", "Chef", "CHILL", "CHIP-8", "chomski", "ChucK", "CICS", "Cilk", "Citrine (programming language)", "CL (IBM)", "Claire", "Clarion", "Clean", "Clipper", "CLIPS", "CLIST", "Clojure", "CLU", "CMS-2", "COBOL – ISO/IEC 1989", "CobolScript – COBOL Scripting language", "Cobra", "CODE", "CoffeeScript", "ColdFusion", "COMAL", "Combined Programming Language (CPL)", "COMIT", "Common Intermediate Language (CIL)", "Common Lisp (also known as CL)", "COMPASS", "Component Pascal", "Constraint Handling Rules (CHR)", "COMTRAN", "Converge", "Cool", "Coq", "Coral 66", "Corn", "CorVision", "COWSEL", "CPL", "CPL", "Cryptol", "csh", "Csound", "CSP", "CUDA", "Curl", "Curry", "Cybil", "Cyclone", "Cython", "Java", "Javascript", "M2001", "M4", "M#", "Machine code", "MAD (Michigan Algorithm Decoder)", "MAD/I", "Magik", "Magma", "make", "Maple", "MAPPER now part of BIS", "MARK-IV now VISION:BUILDER", "Mary", "MASM Microsoft Assembly x86", "MATH-MATIC", "Mathematica", "MATLAB", "Maxima (see also Macsyma)", "Max (Max Msp – Graphical Programming Environment)", "Maya (MEL)", "MDL", "Mercury", "Mesa", "Metafont", "Microcode", "MicroScript", "MIIS", "Milk (programming language)", "MIMIC", "Mirah", "Miranda", "MIVA Script", "ML", "Model 204", "Modelica", "Modula", "Modula-2", "Modula-3", "Mohol", "MOO", "Mortran", "Mouse", "MPD", "Mathcad", "MSIL – deprecated name for CIL", "MSL", "MUMPS", "Mystic Programming L"],
+//		  maxTags: 1,
+//		  dropdown: {
+//			maxItems: 20,           // <- mixumum allowed rendered suggestions
+//			classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+//			enabled: 0,             // <- show suggestions on focus
+//			closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+//		  }
+//		});
+//	});
 
 //요리방법 타임스탬프
 
@@ -273,18 +274,28 @@ function hreflink(s){
 
 
 // 클래스 날짜 추가
-function addClassTime(){
-    let $inputDate = $("#input-date");
-    if($inputDate.val() == "" || $inputDate.val() == null)
+function addIngredient(){
+    let $inputIngredient = $("#input-ingredient");
+	let $inputIngMass = $("#input-ing-mass");
+	let $inputIngNumber = $("#input-ing-number");
+    if($inputIngredient.val() == "" || $inputIngredient.val() == null){
+    	alert("재료명을 입력하세요.");
         return;
+    }
+    else if($inputIngMass.val() == "" || $inputIngMass.val() == null){
+    	alert("계량을 입력하세요.");
+    	return;
+    }
     let $inputDimeList = $("#input-date-list")
+    console.log("로그");
     $inputDimeList.append("<div class='row m-auto'>"
-                            +'<span class="input input--yoshiko col-4 p-0">'
-                            +'<input class="form-control" type="text" id="input-date" data-language="kr" data-timepicker="true" autocomplete="off"/>'
+                            +'<span class="input col-4 p-0">'
+                            +'<input name="ingr_name" class="form-control" type="text" autocomplete="off" value="'+ $inputIngredient.val() +'" readonly/>'
 							+'</span>'
-							+'<span class="input input--yoshiko col-4 p-0">'
-                            +'<input class="form-control" type="text" id="input-date" data-language="kr" data-timepicker="true" autocomplete="off"/>'
+							+'<span class="input col-4 p-0">'
+                            +'<input name="ingr_mass" class="form-control" type="text" autocomplete="off" value="'+ $inputIngMass.val() +'" readonly/>'
 							+'</span>'
+							+'<input name="ingr_number" type="number" hidden value="'+$inputIngNumber.val()+'">'
                             +'<div class="col py-1 pr-0 input">'
 							+'<i class="fa fa-lg fa-minus-circle" style="min-width: 100%;" onclick="removeClassTime(this);" type="button"></i>'
                         	// +'<button class="site-btn sb-gradient px-3" style="min-width: 100%;" type="button" onclick="removeClassTime(this);">제거</button>'
@@ -293,6 +304,8 @@ function addClassTime(){
                         	+'</div>'
 							// +"<button class='col site-btn sb-gradient px-3 ml-3' style='min-width: 0;' type='button' onclick='removeClassTime(this);'>제거</button>"
                          +'</div>');
+    $inputIngredient.val("");
+    $inputIngMass.val("");
 
 }
 // 클래스 날짜 제거
@@ -300,7 +313,3 @@ function removeClassTime(bt){
     let $bt = $(bt);
     $bt.parent().parent().remove();
 }
-
-$(()=>{
-	CKEDITOR.replace( 'editor1' );
-})
