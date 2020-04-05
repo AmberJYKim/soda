@@ -1,6 +1,7 @@
 package com.soda.onn.mall.model.dao;
 
 import java.util.List;
+import java.util.Random;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -36,5 +37,11 @@ public class MallDAOImpl implements MallDAO {
 	public List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds) {
 		return sqlSession.selectList("mall.selectBuyHistoryList",null, rowBounds);
 	}
+
+	@Override
+	public IngredientMall selectIngMallOne(int ingredientNo) {
+		return sqlSession.selectOne("mall.selectIngMallOne",ingredientNo);
+		}
+	
 
 }

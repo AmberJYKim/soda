@@ -1,12 +1,14 @@
 package com.soda.onn.mall.model.service;
 
 import java.util.List;
+import java.util.Random;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.soda.onn.mall.model.dao.MallDAO;
+import com.soda.onn.mall.model.dao.MallDAOImpl;
 import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.mall.model.vo.IngredientMall;
 
@@ -36,6 +38,9 @@ public class MallServiceImpl implements MallService {
 		return mallDAO.selectBuyHistoryList(rowBounds);
 	}
 
+	@Override
+	public IngredientMall selectIngMallOne(int ingredientNo) {
+		return mallDAO.selectIngMallOne(ingredientNo);
+	}
 
-	
 }
