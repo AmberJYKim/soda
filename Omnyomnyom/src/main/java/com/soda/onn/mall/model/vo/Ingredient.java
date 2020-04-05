@@ -19,6 +19,8 @@ public class Ingredient implements Serializable {
 	private int ingredientNo;
 	private String ingPrCategory;
 	private String ingCdCategory;
+	private String engPrCategory;
+	private String engCdCategory;
 	private String ingredientName;
 	private String ingFilename;
 }

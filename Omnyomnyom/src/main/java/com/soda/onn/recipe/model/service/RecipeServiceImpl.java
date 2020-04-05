@@ -6,7 +6,6 @@ import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.recipe.model.dao.RecipeDAO;
 import com.soda.onn.recipe.model.vo.Recipe;
@@ -26,11 +25,17 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public List<String> selectIngSubCtg(String mainCtg) {
-		
 		return recipeDAO.selectIngSubCtg(mainCtg);
 	}
 
 	@Override
+	public List<Ingredient> selectIngredients(String subCtg, int cPage, int numPerPage) {
+		return recipeDAO.selectIngredients(subCtg, cPage, numPerPage);
+	}
+
+	@Override
+	public int selectIngredientsCnt(String subCtg) {
+		return recipeDAO.selectIngredientsCnt(subCtg);
 	public int recipeUpload(Recipe recipe, List<RecipeIngredient> ingredientList) {
 		int result = recipeDAO.recipeUpload(recipe);
 		Log.debug("recipeNo={}",recipe.getRecipeNo());
