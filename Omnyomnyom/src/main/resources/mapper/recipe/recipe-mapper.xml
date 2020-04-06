@@ -28,8 +28,8 @@
 			TB_recipe
 		values(
 			seq_recipe.nextval,
-			#{recipeName},
-			#{recipeId},
+			#{videoTitle},
+			#{videoLink},
 			#{timeline},
 			#{menuName},
 			#{chefNick},
@@ -49,10 +49,32 @@
 			tb_rec_Ingredients
 		values(
 			#{recipeNo},
-			#{ingredientNo},
+			<choose>
+				<when test="ingredientNo!=0">
+					#{ingredientNo},
+				</when>
+				<when test="ingredientNo==0">
+					null,
+				</when>
+			</choose>
 			#{minWeight},
 			#{ingredientName}
 		)
 	</insert>
-  
+	<select id="selectRecipeOne" resultType="recipe">
+		select 
+			*
+		from 
+			tb_recipe 
+		where 
+			recipe_no=#{recipeNo}
+	</select>
+	<select id="selectRecIngList" resultType="recipeIngredient">
+		select 
+			*
+		from 
+			tb_rec_ingredients 
+		where 
+			recipe_no=#{recipeNo}
+	</select>
 </mapper>

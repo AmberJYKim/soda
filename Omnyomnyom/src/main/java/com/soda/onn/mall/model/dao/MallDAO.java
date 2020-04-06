@@ -17,4 +17,6 @@ public interface MallDAO {
 
 	List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds);
 
+	IngredientMall selectIngMallOne(int ingredientNo);
+
 }

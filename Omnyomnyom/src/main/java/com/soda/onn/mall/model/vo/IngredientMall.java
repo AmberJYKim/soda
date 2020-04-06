@@ -14,26 +14,18 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class IngredientMall extends Ingredient implements Serializable {
+public class IngredientMall implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private int ingMallNo;
+	private String ingMallName;
+	private String prevImg;
 	private int price;
 	private int stock;
-	private int minUnit;
+	private String minUnit;
 	private String ingOrigin;
 	private int shelfLife;
 	private String ingInfo;
 
-	public IngredientMall(int ingredientNo, String ingPrCategory, String ingCdCategory, String ingredientName,
-			String ingFilename, int price, int stock, int minUnit, String ingOrigin, int shelfLife, String ingInfo) {
-		super(ingredientNo, ingPrCategory, ingCdCategory, ingredientName, ingFilename);
-		this.price = price;
-		this.stock = stock;
-		this.minUnit = minUnit;
-		this.ingOrigin = ingOrigin;
-		this.shelfLife = shelfLife;
-		this.ingInfo = ingInfo;
-	}
-	
 }

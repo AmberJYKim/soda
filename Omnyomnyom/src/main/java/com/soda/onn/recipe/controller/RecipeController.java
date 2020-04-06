@@ -11,11 +11,13 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,7 +72,13 @@ public class RecipeController {
 	
 	
 	@GetMapping("/recipe-details")
-	public void recipedetails() {
+	public void recipedetails(@RequestParam("recipeNo")int recipeNo,
+							  Model model) {
+		Recipe recipe = recipeService.selectRecipeOne(recipeNo);
+		
+		recipe.setIngredientList(recipeService.selectRecIngList(recipeNo));
+		
+		model.addAttribute("recipe",recipe);
 		
 	}
 	@GetMapping("/recipeUpload")
@@ -122,7 +130,7 @@ public class RecipeController {
 
 			VideoSnippet snippet = new VideoSnippet();
 
-			snippet.setTitle(recipe.getRecipeName());
+			snippet.setTitle(recipe.getVideoTitle());
 			snippet.setDescription(recipe.getRecipeContent());
 
 //        List<String> tags = new ArrayList<String>();
@@ -149,7 +157,7 @@ public class RecipeController {
 
 				Video response = request.execute();
 				log.debug("youtubeId={}",response.getId());
-				recipe.setRecipeId(response.getId());
+				recipe.setVideoLink(response.getId());
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -169,8 +177,6 @@ public class RecipeController {
 			ingredientList.add(ingr);
 		}
 		log.debug(ingredientList.toString());
-		
-		
 		
 		List<Map<String,String>> list = (List<Map<String,String>>)new Gson().fromJson(recipe.getCategory(), new TypeToken<List<Map<String,String>>>(){}.getType());
 		
