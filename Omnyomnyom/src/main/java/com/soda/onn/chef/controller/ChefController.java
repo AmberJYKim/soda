@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -38,8 +40,10 @@ public class ChefController {
 	@Autowired
 	private ChefService chefservice;
 	
-	@GetMapping("/chefList.do")
-	public ModelAndView chefLis() {
+	
+// 셰프채널 메인 이동 
+	@GetMapping("/chefList")
+	public ModelAndView chefList() {
 		ModelAndView mav = new ModelAndView();
 		List<Chef> chefList = chefservice.selectChefAllList();
 		
@@ -66,10 +70,49 @@ public class ChefController {
 		mav.setViewName("/chef/chefList");
 		return mav;
 	}
-	@GetMapping("/chefpage.do")
-	public void chefpage() {
+	
+	
+	
+//	셰프 닉네임으로 검색 
+	@GetMapping("chefSearch")
+	public ModelAndView chefSearch(@RequestParam(value="chefsearchBar",required=true)String chefsearchbar,
+								ModelAndView mav) {
+		List<Chef> chefList = chefservice.chefSearch(chefsearchbar);
 		
+		for(Chef ch: chefList) {
+			List<Map<String,String>> list = (List<Map<String,String>>) new Gson().fromJson(ch.getChefCategory(), 
+											 new TypeToken<List<Map<String,String>>>(){}.getType());
+			
+			List<String> categoryList = new ArrayList<String>();
+			
+			for(Map<String,String> map: list) {
+//	            log.debug(map.get("value"));
+	            categoryList.add(map.get("value"));
+	        }
+				ch.setChefCategoryList(categoryList);
+			
+//			log.debug("{}",ch.getChefCategoryList());
+		}
+		log.debug("chefSearch={}",chefList);
+		
+		mav.addObject("chefList", chefList);
+		mav.setViewName("/chef/chefList");
+		return mav;
+}
+	
+//	셰프 채널 이동 
+	@GetMapping("/{memberNickName}/chefpage")
+	@ResponseBody
+	public ModelAndView chefpage(@PathVariable("memberNickName") String memberNickName,
+						ModelAndView mav) {
+		
+		Chef chef = chefservice.chefSelectOne(memberNickName);
+		
+		mav.addObject("chef", chef);
+		mav.setViewName("chef/chefPage");
+		return mav;
 	}
+	
 // 셰프신청 폼이동 
 	@GetMapping("/chefInsert")
 	public void chefInsert() {
