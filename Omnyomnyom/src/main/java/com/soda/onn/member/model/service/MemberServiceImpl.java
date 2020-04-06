@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.soda.onn.member.model.dao.MemberDAO;
+import com.soda.onn.member.model.vo.DingDong;
 import com.soda.onn.member.model.vo.Member;
 
 @Service
@@ -41,6 +42,42 @@ public class MemberServiceImpl implements MemberService{
 		return memberDAO.selectMemberListCnt();
 	}
 
+
+	@Override
+	public int updateDingdong(int dingdongNo) {
+		return memberDAO.updateDingdong(dingdongNo);
+	}
+
+	
+	@Override
+	public int insertDingdong(String memberId) {
+		return memberDAO.insertDingdong(memberId);
+		
+	}
+
+
+	@Override
+	public int selectDingdongListCnt() {
+		return memberDAO.selectDingdongListCnt();
+	}
+
+	@Override
+	public List<DingDong> dingdongList(String memberId, String size) {
+		return memberDAO.dingdongList(memberId, size);
+	}
+
+	@Override
+	public List<Map<String, String>> dingdongListTest(Map<String, String> paramMap) {
+		return memberDAO.dingdongListTest(paramMap);
+	}
+
+	@Override
+	public Member memberInfo(String memberId) {
+		return memberDAO.memberInfo(memberId);
+		
+		
+		
+	}
 
 	
 }

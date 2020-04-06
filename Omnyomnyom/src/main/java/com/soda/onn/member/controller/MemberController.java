@@ -14,9 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -125,14 +125,16 @@ public class MemberController {
 		return "redirect:/";
 	}
 
+	
 	//회원가입 ajax 메소드
 	@GetMapping("/checkMember/{key}/{value}")
 	@ResponseBody
 	public Map<String, String> checkId2(@PathVariable("key") String key, 
 										@PathVariable("value") String value,
-										Model model) {
-//		log.debug("memberId={}", memberId);
-//		log.debug("memberId={}", key, value);
+			Model model) {
+		
+		System.out.println("key = " + key);
+		System.out.println("value = " + value);
 		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(key, value);
@@ -144,41 +146,109 @@ public class MemberController {
 		if(checkMember != null) {
 			isUsable = "ok";
 		}
+		System.out.println("ok인가 아닌가 " + isUsable);
 		map.put("isUsable", isUsable);
-//		log.debug("checkMember={}", checkMember);
 		
 		return map;
 	}
 	
-	@GetMapping("/dingdong/list/{size}")
+	//회원이 알림 읽었을 경우 (1 : 안 읽음, 0 : 읽음) 알림 읽음을 1 -> 0 변환
+	@PutMapping("/dingdong/{memberId}")
+	@ResponseBody
+	public void dingdongAjax(@PathVariable("memberId") String memberId,
+							 @RequestParam("dingdongNo") int dingdongNo){
+		
+		System.out.println("회원이 알림을 읽었습니다.");
+		log.debug("memberId={}", memberId);
+		log.debug("dongdongNo={}", dingdongNo);
+		
+		
+		int dingdongRead = memberService.updateDingdong(dingdongNo);
+	}
+	
+	//회원에게 알림이 추가 됐을 경우
+	@PostMapping("/dingdong/{memberId}")
+	@ResponseBody
+	public void insertDingdong(@PathVariable("memberId") String memberId) {
+		
+		System.out.println("회원에게 알림이 추가 됐습니다.");
+		log.debug("memberId={}", memberId);
+		int dingdongPlus = memberService.insertDingdong(memberId);
+		
+	}
+	
+	//회원 알림
+	@GetMapping("dingdong/{size}")
 	@ResponseBody
 	public Map<String, Object> dingdongList(@PathVariable("size") String size,
-									   @RequestParam(value = "cPage", defaultValue = "1") int cPage,
-									   HttpServletRequest request){
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<DingDong> list = new ArrayList<DingDong>();
-		int NUMPERPAGE = 15;
-		int PAGEBARSIZE = 10;
+													@RequestParam(value="cPage", defaultValue="1") int cPage,
+													@RequestParam("memberId") String memberId,
+													HttpServletRequest request){
 		
+				System.out.println("회원 알림 메소드에 들어왔습니다");
+				
+				
+				Map<String, Object> resultMap =  new HashMap<String, Object>(); //값 가져온것, 페이징, rowbounds 넣기 위한 맵
+				Map<String, Object> pagingMap = new HashMap<String, Object>(); //페이징 처리하는 맵
+				Map<String, String> paramMap = new HashMap<String, String>();//파라미터 넣을 맵
+				List<DingDong> list = new ArrayList<DingDong>();
 
+				
+				System.out.println("dingdongList memberId = " + memberId);
+				System.out.println("dingdingList size = " + size);
+				
+				paramMap.put("memberId", memberId);
+				paramMap.put("size", size);
+				
+				
+				int NUMPERPAGE = 0;
+				int PAGEBARSIZE = 0;
+				
+					if(size.equals("small")) {
+						NUMPERPAGE = 5;
+						PAGEBARSIZE = 1;
+					}
+					else {
+						NUMPERPAGE = 15;
+						PAGEBARSIZE = 10;
+					}
+					
+				int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+				int pageEnd = pageStart+PAGEBARSIZE-1;
+					
+				RowBounds rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);		
+				
+				int totalCount = memberService.selectDingdongListCnt();
+				System.out.println(totalCount);
+				
+				int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+				String url = request.getRequestURL().toString()+"이 페이지에대한 링크";
+				String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+				
+				pagingMap.put("paging",paging);
+				
+				List<Map<String, String>> mapList = memberService.dingdongListTest(paramMap);
+//				List<DingDong> reulstList = memberService.dingdongList(memberId, size);
+	
+//				System.out.println(reulstList);
+				System.out.println(mapList);
+
+//				resultMap.put("list", reulstList);
+				resultMap.put("mapList", mapList);
+				resultMap.put("pagingMap", pagingMap);
+				resultMap.put("rowBounds", rowBounds);
+					
+				return resultMap;
+	}
+	
+	
+	@GetMapping("/memberInfo")
+	public String memberInfo(@RequestParam("memberId") String memberId) {
 		
-		if("small".equals(size)) {
-			NUMPERPAGE = 5;
-			PAGEBARSIZE = 1;
-		}else {
-			int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
-			int pageEnd = pageStart+PAGEBARSIZE-1;
-			
-			int totalCount = memberService.selectMemberListCnt();
-			int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
-			String url = request.getRequestURL().toString()+"이 페이지에대한 링크";
-			String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
-			map.put("paging",paging);
-		}
-		RowBounds rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
-//		list = memberService.딩동 뭐시기(memberid, size, rowbounds);
-		map.put("list", list);
-		return map;
+		Member memberInfo = memberService.memberInfo(memberId);
+		
+		
+		return null;
 	}
 
 }

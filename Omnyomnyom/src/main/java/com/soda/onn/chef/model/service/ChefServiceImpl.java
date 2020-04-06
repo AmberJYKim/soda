@@ -44,11 +44,18 @@ public class ChefServiceImpl implements ChefService {
 	}
 
 	@Override
+	public List<Chef> chefSearch(String chefsearchbar) {
+		return chefDAO.chefSearch(chefsearchbar);
+	}
+
+	@Override
+	public Chef chefSelectOne(String memberNickName) {
+		return chefDAO.chefSelectOne(memberNickName);
+  }
+  
+  @Override
 	public int chefRequestUpdate(Map<String, String> chefReq) {
 		return chefDAO.chefRequestUpdate(chefReq);
 	}
-
-	
-
 	
 }
