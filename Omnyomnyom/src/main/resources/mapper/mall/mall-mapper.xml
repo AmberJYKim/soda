@@ -30,6 +30,7 @@
 	from
 		tb_buy_list 
 </select>
+
 <select id="selectBuyHistoryList" resultType="buyHistory">
 	select
 		*
@@ -37,5 +38,20 @@
 		tb_buy_list 
 </select>
 
+<select id="selectIngMallOne" resultMap="ingMallMap">
+	select
+		*
+	from
+		tb_ingredient_mall
+	join tb_ingredient using(ingredient_no)
+		
+	where
+		ingredient_no = #{ingredientNo}
+</select>
+<resultMap type="IngredientMall" id="ingMallMap">
+	<id column="ingredient_no" property="ingMallNo"/>
+	<result column="ingredient_name" property="ingMallName"/>
+	<result column="ING_FILENAME" property="prevImg"/>
+</resultMap>
 
 </mapper>

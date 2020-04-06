@@ -1,11 +1,17 @@
 package com.soda.onn.mall.controller;
 
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.soda.onn.mall.model.service.MallService;
+import com.soda.onn.mall.model.service.MallServiceImpl;
+import com.soda.onn.mall.model.vo.IngredientMall;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,48 +24,55 @@ public class MallController {
 	private MallService mallService;
 	
 //	뇸뇸몰 Main 이동 
-	@GetMapping("/productList.do")
-	public String productList() {
-		return "mall/mallMain";
+	@GetMapping("/main")
+	public ModelAndView productList() {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("");
+		return mav;
 	}
 	
-	
-	@GetMapping("/shoppingBasket.do")
+	@GetMapping("/shoppingBasket")
 	public String shoppingBasketList() {
 		return "mall/shoppingBasket";
 	}
 	
-	@GetMapping("/selectedProductList.do")
+	@GetMapping("/selectedProductList")
 	public String slectedProductList() {
 		return "mall/selectedProductList";
 	}
 	
 // 뇸뇸몰 상품 상세페이지 이동 
-	@GetMapping("/productDetail.do")
-	public String productDetail() {
-		return "mall/productDetail";
+	@GetMapping("/productDetail")
+	public ModelAndView productDetail(@RequestParam("ingredientNo") int ingredientNo) {
+		ModelAndView mav = new ModelAndView();
+		IngredientMall ingMall = mallService.selectIngMallOne(ingredientNo);
+		mav.addObject("ingMall",ingMall);
+		mav.setViewName("mall//productDetail");
+		return mav;
 	}
 	
 // 뇸뇸몰 상품 배송지정보 등록 페이지 이동 
-		@GetMapping("/delivery.do")
-		public String delivery() {
-			return "mall/mallDelivery";
-		}
+	@GetMapping("/delivery")
+	public String delivery() {
+		return "mall/mallDelivery";
+	}
 
 // 뇸뇸몰 상품 결제정 등록 페이지 이동 
-		 @GetMapping("/paymentInfo.do")
-		 public String paymentInfo() {
-				return "mall/mallPaymentInfo";
-		 }
+	@GetMapping("/paymentInfo")
+	public String paymentInfo() {
+		return "mall/mallPaymentInfo";
+	}
 
 // 뇸뇸몰 상품 결제정 등록 페이지 이동 
-		  @GetMapping("/mallResult.do")
-		  public String mallResult() {
-				return "mall/mallResult";
-		  }		
+  	@GetMapping("/mallResult")
+  	public String mallResult() {
+		return "mall/mallResult";
+  	}		
 // 뇸뇸몰 상품등록 페이지 이동 
-		  @GetMapping("/productInsert.do")
-		  public String productInsert() {
-				return "mall/productInsert";
-		  }
+  	@GetMapping("/productInsert")
+  	public String productInsert() {
+  		return "mall/productInsert";
+  	}
+  	
 }

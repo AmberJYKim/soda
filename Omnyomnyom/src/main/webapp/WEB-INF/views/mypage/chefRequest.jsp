@@ -17,10 +17,9 @@
 				<div class="col side_nav">
 					<p class="nav_text ">내 정보보기</p>
 					<p class="nav_text ">예약목록</p>
-					<p class="nav_text selected_nav">구매목록</p>
-					<p class="nav_text">셰프 문의</p>
-					<p class="nav_text">1:1 문의</p>
-					
+					<p class="nav_text ">구매목록</p>
+					<p class="nav_text ">1:1 문의</p>
+					<p class="nav_text selected_nav">셰프신청</p>
 				</div>
 				<div class="col-10">
 					<h4 class="border_bottom">셰프신청</h4>

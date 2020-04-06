@@ -1,6 +1,7 @@
 package com.soda.onn.chef.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
@@ -9,7 +10,7 @@ import com.soda.onn.chef.model.vo.ChefRequest;
 
 public interface ChefDAO {
 
-	List<Chef> selectChefList();
+	List<Chef> selectChefAllList();
 
 	List<ChefRequest> selectChefRequestList(RowBounds rowBounds);
 
@@ -19,4 +20,11 @@ public interface ChefDAO {
 
 	int chefReuqest(ChefRequest chefRequest);
 
+	int chefRequestUpdate(Map<String, String> chefReq);
+  
+  List<Chef> chefSearch(String chefsearchbar);
+
+	Chef chefSelectOne(String memberNickName);
+
 }
+

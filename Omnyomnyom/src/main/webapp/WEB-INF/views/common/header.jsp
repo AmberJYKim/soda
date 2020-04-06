@@ -55,102 +55,82 @@
 	<script>
 		//사용 가능한 아이디, 닉네임인지 확인 하는 스크립트
 		$(document).ready(function(){
-		
-				//memberId input창에서 아이디를 입력 할 경우
-				$("#memberId").on("keyup", function(){
-					console.log("memberId keyup");  /* 여기는 값 들어옴 */
-					memberId = $(this).val().trim();
-					
-					console.log($(this).val());  /* 실시간으로 아이디 값 들어오는거 확인 */
-					 
-					//회원가입 아이디 input창에 값이 없으면 문구 숨김
-					if($("#memberId").val()==''){
-						$(".guide.error").hide();
-						$(".guide.ok").hide();
-				} 
-					
-					
-					
-					
-					signupFun(this);
-				});
-				
-				//memberNick input창에서 닉네임을 입력 할 경우
-				$("#memberNick").on("keyup", function(){
-					console.log("memberNick keyup");
-					memberNick = $(this).val().trim();
-					
-					console.log($(this).val());
-					
-					//회원가입 닉네임 input창에 값이 없으면 문구 숨김
-					if($("#memberNick").val()==''){
-						$(".nickGuide.error").hide();
-						$(".nickGuide.ok").hide();
-					}
 
-					signupFun(this);
-				});
-					
-				
-				//ajax 실행 메소드
-				function signupFun(e){
-					$.ajax({
-						url:"${pageContext.request.contextPath}/member/checkMember/"+$(e).attr('id')+"/"+$(e).val(),
-						type: "GET",
-						
-						
-						success: data => {
-							console.log(data);
-							
-							if($(e).attr('id') == "memberId"){
-								
-								if(data.isUsable != "ok"){
-									$(".guide.error").hide();
-									$(".guide.ok").show();
-									$("#idDuplicateCheck").val(1);
-								}
-								else{
-									$(".guide.error").show();
-									$(".guide.ok").hide();
-									$("#idDuplicateCheck").val(0);
-									
-								}
-							}
-							
-							
-							
-							
-							if($(e).attr('id') == "memberNick"){
-								
-								if(data.isUsable != "ok"){
-									$(".nickGuide.error").hide();
-									$(".nickGuide.ok").show();
-									$("#idDuplicateCheck").val(1);
-								}
-								else{
-									$(".nickGuide.error").show();
-									$(".nickGuide.ok").hide();
-									$("#idDuplicateCheck").val(0);
-								}
-							}
-							
-							
-							
-							
-						},
-						error: (x,s,e) => {
-							console.log(x,s,e);
-						}
-					});
+			//memberId input창에서 아이디를 입력 할 경우
+			$("#memberId").on("keyup", function(){
+				console.log("memberId keyup");  /* 여기는 값 들어옴 */
+				memberId = $(this).val().trim();
+
+				console.log($(this).val());  /* 실시간으로 아이디 값 들어오는거 확인 */
+
+				//회원가입 아이디 input창에 값이 없으면 문구 숨김
+				if($("#memberId").val()==''){
+					$(".guide.error").hide();
+					$(".guide.ok").hide();
+				} 	
+				signupFun(this);
+			});
+
+			//memberNick input창에서 닉네임을 입력 할 경우
+			$("#memberNick").on("keyup", function(){
+				console.log("memberNick keyup");
+				memberNick = $(this).val().trim();
+
+				console.log($(this).val());
+
+				//회원가입 닉네임 input창에 값이 없으면 문구 숨김
+				if($("#memberNick").val()==''){
+					$(".nickGuide.error").hide();
+					$(".nickGuide.ok").hide();
 				}
-			});				
+
+				signupFun(this);
+			});
+
+
+			//ajax 실행 메소드
+			function signupFun(e){
+				$.ajax({
+					url:"${pageContext.request.contextPath}/member/checkMember/"+$(e).attr('id')+"/"+$(e).val(),
+					type: "GET",
+					success: data => {
+						console.log(data);			
+						if($(e).attr('id') == "memberId"){	
+							if(data.isUsable != "ok"){
+								$(".guide.error").hide();
+								$(".guide.ok").show();
+								$("#idDuplicateCheck").val(1);
+							}
+							else{
+								$(".guide.error").show();
+								$(".guide.ok").hide();
+								$("#idDuplicateCheck").val(0);
+							}
+						}
+
+						if($(e).attr('id') == "memberNick"){
+							if(data.isUsable != "ok"){
+								$(".nickGuide.error").hide();
+								$(".nickGuide.ok").show();
+								$("#idDuplicateCheck").val(1);
+							}
+							else{
+								$(".nickGuide.error").show();
+								$(".nickGuide.ok").hide();
+								$("#idDuplicateCheck").val(0);
+							}
+						}
+					},
+					error: (x,s,e) => {
+						console.log(x,s,e);
+					}
+			});
+		}
+	});				
 	</script>
 	
     </c:if>
-    
-    
-    
-
+  
 </head>
 <body>
 
@@ -170,7 +150,7 @@
     <!-- Header Section -->
     <header class="header-section">
         <div class="header-bottom">
-            <a href="index.html" class="site-logo">
+            <a href="${pageContext.request.contextPath}" class="site-logo">
                 <img src="${pageContext.request.contextPath }/resources/images/onn_logo_red.png" alt="" class="main_logo">
             </a>
             <div class="hb-right" style="z-index: 1000;">
@@ -294,7 +274,7 @@
                             <li><a href="${pageContext.request.contextPath}/recipe/ingredientsSelection.do">냉장고 재료</a></li>
                         </ul>
                     </li>
-                    <li><a href="${pageContext.request.contextPath}/mall/productList.do">뇸뇸몰</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mall/main">뇸뇸몰</a></li>
                     <li><a href="${pageContext.request.contextPath}/chef/chefList.do">셰프</a></li>
                     <li><a href="${pageContext.request.contextPath}/oneday/oneday.do">원데이 클래스</a></li>
                     <li><a href="contact.html">사이트 안내</a>
@@ -324,7 +304,7 @@
 				<a href="#" class="infor-logo">
 					<img src="img/user.png" alt="">
 				</a>
-				<p><a href="#">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+				<p><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
 
 				<!-- 바로가기기능 -->
 				<div class="insta-imgs">

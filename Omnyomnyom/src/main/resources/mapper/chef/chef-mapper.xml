@@ -4,26 +4,73 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="chef">
 
-<select id="selectChefList" resultType="chef">
+
+<resultMap type="chef" id="chefMap">
+<result column="member_id" property="chefId"/>
+<result column="member_nick" property="chefNickName"/>
+<result column="menu_pr_category" property="chefCategory"/>
+</resultMap>
+
+<!-- 전체 셰프 리스 -->
+<update id="chefRequestUpdate">
+	update 
+		tb_chef_req
+	set
+		chef_req_ok	= #{variable}
+	where
+		member_id = #{chefId}
+</update>
+
+
+<select id="selectChefAllList" resultMap="chefMap">
+	select 
+		C.*, 
+		M.member_nick 
+	from
+	 	tb_chef C 
+	join tb_member M 
+	on C.member_Id = M.member_Id	
+	order by
+	C.regdate
+</select>
+<!-- 특정 셰프 닉네임으로 검색  -->
+<select id="chefSearch" resultMap="chefMap" parameterType="String">
+	select 
+        C.*  ,
+        M.member_nick 
+        from   tb_chef C 
+        join tb_member M 
+        on C.member_id = M.member_id
+        where    M.member_nick like  '%'||#{chefsearchbar}||'%'
+        order by  C.regdate desc
+</select>
+  
+<select id="chefSelectOne" resultMap="chefMap" parameterType="String">
+	select 
+		C.*, 
+		M.member_nick 
+	from
+	 	tb_chef C 
+	join tb_member M 
+	on C.member_Id = M.member_Id	
+	where M.member_nick = #{memberNickName}
+		
+</select>
+<select id="selectChefRequestList" resultMap="chefReqMap">
 	select
 		*
 	from
-		(select *
-		 from tb_member m
-		 where member_roll = 'C') m
-		join  tb_chef c on c.member_id = m.member_id
+		tb_chef_req c
+		join tb_member m using(member_id)
 	order by
 		c.regdate
 </select>
 
-<select id="selectChefRequestList" resultType="chefRequest">
-	select
-		*
-	from
-		tb_chef_req
-	order by
-		regdate
-</select>
+<resultMap type="chefRequest" id="chefReqMap" >
+	<result column="member_id" property="chefId"/>
+	<result column="member_nick" property="chefNickName"/>
+	<result column="chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
+</resultMap>
 
 <select id="selectChefRequest" resultType="chefRequest">
 	select
@@ -57,8 +104,5 @@
 	 ) 
 </insert>
 
-<resultMap type="chefRequest" id="chefReqMap">
-	<result column = "chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
-</resultMap>
 
 </mapper>
