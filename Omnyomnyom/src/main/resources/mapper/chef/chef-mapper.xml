@@ -9,6 +9,8 @@
 <result column="member_id" property="chefId"/>
 <result column="member_nick" property="chefNickName"/>
 <result column="menu_pr_category" property="chefCategory"/>
+<result column="email" property ="chefEmail"/>
+<result column="regdate" property ="chefRegDate"/>
 </resultMap>
 
 <!-- 전체 셰프 리스 -->
@@ -48,7 +50,9 @@
 <select id="chefSelectOne" resultMap="chefMap" parameterType="String">
 	select 
 		C.*, 
-		M.member_nick 
+		M.member_nick ,
+		M.email,
+		C.regdate
 	from
 	 	tb_chef C 
 	join tb_member M 
