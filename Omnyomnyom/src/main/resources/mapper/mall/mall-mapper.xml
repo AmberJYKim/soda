@@ -13,14 +13,14 @@
 		member_id = #{memberId}
 </select>
 
-<select id="selectIngredientList" resultMap="ingMallMap">
+<select id="selectIngredientList" resultType="IngredientMall">
 	select
 		*
 	from
 		tb_Ingredient i
 		join tb_ingredient_mall im on i.ingredient_no = im.ingredient_no
 	where
-		i.ing_cd_category	= #{subCtg}
+		i.ing_cd_category	= #{column}
 </select>
 
 
@@ -52,8 +52,6 @@
 	<id column="ingredient_no" property="ingMallNo"/>
 	<result column="ingredient_name" property="ingMallName"/>
 	<result column="ING_FILENAME" property="prevImg"/>
-	<result column="ENG_PR_CATEGORY" property="mallEngPrCategory"/>
-	<result column="ENG_CD_CATEGORY" property="mallEngCdCategory"/>
 </resultMap>
 
 </mapper>

@@ -19,8 +19,8 @@ public class MallDAOImpl implements MallDAO {
 	private SqlSessionTemplate sqlSession;
 	
 	@Override
-	public List<IngredientMall> selectIngredientList(String subCtg) {
-		return sqlSession.selectList("mall.selectIngredientList", subCtg);
+	public List<IngredientMall> selectIngredientList(String column) {
+		return sqlSession.selectList("mall.selectIngredientList", column);
 	}
 
 	@Override

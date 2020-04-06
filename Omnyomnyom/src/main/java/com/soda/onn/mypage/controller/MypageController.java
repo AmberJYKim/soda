@@ -41,12 +41,6 @@ public class MypageController {
 	@Autowired
 	private OnedayService onedayService;
 	
-	final int NUMPERPAGE = 15;
-	final int PAGEBARSIZE = 10;
-	
-	@GetMapping("/main")
-	public void main() { }
-	
 	@GetMapping("/buyList")
 	public void buyList(HttpSession session, Model model) {
 		String memberId = (String) session.getAttribute("");
@@ -77,7 +71,9 @@ public class MypageController {
 	}
 	
 	@GetMapping("/qnaMsg")
-	public void qnaMsg() {}
+	public void qnaMsg() {
+		
+	}
 	
 	@GetMapping("/scrapList")
 	public ModelAndView scrapList(HttpSession session) {
@@ -93,12 +89,6 @@ public class MypageController {
 	@GetMapping("/onedayReservation")
 	public ModelAndView onedayReservation(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		String memberId = (String)session.getAttribute("memberLoggedIn");
-
-		RowBounds rowBounds = new RowBounds();
-		List<Reservation> reservationList = onedayService.selectReservationList(memberId, rowBounds);
-		mav.setViewName("mypage/scrapList");
-		mav.addObject("reservationList", reservationList);
 		return mav;
 	}
 }

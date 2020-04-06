@@ -306,7 +306,6 @@ function addIngredient(){
                          +'</div>');
     $inputIngredient.val("");
     $inputIngMass.val("");
-    $inputIngNumber.val(0);
 
 }
 // 클래스 날짜 제거
