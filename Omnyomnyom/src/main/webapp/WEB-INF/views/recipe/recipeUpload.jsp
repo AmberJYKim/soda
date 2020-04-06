@@ -147,7 +147,7 @@ function view_change(e) {
     let id = $(e).attr('id');
     console.log(id);
     if (id == "video_btn") {
-    	$("#recipeId").val('');
+    	$("#videoLink").val('');
         $("#url_upload").css('display', 'none');
         $("#video_upload").css('display', 'block');
     } else {
@@ -166,38 +166,38 @@ function frmValidate(){
 		return false;
 	}
 	
-	if(!$("input[name=recipeName]").val().trim()){
+	if(!$("input[name=videoTitle]").val().trim()){
 		alert('레시피 이름을 입력하세요.');
-		$("input[name=recipeName]").val('').focus();
+		$("input[name=videoTitle]").val('').focus();
 		return false;
 	}
 	
-	if(!$("#recipeId").val().trim() && !$("input[name=uploadFile]").val().trim()){
+	if(!$("#videoLink").val().trim() && !$("input[name=uploadFile]").val().trim()){
 		alert('영상파일, 혹은 유튜브 링크를 입력해주세요.');
 		$("input[name=uploadFile]").val('');
 		return false;
 	}
 	
-	if($("#recipeId").val().trim()){
-		let $recipeId = $("#recipeId");
+	if($("#videoLink").val().trim()){
+		let $videoLink = $("#videoLink");
 		
-		if($recipeId.val().indexOf("youtu.be/") != -1){
+		if($videoLink.val().indexOf("youtu.be/") != -1){
 			
-			let subString = $recipeId.val().substr($recipeId.val().indexOf("youtu.be/")+9,11); 
+			let subString = $videoLink.val().substr($videoLink.val().indexOf("youtu.be/")+9,11); 
 			
-			$recipeId.val(subString);
+			$videoLink.val(subString);
 			
-			console.log("recipeId="+$recipeId.val());
-		}else if($recipeId.val().indexOf("watch?v=") != -1){
+			console.log("videoLink="+$videoLink.val());
+		}else if($videoLink.val().indexOf("watch?v=") != -1){
 			
-			let subString = $recipeId.val().substr($recipeId.val().indexOf("watch?v=")+8,11);
+			let subString = $videoLink.val().substr($videoLink.val().indexOf("watch?v=")+8,11);
 			
-			$recipeId.val(subString);
+			$videoLink.val(subString);
 			
-			console.log("recipeId="+$recipeId.val());
+			console.log("videoLink="+$videoLink.val());
 		}else{
 			alert("알맞은 유튜브 링크를 올리세요.");
-			$recipeId.val('').focus();
+			$videoLink.val('').focus();
 			return false;
 		} 
 		
@@ -298,7 +298,7 @@ function frmValidate(){
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="basic-addon1">제목</span>
                                 </div>
-                                <input name="recipeName" type="text" class="form-control" placeholder="레시피제목을 입력하세요." aria-label="Username" aria-describedby="basic-addon1">
+                                <input name="videoTitle" type="text" class="form-control" placeholder="레시피제목을 입력하세요." aria-label="Username" aria-describedby="basic-addon1">
 							  </div>
 							<hr>
 							<!-- 이미지 등록 -->
@@ -320,7 +320,7 @@ function frmValidate(){
 								  <span class="input-group-text" id="basic-addon1">URL</span>
 								</div>
 								<!-- <input class="form-control" name='basic' value="" placeholder="해시태그를 입력하세요." aria-label="Username" aria-describedby="basic-addon1" autofocus> -->
-								<input class="form-control some_class_name" name="recipeId" id="recipeId" placeholder="해당 영상의 URL을 입력하세요."   aria-label="Username" aria-describedby="basic-addon1" >
+								<input class="form-control some_class_name" name="videoLink" id="videoLink" placeholder="해당 영상의 URL을 입력하세요."   aria-label="Username" aria-describedby="basic-addon1" >
 							</div>
 							<hr>
 								<div class="input-group mb-3">
