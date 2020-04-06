@@ -23,8 +23,7 @@ public interface ChefService {
 	List<Chef> chefSearch(String chefsearchbar);
 
 	Chef chefSelectOne(String memberNickName);
-
-
-
+	
+  int chefRequestUpdate(Map<String, String> chefReq);
 
 }

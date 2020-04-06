@@ -1,6 +1,11 @@
 package com.soda.onn.admin.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,11 +13,17 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.soda.onn.admin.model.service.AdminService;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.Chef;
@@ -60,8 +71,8 @@ public class AdminController {
 	public ModelAndView chefList() {
 		ModelAndView mav = new ModelAndView();
 		
-		List<Chef> chefList = chefService.selectChefAllList();
-		mav.addObject("chefList", chefList);
+//		List<Chef> chefList = chefService.selectChefAllList();
+//		mav.addObject("chefList", chefList);
 		mav.setViewName("admin/chefList");
 		
 		return mav;
@@ -88,6 +99,19 @@ public class AdminController {
 		mav.setViewName("admin/chefRequestList");
 		
 		return mav;
+	}
+	@PostMapping("/chefRequest")
+	public String chefRequest(@RequestParam("variable") String variable,
+							  @RequestParam("chefId") String chefId) {
+		log.debug("셰프신청 수락여부 결정 진행중");
+		log.debug("chefId={}",chefId);
+		log.debug("variable={}",variable);
+		Map<String, String> chefReq = new HashMap<>();
+		chefReq.put("chefId",chefId);
+		chefReq.put("variable",variable);
+		int result = chefService.chefRequestUpdate(chefReq);
+		log.debug("result={}",result);
+		return "redirect:/admin/chefRequestList";
 	}
 
 	//신고목록
@@ -206,7 +230,4 @@ public class AdminController {
 		
 		return mav;
 	}
-	
-	
-	
 }

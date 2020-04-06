@@ -150,7 +150,7 @@
     <!-- Header Section -->
     <header class="header-section">
         <div class="header-bottom">
-            <a href="index.html" class="site-logo">
+            <a href="${pageContext.request.contextPath}" class="site-logo">
                 <img src="${pageContext.request.contextPath }/resources/images/onn_logo_red.png" alt="" class="main_logo">
             </a>
             <div class="hb-right" style="z-index: 1000;">
@@ -274,7 +274,7 @@
                             <li><a href="${pageContext.request.contextPath}/recipe/ingredientsSelection.do">냉장고 재료</a></li>
                         </ul>
                     </li>
-                    <li><a href="${pageContext.request.contextPath}/mall/productList.do">뇸뇸몰</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mall/main">뇸뇸몰</a></li>
                     <li><a href="${pageContext.request.contextPath}/chef/chefList.do">셰프</a></li>
                     <li><a href="${pageContext.request.contextPath}/oneday/oneday.do">원데이 클래스</a></li>
                     <li><a href="contact.html">사이트 안내</a>
@@ -304,7 +304,7 @@
 				<a href="#" class="infor-logo">
 					<img src="img/user.png" alt="">
 				</a>
-				<p><a href="#">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+				<p><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
 
 				<!-- 바로가기기능 -->
 				<div class="insta-imgs">

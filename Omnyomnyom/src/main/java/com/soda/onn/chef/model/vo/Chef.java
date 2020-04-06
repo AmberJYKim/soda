@@ -26,7 +26,7 @@ public class Chef extends Member implements Serializable{
 	private String chefMainvideo;
 	private String chefSns;
 	private String chefProfile;
-	private String chefCategory;
+	private String menuPrCategory;
 	private Date chefRegDate;
 	private String businessInfo;
 	private String chefContent;
@@ -35,4 +35,5 @@ public class Chef extends Member implements Serializable{
 	
 
 	
+
 }

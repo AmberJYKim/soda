@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
-<jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
+<jsp:param value="상품상세 - ${ingMall.ingMallName } " name="pageTitle"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mall_common.css" />
  <!--  Section start -->
@@ -18,12 +18,12 @@
 
                             <div id="sectionView">
                                 <div class="inner_view">
-                                    <div class="thumb" style="background-image: url(&quot;https://img-cf.kurly.com/shop/data/goods/158519696333y0.jpg&quot;);"><img src="https://res.kurly.com/mobile/service/goodsview/1910/bg_375x482.png" alt="상품 대표 이미지" class="bg"></div>
-                                    <p class="goods_name"><span class="btn_share"></span> <strong class="name">[다향오리] 덕팸</strong></p>
+                                    <div class="thumb" style="background-image: url(&quot;https://img-cf.kurly.com/shop/data/goods/158519696333y0.jpg&quot;);"><img src="${pageContext.request.contextPath }/resources/images" alt="상품 대표 이미지" class="bg"></div>
+                                    <p class="goods_name"><span class="btn_share"></span> <strong class="name">${ingMall.ingMallName}</strong></p>
                                     <p class="goods_price">
                                         <span class="position">
                                             <span class="dc">
-                                                    <span class="dc_price">3,400
+                                                    <span class="dc_price">${ingMall.price }
                                                     <span class="won">원</span>
                                         </span>
                                         </span>
@@ -33,16 +33,16 @@
                                     </p>
                                     <div class="goods_info">
                                         <dl class="list"><dt class="tit">판매단위/중량/용량</dt>
-                                            <dd class="desc">1캔/200g</dd>
+                                            <dd class="desc">${ingMall.minUnit }</dd>
                                         </dl>
                                         <dl class="list"><dt class="tit">배송구분</dt>
                                             <dd class="desc">채성택배</dd>
                                         </dl>
                                         <dl class="list"><dt class="tit">원산지</dt>
-                                            <dd class="desc">국산</dd>
+                                            <dd class="desc">${ingMall.ingOrigin }</dd>
                                         </dl>
                                         <dl class="list"><dt class="tit">유통기한</dt>
-                                            <dd class="desc">1일</dd>
+                                            <dd class="desc">${ingMall.shelfLife }일</dd>
                                         </dl>
                                         <dl class="list"><dt class="tit">포장타입</dt>
                                             <dd class="desc"> 상온/종이포장
@@ -56,16 +56,16 @@
                             <div id="cartPut">
                                 <div class="cart_option cart_type2">
                                     <div class="inner_option">
-                                        <strong class="tit_cart">[다향오리] 덕팸</strong>
+                                        <strong class="tit_cart">${ingMall.ingMallName}</strong>
                                         <div class="in_option">
                                             <div class="list_goods">
 
                                                 <ul class="list list_nopackage">
                                                     <li class="on"><span class="btn_position"><button type="button" class="btn_del"><span class="txt">삭제하기</span></button>
-                                                        </span> <span class="name">[다향오리] 덕팸</span> <span class="tit_item">구매수량</span>
+                                                        </span> <span class="name">${ingMall.ingMallName}</span> <span class="tit_item">구매수량</span>
                                                         <div class="option">
-                                                            <span class="count"><button type="button" class="btn down">수량내리기</button> <input type="number" readonly="readonly" onfocus="this.blur()" class="inp"> <button type="button" class="btn up">수량올리기</button></span>
-                                                            <span class="price"><span class="dc_price">3,400원</span>
+<!--                                                             <span class="count"><button type="button" class="btn down">수량내리기</button> <input type="number" readonly="readonly" onfocus="this.blur()" class="inp"> <button type="button" class="btn up">수량올리기</button></span> -->
+                                                            <span class="price"><span class="dc_price">${ingMall.price }원</span>
 
                                                             </span>
                                                         </div>
@@ -77,7 +77,7 @@
                                                     <strong class="tit">총 상품금액 :</strong>
 
                                                     <span class="sum">
-                                                         <span class="num">3,400</span>
+                                                         <span class="num">000000</span>
                                                     <span class="won">원</span>
                                                     </span>
                                                 </div>
@@ -108,7 +108,7 @@
                         <p class="product_sub_title">자세한 정보를 확인해 주세요.</p>
                         <hr style="margin:auto; position: relative; left:25%;">
                         <div class="col-lg-12 m-auto">
-                            <img src="/img/mall_detail.jpg" class="mall_detail_img">
+                            <img src="${pageContext.request.contextPath }/resources/images/mall/${ingMall.ingInfo}" class="mall_detail_img">
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
     <!--  Section end -->
     <script>
     function shoppingBasket(){
-    	location.href="${pageContext.request.contextPath }/mall/shoppingBasket.do"
+    	location.href="${pageContext.request.contextPath }/mall/shoppingBasket"
     }
     </script>
 

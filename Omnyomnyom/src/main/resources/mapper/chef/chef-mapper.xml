@@ -4,6 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="chef">
 
+
 <resultMap type="chef" id="chefMap">
 <result column="member_id" property="chefId"/>
 <result column="member_nick" property="chefNickName"/>
@@ -11,6 +12,16 @@
 </resultMap>
 
 <!-- 전체 셰프 리스 -->
+<update id="chefRequestUpdate">
+	update 
+		tb_chef_req
+	set
+		chef_req_ok	= #{variable}
+	where
+		member_id = #{chefId}
+</update>
+
+
 <select id="selectChefAllList" resultMap="chefMap">
 	select 
 		C.*, 
@@ -32,8 +43,8 @@
         on C.member_id = M.member_id
         where    M.member_nick like  '%'||#{chefsearchbar}||'%'
         order by  C.regdate desc
-
 </select>
+  
 <select id="chefSelectOne" resultMap="chefMap" parameterType="String">
 	select 
 		C.*, 
@@ -45,14 +56,21 @@
 	where M.member_nick = #{memberNickName}
 		
 </select>
-<select id="selectChefRequestList" resultType="chefRequest">
+<select id="selectChefRequestList" resultMap="chefReqMap">
 	select
 		*
 	from
-		tb_chef_req
+		tb_chef_req c
+		join tb_member m using(member_id)
 	order by
-		regdate
+		c.regdate
 </select>
+
+<resultMap type="chefRequest" id="chefReqMap" >
+	<result column="member_id" property="chefId"/>
+	<result column="member_nick" property="chefNickName"/>
+	<result column="chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
+</resultMap>
 
 <select id="selectChefRequest" resultType="chefRequest">
 	select
@@ -86,8 +104,5 @@
 	 ) 
 </insert>
 
-<resultMap type="chefRequest" id="chefReqMap">
-	<result column = "chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
-</resultMap>
 
 </mapper>
