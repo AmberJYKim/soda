@@ -28,8 +28,8 @@
 			TB_recipe
 		values(
 			seq_recipe.nextval,
-			#{recipeName},
-			#{recipeId},
+			#{videoTitle},
+			#{videoLink},
 			#{timeline},
 			#{menuName},
 			#{chefNick},
