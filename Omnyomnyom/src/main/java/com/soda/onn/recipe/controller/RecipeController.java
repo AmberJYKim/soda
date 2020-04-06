@@ -236,6 +236,7 @@ public class RecipeController {
 		return subCtgList;
 	}
 	
+	
 	@GetMapping(value = "/{ingredient}/ajax", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String ingredientAjax(@PathVariable("ingredient") String ingr) {
@@ -346,7 +347,7 @@ public class RecipeController {
 
 		//카테고리 갯수에 따른 페이징 여부 (12개 이하일 경우 페이징 하지 않음)
 		if(ingCnt < 12) {
-			ingCnt = ingCnt % 12;
+			ingCnt = (int)Math.ceil((double)ingCnt/12);
 			log.debug("ingCnt 12보다 큼 ===={}", ingCnt);
 		} else {
 			ingCnt = 0;
@@ -358,6 +359,7 @@ public class RecipeController {
 		
 		maps.put("ingList", ingList);
 		maps.put("ingCnt", ingCnt);
+		maps.put("cPage", cPage);
 		
 		
 		String gList = new Gson().toJson(maps);

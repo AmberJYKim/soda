@@ -167,6 +167,7 @@
 					});
 					
 					//페이징 처리
+					console.log("페이징 시작");
 					let totalPage = '<li class="page-item disabled"><a class="page-link"><small>..total : '+ingCnt+'</small></a></li>';
 					let pagingPrevbtn = '<li class="page-item"><a class="page-link" tabindex="-1"> &lt 이전</a></li>';
 					let pagingNextbtn = '<li class="page-item"><a class="page-link" tabindex="1"> 다음 &gt</a> </li>';
@@ -285,7 +286,7 @@
 			
 
 				</div>
-				<div class="col">
+				<div class="col btn-section">
 					<button type="submit" class="btnforseach">
 						선택한 재료로 검색하기 <img
 							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/icons/search-2.png" alt="">

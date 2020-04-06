@@ -2,8 +2,12 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i|Playfair+Display:400,400i,700,700i&display=swap");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-
-
+.btn-section{
+	border-bottom: 20px;
+}
+/* .inglist {
+	min-height: 160px;
+} */
 .major li {
 	border: black solid 1px;
 }
@@ -25,6 +29,7 @@
 .sub-container {
 	border: indianred solid 5px;
 	border-radius: 20px;
+	min-height: 420px;
 }
 
 .large-ctg-box {
@@ -34,7 +39,7 @@
 
 .selected-ingredients {
 	margin-top: 15px;
-	height: 80%;
+	min-height: 75%;
 }
 
 /* 메인 카테고리 관련 */
