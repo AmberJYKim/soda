@@ -40,7 +40,6 @@ public class ChefController {
 	@Autowired
 	private ChefService chefservice;
 	
-	
 // 셰프채널 메인 이동 
 	@GetMapping("/chefList")
 	public ModelAndView chefList() {

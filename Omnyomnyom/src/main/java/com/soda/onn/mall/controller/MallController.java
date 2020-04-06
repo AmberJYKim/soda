@@ -1,14 +1,18 @@
 package com.soda.onn.mall.controller;
 
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.soda.onn.mall.model.service.MallService;
 import com.soda.onn.mall.model.service.MallServiceImpl;
 import com.soda.onn.mall.model.vo.IngredientMall;
@@ -50,6 +54,15 @@ public class MallController {
 		mav.addObject("ingMall",ingMall);
 		mav.setViewName("mall//productDetail");
 		return mav;
+	}
+	@GetMapping(value = "/seachList/{subCtg}/ajax", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String searchList(@PathVariable("subCtg") String subCtg){
+		log.debug("접근");
+		log.debug(subCtg);
+		List<IngredientMall> list = mallService.selectIngredientList(subCtg);
+		log.debug(list.toString());
+		return new Gson().toJson(list);
 	}
 	
 // 뇸뇸몰 상품 배송지정보 등록 페이지 이동 

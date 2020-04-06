@@ -46,37 +46,12 @@
   border-color: gold;
 }
 </style>	
-<style>
-ul#autoComplete{
-	display:none;
-	background-color: white;
-    min-width: 100%;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
-    /* position: absolute; */
-}
-
-ul#autoComplete li{
-	padding:0 10px;
-	list-style:none;
-	cursor:pointer;
-}
-
-ul#autoComplete li.sel{
-	background:lightseagreen;
-	color:white;
-}
-
-span.srchval{
-	color:red;
-}
-</style>
 <script>
 $(function(){
 	var input = document.querySelector('input[id="input-custom-dropdown"]'),
 	// init Tagify script on the above inputs
 	tagify = new Tagify(input, {
-		whitelist: ["한식/찜", "중식/찜", "일식/찜", "A+", "A++", "ABAP", "ABC", "ABC ALGOL", "ABSET", "ABSYS", "ACC", "Accent", "Ace DASL", "ACL2", "Avicsoft", "ACT-III", "Action!", "ActionScript", "Ada", "Adenine", "Agda", "Agilent VEE", "Agora", "AIMMS", "Alef", "ALF", "ALGOL 58", "ALGOL 60", "ALGOL 68", "ALGOL W", "Alice", "Alma-0", "AmbientTalk", "Amiga E", "AMOS", "AMPL", "Apex (Salesforce.com)", "APL", "AppleScript", "Arc", "ARexx", "Argus", "AspectJ", "Assembly language", "ATS", "Ateji PX", "AutoHotkey", "Autocoder", "AutoIt", "AutoLISP / Visual LISP", "Averest", "AWK", "Axum", "Active Server Pages", "ASP.NET", "B", "Babbage", "Bash", "BASIC", "bc", "BCPL", "BeanShell", "Batch (Windows/Dos)", "Bertrand", "BETA", "Bigwig", "Bistro", "BitC", "BLISS", "Blockly", "BlooP", "Blue", "Boo", "Boomerang", "Bourne shell (including bash and ksh)", "BREW", "BPEL", "B", "C--", "C++ – ISO/IEC 14882", "C# – ISO/IEC 23270", "C/AL", "Caché ObjectScript", "C Shell", "Caml", "Cayenne", "CDuce", "Cecil", "Cesil", "Céu", "Ceylon", "CFEngine", "CFML", "Cg", "Ch", "Chapel", "Charity", "Charm", "Chef", "CHILL", "CHIP-8", "chomski", "ChucK", "CICS", "Cilk", "Citrine (programming language)", "CL (IBM)", "Claire", "Clarion", "Clean", "Clipper", "CLIPS", "CLIST", "Clojure", "CLU", "CMS-2", "COBOL – ISO/IEC 1989", "CobolScript – COBOL Scripting language", "Cobra", "CODE", "CoffeeScript", "ColdFusion", "COMAL", "Combined Programming Language (CPL)", "COMIT", "Common Intermediate Language (CIL)", "Common Lisp (also known as CL)", "COMPASS", "Component Pascal", "Constraint Handling Rules (CHR)", "COMTRAN", "Converge", "Cool", "Coq", "Coral 66", "Corn", "CorVision", "COWSEL", "CPL", "CPL", "Cryptol", "csh", "Csound", "CSP", "CUDA", "Curl", "Curry", "Cybil", "Cyclone", "Cython", "Java", "Javascript", "M2001", "M4", "M#", "Machine code", "MAD (Michigan Algorithm Decoder)", "MAD/I", "Magik", "Magma", "make", "Maple", "MAPPER now part of BIS", "MARK-IV now VISION:BUILDER", "Mary", "MASM Microsoft Assembly x86", "MATH-MATIC", "Mathematica", "MATLAB", "Maxima (see also Macsyma)", "Max (Max Msp – Graphical Programming Environment)", "Maya (MEL)", "MDL", "Mercury", "Mesa", "Metafont", "Microcode", "MicroScript", "MIIS", "Milk (programming language)", "MIMIC", "Mirah", "Miranda", "MIVA Script", "ML", "Model 204", "Modelica", "Modula", "Modula-2", "Modula-3", "Mohol", "MOO", "Mortran", "Mouse", "MPD", "Mathcad", "MSIL – deprecated name for CIL", "MSL", "MUMPS", "Mystic Programming L"],
+		whitelist: ["한식/찜", "중식/찜", "일식/찜"],
 		maxTags: 1,
 		dropdown: {
 			maxItems: 20,           // <- mixumum allowed rendered suggestions
@@ -127,7 +102,7 @@ $(function(){
 			--%>
 			
 			$.ajax({
-				url:"<%=request.getContextPath()%>/recipe/"+ srchName + "/ajax",
+				url:"${pageContext.request.contextPath}/recipe/"+ srchName + "/ajax",
 				dataType : "json",
 				success : function(data) {
 								console.log(data);//'김' 입력시, "조기김, 돌김, 김가루..."
@@ -183,14 +158,111 @@ function view_change(e) {
     }
 };
 
+/* if(!$("input[name=]").val()){
+	alert("");
+	$("input[name=]").focus()
+	return false;
+} */
 function frmValidate(){
-	/* if(!$("#chefId").val()){
-		alert('로그인 먼제 해주세요.');
-		location.href="/"
+	
+	if(!$("input[name=chefId]").val().trim()){
+		alert('로그인 먼저 해주세요.');
+		location.href="/onn/";
+		return false;
 	}
 	
-	alert("검사 메소드가 완성되지 않았습니다.");
-	return false; */
+	if(!$("input[name=recipeName]").val().trim()){
+		alert('레시피 이름을 입력하세요.');
+		$("input[name=recipeName]").val('').focus();
+		return false;
+	}
+	
+	if(!$("#recipeId").val().trim() && !$("input[name=uploadFile]").val().trim()){
+		alert('영상파일, 혹은 유튜브 링크를 입력해주세요.');
+		$("input[name=uploadFile]").val('');
+		return false;
+	}
+	
+	/*
+	if($("#recipeId").val().trim()){
+		let $recipeId = $("#recipeId");
+		
+		if($recipeId.val().indexOf("youtu.be/") != -1){
+			$recipeId.val($recipeId.substr($recipeId.val().indexOf("youtu.be/"),11));
+			console.log("recipeId="+$recipeId.val());
+		}else if($recipeId.indexOf("watch?v=") != -1){
+			$recipeId.val($recipeId.substr($recipeId.val().indexOf("watch?v="),11));
+			console.log("recipeId="+$recipeId.val());
+		}else{
+			alert("알맞은 유튜브 링크를 올리세요.");
+			//$recipeId.val('').focus();
+			return false;
+		} 
+		
+		
+	}
+	*/
+	if(!$("input[name=category]").val().trim()){
+		alert("음식 분류를 입력하세요.");
+		$("input[name=category]").val('').focus();
+		return false;
+	}
+	
+	if(!$("input[name=menuName]").val().trim()){
+		alert("음식 이름을 넣어주세요.");
+		$("input[name=menuName]").val('').focus();
+		return false;
+	}
+	
+	
+	if($("input[name=ingr_name]").length <=0){
+		alert("레시피 재료가 없습니다. 레시피 재료를 추가해 주세요.");
+		$("#input-ingredient").val('').focus();
+		$("#input-ing-number").val('');
+		$("#input-ing-mass").val('');
+		return false;
+	}
+	
+	let $tn_firstname = $("input[name=tn_firstname]");
+	let $tn_lastname = $("input[name=tn_lastname]");
+	
+	let tn_firstBool = true;
+	let tn_lastBool = true;
+	
+	$tn_firstname.each(function(i,element){
+		let $elem = $(element);
+		if(!$elem.val().trim()){
+			alert("요리방법 시간이 안 적힌 곳이 있습니다.");
+			$elem.val('').focus();
+			tn_firstBool=false;
+			return false;
+		}
+	});
+	
+	if(!tn_firstBool)
+		return false;
+	
+	$tn_lastname.each(function(i,element){
+		let $elem = $(element);
+		if(!$elem.val().trim()){
+			alert("요리방법이 안 적힌 곳이 있습니다.");
+			$elem.val('').focus();
+			tn_lastBool=false;
+			return false;
+		}
+	});
+	
+	if(!tn_lastBool)
+		return false;
+	
+	if(!$("textarea[name=recipeContent]").val().trim()){
+		alert("내용이 비어있습니다.");
+		$("textarea[name=recipeContent]").val('').focus()
+		return false;
+	}
+	
+	alert("영상 업로드에 시간이 걸릴 수 있습니다. 잠시만 기다려주세요.");
+	return false;
 };
 </script>
 
@@ -273,7 +345,7 @@ function frmValidate(){
                                     <input class="form-control" type="text" id="input-ingredient" autocomplete="off" placeholder="재료명을 입력하세요."/>
                                 	<ul id="autoComplete"></ul>
 								</span>
-								<input type="number" id="input-ing-number" hidden/>
+								<input type="number" id="input-ing-number" value=0 hidden/>
 								<span class="input col-4 p-0">
                                     <input class="form-control" type="text" id="input-ing-mass" autocomplete="off" placeholder="계량을 입력하세요."/>
                                 </span>
@@ -327,14 +399,6 @@ function frmValidate(){
 		</div>
 	</section>
 	<!-- Classes Details Section end -->
-
-		
-
-
 <!-- <script crossorigin="anonymous" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
-
-
-	
-	
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

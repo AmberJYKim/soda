@@ -1,8 +1,5 @@
 package com.soda.onn.admin.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,17 +10,12 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.soda.onn.admin.model.service.AdminService;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.Chef;
@@ -62,7 +54,6 @@ public class AdminController {
 	
 	final int NUMPERPAGE = 15;
 	final int PAGEBARSIZE = 10;
-
 	
 	private RowBounds rowBounds = null;
 	
@@ -71,8 +62,8 @@ public class AdminController {
 	public ModelAndView chefList() {
 		ModelAndView mav = new ModelAndView();
 		
-//		List<Chef> chefList = chefService.selectChefAllList();
-//		mav.addObject("chefList", chefList);
+		List<Chef> chefList = chefService.selectChefAllList();
+		mav.addObject("chefList", chefList);
 		mav.setViewName("admin/chefList");
 		
 		return mav;
@@ -185,10 +176,8 @@ public class AdminController {
 		mav.addObject("paging", paging);
 		mav.addObject("buyHistoryListList", buyHistoryListList);
 		mav.setViewName("admin/ingredientList");
-
 		
 		return mav;
-
 	}
 		
 	//회원목록
