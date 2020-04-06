@@ -38,34 +38,34 @@ public class ChefController {
 	@Autowired
 	private ChefService chefservice;
 	
-	@GetMapping("/chefList.do")
-	public ModelAndView chefLis() {
-		ModelAndView mav = new ModelAndView();
-		List<Chef> chefList = chefservice.selectChefAllList();
-		
-		
-		for(Chef ch: chefList) {
-			List<Map<String,String>> list = (List<Map<String,String>>) new Gson().fromJson(ch.getChefCategory(), 
-											 new TypeToken<List<Map<String,String>>>(){}.getType());
-			
-			List<String> categoryList = new ArrayList<String>();
-			
-			for(Map<String,String> map: list) {
-//	            log.debug(map.get("value"));
-	            categoryList.add(map.get("value"));
-	        }
-			
-			ch.setChefCategoryList(categoryList);
-			
-//			log.debug("{}",ch.getChefCategoryList());
-		}
-		
-        
-		log.debug("chefList ={}",chefList);
-		mav.addObject("chefList", chefList);
-		mav.setViewName("/chef/chefList");
-		return mav;
-	}
+//	@GetMapping("/chefList.do")
+//	public ModelAndView chefLis() {
+//		ModelAndView mav = new ModelAndView();
+//		List<Chef> chefList = chefservice.selectChefAllList();
+//		
+//		
+//		for(Chef ch: chefList) {
+//			List<Map<String,String>> list = (List<Map<String,String>>) new Gson().fromJson(ch.getChefCategory(), 
+//											 new TypeToken<List<Map<String,String>>>(){}.getType());
+//			
+//			List<String> categoryList = new ArrayList<String>();
+//			
+//			for(Map<String,String> map: list) {
+////	            log.debug(map.get("value"));
+//	            categoryList.add(map.get("value"));
+//	        }
+//			
+//			ch.setChefCategoryList(categoryList);
+//			
+////			log.debug("{}",ch.getChefCategoryList());
+//		}
+//		
+//        
+//		log.debug("chefList ={}",chefList);
+//		mav.addObject("chefList", chefList);
+//		mav.setViewName("/chef/chefList");
+//		return mav;
+//	}
 	@GetMapping("/chefpage.do")
 	public void chefpage() {
 		

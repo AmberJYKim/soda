@@ -54,27 +54,6 @@
                                 <div class="bx container ">
                                     <div class="container">
                                         <ul class="sub-ctg-menu catch-click-event">
-                                            <li>
-                                                <p class="active">인기재료</p>
-                                            </li>
-                                            <li>
-                                                <p>과일</p>
-                                            </li>
-                                            <li>
-                                                <p>잎채소</p>
-                                            </li>
-                                            <li>
-                                                <p>열매채소</p>
-                                            </li>
-                                            <li>
-                                                <p>뿌리채소</p>
-                                            </li>
-                                            <li>
-                                                <p>버섯</p>
-                                            </li>
-                                            <li>
-                                                <p>나물/허브류</p>
-                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -315,15 +294,72 @@
     </style>
 
 <script>
-    $(".catch-click-event").find("p").on("click",function(){
-        $(this).addClass("active");
-        $(this).parent().siblings().find("p").removeClass("active");
-        console.log($(this).text());
-    });
-	
-    $(".product_container").on("click",function(){
-    	location.href = "${pageContext.request.contextPath }/mall/productDetail.do";
-    });
+    $(()=>{
+	    $(".catch-click-event").find("p").on("click",function(){
+	        $(this).addClass("active");
+	        $(this).parent().siblings().find("p").removeClass("active");
+	        console.log($(this).text());
+	    });
+		
+	    $(".product_container").on("click",function(){
+	    	location.href = "${pageContext.request.contextPath }/mall/productDetail.do";
+	    });
+	    $(".main-ctg-menu").find("p").on("click",function(){
+	    	cd_category($(this));
+	    });
+	    $(".sub-ctg-menu").find("p").on("click",function(){
+	    	ingredient_list($(this));
+	    });
+	    
+	    function ingredient_list(e){
+	    	$.ajax({
+		    	url:"${pageContext.request.contextPath}/mall",
+		    	method : "GET",
+		    	data: subCtg,
+		    	success : data =>{
+		    	/* 재료목록 교체작업 */
+			    	let subCtgList = ' ';
+			    	$.each(data,function(index, item){
+				    	if(index == 0){
+				    		subCtgList += '<li> <p class="active">'+item+'</p> </li>';
+				    	}else{
+					    	subCtgList += '<li> <p>'+item+'</p> </li>';
+				    	}
+			    	});
+			    	$(".sub-ctg-menu").html(subCtgList);
+		    	},
+		    	error : (x,s,e) =>{
+		    		console.log(x,s,e);
+		    	}
+	    	});
+	    }
+	    
+	    function cd_category(e){
+	    	let mainCtg = {'mainCtg':$(e).html()};
+	    	$.ajax({
+		    	url:"${pageContext.request.contextPath}/recipe/getSubCtg",
+		    	dataType: "json",
+		    	method : "GET",
+		    	data: mainCtg,
+		    	success : data =>{
+		    	/* 서브 카테고리 교체작업 */
+			    	let subCtgList = ' ';
+			    	$.each(data,function(index, item){
+				    	if(index == 0){
+				    		subCtgList += '<li> <p class="active">'+item+'</p> </li>';
+				    	}else{
+					    	subCtgList += '<li> <p>'+item+'</p> </li>';
+				    	}
+			    	});
+			    	$(".sub-ctg-menu").html(subCtgList);
+		    	},
+		    	error : (x,s,e) =>{
+		    		console.log(x,s,e);
+		    	}
+	    	});
+    	}
+    	
+    })
 
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
