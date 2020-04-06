@@ -14,7 +14,7 @@ public interface RecipeService {
 
 	int selectIngredientsCnt(String subCtg);
 
-  int recipeUpload(Recipe recipe, List<RecipeIngredient> ingredientList);
+	int recipeUpload(Recipe recipe, List<RecipeIngredient> ingredientList);
 
 	List<Ingredient> ingredientAjax(String ingr);
 

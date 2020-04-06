@@ -171,8 +171,6 @@ public class RecipeController {
 		}
 		log.debug(ingredientList.toString());
 		
-		
-		
 		List<Map<String,String>> list = (List<Map<String,String>>)new Gson().fromJson(recipe.getCategory(), new TypeToken<List<Map<String,String>>>(){}.getType());
 		
 		if(!list.isEmpty()) {
