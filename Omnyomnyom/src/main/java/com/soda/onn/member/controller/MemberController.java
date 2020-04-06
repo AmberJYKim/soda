@@ -1,10 +1,14 @@
 package com.soda.onn.member.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -19,7 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.soda.onn.common.base.PageBar;
 import com.soda.onn.member.model.service.MemberService;
+import com.soda.onn.member.model.vo.DingDong;
 import com.soda.onn.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -141,6 +147,37 @@ public class MemberController {
 		map.put("isUsable", isUsable);
 //		log.debug("checkMember={}", checkMember);
 		
+		return map;
+	}
+	
+	@GetMapping("/dingdong/list/{size}")
+	@ResponseBody
+	public Map<String, Object> dingdongList(@PathVariable("size") String size,
+									   @RequestParam(value = "cPage", defaultValue = "1") int cPage,
+									   HttpServletRequest request){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<DingDong> list = new ArrayList<DingDong>();
+		int NUMPERPAGE = 15;
+		int PAGEBARSIZE = 10;
+		
+
+		
+		if("small".equals(size)) {
+			NUMPERPAGE = 5;
+			PAGEBARSIZE = 1;
+		}else {
+			int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+			int pageEnd = pageStart+PAGEBARSIZE-1;
+			
+			int totalCount = memberService.selectMemberListCnt();
+			int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+			String url = request.getRequestURL().toString()+"이 페이지에대한 링크";
+			String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+			map.put("paging",paging);
+		}
+		RowBounds rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
+//		list = memberService.딩동 뭐시기(memberid, size, rowbounds);
+		map.put("list", list);
 		return map;
 	}
 

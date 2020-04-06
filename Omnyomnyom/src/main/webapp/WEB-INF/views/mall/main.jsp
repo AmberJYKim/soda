@@ -7,6 +7,11 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
 <jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
 </jsp:include>
+<style>
+.search-bar-header{
+	margin-top: 45px;
+}
+</style>
 
  <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mall_delivery_info.css" />
 <section class="event-details-section spad overflow-hidden">
@@ -19,11 +24,29 @@
                     </div>
                 </div>
             </div>
-        </div>        <div class="container">
+        </div>   
+        <div class="container">
+        <div class="event-filter-warp search-bar-header">
+            <div class="row">
+                <div class="col-12">
+                    <form class="event-filter-form row">
+                    	<div class="col"></div>
+                        <div class="ef-item col-5">
+                            <i class="material-icons">search</i>
+                            <input type="text" placeholder="">
+                        </div>
+                        <button class="site-btn sb-gradient col-2">메뉴 검색</button>
+                    	<div class="col"></div>
+                    </form>
+                </div>
+		         </div>
+		     </div>
+	 	</div>	     
+        <div class="container">
             <div class="row ">
                 <div class="col-1"></div>
                 <div class="col-10">
-                    <div class="row"> 
+                    <div class="row ingre-list"> 
                         <div class="col-11">
                             <div class="container">
                                 <ul class="main-ctg-menu catch-click-event">
@@ -69,130 +92,6 @@
                                 <p class="mini-font price-font">11,500</p>
                             </div>
                         </div>
-                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6 ">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>
-                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>                        
-                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>
-                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>
-                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>
-                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>
-                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>
-                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>
-                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>
-                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>
-                        <div class="col-3 row product_container">
-                            <img src="${pageContext.request.contextPath }/resources/images/ingredient/image_recipe_ramen.png" alt="" class="col-12">
-                            <div class="col-6">
-                                <p class="mini-font">라면(150g)</p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mini-font price-font">11,500</p>
-                            </div>
-                        </div>
-
                         
                     </div>
                 </div>
@@ -202,6 +101,9 @@
     </section>
 
     <style>
+    	.border-rai{
+    		border-radius: 50%;
+    	}
         .price-font{
             color: red;
         }
@@ -294,7 +196,45 @@
     </style>
 
 <script>
-    $(()=>{
+	$(document).on("click",".sub-ctg-menu p",function(){
+			console.log("1");
+		    	ingredient_list($(this));
+		    	console.log("서브메뉴")
+	});
+	function ingredient_list(e){
+		let subCtg = $(e).text();
+		$.ajax({
+ 	    	url:"${pageContext.request.contextPath}/mall/seachList/"+subCtg+"/ajax",
+	    	data : subCtg,
+	    	dataType : 'json',
+	    	method : "GET",
+	    	success : data =>{
+	    	/* 재료목록 교체작업 */
+	    		console.log(data);
+		        $(e).addClass("active");
+		        $(e).parent().siblings().find("p").removeClass("active");
+		        $(".product_container").remove();
+		    	$.each(data,function(index, item){
+		    		let ingMall = '';
+		    		ingMall = "<div class='col-3 row product_container'>"
+                           +"<img src='${pageContext.request.contextPath }/resources/images/ingredient/"+item.mallEngPrCategory+"/"+item.mallEngCdCategory+"/"+item.prevImg+"' alt='' class='col-12 border-rai'>"
+                           +"<div class='col-6'>"
+                           +"<p class='mini-font'>"+item.ingMallName+"("+item.minUnit+")</p>"
+                           +"</div>"
+                           +"<div class='col-6'>"
+                           +"<p class='mini-font price-font'>"+item.price+"</p>"
+                           +"</div>"
+                           +"</div>";
+			    	$(".ingre-list").append(ingMall);
+		    	});
+	
+	    	},
+	    	error : (x,s,e) =>{
+	    		console.log(x,s,e);
+	    	}
+		});
+	}
+    $(function(){
 	    $(".catch-click-event").find("p").on("click",function(){
 	        $(this).addClass("active");
 	        $(this).parent().siblings().find("p").removeClass("active");
@@ -307,31 +247,8 @@
 	    $(".main-ctg-menu").find("p").on("click",function(){
 	    	cd_category($(this));
 	    });
-	    $(".sub-ctg-menu").find("p").on("click",function(){
-	    	ingredient_list($(this));
-	    });
 	    
-	    function ingredient_list(e){
-	    	$.ajax({
-		    	url:"${pageContext.request.contextPath}/mall",
-		    	method : "GET",
-		    	data: subCtg,
-		    	success : data =>{
-		    	/* 재료목록 교체작업 */
-			    	$.each(data,function(index, item){
-				    	if(index == 0){
-				    		subCtgList += '<li> <p class="active">'+item+'</p> </li>';
-				    	}else{
-					    	subCtgList += '<li> <p>'+item+'</p> </li>';
-				    	}
-			    	});
-			    	$(".sub-ctg-menu").html(subCtgList);
-		    	},
-		    	error : (x,s,e) =>{
-		    		console.log(x,s,e);
-		    	}
-	    	});
-	    }
+	   
 	    
 	    function cd_category(e){
 	    	let mainCtg = {'mainCtg':$(e).html()};
