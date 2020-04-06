@@ -10,6 +10,7 @@
 <result column="menu_pr_category" property="chefCategory"/>
 </resultMap>
 
+<!-- 전체 셰프 리스 -->
 <select id="selectChefAllList" resultMap="chefMap">
 	select 
 		C.*, 
@@ -21,7 +22,29 @@
 	order by
 	C.regdate
 </select>
+<!-- 특정 셰프 닉네임으로 검색  -->
+<select id="chefSearch" resultMap="chefMap" parameterType="String">
+	select 
+        C.*  ,
+        M.member_nick 
+        from   tb_chef C 
+        join tb_member M 
+        on C.member_id = M.member_id
+        where    M.member_nick like  '%'||#{chefsearchbar}||'%'
+        order by  C.regdate desc
 
+</select>
+<select id="chefSelectOne" resultMap="chefMap" parameterType="String">
+	select 
+		C.*, 
+		M.member_nick 
+	from
+	 	tb_chef C 
+	join tb_member M 
+	on C.member_Id = M.member_Id	
+	where M.member_nick = #{memberNickName}
+		
+</select>
 <select id="selectChefRequestList" resultType="chefRequest">
 	select
 		*

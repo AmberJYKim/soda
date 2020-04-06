@@ -19,6 +19,10 @@ public interface ChefDAO {
 
 	int chefReuqest(ChefRequest chefRequest);
 
+	List<Chef> chefSearch(String chefsearchbar);
+
+	Chef chefSelectOne(String memberNickName);
+
 	
 
 }

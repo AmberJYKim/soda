@@ -42,6 +42,14 @@ public class ChefDAOImpl implements ChefDAO {
 	public int chefReuqest(ChefRequest chefRequest) {
 		return sqlSession.insert("chef.chefRequest",chefRequest);
 	}
+	@Override
+	public List<Chef> chefSearch(String chefsearchbar) {
+		return sqlSession.selectList("chef.chefSearch", chefsearchbar);
+	}
+	@Override
+	public Chef chefSelectOne(String memberNickName) {
+		return sqlSession.selectOne("chef.chefSelectOne",memberNickName);
+	}
 	
 
 	

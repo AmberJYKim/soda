@@ -10,13 +10,30 @@
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chefList.css" />
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
-<script>
-function go_chefpage() {
-	location.href = "${pageContext.request.contextPath}/chef/chefpage.do";
-}
 
+ <script>
+            $(() => {
+                $("#Ylist").hide();
+                
+                
+                $("section .row .chef_list").on("click", function(e) {
+                	
+                
+                	
+                	$("h6.chefSelectOne").removeClass("chefPageGo");
+                    $(".image_overflow_hidden").css("box-shadow", "none");
+                    $(this).find(".image_overflow_hidden").css("box-shadow", "#4949E7 0px 0px 0px 4.5px");
+                    console.log($(this));
+                    $("#Ylist").show();
+                    $(this).find("h6").addClass("chefPageGo");
+                    
+                    
+                });
+                
+     
 
-</script>
+            });
+ </script>
 
     <section class="page-top-section page-sp set-bg" data-setbg="img/page-top-bg.jpg">
         <div class="container">
@@ -37,19 +54,57 @@ function go_chefpage() {
                     <p>셰프별 검색</p>
                 </div>
                 <div class="col-xl-10">
-                    <form class="event-filter-form">
+                    <form class="event-filter-form" 
+                    		Method="GET"
+                    		onsubmit="return cheafSearch();" 
+                    		action="${pageContext.request.contextPath }/chef/chefSearch">
                         <div class="ef-item">
                             <i class="material-icons">search</i>
-                            <input type="text" placeholder="">
+                            <input type="text" placeholder="" id="chefsearchBar" name="chefsearchBar">
                         </div>
-                        <button class="site-btn sb-gradient">셰프 검색</button>
+                        <input type="submit" class="site-btn sb-gradient" id="chefsearch" value="셰프 검색">
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-
+<Script>
+ $(function(){
+	 
+	function chefSearch(){
+		let chefsearchBar = $("#chefsearchBar").val();
+		
+		if(chefsearchBar == ""){
+			alert("검색어를 입력해 주세요.");
+			return false;
+		}
+		
+		return true;
+		
+		
+		/*  $.ajax({
+			url:"${pageContext.request.contextPath}/chef/"+chefsearchBar+"/chefsearch",
+			success: data => {
+				
+				console.log(data);
+				
+				if(data == null){
+					alert("해당 결과가 없습니다."); 
+				}else{
+					$("#")	
+				}
+				
+			},
+			error : (x,s,e) =>{
+				console.log(x,s,e);
+			}
+			
+		 });
+ */	
+ 	};
+ });
+</Script>
 
     <section class="sectionArea">
 
@@ -67,13 +122,13 @@ function go_chefpage() {
             <c:forEach items="${chefList}" var="chef" >
                 <div class="col-xs-6 col-sm-3 plsaceholder chef_list" style="margin-top:50px;">
                     <div class="image_overflow_hidden">
-                       <img src="${pageContext.request.contextPath}/resources/upload/profile/${chef.chefProfile}" class="" alt="">
+                       <img id="profile" src="${pageContext.request.contextPath}/resources/upload/profile/${chef.chefProfile}" class="" alt="">
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-1"></div>
                         <div class="col-6">
-                            <h6>${chef.chefNickName}</h6>
+                            <h6 class="chefSelectOne" id="${chef.chefNickName}">${chef.chefNickName}</h6>
                             <c:forEach items="${chef.chefCategoryList}" var="vs">
                             	<span class="color-2">#${vs}</span>
                             </c:forEach>
@@ -141,24 +196,22 @@ function go_chefpage() {
                         </div>
                     </div>
                   <!--   <p class="chef-Thumbnail-link" onclick="go_chefpage();"> &nbsp;&nbsp; 채널로 이동 &nbsp;&nbsp;</p> -->
+                  	
                 	<input type="button" class="chef-Thumbnail-link" onclick="go_chefpage();" value="채널로 이동">
+                
                 </div>
             </div>
             
          </div>
         <!-- end-->
-        <script>
-            $(() => {
-                $("#Ylist").hide();
-                $("section .row .chef_list").on("click", function(e) {
-                    $(".image_overflow_hidden").css("box-shadow", "none");
-                    $(this).find(".image_overflow_hidden").css("box-shadow", "#4949E7 0px 0px 0px 4.5px");
-                    console.log($(this));
-                    $("#Ylist").show();
-                });
-            });
-        </script>
+       
     </section>
 
-
+	<script>
+	function go_chefpage(){
+    	let chefNickName = $("h6.chefPageGo").attr('id');
+    	alert( $("h6.chefPageGo").attr('id'));
+    	location.href = "${pageContext.request.contextPath}/chef/"+chefNickName+"/chefpage";
+    }
+	</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

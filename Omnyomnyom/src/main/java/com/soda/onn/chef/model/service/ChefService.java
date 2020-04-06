@@ -20,6 +20,10 @@ public interface ChefService {
 
 	int chefRequest(ChefRequest chefRequest);
 
+	List<Chef> chefSearch(String chefsearchbar);
+
+	Chef chefSelectOne(String memberNickName);
+
 
 
 
