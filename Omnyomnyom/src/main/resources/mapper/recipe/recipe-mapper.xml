@@ -50,18 +50,9 @@
 		values(
 			#{recipeNo},
 			#{ingredientNo},
-			<choose>
-				<when test="ingredientNo!=0">
-					#{ingredientNo},
-				</when>
-				<when test="ingredientNo==0">
-					null,
-				</when>
-			</choose>
 			#{minWeight},
 			#{ingredientName}
 		)
-
 	</insert>
   
 </mapper>

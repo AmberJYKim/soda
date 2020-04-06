@@ -171,6 +171,8 @@ public class RecipeController {
 		}
 		log.debug(ingredientList.toString());
 		
+		
+		
 		List<Map<String,String>> list = (List<Map<String,String>>)new Gson().fromJson(recipe.getCategory(), new TypeToken<List<Map<String,String>>>(){}.getType());
 		
 		if(!list.isEmpty()) {
@@ -321,8 +323,8 @@ public class RecipeController {
             .setApplicationName(APPLICATION_NAME)
             .build();
     }
-
-  //중분류 선택에 따른 재료가져오기 처리
+	
+	//중분류 선택에 따른 재료가져오기 처리
 	@GetMapping(value ="getIng", produces="text/plain;charset=UTF-8")
 	@ResponseBody
 	public String selectIngredients(@RequestParam(value="cPage", defaultValue="1") int cPage, String subCtg, HttpServletRequest request ) {

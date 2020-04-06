@@ -9,7 +9,7 @@ import com.soda.onn.mall.model.vo.IngredientMall;
 
 public interface MallDAO {
 
-	List<IngredientMall> selectIngredientList(String subCtg);
+	List<IngredientMall> selectIngredientList(String column);
 
 	List<BuyHistory> selectBuyList(String memberId);
 
