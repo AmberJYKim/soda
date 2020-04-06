@@ -168,12 +168,20 @@ public class MemberController {
 													@RequestParam("memberId") String memberId,
 													HttpServletRequest request){
 		
-				System.out.println("회원 알림 메소드에 들어왔스니다");
-		
-				Map<String, Object> resultMap =  new HashMap<String, Object>();
-				Map<String, String> params =  new HashMap<String, String>();
-				Map<String, Object> map = new HashMap<String, Object>();
+				System.out.println("회원 알림 메소드에 들어왔습니다");
+				
+				
+				Map<String, Object> resultMap =  new HashMap<String, Object>(); //값 가져온것, 페이징, rowbounds 넣기 위한 맵
+				Map<String, Object> pagingMap = new HashMap<String, Object>(); //페이징 처리하는 맵
+				Map<String, String> paramMap = new HashMap<String, String>();//파라미터 넣을 맵
 				List<DingDong> list = new ArrayList<DingDong>();
+
+				
+				System.out.println("dingdongList memberId = " + memberId);
+				System.out.println("dingdingList size = " + size);
+				
+				paramMap.put("memberId", memberId);
+				paramMap.put("size", size);
 				
 				
 				int NUMPERPAGE = 0;
@@ -184,29 +192,47 @@ public class MemberController {
 						PAGEBARSIZE = 1;
 					}
 					else {
-						NUMPERPAGE = 10;
-						PAGEBARSIZE = 1;
+						NUMPERPAGE = 15;
+						PAGEBARSIZE = 10;
 					}
 					
 				int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
 				int pageEnd = pageStart+PAGEBARSIZE-1;
 					
-					params.put("dingMemberId", memberId);
-					params.put("size", size);
-				
-				List<DingDong> reulstList = memberService.listDingdongTest();
-				System.out.println(reulstList);
+				RowBounds rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);		
 				
 				int totalCount = memberService.selectDingdongListCnt();
+				System.out.println(totalCount);
+				
 				int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
 				String url = request.getRequestURL().toString()+"이 페이지에대한 링크";
 				String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
-		
-				map.put("paging",paging);
 				
-				resultMap.put("list", reulstList);
-				resultMap.put("map", map);
+				pagingMap.put("paging",paging);
+				
+				List<Map<String, String>> mapList = memberService.dingdongListTest(paramMap);
+//				List<DingDong> reulstList = memberService.dingdongList(memberId, size);
+	
+//				System.out.println(reulstList);
+				System.out.println(mapList);
+
+//				resultMap.put("list", reulstList);
+				resultMap.put("mapList", mapList);
+				resultMap.put("pagingMap", pagingMap);
+				resultMap.put("rowBounds", rowBounds);
 					
 				return resultMap;
 	}
+	
+	
+	@GetMapping("/memberInfo")
+	public String memberInfo(@RequestParam("memberId") String memberId) {
+		
+		Member memberInfo = memberService.memberInfo(memberId);
+		
+		
+		return null;
+	}
+	
+	
 }

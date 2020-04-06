@@ -24,11 +24,15 @@ public interface MemberService {
 
 	int insertDingdong(String memberId);
 	
-	List<DingDong> listDingdong(Map<String, String> params);
-	
-	List<DingDong> listDingdongTest();
 
 	int selectDingdongListCnt();
+
+	List<DingDong> dingdongList(String memberId, String size);
+
+	List<Map<String, String>> dingdongListTest(Map<String, String> paramMap);
+
+	Member memberInfo(String memberId);
+
 
 
 

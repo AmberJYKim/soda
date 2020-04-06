@@ -55,19 +55,28 @@ public class MemberServiceImpl implements MemberService{
 		
 	}
 
-	@Override
-	public List<DingDong> listDingdong(Map<String, String> params) {
-		return memberDAO.listDingdong(params);
-	}
-
-	@Override
-	public List<DingDong> listDingdongTest() {
-		return memberDAO.listDingdongTest();
-	}
 
 	@Override
 	public int selectDingdongListCnt() {
 		return memberDAO.selectDingdongListCnt();
+	}
+
+	@Override
+	public List<DingDong> dingdongList(String memberId, String size) {
+		return memberDAO.dingdongList(memberId, size);
+	}
+
+	@Override
+	public List<Map<String, String>> dingdongListTest(Map<String, String> paramMap) {
+		return memberDAO.dingdongListTest(paramMap);
+	}
+
+	@Override
+	public Member memberInfo(String memberId) {
+		return memberDAO.memberInfo(memberId);
+		
+		
+		
 	}
 
 	

@@ -53,22 +53,27 @@ public class MemberDAOImpl  implements MemberDAO{
 		return sqlSession.insert("member.insertDingdong", memberId);
 	}
 	
-	@Override
-	public List<DingDong> listDingdong(Map<String, String> params) {
-		System.out.println(params.toString());
-		return sqlSession.selectList("member.dingdongList",params);
-	}
-
-
-	@Override
-	public List<DingDong> listDingdongTest() {
-		return sqlSession.selectList("member.dingdongListTest");
-	}
 
 	@Override
 	public int selectDingdongListCnt() {
 		return Integer.parseInt(sqlSession.selectOne("member.selectDingdongListCnt"));
 	}
+
+	@Override
+	public List<DingDong> dingdongList(String memberId, String size) {
+		return sqlSession.selectList("member.dingdongList", memberId);
+	}
+
+	@Override
+	public List<Map<String, String>> dingdongListTest(Map<String, String> paramMap) {
+		return sqlSession.selectList("member.dingdongListTest", paramMap);
+	}
+
+	@Override
+	public Member memberInfo(String memberId) {
+		return sqlSession.selectOne("member.memberInfo", memberId);
+	}
+
 
 	
 
