@@ -61,4 +61,20 @@
 			#{ingredientName}
 		)
 	</insert>
+	<select id="selectRecipeOne" resultType="recipe">
+		select 
+			*
+		from 
+			tb_recipe 
+		where 
+			recipe_no=#{recipeNo}
+	</select>
+	<select id="selectRecIngList" resultType="recipeIngredient">
+		select 
+			*
+		from 
+			tb_rec_ingredients 
+		where 
+			recipe_no=#{recipeNo}
+	</select>
 </mapper>
