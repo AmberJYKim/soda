@@ -17,7 +17,7 @@
         var firstScriptTag = document.getElementsByTagName('script')[0]; //이거 뭔지 모름
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); //이거 뭔지 모름
         var player; //유튜브 api 전역변수
-        var setVideoId = "t4Es8mwdYlE"; //유튜브영상 ID
+        var setVideoId = "${recipe.videoLink}"; //유튜브영상 ID
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('testPTag', {
                 videoId: setVideoId,
@@ -37,7 +37,7 @@
                 <div class="col-lg-7">
                     <div class="recipe-details">
                         <div class="classes-preview">
-                            <h2>분식집st 떡 볶 이</h2>
+                            <h2>${recipe.videoTitle}</h2>
                             <div id="youtubevideo">
                                 <div class="recipe-video" id="testPTag"></div>
                             </div>

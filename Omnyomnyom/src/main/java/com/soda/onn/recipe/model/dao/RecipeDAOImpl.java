@@ -55,6 +55,16 @@ public class RecipeDAOImpl  implements RecipeDAO{
 		return sqlSession.insert("recipe.recipeIngrUpload", ingr);
 	}
 
+	@Override
+	public Recipe selectRecipeOne(int recipeNo) {
+		return sqlSession.selectOne("recipe.selectRecipeOne",recipeNo);
+	}
+
+	@Override
+	public List<RecipeIngredient> selectRecIngList(int recipeNo) {
+		return sqlSession.selectList("recipe.selectRecIngList", recipeNo);
+	}
+
 	
 	
 }

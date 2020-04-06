@@ -19,8 +19,8 @@ public class Recipe implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int recipeNo;
-	private String recipeId;
-	private String recipeName;
+	private String videoTitle;
+	private String videoLink;
 	private String menuName;
 	private String chefNick;
 	private String chefId;

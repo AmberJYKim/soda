@@ -18,4 +18,8 @@ public interface RecipeService {
 
 	List<Ingredient> ingredientAjax(String ingr);
 
+	Recipe selectRecipeOne(int recipeNo);
+
+	List<RecipeIngredient> selectRecIngList(int recipeNo);
+
 }

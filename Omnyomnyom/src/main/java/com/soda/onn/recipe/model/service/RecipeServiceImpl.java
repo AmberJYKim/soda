@@ -53,4 +53,14 @@ public class RecipeServiceImpl implements RecipeService {
 		return result;
 	}
 
+	@Override
+	public Recipe selectRecipeOne(int recipeNo) {
+		return recipeDAO.selectRecipeOne(recipeNo);
+	}
+
+	@Override
+	public List<RecipeIngredient> selectRecIngList(int recipeNo) {
+		return recipeDAO.selectRecIngList(recipeNo);
+	}
+
 }
