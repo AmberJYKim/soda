@@ -30,6 +30,7 @@ public class Chef extends Member implements Serializable{
 	private Date chefRegDate;
 	private String businessInfo;
 	private String chefContent;
+	private String chefEmail;
 	
 	private List<String> chefCategoryList;
 	
