@@ -22,165 +22,201 @@
     </div>
 </section>
 <script>
+	$().ready(function(){
+		console.log('jquery로드 완료');
+		mainCtgload();
+		selectedDelfn();
+		selectedTagDel();
+		
 
-$(() => {
-	console.log('jquery로드 완료');
-	/* 메인 카테고리 선택에 따른 변경 */
-	$(".main-ctg-menu p").on('click', function(){
-		console.log($(this).attr('class'));
-		/* 이미 선택된 분류라면 아래의 코드 수행하지 않음 */
-	 	if($(this).hasClass("active"))
-			return; 
-		
-		console.log($(this));
-		console.log($(this).html());
-		let mainCtg = {'mainCtg' : $(this).html()};
-		console.log('mainCtg', mainCtg);
+		//커서아이콘주기
+	});
+	
 
-		
-		
-		$(".main-ctg-menu p").removeClass("active");
-	 	$(this).addClass("active");
-		
-		
-		
-		$.ajax({
-			url:"${pageContext.request.contextPath}/recipe/getSubCtg",
-			dataType: "json",
-			method : "GET",
-			data: mainCtg,
-			success : data =>{
+	//태그 클릭 시 이미지의 클래스와 해당 태그 삭제이벤트
+	function selectedTagDel(){
+		$(document).on('click', '.selected-ingredients>p', function(){
+			let tname = $(this).text();
+			$('img[alt='+tname+']').removeClass("active");
+			$(this).detach();
+		});
+	}
+	
+	function selectedDelfn(){
+		/* 재료 이미지 선택에 따른 선택된 재료 태그란 추가 */
+		$(document).on('click', 'div.ingline>div.inner', function(){
+			console.log($(this));
+			//이미 선택된 재료라면 다시 클릭 시 제거되도록 제공
+			if(!$(this).children('img').hasClass("active")){
+				//선택되지 않은 경우
+				$(this).children('img').addClass("active");
+				let tname = $(this).children('p').text();
 				
-				/* 서브 카테고리 교체작업 */
-				let subCtgList = ' '; 
-				$.each(data,function(index, item){
-					
-					if(index == 0){
-						subCtgList += '<li> <p class="active">'+item+'</p> </li>';
-					}else{
-					subCtgList += '<li> <p>'+item+'</p> </li>';
-					}
-					
-					console.log(item);
-				});
-
-				$(".sub-ctg-menu").html(subCtgList);
-				 
+				let tags = '<p class="'+tname+'"> <i class="fab fa-slack-hash" />'+tname+'<small><i class="fas fa-times"></i></small></p>';
+				$(".selected-ingredients").append(tags);
+			}
+			else{
+				//이미 선택된 경우
+				$(this).children('img').removeClass("active");
+				let tname = $(this).children('p').text();
 				
-				
-			},
-			error : (x,s,e) =>{
-				console.log(x,s,e);
+				$(".selected-ingredients").children('p.'+tname).detach();
 			}
 		});
-		
-		
-	});
-	/* 파일패스용 전역변수  */
+	}
 	
-	/* 서브 카테고리 클릭 이벤트 설정 & 재료 불러오기 */
-	$(document).on('click', '.sub-ctg-menu li>p', function(){
-		console.log($(this));
-		console.log($(this).html());
-		let subCtg = {'subCtg' : $(this).html()};
-		console.log('subCtg', subCtg);
-		$(".sub-ctg-menu p").removeClass("active");
-		$(this).addClass("active");
-		
-		
-		//액티브있는거 검사해서, 서브에저장하고, 리무드,애드 클래스하고
-		//전달할객체셋에 넣기
-		//페이징에서도 동일하게 사용하기
-		
-		//전달할 cpage설정
-		/* if($(this).hasClass("active")){
-			cpage = 1;
-		}else{
-			cpgae = $(this).text();
-		}
-		 */
-		
-		$.ajax({
-			url:"${pageContext.request.contextPath}/recipe/getIng",
-			dataType: "json",
-			method : "GET",
-			data: subCtg,
-			success : data =>{
-				console.log(data,"success");
-				let ingList = data.ingList;
-				let ingCnt = data.ingData;
-				/* 재료 불러오기 및 교체작업*/
-				$(".firstline").empty();
-				$(".secondline").empty();
-				$.each(ingList,function(index, item){
-					if(index < 6){
-						let ingredients =   '<div class="col-md-2 inner">'+
-											'<img src="${pageContext.request.contextPath }/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="ingredient img" class="ingredimg">'+
-											'<p>'+item.ingredientName+'</p>'+
-											'</div>';
-						$(".firstline").append(ingredients);
-					}
-					else if (index >=6){
-						let ingredients = '<div class="col-md-2 inner">'+
-											'<img src="${pageContext.request.contextPath }/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="ingredient img" class="ingredimg">'+
-											'<p>'+item.ingredientName+'</p>'+
-											'</div>';
-						
-						$(".secondline").append(ingredients);
-					} 
-						//이미지 추가 후 선택된재료 검사하여 있는경우 add class active
-						
-						//페이지바 추가
-				});
-			},
-			error : (x,s,e) =>{
-				console.log(x,s,e);
-			}
-		}); 
-	});
-
-	/* 재료 이미지 선택에 따른 선택된 재료 태그란 추가 */
-	$(document).on('click', 'div.ingline>div.inner', function(){
-		console.log($(this));
-		let tag = {'tag' : $(this).html()};
-		console.log('tag', tag);
-		
-		//이미 선택된 재료라면 다시 클릭 시 제거되도록 제공
-		if(!$(this).children('img').hasClass("active")){
-			//선택되지 않은 경우
+	
+	 
+	function mainCtgload(){
+		/* 메인 카테고리 선택에 따른 변경 */
+		$(".main-ctg-menu p").on('click', function(){
+			/* 이미 선택된 분류라면 아래의 코드 수행하지 않음 */
+		 	if($(this).hasClass("active"))
+				return; 
+			
 			console.log($(this));
-			$(this).children('img').addClass("active");
-			let tname = $(this).children('p').text();
+			let mainCtg = {'mainCtg' : $(this).html()};
 			
-			let tags = '<p class="'+tname+'" onclick="tagDel();"> <i class="fab fa-slack-hash" />'+tname+'<small><i class="fas fa-times"></i></small><p>';
-			$(".selected-ingredients").append(tags);
-		}
-		else{
-			//이미 선택된 경우
-			$(this).children('img').removeClass("active");
-			let tname = $(this).children('p').text();
+			$(".main-ctg-menu p").removeClass("active");
+		 	$(this).addClass("active");
 			
-			$(".selected-ingredients").children('p.'+tname).remove();
-		}
-	});
+			$.ajax({
+				url:"${pageContext.request.contextPath}/recipe/getSubCtg",
+				dataType: "json",
+				method : "GET",
+				data: mainCtg,
+				success : data =>{
+					/* 서브 카테고리 교체작업 */
+					let subCtgList = ' '; 
+					$.each(data,function(index, item){
+						
+						if(index == 0){
+							subCtgList += '<li> <p class="active">'+item+'</p> </li>';
+						}else{
+						subCtgList += '<li> <p>'+item+'</p> </li>';
+						}
+						
+						console.log(item);
+					});
 	
-	//태그 클릭 시 삭제이벤트
-	$(document).on('click', '.selected-ingredients>p', function(){
-		let tname = $(this).text();
-		
-		//아아아 어떻게잡냐고오오오오,.................ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
-		//console.log($(".div.ingline>div.inner").children('p.'+tname));
-		console.log("tag선택 텍스트",$(this).text());
-		
-		$(this).remove;
-		//$(".div.ingline>div.inner").children('p.'+tname).prev('img').removeClass('active');
-		
-	});
+					$(".sub-ctg-menu").html(subCtgList);
+					 
+					subCtgLoad();
+				},
+				error : (x,s,e) =>{
+					console.log(x,s,e);
+				}
+			});
+			
+			
+		});
+	}; //메인 카테고리 교체 끝
+	
+	function subCtgLoad(){
+		/* 서브 카테고리 클릭 이벤트 설정 & 재료 불러오기 */
+		$(document).on('click', '.sub-ctg-menu li>p, .pagination>li', function(){
+			let cPage = Number(1);
+			let ingList;
+			let forwardData;
+			let subCtg = $(".sub-ctg-menu li>p.active").html();
+			console.log(subCtg, '=============subCtg');
+			$(".sub-ctg-menu p").removeClass("active");
+			$(this).addClass("active");
+			
+			if($(this).hasClass('page-item')){
+				cPage = cPage + Number($(this).children('a').attr("tabindex"));
+				forwardData = {'subCtg' : subCtg, 'cPage' : cPage};
+					
+			} else if(!$(this).hasClass('page-item')){
+				forwardData = {'subCtg' : $(this).html(), 'cPage' : cPage};
+			}	
+			//전달할객체셋에 넣기
+			//페이징에서도 동일하게 사용하기
+						
+			$.ajax({
+				url:"${pageContext.request.contextPath}/recipe/getIng",
+				dataType: "json",
+				method : "GET",
+				data: forwardData,
+				async:false,
+				success : data =>{
+					console.log(data,"success");
+					ingList = data.ingList;
+					let ingCnt = data.ingCnt;
+					let cPage = data.cPage
+					/* 재료 불러오기 및 교체작업*/
+					$(".firstline").empty();
+					$(".secondline").empty();
+					$.each(ingList, function(index, item){
+						if(index < 6){
+							let ingredients =   '<div class="col-md-2 inner '+item.ingredientName+'">'+
+												'<img src="${pageContext.request.contextPath }/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" name="'+item.ingredientName+'" class="ingredimg '+item.ingredientName+'">'+
+												'<p>'+item.ingredientName+'</p>'+
+												'</div>';
+							$(".firstline").append(ingredients);
+						}
+						else if (index >=6){
+							let ingredients =	'<div class="col-md-2 inner">'+
+												'<img src="${pageContext.request.contextPath }/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" name="'+item.ingredientName+'" class="ingredimg '+item.ingredientName+'">'+
+												'<p>'+item.ingredientName+'</p>'+
+												'</div>';
+							
+							$(".secondline").append(ingredients);
+						} 
 
-	//커서아이콘주기
+					});
+					
+					//페이징 처리
+					let totalPage = '<li class="page-item disabled"><a class="page-link"><small>..total : '+ingCnt+'</small></a></li>';
+					let pagingPrevbtn = '<li class="page-item"><a class="page-link" tabindex="-1"> &lt 이전</a></li>';
+					let pagingNextbtn = '<li class="page-item"><a class="page-link" tabindex="1"> 다음 &gt</a> </li>';
+					let curPagebtn = '<li class="page-item disabled"><a class="page-link">'+cPage+'</a></li>'
+					$(".pagination").empty()
+					if(ingCnt == 1 && cPage == 1){
+						//페이지바 추가
+					//1페이지가 전제일 경우
+						$(".pagination").append(totalPage);
+					}else if(ingCnt > 2 && cPage != 1 && ingCnt != cPage){
+					//이전 페이지와 다음 페이지가 모두 존재할 경우
+						$(".pagination").append(pagingPrevbtn);
+						$(".pagination").append(curPagebtn);
+						$(".pagination").append(pagingNextbtn);
+						$(".pagination").append(totalPage);
+					}else if(ingCnt >= 2 && cPage == 1 ){
+					//다음페이지가 있고 이전페이지가 없는경우
+						$(".pagination").append(curPagebtn);
+						$(".pagination").append(pagingNextbtn);
+						$(".pagination").append(totalPage);
+					}else if(ingCnt >= 2 && cPage == ingCnt){
+					//이전 페이지만 존재하는 경우
+						$(".pagination").append(pagingPrevbtn);
+						$(".pagination").append(curPagebtn);
+						$(".pagination").append(totalPage);	
+					};	
+				},
+				error : (x,s,e) =>{
+					console.log(x,s,e);
+				}
+			}); 
+		
+			let selectedinglist = $('.selected-ingredients>p').text();
+		
+			console.log('*****ajax밖');
+			console.log('*****inglist', ingList);
+			$.each(ingList, function(index, item){
+				if(selectedinglist.includes(item.ingredientName)){
+					$('img[alt='+item.ingredientName+']').addClass("active");
+				}	
+			});
+		
+		});
+	} //서브카테고리 교체 끝
+
+/* 	function paging(cPage, ingCnt){
+		
 	
+}; */
 	
-});
 </script>
 <section class="overflow-hidden spad">
 
@@ -236,14 +272,6 @@ $(() => {
 				<div class="row ing-paging text-center">
 					<ul class="pagination justify-content-center col">
 					
-
-						<li class="page-item disabled"><a class="page-link" href="#"
-							tabindex="-1">Previous</a></li>
-						<li class="page-item"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item"><a class="page-link" href="#">Next</a>
-						</li>
 					</ul>
 				</div>
 			</div>
