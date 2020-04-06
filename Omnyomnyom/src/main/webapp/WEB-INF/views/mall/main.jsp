@@ -318,7 +318,6 @@
 		    	data: subCtg,
 		    	success : data =>{
 		    	/* 재료목록 교체작업 */
-			    	let subCtgList = ' ';
 			    	$.each(data,function(index, item){
 				    	if(index == 0){
 				    		subCtgList += '<li> <p class="active">'+item+'</p> </li>';
