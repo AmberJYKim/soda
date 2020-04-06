@@ -26,12 +26,12 @@ public class Chef extends Member implements Serializable{
 	private String chefMainvideo;
 	private String chefSns;
 	private String chefProfile;
-	private String menuPrCategory;
+	private String chefCategory;
 	private Date chefRegDate;
 	private String businessInfo;
 	private String chefContent;
 	
-	private List chefCategoryList;
+	private List<String> chefCategoryList;
 	
 
 	
