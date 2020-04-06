@@ -43,7 +43,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.soda.onn.testController;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.recipe.model.service.RecipeService;
@@ -161,8 +160,6 @@ public class RecipeController {
 		}
 		log.debug(ingredientList.toString());
 		
-		
-		
 		List<Map<String,String>> list = (List<Map<String,String>>)new Gson().fromJson(recipe.getCategory(), new TypeToken<List<Map<String,String>>>(){}.getType());
 		
 		if(!list.isEmpty()) {
@@ -259,7 +256,7 @@ public class RecipeController {
     public static Credential authorize(final NetHttpTransport httpTransport) throws IOException {
         // Load client secrets.
     	
-        InputStream in = testController.class.getResourceAsStream(CLIENT_SECRETS);
+        InputStream in = RecipeController.class.getResourceAsStream(CLIENT_SECRETS);
         GoogleClientSecrets clientSecrets =
           GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
         

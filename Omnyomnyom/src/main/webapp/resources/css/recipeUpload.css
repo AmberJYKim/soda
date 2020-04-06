@@ -5043,3 +5043,28 @@ only screen and (min-width: 576px) and (max-width: 767px),
 .tm-color-white {
     color: white;
 }
+
+/* auto complete */
+ul#autoComplete{
+	display:none;
+	background-color: white;
+    min-width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    /* position: absolute; */
+}
+
+ul#autoComplete li{
+	padding:0 10px;
+	list-style:none;
+	cursor:pointer;
+}
+
+ul#autoComplete li.sel{
+	background:lightseagreen;
+	color:white;
+}
+
+span.srchval{
+	color:red;
+}

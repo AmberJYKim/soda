@@ -46,31 +46,6 @@
   border-color: gold;
 }
 </style>	
-<style>
-ul#autoComplete{
-	display:none;
-	background-color: white;
-    min-width: 100%;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
-    /* position: absolute; */
-}
-
-ul#autoComplete li{
-	padding:0 10px;
-	list-style:none;
-	cursor:pointer;
-}
-
-ul#autoComplete li.sel{
-	background:lightseagreen;
-	color:white;
-}
-
-span.srchval{
-	color:red;
-}
-</style>
 <script>
 $(function(){
 	var input = document.querySelector('input[id="input-custom-dropdown"]'),
@@ -127,7 +102,7 @@ $(function(){
 			--%>
 			
 			$.ajax({
-				url:"<%=request.getContextPath()%>/recipe/"+ srchName + "/ajax",
+				url:"${pageContext.request.contextPath}/recipe/"+ srchName + "/ajax",
 				dataType : "json",
 				success : function(data) {
 								console.log(data);//'김' 입력시, "조기김, 돌김, 김가루..."
@@ -183,13 +158,110 @@ function view_change(e) {
     }
 };
 
+/* if(!$("input[name=]").val()){
+	alert("");
+	$("input[name=]").focus()
+	return false;
+} */
 function frmValidate(){
-	if(!$("#chefId").val()){
-		alert('로그인 먼제 해주세요.');
-		location.href="/"
+	
+	if(!$("input[name=chefId]").val().trim()){
+		alert('로그인 먼저 해주세요.');
+		location.href="/onn/";
+		return false;
 	}
 	
-	alert("검사 메소드가 완성되지 않았습니다.");
+	if(!$("input[name=recipeName]").val().trim()){
+		alert('레시피 이름을 입력하세요.');
+		$("input[name=recipeName]").val('').focus();
+		return false;
+	}
+	
+	if(!$("#recipeId").val().trim() && !$("input[name=uploadFile]").val().trim()){
+		alert('영상파일, 혹은 유튜브 링크를 입력해주세요.');
+		$("input[name=uploadFile]").val('');
+		return false;
+	}
+	
+	/*
+	if($("#recipeId").val().trim()){
+		let $recipeId = $("#recipeId");
+		
+		if($recipeId.val().indexOf("youtu.be/") != -1){
+			$recipeId.val($recipeId.substr($recipeId.val().indexOf("youtu.be/"),11));
+			console.log("recipeId="+$recipeId.val());
+		}else if($recipeId.indexOf("watch?v=") != -1){
+			$recipeId.val($recipeId.substr($recipeId.val().indexOf("watch?v="),11));
+			console.log("recipeId="+$recipeId.val());
+		}else{
+			alert("알맞은 유튜브 링크를 올리세요.");
+			//$recipeId.val('').focus();
+			return false;
+		} 
+		
+		
+	}
+	*/
+	if(!$("input[name=category]").val().trim()){
+		alert("음식 분류를 입력하세요.");
+		$("input[name=category]").val('').focus();
+		return false;
+	}
+	
+	if(!$("input[name=menuName]").val().trim()){
+		alert("음식 이름을 넣어주세요.");
+		$("input[name=menuName]").val('').focus();
+		return false;
+	}
+	
+	
+	if($("input[name=ingr_name]").length <=0){
+		alert("레시피 재료가 없습니다. 레시피 재료를 추가해 주세요.");
+		$("#input-ingredient").val('').focus();
+		$("#input-ing-number").val('');
+		$("#input-ing-mass").val('');
+		return false;
+	}
+	
+	let $tn_firstname = $("input[name=tn_firstname]");
+	let $tn_lastname = $("input[name=tn_lastname]");
+	
+	let tn_firstBool = true;
+	let tn_lastBool = true;
+	
+	$tn_firstname.each(function(i,element){
+		let $elem = $(element);
+		if(!$elem.val().trim()){
+			alert("요리방법 시간이 안 적힌 곳이 있습니다.");
+			$elem.val('').focus();
+			tn_firstBool=false;
+			return false;
+		}
+	});
+	
+	if(!tn_firstBool)
+		return false;
+	
+	$tn_lastname.each(function(i,element){
+		let $elem = $(element);
+		if(!$elem.val().trim()){
+			alert("요리방법이 안 적힌 곳이 있습니다.");
+			$elem.val('').focus();
+			tn_lastBool=false;
+			return false;
+		}
+	});
+	
+	if(!tn_lastBool)
+		return false;
+	
+	if(!$("textarea[name=recipeContent]").val().trim()){
+		alert("내용이 비어있습니다.");
+		$("textarea[name=recipeContent]").val('').focus()
+		return false;
+	}
+	
+	alert("영상 업로드에 시간이 걸릴 수 있습니다. 잠시만 기다려주세요.");
 	return false;
 };
 </script>
@@ -212,7 +284,7 @@ function frmValidate(){
 	<!-- 레시피 영상  Section --><!--  -->
 	<section class="classes-details-section spad overflow-hidden">
 		<div class="container">
-			<form name="memberFrm" action="${pageContext.request.contextPath }/recipe/recipeUpload.do" method="post" onsubmit="return frmValidate();" enctype="multipart/form-data">
+			<form name="memberFrm" action="${pageContext.request.contextPath }/recipe/recipeUpload" method="post" onsubmit="return frmValidate();" enctype="multipart/form-data">
 			<input name="chefId" value="${memberLoggedIn.memberId}" hidden/>
 			<input name="chefNick" value="${memberLoggedIn.memberNick}" hidden/>
 			<div class="row">
@@ -273,7 +345,7 @@ function frmValidate(){
                                     <input class="form-control" type="text" id="input-ingredient" autocomplete="off" placeholder="재료명을 입력하세요."/>
                                 	<ul id="autoComplete"></ul>
 								</span>
-								<input type="number" id="input-ing-number" hidden/>
+								<input type="number" id="input-ing-number" value=0 hidden/>
 								<span class="input col-4 p-0">
                                     <input class="form-control" type="text" id="input-ing-mass" autocomplete="off" placeholder="계량을 입력하세요."/>
                                 </span>
