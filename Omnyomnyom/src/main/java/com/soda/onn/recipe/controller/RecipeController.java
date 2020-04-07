@@ -78,9 +78,12 @@ public class RecipeController {
 		
 		recipe.setIngredientList(recipeService.selectRecIngList(recipeNo));
 		
+		
+		
 		model.addAttribute("recipe",recipe);
 		
 	}
+	
 	@GetMapping("/recipeUpload")
 	public void recipeUpload() {
 		
@@ -189,7 +192,7 @@ public class RecipeController {
 		for(int i =0;i < cookTime.length ;i++) {
 			
 			if(i>0)
-				recipe.setTimeline(recipe.getTimeline()+"/");
+				recipe.setTimeline(recipe.getTimeline()+",");
 			
 			recipe.setCookingTime(recipe.getCookingTime()+cookTime[i]);
 			recipe.setTimeline(recipe.getTimeline() + cookTime[i]+":"+cookery[i]);
