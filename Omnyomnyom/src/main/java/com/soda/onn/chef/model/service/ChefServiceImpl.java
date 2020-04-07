@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.soda.onn.chef.model.dao.ChefDAO;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
+import com.soda.onn.recipe.model.vo.Recipe;
 
 @Service
 public class ChefServiceImpl implements ChefService {
@@ -49,13 +50,19 @@ public class ChefServiceImpl implements ChefService {
 	}
 
 	@Override
-	public Chef chefSelectOne(String memberNickName) {
-		return chefDAO.chefSelectOne(memberNickName);
+	public Chef chefSelectOne(String chefNickName) {
+		return chefDAO.chefSelectOne(chefNickName);
   }
   
   @Override
 	public int chefRequestUpdate(Map<String, String> chefReq) {
 		return chefDAO.chefRequestUpdate(chefReq);
+	}
+
+	@Override
+	public List<Recipe> recipeSelectAll(String chefNickName) {
+		
+		return chefDAO.recipeSelectAll(chefNickName);
 	}
 	
 }
