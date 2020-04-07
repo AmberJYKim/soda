@@ -13,6 +13,14 @@
 <result column="regdate" property ="chefRegDate"/>
 </resultMap>
 
+<select id="recipeSelectAll" parameterType="String" resultType="Recipe">
+select
+	*
+from
+	tb_recipe
+where chef_nick = #{chefNickName}
+
+</select>
 <!-- 전체 셰프 리스 -->
 <update id="chefRequestUpdate">
 	update 
@@ -35,6 +43,7 @@
 	order by
 	C.regdate
 </select>
+
 <!-- 특정 셰프 닉네임으로 검색  -->
 <select id="chefSearch" resultMap="chefMap" parameterType="String">
 	select 
@@ -57,7 +66,7 @@
 	 	tb_chef C 
 	join tb_member M 
 	on C.member_Id = M.member_Id	
-	where M.member_nick = #{memberNickName}
+	where M.member_nick = #{chefNickName}
 		
 </select>
 <select id="selectChefRequestList" resultMap="chefReqMap">
