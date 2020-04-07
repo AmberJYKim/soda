@@ -33,6 +33,8 @@ public interface MemberDAO {
 
 	Member memberInfo(String memberId);
 
+	int updateInfo(Map<String, Object> params);
+
 
 	
 
