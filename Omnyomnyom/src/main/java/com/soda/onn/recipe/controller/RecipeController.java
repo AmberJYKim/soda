@@ -334,12 +334,8 @@ public class RecipeController {
 	@GetMapping(value ="getIng", produces="text/plain;charset=UTF-8")
 	@ResponseBody
 	public String selectIngredients(@RequestParam(value="cPage", defaultValue="1") int cPage, String subCtg, HttpServletRequest request ) {
-		log.debug("----------------------------Controller");
-		log.debug("subCtg controller = {}", subCtg);
-		log.debug("cPage controller = {}", cPage);
 		
 		Map<String, Object> maps = new HashMap<>();
-		
 				
 		List<Ingredient> ingList = recipeService.selectIngredients(subCtg, cPage, NUMPERPAGE);
 		log.debug("controller list={}", ingList.toString());
@@ -348,25 +344,37 @@ public class RecipeController {
 		int ingCnt = recipeService.selectIngredientsCnt(subCtg);
 
 		//카테고리 갯수에 따른 페이징 여부 (12개 이하일 경우 페이징 하지 않음)
-		log.debug("======================ingCnt={}", ingCnt);
 		if(ingCnt > 12) {
 			ingCnt = (int)Math.ceil((double)ingCnt/12);
-			log.debug("ingCnt 12보다 큼 ===={}", ingCnt);
 		} else {
 			ingCnt = 1;
-			log.debug("ingCnt 12보다 작음 ===={}", ingCnt);
 		}
 		
-//		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);		
 		//재료&페이징 맵에 담기
-		
 		maps.put("ingList", ingList);
 		maps.put("ingCnt", ingCnt);
 		maps.put("cPage", cPage);
 		
-		
 		String gList = new Gson().toJson(maps);
 
 		return gList;
+	}
+	
+	//선택한 재료로 레시피 검색하기
+	@GetMapping(value="recipeSerachByIng", produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public String recipeSerachByIng(@RequestParam String selectedIngList) {
+		
+		
+		log.debug("selectedIngList======={}", selectedIngList);
+		
+		
+//		List<Recipe> rlist = recipeService.recipeSerachByIng(selectedIngList);
+		
+//		String recipeList = new Gson().toJson(rlist);
+		String recipeList = new Gson().toJson("아아 서공적");
+
+		return recipeList ;
+		
 	}
 }

@@ -27,6 +27,7 @@
 		subCtgload();
 		selectedDelfn();
 		selectedTagDel();
+		recipeSearchByIng();
 		
 
 		//커서아이콘주기
@@ -206,7 +207,7 @@
 			}); 
 		
 			let selectedinglist = $('.selected-ingredients>p').text();
-		
+			//이미 선택된 재료에 존재하는 재료일 경우 active 클래스 추가 
 			$.each(ingList, function(index, item){
 				if(selectedinglist.includes(item.ingredientName)){
 					$('img[alt='+item.ingredientName+']').addClass("active");
@@ -218,32 +219,19 @@
 
 	
 	//선택된 재료로 검색 , 버튼 클릭에 따른 이벤트 작동.
-	function recipeSerachByIng(){
-		
-		
+	function recipeSearchByIng(){
 		console.log("버튼 클릭됨");
+		let selectedIngList = $('.selected-ingredients>p').val();
+		
+		console.log(selectedIngList);	
 		$.ajax({
 			url:"${pageContext.request.contextPath}/recipe/recipeSerachByIng",
 			dataType: "json",
 			method : "GET",
-			data: mainCtg,
+			data: selectedIngList ,
 			success : data =>{
-				/* 서브 카테고리 교체작업 */
-				let subCtgList = ' '; 
-				$.each(data,function(index, item){
-					
-					if(index == 0){
-						subCtgList += '<li> <p class="active">'+item+'</p> </li>';
-					}else{
-					subCtgList += '<li> <p>'+item+'</p> </li>';
-					}
-					
-					console.log(item);
-				});
-
-				$(".sub-ctg-menu").html(subCtgList);
-				 
-				subCtgLoad();
+			
+				console.log(data);
 			},
 			error : (x,s,e) =>{
 				console.log(x,s,e);
@@ -322,7 +310,7 @@
 
 				</div>
 				<div class="col btn-section">
-					<button type="button" class="btnforseach" onclick="recipeSearchByIng();">
+					<button type="button" class="btnforseach"  onclick="recipeSearchByIng();">
 						선택한 재료로 검색하기 <i class="fab fa-sistrix"></i>
 		
 					</button>
