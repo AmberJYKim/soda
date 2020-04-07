@@ -3,12 +3,14 @@ package com.soda.onn.oneday.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +18,8 @@ import javax.servlet.http.HttpSession;
 import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -73,41 +77,70 @@ public class OnedayController {
 	
 //	클래스 검색
 	@PostMapping("/oneday_search")
-	public ModelAndView search(@ModelAttribute 
-			   					ModelAndView mav) {
+	public ModelAndView search(@ModelAttribute ModelAndView mav,
+						@RequestParam(value = "detailedAddr")String detailedAddr,
+						@RequestParam(value = "onedayName")String onedayName,
+						@RequestParam(value = "onedayTimeDate") String onedayTimeDate) {
 		
-		List<Oneday> list = onedayService.selectDateList();
 		
-		List<OnedayTime> timelist = onedayService.selectTimeList();
-		/*
-		 * log.debug("search@list={}", list); log.debug("search@timelist={}", timelist);
-		 */
+		System.out.println("일정 =" + onedayTimeDate);
+		System.out.println("상세주소 = "+ detailedAddr);
+		System.out.println("클래스 이름 = " + onedayName);
 		
-		System.out.println("oneday ====" +list);
-		System.out.println("timelist ====" +timelist);
+		Map<String, String> sec = new HashMap<>();
+	
 		
+		sec.put("detailedAddr", detailedAddr);
+		sec.put("onedayName", onedayName);
+		sec.put("onedayTimeDate", onedayTimeDate);
+		
+		List<Oneday> list = onedayService.selectDateList(sec);
 		mav.addObject("list", list);
-		mav.addObject("timelist",timelist);
+		
+		System.out.println("[["+list+"]]");
+		
 		return mav;
-		/*
-		 * 1. 원데이, 원데이 일정 join
-		 * 2. 일자검색 -> 원데이 타임 where
-		 * 3. 명,레시피,위치 등 -> 원데이 where
-		 */
 	}
 	
 //	원데이 클래스 디테일뷰 로 이동 
-	@GetMapping("/detail.do")
-	public String detail() {
-		return "oneday/oneday_detail";
+	@GetMapping("/oneday_detail")
+	public void detail(@RequestParam(value="onedayclassNo") int onedayclassNo, Model model) {
+		
+		log.debug("클래스 no = "+onedayclassNo);
+		
+		Oneday oneday = onedayService.selectOne(onedayclassNo);
+		log.debug("controller@oneday/selectOne={}", oneday);
+		
+		
+		List<OnedayTime> list = onedayService.selectTimeList(onedayclassNo);
+		
+		
+
+		
+		log.debug("list={}", list);
+
+		
+		model.addAttribute("oneday", oneday);
+		model.addAttribute("list", list);
 	}
+
 	
 //	원데이 클래스 예약뷰로 이동 
-	@GetMapping("/reservation.do")
-	public String reservation() {
-		return "oneday/oneday_reservation";
+	@PostMapping("/oneday_reservation")
+	public void reservation() {
+		
 		
 	}
+	
+//	원데이 클래스 예약
+//	@PostMapping("/oneday_reservation")
+//	public String reservation() {
+//		
+//	}
+	
+	
+	
+	
 //	원데이 클래스 예약 동의뷰로 이동 
 	@GetMapping("/agree.do")
 	public String agree() {
@@ -152,8 +185,6 @@ public class OnedayController {
 							   @RequestParam(value="classdate") String[] onedayTimeList,
 							   HttpServletRequest request) {
 		log.debug("원데이클래스 등록 절차를 시작합니다!");
-		
-		
 		//파일 처리
 		List<Attachment> addImgList = new ArrayList<>();
 		if(!onedayImg.isEmpty()) {
@@ -186,27 +217,18 @@ public class OnedayController {
 		//String[]의 
 		
 		
-		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+		List<String> otiList = new ArrayList<String>(Arrays.asList(onedayTimeList));
 		
-		List<OnedayTime> otiList = new ArrayList<>();
-		
-		
-		for(String s : onedayTimeList) {
-			
-			try {
-				
-			 java.util.Date udate = dt.parse(s);
-			 java.sql.Date sdate = new java.sql.Date(udate.getTime());
-			 
-				OnedayTime ot = new OnedayTime();
-				ot.setOnedayTimeDate(sdate);
-				otiList.add(ot);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
-			
+		if(otiList != null) {
+			for (int i=0; i<otiList.size(); i++) {
+				System.out.println(otiList.get(i));
+			}
 		}
+		
+		System.out.println(otiList);
+		
+		
 		
 		int result = onedayService.insertOneday(oneday, otiList);
 //		원데이클래스 개설 

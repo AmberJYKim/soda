@@ -1,9 +1,12 @@
 package com.soda.onn.oneday.model.dao;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+import org.mortbay.log.Log;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,7 +29,11 @@ public class OnedayDAOImpl implements OnedayDAO{
 
 	@Override
 	public int insertOneday(Oneday oneday) {
+		
 		return sqlSession.insert("oneday.insertOneday", oneday);
+		
+		
+		
 	}
 	@Override
 	public int insertTime(OnedayTime onedayTime) {
@@ -49,21 +56,28 @@ public class OnedayDAOImpl implements OnedayDAO{
 		return sqlSession.selectList("oneday.selectOnedayReviewList", null, rowBounds);
 	}
 
+//	@Override
+//	public List<Oneday> selectDateList(String detailedAddr, String onedayName) {
+//		// TODO Auto-generated method stub
+//		return sqlSession.selectList("oneday.selectDateList");
+//	}
+
 	@Override
-	public List<Oneday> selectDateList() {
+	public List<OnedayTime> selectTimeList(int onedayclassNo) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("oneday.selectDateList");
+		return sqlSession.selectList("oneday.selectTimeList", onedayclassNo);
 	}
 
 	@Override
-	public List<OnedayTime> selectTimeList() {
+	public List<Oneday> selectDateList(Map<String, String> sec) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("oneday.selectTimeList");
+		return sqlSession.selectList("oneday.selectDateList", sec);
 	}
+
 	@Override
-	public List<OnedayTime> selectTimeOne(int onedayclassNo) {
+	public List<OnedayTime> detailTime(int onedayclassNo) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("oneday.selectTimeOne", onedayclassNo);
+		return sqlSession.selectList("oneday.detailTime", onedayclassNo);
 	}
 
 

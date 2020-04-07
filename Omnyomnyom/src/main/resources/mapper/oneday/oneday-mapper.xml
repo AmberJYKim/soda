@@ -18,6 +18,13 @@
 		reservation_no desc
 </select>
 
+<select id="selectOne" resultType="Oneday">
+select * from
+tb_onedayclass
+where onedayclass_no = #{onedayclassNo}
+</select>
+
+
 <select id="selectOnedayReviewList" resultType="onedayReview">
 	select
 		*
@@ -56,59 +63,52 @@
 			values(
 				seq_oneday_time.nextval,
 				#{onedayNoo},
-				#{onedayTimeDate}
+				to_date(#{onedayTimeDate},'YYYY/MM/DD HH24:Mi')
 			)
 </insert>
 
 <select id="selectDateList"  resultType="Oneday">
-
-<!-- select * from tb_onedayclass -->
-	
-select * from 
-(select * from
-tb_onedayclasstime oct
-left join
-TB_onedayclass oc on oct.onedayclass_no = oc.onedayclass_no
+select *
+from
+TB_onedayclass oc
 <where>
-	<if test="detailedAddr != null">
-		and detailed_addr like #{detailedAddr}
-	</if>
-	<if test="onedayName != null">
-		and oneday_name like #{onedayName}
-	</if>
+<if test="detailedAddr != null">
+and detailed_addr like '%${detailedAddr}%'
+</if>
+<if test="onedayName != null">
+and oneday_name like '%${onedayName}%'
+</if>
+<!-- 일정부분 뽑는 것  -->
+<!-- <if test="onedayTimeDate != ''">
+and onedayclass_no = (select oct.onedayclass_no from 
+						tb_onedayclasstime oct where oct.onedayclass_no = oc.onedayclass_no 
+						and 
+						TRUNC(onedaytime_date) = #{onedayTimeDate})
 
-	<if test="onedayTimeList != null">	
-	<foreach collection="onedayTimedate" item="item">
-		or onedayTime_date like #{item}
-	</foreach>
-	</if>
 
-</where>)
-<!-- <where>	
-<if test="onedayTimeList != null">	
-	<foreach collection="onedayTimedate" item="item">
-		and onedayTime_date like #{item}
-	</foreach>
-	</if>
-</where> -->
-		
+
+
+</if> -->
+
+</where>
+order by onedayclass_no desc
+
+
 </select>
+
+
 
 
 <select id="selectTimeList" resultMap="timeCollection">
-	select*from tb_onedayclasstime
-</select>
-
-
-
-<select id="selectTimeOne" resultMap="timeCollection">
-	select * from tb_onedayclasstime
+	select onedaytime_no, onedayclass_no, to_char(onedaytime_date,'YYYY/MM/DD HH24:Mi') as time
+	from tb_onedayclasstime
 	where onedayclass_no = #{onedayclassNo}
 </select>
 
 
 <resultMap type="OnedayTime" id="timeCollection">
 	<result column="onedayclass_no" property="onedayNoo"/>
+	<result column="time" property="onedayTimeDate"/>
 	
 
 </resultMap>

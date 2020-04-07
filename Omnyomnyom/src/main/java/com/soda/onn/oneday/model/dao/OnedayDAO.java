@@ -1,6 +1,8 @@
 package com.soda.onn.oneday.model.dao;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
@@ -23,11 +25,14 @@ public interface OnedayDAO {
 
 	List<OnedayReview> selectOnedayReviewList(RowBounds rowBounds);
 
-	List<Oneday> selectDateList();
+//	List<Oneday> selectDateList(String detailedAddr, String onedayName);
 
-	List<OnedayTime> selectTimeList();
 
-	List<OnedayTime> selectTimeOne(int onedayclassNo);
+	List<OnedayTime> selectTimeList(int onedayclassNo);
+
+	List<Oneday> selectDateList(Map<String, String> sec);
+
+	List<OnedayTime> detailTime(int onedayclassNo);
 
 
 }

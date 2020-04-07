@@ -39,7 +39,11 @@ function oneday_search(){
                     <form class="event-filter-form" method="get" action="${pageContext.request.contextPath }/oneday/oneday_search">
                         <div class="ef-item">
                             <i class="material-icons">event_available</i>
-                            <input type="text" id="onedayTimeDate" name="onedayTimeDate" placeholder="날짜로 검색" class="event-date">
+                            <!-- <input type="text" id="onedayTimeDate" name="onedayTimeDate" placeholder="날짜로 검색" class="event-date"> -->
+                       		<input
+									class="input__field input__field--yoshiko datepicker-here"
+									type="text" id="input-date" name="onedayTimeDate" data-language='kr' data-date-format='yy/mm/dd'
+									data-timepicker="" autocomplete="off" />
                         </div>
                         <div class="ef-item">
                             <i class="material-icons">map</i>

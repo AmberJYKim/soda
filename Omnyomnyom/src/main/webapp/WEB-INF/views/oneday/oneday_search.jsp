@@ -8,7 +8,9 @@
 <jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/oneday_submenu_food.css" />
-
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/datepicker.min.css" />
+    <script src="${pageContext.request.contextPath}/resources/js/datepicker.kr.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/datepicker.min.js"></script>
 <!-- Page top Section start -->
     <section class="page-top-section page-sp set-bg" data-setbg="">
         <div class="container">
@@ -31,7 +33,11 @@
                     <form class="event-filter-form" method="post" action="${pageContext.request.contextPath }/oneday/oneday_search">
                         <div class="ef-item">
                             <i class="material-icons">event_available</i>
-                            <input type="text" id="onedayTimeDate" name="onedayTimeDate" placeholder="날짜로 검색" class="event-date">
+                           <!--  <input type="text" id="onedayTimeDate" name="onedayTimeDate" placeholder="날짜로 검색" class="event-date"> -->
+							<input
+									class="input__field input__field--yoshiko datepicker-here"
+									type="text" id="input-date" name="onedayTimeDate" data-language='kr' data-date-format='yyyy/mm/dd'
+									data-timepicker="false" autocomplete="off" />
                         </div>
                         <div class="ef-item">
                             <i class="material-icons">map</i>
@@ -69,9 +75,10 @@
                 </div>
             </div>
             <!-- 클래스 목록들 start -->
+
             <div class="row">
             <c:forEach items="${list }" var="oneday" varStatus="vs">
-                                <c:if test="${vs.count == 1}">
+                                
                 <div class="col-md-3">
                     <div class="classes-item-warp">
                         <div class="classes-item item_rate">
@@ -80,16 +87,16 @@
                             </div>
                             <div class="ci-text">
                                 <h4>${oneday.onedayName}</h4>
-                                <p>${vs.count}</p>
-                                <c:forEach items="${timelist }" var="tl">
+                                <c:if test="${not empty oneday.onedayTimeList}">
+                                <c:forEach items="${oneday.onedayTimeList }" var="tl">
                                 <div class="ci-metas">
-                                 <if test="${tl.onedayNoo eq oneday.onedayclassNo}">
+                                 <c:if test="${tl.onedayNoo eq oneday.onedayclassNo}">
                                     <div class="ci-meta"><i class="material-icons">event_available</i>${tl.onedayTimeDate }</div>
                                     <%-- <div class="ci-meta"><i class="material-icons">${tl.onedayNoo}</i></div> --%>
-                                </if>
-                                
+                                </c:if>
                                 </div>
                                 </c:forEach>
+                                </c:if>
                                 <p>${oneday.onedayclassNo}</p>
                             </div>
                             <div class="ci-bottom">
@@ -100,12 +107,12 @@
                                         <p>${oneday.memberId }</p>
                                     </div>
                                 </div>
-                                <a href="${pageContext.request.contextPath }/oneday/detail.do" class="site-btn sb-gradient">예약하기</a>
+                                <a href= "${pageContext.request.contextPath }/oneday/oneday_detail?onedayclassNo=${oneday.onedayclassNo}" class="site-btn sb-gradient">예약하기</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                                </c:if>
+                            
             </c:forEach>
             </div>
             <div class="site-pagination pt-3.5">

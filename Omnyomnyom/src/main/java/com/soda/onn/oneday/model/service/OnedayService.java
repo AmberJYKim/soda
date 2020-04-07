@@ -1,6 +1,8 @@
 package com.soda.onn.oneday.model.service;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
@@ -14,7 +16,7 @@ public interface OnedayService {
 
 	int deleteOneday(int onedayclassNo);
 
-	int insertOneday(Oneday oneday, List<OnedayTime> otiList);
+	int insertOneday(Oneday oneday, List<String> otiList);
 
 	Oneday selectOne(int onedayclassNo);
 
@@ -22,8 +24,11 @@ public interface OnedayService {
 
 	List<OnedayReview> selectOnedayReviewList(RowBounds rowBounds);
 
-	List<Oneday> selectDateList();
+//	List<Oneday> selectDateList(String detailedAddr, String onedayName);
 
-	List<OnedayTime> selectTimeList();
+
+	List<Oneday> selectDateList(Map<String, String> sec);
+
+	List<OnedayTime> selectTimeList(int onedayclassNo);
 
 }

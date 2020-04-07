@@ -1,6 +1,9 @@
 package com.soda.onn.oneday.model.service;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.One;
 import org.apache.ibatis.session.RowBounds;
@@ -15,6 +18,8 @@ import com.soda.onn.oneday.model.vo.OnedayTime;
 
 import com.soda.onn.oneday.model.vo.Reservation;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 public class OnedayServiceImpl implements OnedayService {
 
@@ -28,12 +33,16 @@ public class OnedayServiceImpl implements OnedayService {
 	
 	
 	@Override
-	public int insertOneday(Oneday oneday,  List<OnedayTime> otiList) {
+	public int insertOneday(Oneday oneday,  List<String> otiList) {
 		
 		int result = onedayDAO.insertOneday(oneday);
 
 		if(result>0)
-			for(OnedayTime onedayTime:otiList) {
+			for(int i=0; i<otiList.size(); i++) {
+				OnedayTime onedayTime = new OnedayTime();
+				
+				onedayTime.setOnedayTimeDate(otiList.get(i));
+				
 				onedayTime.setOnedayNoo(oneday.getOnedayclassNo());
 				
 				Log.debug("원데이클래스 no = " + onedayTime);
@@ -45,7 +54,12 @@ public class OnedayServiceImpl implements OnedayService {
 	
 	@Override
 	public Oneday selectOne(int onedayclassNo) {
-		return onedayDAO.selectOne(onedayclassNo);
+		
+		Oneday one = onedayDAO.selectOne(onedayclassNo);
+		
+		one.setOnedayTimeList(onedayDAO.selectTimeList(onedayclassNo));
+
+		return one;
 	}
 
 
@@ -60,27 +74,46 @@ public class OnedayServiceImpl implements OnedayService {
 	}
 
 
+//	@Override
+//	public List<Oneday> selectDateList(String detailedAddr, String onedayName) {
+//		List<Oneday> list = onedayDAO.selectDateList(detailedAddr, onedayName);
+//		
+//		for (Oneday one : list) {
+//			one.setOnedayTimeList(onedayDAO.selectTimeOne(one.getOnedayclassNo()));
+//////			원데이 클래스의 넘버를 매개변수로하는  OnedayTime을 selectOne하는 것.
+//////			거기에서 불러온 값을 Oenday의 private List<OnedayTime> onedayTimeList;에 담음.
+//		
+//		}
+//	
+//		return list;
+//		
+//	}
+
+
+
 	@Override
-	public List<Oneday> selectDateList() {
-		List<Oneday> list = onedayDAO.selectDateList(); // 54
+	public List<Oneday> selectDateList(Map<String, String> sec) {
+		List<Oneday> list = onedayDAO.selectDateList(sec);
 		
 		for (Oneday one : list) {
-			one.setOnedayTimeList(onedayDAO.selectTimeOne(one.getOnedayclassNo()));
+			one.setOnedayTimeList(onedayDAO.selectTimeList(one.getOnedayclassNo()));
 ////			원데이 클래스의 넘버를 매개변수로하는  OnedayTime을 selectOne하는 것.
 ////			거기에서 불러온 값을 Oenday의 private List<OnedayTime> onedayTimeList;에 담음.
 		
 		}
 	
 		return list;
-		
 	}
 
 
 	@Override
-	public List<OnedayTime> selectTimeList() {
-		
-		return onedayDAO.selectTimeList();
+	public List<OnedayTime> selectTimeList(int onedayclassNo) {
+		// TODO Auto-generated method stub
+		return onedayDAO.selectTimeList(onedayclassNo);
 	}
+
+
+
 
 
 
