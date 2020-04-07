@@ -43,7 +43,7 @@
 		location.href="${pageContext.request.contextPath}/oneday/class_manager.do";
 	};
 	function classUpload(){
-		location.href="${pageContext.request.contextPath}/oneday/class_insert";
+		location.href="${pageContext.request.contextPath}/oneday/class_insert.do";
 	}
     
     </script>		
@@ -114,7 +114,7 @@
                                                 </div>
                                             </div>
                                             <div class="td-right col-lg-7 chefinfo">
-                                                <h3>채널명 (셰프닉네임)</h3>
+                                                <h3>${chef.chefNickName}</h3>
                                                 <h6>셰프 아이디</h6>
                                                 <ul>
                                                     <li><strong>개설일</strong>

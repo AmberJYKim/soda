@@ -1,14 +1,15 @@
 package com.soda.onn.recipe.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.recipe.model.dao.RecipeDAO;
+import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 
@@ -26,10 +27,19 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public List<String> selectIngSubCtg(String mainCtg) {
-		
 		return recipeDAO.selectIngSubCtg(mainCtg);
 	}
 
+	@Override
+	public List<Ingredient> selectIngredients(String subCtg, int cPage, int numPerPage) {
+		return recipeDAO.selectIngredients(subCtg, cPage, numPerPage);
+	}
+
+	@Override
+	public int selectIngredientsCnt(String subCtg) {
+		return recipeDAO.selectIngredientsCnt(subCtg);
+	}
+	
 	@Override
 	public int recipeUpload(Recipe recipe, List<RecipeIngredient> ingredientList) {
 		int result = recipeDAO.recipeUpload(recipe);
@@ -43,6 +53,21 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public Recipe selectRecipeOne(int recipeNo) {
+		return recipeDAO.selectRecipeOne(recipeNo);
+	}
+
+	@Override
+	public List<RecipeIngredient> selectRecIngList(int recipeNo) {
+		return recipeDAO.selectRecIngList(recipeNo);
+	}
+
+	@Override
+	public List<MenuCategory> selectCategoryList() {
+		return recipeDAO.selectCategoryList();
 	}
 
 }

@@ -3,6 +3,21 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="recipe">
+
+	<select id="selectIngSubCtg" resultType="string">
+		select ing_cd_category  from (select * from tb_ingredient where ing_pr_category = #{mainCtg}) group by ing_cd_category order by ing_cd_category
+	</select>
+	
+	<select id="selectIngredients" resultType="Ingredient">
+		select * from tb_ingredient where ing_cd_category = #{subCtg}
+	</select>
+	
+	
+	<select id="selectIngredientsCnt" resultType="_int">
+		select count(*) from tb_ingredient where ing_cd_category = #{subCtg}
+	</select>
+  
+	
 	<select id="ingredientAjax" resultType="ingredient">
 		select *
 		from TB_Ingredient
@@ -13,8 +28,8 @@
 			TB_recipe
 		values(
 			seq_recipe.nextval,
-			#{recipeName},
-			#{recipeId},
+			#{videoTitle},
+			#{videoLink},
 			#{timeline},
 			#{menuName},
 			#{chefNick},
@@ -34,9 +49,38 @@
 			tb_rec_Ingredients
 		values(
 			#{recipeNo},
-			#{ingredientNo},
+			<choose>
+				<when test="ingredientNo!=0">
+					#{ingredientNo},
+				</when>
+				<when test="ingredientNo==0">
+					null,
+				</when>
+			</choose>
 			#{minWeight},
 			#{ingredientName}
 		)
 	</insert>
+	<select id="selectRecipeOne" resultType="recipe">
+		select 
+			*
+		from 
+			tb_recipe 
+		where 
+			recipe_no=#{recipeNo}
+	</select>
+	<select id="selectRecIngList" resultType="recipeIngredient">
+		select 
+			*
+		from 
+			tb_rec_ingredients 
+		where 
+			recipe_no=#{recipeNo}
+	</select>
+	<select id="selectCategoryList" resultType="menuCategory">
+		select
+			*
+		from
+			TB_menu_category
+	</select>
 </mapper>

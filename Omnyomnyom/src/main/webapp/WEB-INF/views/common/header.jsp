@@ -7,6 +7,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%
+//RedirectAttributes 객체 조회 : session에 저장된 객체 열람
+		Enumeration<String> attrNames = session.getAttributeNames();
+		while(attrNames.hasMoreElements()) {
+			String name = attrNames.nextElement();
+			System.out.printf("%s= %s%n",name,session.getAttribute(name));
+		}
+%>
 <!DOCTYPE html>
 <html lang="utf-8">
 
@@ -274,7 +282,7 @@
                             <li><a href="${pageContext.request.contextPath}/recipe/ingredientsSelection.do">냉장고 재료</a></li>
                         </ul>
                     </li>
-                    <li><a href="${pageContext.request.contextPath}/mall/productList.do">뇸뇸몰</a></li>
+                    <li><a href="${pageContext.request.contextPath}/mall/main">뇸뇸몰</a></li>
                     <li><a href="${pageContext.request.contextPath}/chef/chefList.do">셰프</a></li>
                     <li><a href="${pageContext.request.contextPath}/oneday/oneday">원데이 클래스</a></li>
                     <li><a href="contact.html">사이트 안내</a>

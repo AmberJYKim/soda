@@ -17,4 +17,6 @@ public interface MallService {
 
 	List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds);
 
+	IngredientMall selectIngMallOne(int ingredientNo);
+
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
+import com.soda.onn.member.model.vo.Notice;
+import com.soda.onn.recipe.model.vo.Recipe;
 
 @Repository
 public class ChefDAOImpl implements ChefDAO {
@@ -43,13 +45,27 @@ public class ChefDAOImpl implements ChefDAO {
 	public int chefReuqest(ChefRequest chefRequest) {
 		return sqlSession.insert("chef.chefRequest",chefRequest);
 	}
-	
-
-	
+	@Override
+	public List<Chef> chefSearch(String chefsearchbar) {
+		return sqlSession.selectList("chef.chefSearch", chefsearchbar);
+	}
+	@Override
+	public Chef chefSelectOne(String chefNickName) {
+		return sqlSession.selectOne("chef.chefSelectOne",chefNickName);
+	}
 
 	@Override
 	public int chefRequestUpdate(Map<String, String> chefReq) {
 		return sqlSession.update("chef.chefRequestUpdate", chefReq);
+	}
+	
+	@Override
+	public List<Recipe> recipeSelectAll(String chefNickName) {
+		return sqlSession.selectList("chef.recipeSelectAll", chefNickName );
+	}
+	@Override
+	public int chefNoticeInsert(Notice notice) {
+		return sqlSession.insert("chef.chefNoticeInsert", notice);
 	}
 
 }
