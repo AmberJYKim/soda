@@ -19,4 +19,8 @@ public interface RecipeDAO {
 
 	int recipeIngrUpload(RecipeIngredient ingr);
 
+	Recipe selectRecipeOne(int recipeNo);
+
+	List<RecipeIngredient> selectRecIngList(int recipeNo);
+
 }

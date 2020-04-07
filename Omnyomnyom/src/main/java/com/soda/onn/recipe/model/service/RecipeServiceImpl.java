@@ -37,6 +37,8 @@ public class RecipeServiceImpl implements RecipeService {
 	public int selectIngredientsCnt(String subCtg) {
 		return recipeDAO.selectIngredientsCnt(subCtg);
 	}
+	
+	@Override
 	public int recipeUpload(Recipe recipe, List<RecipeIngredient> ingredientList) {
 		int result = recipeDAO.recipeUpload(recipe);
 		Log.debug("recipeNo={}",recipe.getRecipeNo());
@@ -49,6 +51,16 @@ public class RecipeServiceImpl implements RecipeService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public Recipe selectRecipeOne(int recipeNo) {
+		return recipeDAO.selectRecipeOne(recipeNo);
+	}
+
+	@Override
+	public List<RecipeIngredient> selectRecIngList(int recipeNo) {
+		return recipeDAO.selectRecIngList(recipeNo);
 	}
 
 }
