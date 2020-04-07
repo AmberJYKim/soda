@@ -29,6 +29,8 @@ import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.common.util.ChefRequestUtils;
+import com.soda.onn.member.model.vo.Notice;
+import com.soda.onn.recipe.model.vo.Recipe;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,7 +63,6 @@ public class ChefController {
 			
 			ch.setChefCategoryList(categoryList);
 			
-//			log.debug("{}",ch.getChefCategoryList());
 		}
 		
         
@@ -103,15 +104,36 @@ public class ChefController {
 //	셰프 채널 이동 
 	@GetMapping("/{memberNickName}/chefpage")
 	@ResponseBody
-	public ModelAndView chefpage(@PathVariable("memberNickName") String memberNickName,
+	public ModelAndView chefpage(@PathVariable("memberNickName") String chefNickName,
 						ModelAndView mav) {
 		
-		Chef chef = chefservice.chefSelectOne(memberNickName);
+		Chef chef = chefservice.chefSelectOne(chefNickName);
+		String chefId = chef.getChefId();
+		log.debug("chefId={}",chefId);
+		List<Recipe> recipeList = chefservice.recipeSelectAll(chefNickName);
+//		List<Notice> noticeList = chefservice.chefChannelAll(chefId);
+		log.debug("RecipeList = {}",recipeList);
 		
+		mav.addObject("recipeList", recipeList);
 		mav.addObject("chef", chef);
 		mav.setViewName("chef/chefPage");
 		return mav;
 	}
+	
+// 셰프공지사항 글쓰기 폼 이동 
+	@GetMapping("/chefNotice")
+	public void chefNotice(){
+	}
+	
+// 셰프공지사항 글쓰기 폼 이동 
+	@PostMapping("/chefNotice")
+	public ModelAndView chefNoticeInsert(Notice notice,
+								 ModelAndView mav){
+		int result = chefservice.chefNoticeInsert(notice);
+		return mav;
+		
+	}
+	
 	
 // 셰프신청 폼이동 
 	@GetMapping("/chefInsert")

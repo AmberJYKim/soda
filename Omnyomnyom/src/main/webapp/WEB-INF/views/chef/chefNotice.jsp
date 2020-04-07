@@ -25,16 +25,16 @@
 				<div id="board-container">
 					<div class="col-lg-6 m-auto">
 						<form name="boardFrm" 
-							  action=""
+							  action="${pageContext.request.contextPath }/chef/chefNotice"
 							  method="post" 
 							  onsubmit="return boardValidate();"
 							  enctype="multipart/form-data">
 						
-							<input type="text" class="form-control" placeholder="제목" name="boardTitle" id="noticeTitle" required>
-							<input type="text" class="form-control" name="boardWriter" value="${memberLoggedIn.memberId }" readonly required>
+							<input type="text" class="form-control" placeholder="noticeTitle" name="notice_title" id="noticeTitle" required>
+							<input type="text" class="form-control" name="noticeWriter" value="${memberLoggedIn.memberId }" readonly required>
 							<!-- input:file소스 : https://getbootstrap.com/docs/4.1/components/input-group/#custom-file-input -->
-							<input type="text" class="form-control" placeholder="카테고리(ex.원데이클래스)" name="boardTitle" id="boardTitle" required>
-						    <textarea class="form-control" name="boardContent" placeholder="내용" required></textarea>
+							<input type="text" class="form-control" placeholder="카테고리(ex.원데이클래스)" name="notice_class" id="notice_class" required>
+						    <textarea class="form-control" name="noticeContent" placeholder="내용" required></textarea>
 							<br />
 							<input type="submit" class="btn btn-outline-success" value="저장 " >
 						</form>
@@ -43,8 +43,9 @@
 			</div>
 	</section>
 	<script>
+	/* 나중에 입력한지 여부체크하기  */
 		function boardValidate(){
-			if($("#board"))
+			/* if($("#noticeTitle")) */
 		}
 	</script>
 
