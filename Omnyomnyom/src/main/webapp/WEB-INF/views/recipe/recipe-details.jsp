@@ -23,7 +23,7 @@
         var firstScriptTag = document.getElementsByTagName('script')[0]; //이거 뭔지 모름
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); //이거 뭔지 모름
         var player; //유튜브 api 전역변수
-        var setVideoId = "t4Es8mwdYlE"; //유튜브영상 ID
+        var setVideoId = "${recipe.videoLink}"; //유튜브영상 ID
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('testPTag', {
                 videoId: setVideoId,
@@ -42,7 +42,7 @@
                 <div class="col-lg-7">
                     <div class="recipe-details">
                         <div class="classes-preview">
-                            <h2>분식집st 떡 볶 이</h2>
+                            <h2>${recipe.videoTitle}</h2>
                             <div id="youtubevideo">
                                 <div class="recipe-video" id="testPTag"></div>
                             </div>
@@ -63,7 +63,7 @@
                                         <img src="/img/classes/author/3.jpg" class="chef-img" alt="">
                                     </th>
                                     <td>
-                                        <h3 class="chef-name">백종원</h3>
+                                        <h3 class="chef-name"><a href="">${recipe.chefNick}</a></h3>
                                         <div class="cd-meta">
                                             <p><i class="material-icons">people_outline</i>조회수 | 250</p>
                                         </div>
@@ -85,9 +85,11 @@
                                         <th scope="col"></th>
                                         <th scope="col" colspan="2">재료명</th>
                                         <th scope="col">용량</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <c:forEach items="${recipe.ingredientList}" var="ingr" varStatus="vs">
                                     <tr>
                                         <th scope="row">1</th>
                                         <td colspan="2">고추장</td>
@@ -102,18 +104,21 @@
                                         <th scope="row">3</th>
                                         <td colspan="2">떡볶이</td>
                                         <td>200g</td>
+                 
                                     </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
 
                         </div>
                         <!-- 셰프 설명글 -->
+
                         <p>대법관은 대법원장의 제청으로 국회의 동의를 얻어 대통령이 임명한다. 대통령은 제3항과 제4항의 사유를 지체없이 공포하여야 한다. 헌법개정안은 국회가 의결한 후 30일 이내에 국민투표에 붙여 국회의원선거권자 과반수의 투표와 투표자 과반수의 찬성을 얻어야 한다. 정부는 회계연도마다 예산안을 편성하여 회계연도 개시 90일전까지 국회에 제출하고, 국회는 회계연도 개시 30일전까지 이를 의결하여야 한다. 새로운
                             회계연도가 개시될 때까지 예산안이 의결되지 못한 때에는 정부는 국회에서 예산안이 의결될 때까지 다음의 목적을 위한 경비는 전년도 예산에 준하여 집행할 수 있다. 국회는 정부의 동의없이 정부가 제출한 지출예산 각항의 금액을 증가하거나 새 비목을 설치할 수 없다. 위원은 정당에 가입하거나 정치에 관여할 수 없다.</p>
                     </div>
-                    <!-- 재료 판매 -->
-                    <div class="row">
-                        <div class="goods-add-product">
+               
+                        <!-- 재료 판매 -->
+                        <div class="row">
                             <div class="goods-add-product-wrapper __slide-wrapper" data-slide-item="5">
                                 <h3 class="goods-add-product-title">뇸뇸몰</h3>
                                 <button class="goods-add-product-move goods-add-product-move-left __slide-go-left">왼쪽으로 슬라이드 이동</button>
@@ -761,14 +766,9 @@
                     <div class="sb-widget">
                         <h2 class="sb-title">요리방법 </h2>
                         <div class="classes-info">
-                            <p class="yt_time_stamp" onclick="hreflink(60);"><span>1</span>&nbsp;대파는 어슷 썰거나 반으로 갈라 길게 썰어 준비한다.</p>
-                            <p class="yt_time_stamp" onclick="hreflink(120);"><span>2</span> &nbsp;양배추, 어묵은 먹기 좋은 크기로 썰어 준비한다.</p>
-                            <p class="yt_time_stamp" onclick="hreflink(120);"><span>3</span>&nbsp;냄비에 물, 진간장, 황설탕, 고추장, 굵은고춧가루, 고운고춧가루, 대파, 양배추를 넣어 끓인다.</p>
-                            <p class="yt_time_stamp" onclick="hreflink(120);"><span>4</span>&nbsp;떡볶이떡은 흐르는 물에 가볍게 세척한다.</p>
-                            <p class="yt_time_stamp" onclick="hreflink(120);"><span>5</span>&nbsp;육수가 끓으면 삶은달걀, 떡을 넣고 함께 끓여준다.</p>
-                            <p class="yt_time_stamp" onclick="hreflink(120);"><span>6</span>&nbsp;기호에 맞게 MSG를 넣는다.</p>
-                            <p class="yt_time_stamp" onclick="hreflink(120);"><span>7</span>&nbsp;떡을 넣고 육수가 끓어오르면 어묵을 넣어준다.</p>
-                            <p class="yt_time_stamp" onclick="hreflink(120);"><span>8</span>&nbsp;양념장이 걸쭉하게 졸아들 때까지 끓여 완성한다.</p>
+                        <c:forEach items="${fn:split(recipe.timeline,',')}" var="timeline" varStatus="vs">
+                            <p class="yt_time_stamp" onclick="hreflink(${fn:split(timeline,':')[0]});"><span>${vs.count }</span>&nbsp;${fn:split(timeline,':')[1] }</p>
+                        </c:forEach>
                         </div>
                     </div>
                     <!--  -->
