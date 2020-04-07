@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-lg-7 m-auto text-white">
                 <h2>냉장고 재료로 레시피 검색</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p>나의 냉장고 재료로 해먹는 든든한 한끼</p>
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@
 <script>
 	$().ready(function(){
 		console.log('jquery로드 완료');
-		mainCtgload();
+		subCtgload();
 		selectedDelfn();
 		selectedTagDel();
 		
@@ -67,7 +67,7 @@
 	
 	
 	 
-	function mainCtgload(){
+	function subCtgload(){
 		/* 메인 카테고리 선택에 따른 변경 */
 		$(".main-ctg-menu p").on('click', function(){
 			/* 이미 선택된 분류라면 아래의 코드 수행하지 않음 */
@@ -101,7 +101,7 @@
 	
 					$(".sub-ctg-menu").html(subCtgList);
 					 
-					subCtgLoad();
+					IngsLoad();
 				},
 				error : (x,s,e) =>{
 					console.log(x,s,e);
@@ -110,25 +110,29 @@
 			
 			
 		});
-	}; //메인 카테고리 교체 끝
+	}; //서브 카테고리 교체 끝
 	
-	function subCtgLoad(){
+	function IngsLoad(){
 		/* 서브 카테고리 클릭 이벤트 설정 & 재료 불러오기 */
-		$(document).on('click', '.sub-ctg-menu li>p, .pagination>li', function(){
-			let cPage = Number(1);
+		$(document).on('click change', '.sub-ctg-menu li>p, .pagination>li', function(){
+			
+			let cPage; 
 			let ingList;
 			let forwardData;
-			let subCtg = $(".sub-ctg-menu li>p.active").html();
-			console.log(subCtg, '=============subCtg');
-			$(".sub-ctg-menu p").removeClass("active");
-			$(this).addClass("active");
+			let subCtg = $(".sub-ctg-menu p.active").text();
 			
 			if($(this).hasClass('page-item')){
+				if( $("a.curPage").text() != undefined && $("a.curPage").text() != 0 && $("a.curPage").text() != null)  {
+					cPage = Number($("a.curPage").text());
+				} else{
+					cPage = Number(1);
+				}
 				cPage = cPage + Number($(this).children('a').attr("tabindex"));
 				forwardData = {'subCtg' : subCtg, 'cPage' : cPage};
-					
 			} else if(!$(this).hasClass('page-item')){
 				forwardData = {'subCtg' : $(this).html(), 'cPage' : cPage};
+				$(".sub-ctg-menu p").removeClass("active");
+				$(this).addClass("active");
 			}	
 			//전달할객체셋에 넣기
 			//페이징에서도 동일하게 사용하기
@@ -143,7 +147,7 @@
 					console.log(data,"success");
 					ingList = data.ingList;
 					let ingCnt = data.ingCnt;
-					let cPage = data.cPage
+					cPage = data.cPage
 					/* 재료 불러오기 및 교체작업*/
 					$(".firstline").empty();
 					$(".secondline").empty();
@@ -163,7 +167,7 @@
 							
 							$(".secondline").append(ingredients);
 						} 
-
+						$(".pagination").empty()
 					});
 					
 					//페이징 처리
@@ -171,13 +175,13 @@
 					let totalPage = '<li class="page-item disabled"><a class="page-link"><small>..total : '+ingCnt+'</small></a></li>';
 					let pagingPrevbtn = '<li class="page-item"><a class="page-link" tabindex="-1"> &lt 이전</a></li>';
 					let pagingNextbtn = '<li class="page-item"><a class="page-link" tabindex="1"> 다음 &gt</a> </li>';
-					let curPagebtn = '<li class="page-item disabled"><a class="page-link">'+cPage+'</a></li>'
+					let curPagebtn = '<li class="page-item disabled"><a class="page-link curPage">'+cPage+'</a></li>'
 					$(".pagination").empty()
+					//페이지바 추가
 					if(ingCnt == 1 && cPage == 1){
-						//페이지바 추가
 					//1페이지가 전제일 경우
 						$(".pagination").append(totalPage);
-					}else if(ingCnt > 2 && cPage != 1 && ingCnt != cPage){
+					}else if(ingCnt >= 2 && cPage != 1 && ingCnt != cPage){
 					//이전 페이지와 다음 페이지가 모두 존재할 경우
 						$(".pagination").append(pagingPrevbtn);
 						$(".pagination").append(curPagebtn);
@@ -194,6 +198,7 @@
 						$(".pagination").append(curPagebtn);
 						$(".pagination").append(totalPage);	
 					};	
+					console.log("페이징 끝========================");
 				},
 				error : (x,s,e) =>{
 					console.log(x,s,e);
@@ -202,8 +207,6 @@
 		
 			let selectedinglist = $('.selected-ingredients>p').text();
 		
-			console.log('*****ajax밖');
-			console.log('*****inglist', ingList);
 			$.each(ingList, function(index, item){
 				if(selectedinglist.includes(item.ingredientName)){
 					$('img[alt='+item.ingredientName+']').addClass("active");
@@ -213,10 +216,42 @@
 		});
 	} //서브카테고리 교체 끝
 
-/* 	function paging(cPage, ingCnt){
-		
 	
-}; */
+	//선택된 재료로 검색 , 버튼 클릭에 따른 이벤트 작동.
+	function recipeSerachByIng(){
+		
+		
+		console.log("버튼 클릭됨");
+		$.ajax({
+			url:"${pageContext.request.contextPath}/recipe/recipeSerachByIng",
+			dataType: "json",
+			method : "GET",
+			data: mainCtg,
+			success : data =>{
+				/* 서브 카테고리 교체작업 */
+				let subCtgList = ' '; 
+				$.each(data,function(index, item){
+					
+					if(index == 0){
+						subCtgList += '<li> <p class="active">'+item+'</p> </li>';
+					}else{
+					subCtgList += '<li> <p>'+item+'</p> </li>';
+					}
+					
+					console.log(item);
+				});
+
+				$(".sub-ctg-menu").html(subCtgList);
+				 
+				subCtgLoad();
+			},
+			error : (x,s,e) =>{
+				console.log(x,s,e);
+			}
+		});
+		
+		
+	}; 
 	
 </script>
 <section class="overflow-hidden spad">
@@ -287,9 +322,9 @@
 
 				</div>
 				<div class="col btn-section">
-					<button type="submit" class="btnforseach">
-						선택한 재료로 검색하기 <img
-							src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/icons/search-2.png" alt="">
+					<button type="button" class="btnforseach" onclick="recipeSearchByIng();">
+						선택한 재료로 검색하기 <i class="fab fa-sistrix"></i>
+		
 					</button>
 				</div>
 			</div>
@@ -298,8 +333,88 @@
 
 </section>
 <!-- ???  end -->
-<section>
-	<div>검색된 영상 리스트 보여주기</div>
+<section class="overflow-hidden spad">
+	<div class="container col-md-12">
+		<div class="container">
+			<!-- 셰프클릭시 해당 셰프영상 밑에 뜨 -->
+
+			<div class="row" id="Ylist">
+				<div class="col-xs-6 col-sm-3 placeholder chef_list">
+					<a
+						href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img
+						src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt=""
+						class="chef-Thumbnail">
+						<p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
+					<div class="row">
+						<div class="col-8">
+							<img src="/img/1508_008.jpg" class="" alt=""
+								style="width: 40px; height: 40px; border-radius: 50%;"> <span
+								class="chef-min-name">1종원</span>
+						</div>
+						<div class="col-4 chef-view-count">
+							<span>조회수 250</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-sm-3 placeholder chef_list">
+					<a
+						href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img
+						src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt=""
+						class="chef-Thumbnail">
+						<p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
+					<div class="row">
+						<div class="col-8">
+							<img src="/img/1508_008.jpg" class="" alt=""
+								style="width: 40px; height: 40px; border-radius: 50%;"> <span
+								class="chef-min-name">1종원</span>
+						</div>
+						<div class="col-4 chef-view-count">
+							<span>조회수 250</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-sm-3 placeholder chef_list">
+					<a
+						href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img
+						src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt=""
+						class="chef-Thumbnail">
+						<p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
+					<div class="row">
+						<div class="col-8">
+							<img src="/img/1508_008.jpg" class="" alt=""
+								style="width: 40px; height: 40px; border-radius: 50%;"> <span
+								class="chef-min-name">1종원</span>
+						</div>
+						<div class="col-4 chef-view-count">
+							<span>조회수 250</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-sm-3 placeholder chef_list">
+					<a
+						href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img
+						src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt=""
+						class="chef-Thumbnail">
+						<p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
+					<div class="row">
+						<div class="col-8">
+							<img src="/img/1508_008.jpg" class="" alt=""
+								style="width: 40px; height: 40px; border-radius: 50%;"> <span
+								class="chef-min-name">1종원</span>
+						</div>
+						<div class="col-4 chef-view-count">
+							<span>조회수 250</span>
+						</div>
+					</div>
+D
+				</div>
+			</div>
+
+		</div>
+		<!-- end-->
+	</div>
+
+	</div>
 
 </section>
 

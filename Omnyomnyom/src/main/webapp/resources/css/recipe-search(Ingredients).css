@@ -5,9 +5,9 @@
 .btn-section{
 	border-bottom: 20px;
 }
-/* .inglist {
-	min-height: 160px;
-} */
+.spad {
+    padding-top: 20px;
+}
 .major li {
 	border: black solid 1px;
 }
