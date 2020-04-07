@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.soda.onn.mall.model.vo.Ingredient;
+import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 
@@ -63,6 +64,11 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	@Override
 	public List<RecipeIngredient> selectRecIngList(int recipeNo) {
 		return sqlSession.selectList("recipe.selectRecIngList", recipeNo);
+	}
+
+	@Override
+	public List<MenuCategory> selectCategoryList() {
+		return sqlSession.selectList("recipe.selectCategoryList");
 	}
 
 	
