@@ -19,8 +19,8 @@ public class MenuCategory implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	String menuPrCategory;
-	String menuCdCategory;
+	private String menuPrCategory;
+	private String menuCdCategory;
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;

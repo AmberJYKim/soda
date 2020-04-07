@@ -51,6 +51,7 @@ import com.google.gson.JsonObject;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.recipe.model.service.RecipeService;
+import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 
@@ -78,15 +79,15 @@ public class RecipeController {
 		
 		recipe.setIngredientList(recipeService.selectRecIngList(recipeNo));
 		
-		
-		
 		model.addAttribute("recipe",recipe);
 		
 	}
 	
 	@GetMapping("/recipeUpload")
-	public void recipeUpload() {
-		
+	public void recipeUpload(Model model) {
+		List<MenuCategory> categoryList = recipeService.selectCategoryList();
+		log.debug("{}",categoryList);
+		model.addAttribute("categoryList", categoryList);
 	}
 	
 	@PostMapping("/recipeUpload")

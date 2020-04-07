@@ -77,4 +77,10 @@
 		where 
 			recipe_no=#{recipeNo}
 	</select>
+	<select id="selectCategoryList" resultType="menuCategory">
+		select
+			*
+		from
+			TB_menu_category
+	</select>
 </mapper>
