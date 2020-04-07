@@ -2,8 +2,15 @@ package com.soda.onn.oneday.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -11,6 +18,8 @@ import javax.servlet.http.HttpSession;
 import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,6 +38,7 @@ import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Attachment;
 import com.soda.onn.oneday.model.vo.Oneday;
+import com.soda.onn.oneday.model.vo.OnedayTime;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,12 +51,13 @@ public class OnedayController {
 	private OnedayService onedayService;
 	
 //	원데이 클래스 메인뷰로 이동 
-	@GetMapping("/oneday.do")
-	public String oneday() {
-		return "oneday/oneday";
+	@GetMapping("/oneday")
+	public void oneday() {
+		
+		log.debug("@oneday @ onedayController = 원데이클래스 메인페이지로 이동합니다!" );
 	}
 //	원데이 클래스 생성뷰로 이동
-	@GetMapping("/class_insert.do")
+	@GetMapping("/class_insert")
 	public void classinsert() {
 		
 		log.debug("oneday_insert @ onedayController = 원데이클래스 등록 페이지로 이동합니다!");
@@ -59,36 +70,94 @@ public class OnedayController {
 	}
 	
 //	클래스 검색 결과뷰 로 이동 
-	@GetMapping("/search.do")
-	public String search() {
-		return "oneday/oneday_search";
+	@GetMapping("/oneday_search")
+	public void search() {
+		log.debug("oneday_search @ ondayController = 원데이클래스 검색!");
+	}
+	
+//	클래스 검색
+	@PostMapping("/oneday_search")
+	public ModelAndView search(@ModelAttribute ModelAndView mav,
+						@RequestParam(value = "detailedAddr")String detailedAddr,
+						@RequestParam(value = "onedayName")String onedayName,
+						@RequestParam(value = "onedayTimeDate") String onedayTimeDate) {
+		
+		
+		System.out.println("일정 =" + onedayTimeDate);
+		System.out.println("상세주소 = "+ detailedAddr);
+		System.out.println("클래스 이름 = " + onedayName);
+		
+		Map<String, String> sec = new HashMap<>();
+	
+		
+		sec.put("detailedAddr", detailedAddr);
+		sec.put("onedayName", onedayName);
+		sec.put("onedayTimeDate", onedayTimeDate);
+		
+		List<Oneday> list = onedayService.selectDateList(sec);
+		mav.addObject("list", list);
+		
+		System.out.println("[["+list+"]]");
+		
+		return mav;
 	}
 	
 //	원데이 클래스 디테일뷰 로 이동 
-	@GetMapping("/detail.do")
-	public String detail() {
-		return "oneday/oneday_detail";
+	@GetMapping("/oneday_detail")
+	public void detail(@RequestParam(value="onedayclassNo") int onedayclassNo, Model model) {
+		
+		log.debug("클래스 no = "+onedayclassNo);
+		
+		Oneday oneday = onedayService.selectOne(onedayclassNo);
+		log.debug("controller@oneday/selectOne={}", oneday);
+		
+		
+		List<OnedayTime> list = onedayService.selectTimeList(onedayclassNo);
+		
+		
+
+		
+		log.debug("list={}", list);
+
+		
+		model.addAttribute("oneday", oneday);
+		model.addAttribute("list", list);
 	}
+
 	
 //	원데이 클래스 예약뷰로 이동 
-	@GetMapping("/reservation.do")
-	public String reservation() {
-		return "oneday/oneday_reservation";
+	@PostMapping("/oneday_reservation")
+	public void reservation() {
+		
+		
 	}
+	
+//	원데이 클래스 예약
+//	@PostMapping("/oneday_reservation")
+//	public String reservation() {
+//		
+//	}
+	
+	
+	
+	
 //	원데이 클래스 예약 동의뷰로 이동 
 	@GetMapping("/agree.do")
 	public String agree() {
 		return "oneday/oneday_agree";
+		
 	}
 //	원데이 클래스 예약 결제뷰로 이동 
 	@GetMapping("/pay.do")
 	public String pay() {
 		return "oneday/oneday_pay";
+		
 	}
 //	원데이 클래스 예약완료 뷰로 이동 
 	@PostMapping("/result.do")
 	public String result() {
 		return "oneday/oneday_result";
+		
 	}
 	
 	
@@ -109,10 +178,11 @@ public class OnedayController {
 	//원데이클래스 Insert 하기
 	@PostMapping("/insert.do")
 	public ModelAndView insert(@ModelAttribute Oneday oneday, 
-											   ModelAndView mav, 
+											   ModelAndView mav,
 											   RedirectAttributes redirectAttributes,
 							   @RequestParam(value="onedayTimeM", defaultValue = "0")int onedayTimeM,
 							   @RequestParam(value="onedayImgFile", required = false) MultipartFile onedayImg,
+							   @RequestParam(value="classdate") String[] onedayTimeList,
 							   HttpServletRequest request) {
 		log.debug("원데이클래스 등록 절차를 시작합니다!");
 		//파일 처리
@@ -141,18 +211,32 @@ public class OnedayController {
 			
 			oneday.setOnedayImg(renamedFileName);
 		}
-		
 		//이미지 확인
 		log.debug("addImgList={}", addImgList);
 		
+		//String[]의 
 		
-		int result = onedayService.insertOneday(oneday);
-		log.debug("oneday@controller=" + oneday);
 		
 
-
+		List<String> otiList = new ArrayList<String>(Arrays.asList(onedayTimeList));
+		
+		if(otiList != null) {
+			for (int i=0; i<otiList.size(); i++) {
+				System.out.println(otiList.get(i));
+			}
+		}
+		
+		System.out.println(otiList);
+		
+		
+		
+		int result = onedayService.insertOneday(oneday, otiList);
+//		원데이클래스 개설 
+		log.debug("oneday={}" + oneday);
+		
+		
 		String msg = "";
-		Log.debug(msg);
+		Log.debug("result+"+result);
 		redirectAttributes.addFlashAttribute("msg", result>0?"원데이 클래스 등록완료!":"원데이클래스 등록실패!");
 		
 		//requestParam으로 value값, defaultValue 값 => 변수 선언해줌
@@ -163,21 +247,30 @@ public class OnedayController {
 		return mav;
 	}
 	
-//	원데이클래스 수정 뷰 제공
+	/*
+	 * @GetMapping("/oneday_search") public ModelAndView nomalSearch(@ModelAttribute
+	 * Oneday oneday, ModelAndView mav, RedirectAttributes redirectAttributes) {
+	 * 
+	 * 
+	 * return mav; }
+	 */
+	
+	
+	//	원데이클래스 수정 뷰 제공
 	@PutMapping("/update")
-	public String update(@RequestParam("onedayNo") int onedayNo) {
-		Oneday oneday = onedayService.selectOne(onedayNo);
+	public String update(@RequestParam("onedayclassNo") int onedayclassNo) {
+		Oneday oneday = onedayService.selectOne(onedayclassNo);
 		return "";
 	}
 	
 //	원데이클래스 삭제
 	@DeleteMapping("/delete")
-	public String delete(@RequestParam("onedayNo") int onedayNo) {
+	public String delete(@RequestParam("onedayclassNo") int onedayclassNo) {
 		
 		//글 작성자 or 관리자 검사
 		
 		//클래스 삭제
-		int result = onedayService.deleteOneday(onedayNo);
+		int result = onedayService.deleteOneday(onedayclassNo);
 		
 		return "";
 	}
