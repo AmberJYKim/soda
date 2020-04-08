@@ -121,4 +121,15 @@
 		member_id = #{memberId}
 </select>
 
+<update id="updateInfo" parameterType="hashmap">
+	update
+		tb_member
+	set
+		phone = #{member.phone},
+		email = #{member.email},
+		address = #{member.address}
+	where
+		member_id = #{member.memberId}
+</update>
+
 </mapper>

@@ -10,6 +10,7 @@ import com.soda.onn.oneday.model.vo.Oneday;
 import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.OnedayTime;
 import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.ReservationRequest;
 
 public interface OnedayDAO {
 
@@ -33,6 +34,10 @@ public interface OnedayDAO {
 	List<Oneday> selectDateList(Map<String, String> sec);
 
 	List<OnedayTime> detailTime(int onedayclassNo);
+
+	int insertReservation(ReservationRequest reservationrequest);
+
+
 
 
 }

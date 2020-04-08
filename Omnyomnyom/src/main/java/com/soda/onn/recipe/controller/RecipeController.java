@@ -1,6 +1,8 @@
 package com.soda.onn.recipe.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.RowBounds;
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
@@ -50,7 +52,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.service.RecipeService;
+import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
@@ -74,11 +78,30 @@ public class RecipeController {
 	
 	@GetMapping("/recipe-details")
 	public void recipedetails(@RequestParam("recipeNo")int recipeNo,
+							  HttpServletRequest request,
 							  Model model) {
+		Member member = (Member)request.getSession().getAttribute("memberLoggedIn");
+		Like l =null;
+		Scrap s = null;
+		
+		
+		if(member != null) {
+			l = new Like(member.getMemberId(), recipeNo);
+			
+			l = recipeService.selectLikeOne(l);
+			
+			s = new Scrap(recipeNo, member.getMemberId(), null, null, null, null);
+			
+			s = recipeService.selectScrap(s);
+		}
+		log.debug("{}",l);
+		
 		Recipe recipe = recipeService.selectRecipeOne(recipeNo);
 		
 		recipe.setIngredientList(recipeService.selectRecIngList(recipeNo));
 		
+		model.addAttribute("scrap",s);
+		model.addAttribute("isLiked",l);
 		model.addAttribute("recipe",recipe);
 		
 	}
@@ -99,13 +122,16 @@ public class RecipeController {
 							 @RequestParam(value = "ingr_mass") String[] ingrMass,
 							 @RequestParam(value = "tn_firstname") int[] cookTime,
 							 @RequestParam(value = "tn_lastname") String[] cookery,
-							 @RequestParam(value = "ingr_number") int[] ingNo) {
+							 @RequestParam(value = "ingr_number") int[] ingNo,
+							 @ModelAttribute("memberLoggedIn")Member member) {
 		
 //		log.debug("{}",chef);
 //		recipe.setChefId(chef.getMemberId());
 //		recipe.setChefNick(chef.getMemberNick());
 		recipe.setChefId(chefId);
 		recipe.setChefNick(chefNick);
+		
+		log.debug("{}",member);
 		
 		log.debug("{}",recipe);
 		
@@ -263,6 +289,60 @@ public class RecipeController {
 		return gson.toJson(jArray);
 	}
 	
+	@GetMapping(value = "/{memberId}/like/{recipeNo}", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String insertLike(@PathVariable("memberId")String memberId,
+							 @PathVariable("recipeNo")int recipeNo) {
+		log.debug("like");
+		
+		Like like = new Like(memberId, recipeNo);
+		int result = recipeService.insertLike(like);
+		
+		return result>0?"t":"f";
+	}
+	
+	@GetMapping(value = "/{memberId}/unlike/{recipeNo}", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String deleteLike(@PathVariable("memberId")String memberId,
+							 @PathVariable("recipeNo")int recipeNo) {
+		log.debug("unlike");
+		
+		Like like = new Like(memberId, recipeNo);
+		int result = recipeService.deleteLike(like);
+		
+		return result>0?"t":"f";
+	}
+
+	@GetMapping(value = "/unscrap/{recipeNo}", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String deleteScrap(HttpSession session,
+						 	  @PathVariable("recipeNo")int recipeNo) {
+		log.debug("unscraped");
+		log.debug("{}",(Member)session.getAttribute("memberLoggedIn"));
+		Scrap scrap = new Scrap(recipeNo, ((Member)session.getAttribute("memberLoggedIn")).getMemberId(), null, null, null, null);
+		
+		log.debug("{}",scrap);
+		
+		int result = recipeService.deleteScrap(scrap);
+		
+		return result>0?"t":"f";
+	}
+	
+	@GetMapping(value = "/scrap/{recipeNo}", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String insertScrap(HttpSession session,
+						 	  @PathVariable("recipeNo")int recipeNo,
+						 	  @RequestParam("memo")String memo) {
+		log.debug("scraped");
+		log.debug("{}",(Member)session.getAttribute("memberLoggedIn"));
+		Scrap scrap = new Scrap(recipeNo, ((Member)session.getAttribute("memberLoggedIn")).getMemberId(), null, memo, null, null);
+		
+		log.debug("{}",scrap);
+		
+		int result = recipeService.insertScrap(scrap);
+		
+		return result>0?"t":"f";
+	}
 	
 	
 	/*

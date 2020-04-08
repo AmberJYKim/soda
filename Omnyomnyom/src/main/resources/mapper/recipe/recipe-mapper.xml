@@ -72,7 +72,7 @@
 	<select id="selectRecIngList" resultType="recipeIngredient">
 		select 
 			*
-		from 
+		from
 			tb_rec_ingredients 
 		where 
 			recipe_no=#{recipeNo}
@@ -83,4 +83,63 @@
 		from
 			TB_menu_category
 	</select>
+	<select id="selectLikeOne" resultType="like">
+		select
+			*
+		from
+			TB_like
+		where
+			recipe_no = #{recipeNo}
+			and
+			member_id = #{memberId}
+	</select>
+	<insert id="insertLike" parameterType="like">
+		insert into tb_like
+		values(
+    		#{memberId},
+    		#{recipeNo}
+		)
+	</insert>
+	<delete id="deleteLike">
+		delete from tb_like 
+		where 
+			member_id = #{memberId} 
+			and recipe_no = #{recipeNo}
+	</delete>
+	<select id="selectScrap" resultMap="scrapMap">
+		select s.*, r.chef_nick, r.video_title
+		from 
+    		TB_scrap s
+    		join tb_recipe r
+        		on s.recipe_no = r.recipe_no
+		where 
+			s.member_id = #{scrapId}
+			and 
+			s.recipe_no = #{recipeNo}
+	</select>
+	<insert id="insertScrap">
+		insert into TB_scrap
+		values(
+    		#{scrapId},
+    		#{recipeNo},
+    		default,
+    		#{meMo}
+		)
+	</insert>
+	<delete id="deleteScrap">
+		delete from TB_scrap 
+		where 
+			member_id = #{scrapId}
+			and 
+			recipe_no= #{recipeNo}
+	</delete>
+	
+	<resultMap type="scrap" id="scrapMap">
+		<result column="member_id" property="scrapId"/>
+		<result column="recipe_no" property="recipeNo"/>
+		<result column="regdate" property="regDate" javaType="java.sql.Date"/>
+		<result column="memo" property="meMo"/>
+		<result column="chef_nick" property="chefNick"/>
+		<result column="video_title" property="videoTitle"/>
+	</resultMap>
 </mapper>
