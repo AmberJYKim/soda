@@ -32,4 +32,12 @@ public interface ChefService {
 
 	int chefNoticeInsert(Notice notice);
 
+	Notice chefNoticeView(int noticeNo);
+
+	List<Notice> noticeSelectAll(String chefId);
+
+	int chefNoticeDelete(int noticeNo);
+
+	int chefnoticeUpdate(Notice notice);
+
 }

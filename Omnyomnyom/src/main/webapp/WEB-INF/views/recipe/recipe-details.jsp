@@ -15,9 +15,20 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mall_slider_common.css" />
    	
    	 <script src="${pageContext.request.contextPath }/resources/js/autoslider.js"></script>
-   
-    </style>
     <script>
+    	$(function(){
+    		<c:choose>
+    			<c:when test="${isLiked}">
+    				$('#recipe_like').children().html('favorite');
+					$('#recipe_like').one('click',recipeUnlike);
+    			</c:when>
+    			<c:otherwise>
+    				$('#recipe_like').children().html('favorite_border');
+    				$('#recipe_like').one('click',recipeLike);
+    			</c:otherwise>
+    		</c:choose>
+    	});
+    
         var tag = document.createElement('script'); //이거 뭔지 모름
         tag.src = "https://www.youtube.com/iframe_api"; //api 주소
         var firstScriptTag = document.getElementsByTagName('script')[0]; //이거 뭔지 모름
@@ -30,10 +41,49 @@
             });
         }
 
-
         //유튜브 영상 redirect
         function hreflink(s) {
             player.loadVideoById(setVideoId, s);
+        }
+        
+        function recipeLike(){
+        	$.ajax({
+				url:"${pageContext.request.contextPath}/recipe/${memberLoggedIn.memberId}/like/${recipe.recipeNo}",
+				success : function(data) {
+					if(data == 't'){
+						let $recipe_like = $('#recipe_like')
+						$recipe_like.children().html('favorite');
+						$recipe_like.one('click',recipeUnlike);
+					}
+				},
+				error : function(x, s, e) {
+					console.log(x, s, e);
+				}
+			});
+        	
+        	
+        }
+        
+        function recipeUnlike(){
+        	$.ajax({
+				url:"${pageContext.request.contextPath}/recipe/${memberLoggedIn.memberId}/unlike/${recipe.recipeNo}",
+				success : function(data) {
+					if(data == 't'){
+						let $recipe_like = $('#recipe_like')
+						$recipe_like.children().html('favorite_border');
+						$recipe_like.one('click',recipeLike);
+					}
+				},
+				error : function(x, s, e) {
+					console.log(x, s, e);
+				}
+			});
+        	
+        	
+        }
+        
+        function recipeScrap(){
+        	$('#recipe_scrap').html('스크랩 해제');
         }
     </script><!-- 레시피 영상  Section -->
     <section class="classes-details-section spad overflow-hidden">
@@ -48,10 +98,7 @@
                             </div>
                             <div class="hashtag" id="hashtag">
                                 <br>
-                                <a href="#">#해시태그</a>
-                                <a href="#">#해시태그</a>
-                                <a href="#">#해시태그</a>
-                                <a href="#">#해시태그</a>
+                                <a href="#">${recipe.category }</a>
                                 <br>
                             </div>
                         </div>
@@ -59,22 +106,24 @@
                             <!-- 셰프 정보 -->
                             <div class="col-lg-5">
                                 <table>
+                                	<tr>
                                     <th>
-                                        <img src="/img/classes/author/3.jpg" class="chef-img" alt="">
+                                        <img src="/img/classes/author/3.jpg" class="chef-img" alt=""><!-- 후에 셰프 이미지 경로 정하고... -->
                                     </th>
                                     <td>
                                         <h3 class="chef-name"><a href="">${recipe.chefNick}</a></h3>
                                         <div class="cd-meta">
-                                            <p><i class="material-icons">people_outline</i>조회수 | 250</p>
+                                            <p><i class="material-icons">people_outline</i>조회수 | ${recipe.viewCount }</p>
                                         </div>
                                     </td>
+                                    </tr>
                                 </table>
                             </div>
-                            <div class="col-lg-6 text-left text-md-right">
-                                <i class="material-icons">favorite_border</i>
-                                <div class="cd-price">후기</div>
-                                <div class="cd-price">문의</div>
-                                <div class="cd-price">스크랩</div>
+                            <div class="col-lg-7 text-left text-md-right">
+                            	<c:if test="${memberLoggedIn != null}">
+                            		<a id="recipe_like" style="cursor:pointer;"><i class="material-icons"></i></a><!-- favorite -->
+                            		<a onclick="recipeScrap(this)" style="cursor:pointer;"><div id="recipe_scrap" class="cd-price">스크랩</div></a>
+                                </c:if>
                             </div>
                         </div>
                         <div class="row">
@@ -91,20 +140,9 @@
                                 <tbody>
                                 <c:forEach items="${recipe.ingredientList}" var="ingr" varStatus="vs">
                                     <tr>
-                                        <th scope="row">1</th>
-                                        <td colspan="2">고추장</td>
-                                        <td>1 큰술</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td colspan="2">설탕</td>
-                                        <td>2 작은큰술</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td colspan="2">떡볶이</td>
-                                        <td>200g</td>
-                 
+                                        <th scope="row">${vs.count }</th>
+                                        <td colspan="2">${ingr.ingredientName }</td>
+                                        <td>${ingr.minWeight }</td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
@@ -113,12 +151,12 @@
                         </div>
                         <!-- 셰프 설명글 -->
 
-                        <p>대법관은 대법원장의 제청으로 국회의 동의를 얻어 대통령이 임명한다. 대통령은 제3항과 제4항의 사유를 지체없이 공포하여야 한다. 헌법개정안은 국회가 의결한 후 30일 이내에 국민투표에 붙여 국회의원선거권자 과반수의 투표와 투표자 과반수의 찬성을 얻어야 한다. 정부는 회계연도마다 예산안을 편성하여 회계연도 개시 90일전까지 국회에 제출하고, 국회는 회계연도 개시 30일전까지 이를 의결하여야 한다. 새로운
-                            회계연도가 개시될 때까지 예산안이 의결되지 못한 때에는 정부는 국회에서 예산안이 의결될 때까지 다음의 목적을 위한 경비는 전년도 예산에 준하여 집행할 수 있다. 국회는 정부의 동의없이 정부가 제출한 지출예산 각항의 금액을 증가하거나 새 비목을 설치할 수 없다. 위원은 정당에 가입하거나 정치에 관여할 수 없다.</p>
+                        <pre style="font-size: 15px; color: #666666; line-height: 1.8; font-family: 'Noto Sans KR', sans-serif;">${recipe.recipeContent }</pre>
                     </div>
                
-                        <!-- 재료 판매 -->
-                        <div class="row">
+                    <!-- 재료 판매 -->
+                    <div class="row">
+                        <div class="goods-add-product">
                             <div class="goods-add-product-wrapper __slide-wrapper" data-slide-item="5">
                                 <h3 class="goods-add-product-title">뇸뇸몰</h3>
                                 <button class="goods-add-product-move goods-add-product-move-left __slide-go-left">왼쪽으로 슬라이드 이동</button>
@@ -706,10 +744,10 @@
                         </div>
                     </div>
                     <!-- 댓글 -->
-                    <h3 class="comment-title">댓글</h3>
+                    <div  id="comment">
+                    <h3 class="comment-title mt-3">댓글</h3>
                     <ul class="comment-list">
                         <li>
-                            <img src="/img/classes/author/3.jpg" class="comment-pic" alt="">
                             <div class="comment-text">
                                 <h3>Beverly Price </h3>
                                 <div class="comment-date"><i class="material-icons">alarm_on</i>June 28, 2019 at 3:18 pm</div>
@@ -718,7 +756,6 @@
                             </div>
                             <ul class="comment-sub-list">
                                 <li>
-                                    <img src="/img/classes/author/2.jpg" class="comment-pic" alt="">
                                     <div class="comment-text">
                                         <h3>Jacqueline Watkins</h3>
                                         <div class="comment-date"><i class="material-icons">alarm_on</i>June 28, 2019 at 3:18 pm</div>
@@ -729,7 +766,6 @@
                             </ul>
                         </li>
                         <li>
-                            <img src="/img/classes/author/1.jpg" class="comment-pic" alt="">
                             <div class="comment-text">
                                 <h3>Lori Gonzales</h3>
                                 <div class="comment-date"><i class="material-icons">alarm_on</i>June 28, 2019 at 3:18 pm</div>
@@ -737,8 +773,20 @@
                                 <a href="#" class="reply"><i class="material-icons">reply</i>Reply</a>
                             </div>
                         </li>
+                        <c:if test="${memberLoggedIn != null}">
+                        <li>
+                        <form class="singup-form">
+                        	<div>
+                                <textarea name="content" placeholder="댓글 작성"></textarea>
+                                <a href="#" class="site-btn sb-gradient">댓글 달기</a>
+                            </div>
+                        </form>
+                        </li>
+                        </c:if>
                     </ul>
-                    <h3 class="comment-title">Leave a Reply</h3>
+                    </div>
+                   	<div id="question">
+                    <h3 class="comment-title">문의하기</h3>
                     <form class="singup-form">
                         <div class="row">
                             <div class="col-md-6">
@@ -759,6 +807,7 @@
                             </div>
                         </div>
                     </form>
+                    </div>
                 </div>
 
                 <div class="col-lg-5 col-md-6 col-sm-9 sidebar">
@@ -767,13 +816,13 @@
                         <h2 class="sb-title">요리방법 </h2>
                         <div class="classes-info">
                         <c:forEach items="${fn:split(recipe.timeline,',')}" var="timeline" varStatus="vs">
-                            <p class="yt_time_stamp" onclick="hreflink(${fn:split(timeline,':')[0]});"><span>${vs.count }</span>&nbsp;${fn:split(timeline,':')[1] }</p>
+                            <p class="yt_time_stamp" onclick="hreflink(${fn:split(timeline,':')[0]});"><span>${vs.count }.</span>&nbsp;${fn:split(timeline,':')[1] }</p>
                         </c:forEach>
                         </div>
                     </div>
-                    <!--  -->
                     <!-- 타임 스탬프 end -->
-                    <div class="sb-widget">
+                    
+					<div class="sb-widget">
                         <h2 class="sb-title">연관영상</h2>
                         <div class="another-video-widget">
                             <table>
@@ -781,9 +830,11 @@
                                     <!-- 유튜브 썸네일 추출 방식-->
                                     <th><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="200" height="100"></th>
                                     <td>
+                                    	<ul>
                                         <li>불맛나는 고기짬뽕라면</li>
                                         <li>백종원</li>
                                         <li>추천수 500</li>
+                                        </ul>
                                     </td>
                                 </tr>
                                 <tr>

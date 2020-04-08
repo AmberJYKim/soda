@@ -74,8 +74,11 @@ public class MemberDAOImpl  implements MemberDAO{
 		return sqlSession.selectOne("member.memberInfo", memberId);
 	}
 
+	@Override
+	public int updateInfo(Map<String, Object> params) {
+		return sqlSession.update("member.updateInfo", params);
+	}
 
-	
 
 	
 }

@@ -8,6 +8,7 @@
 <jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
 </jsp:include>
 
+
  <section class="page-top-section page-sp set-bg" data-setbg="">
         <div class="container">
             <div class="row">
@@ -25,28 +26,27 @@
 				<div id="board-container">
 					<div class="col-lg-6 m-auto">
 						<form name="boardFrm" 
-							  action="${pageContext.request.contextPath }/chef/chefNotice"
-							  method="post" 
-							  onsubmit="return boardValidate();"
+							  action="${pageContext.request.contextPath }/chef/noticeUpdateDone"
+							  method="POST" 
+							  id="noticeFrm"
 							  enctype="multipart/form-data">
-						
-							<input type="text" class="form-control" placeholder="제목 " name="noticeTitle" id="noticeTitle" required>
-							<input type="text" class="form-control" name="noticeWriter" value="${memberLoggedIn.memberId }" readonly required>
-							<!-- input:file소스 : https://getbootstrap.com/docs/4.1/components/input-group/#custom-file-input -->
-							<input type="text" class="form-control" placeholder="카테고리(ex.원데이클래스)" name="noticeCategory" id="notice_class" required>
-						    <textarea class="form-control" name="noticeContent" placeholder="내용" required></textarea>
+							<input type="number" value="${notice.noticeNo }" name="noticeNo" hidden/>
+							<input type="text" value="${memberLoggedIn.memberNick }" name="memberNickName" hidden/>
+							 <div class="row"> 
+								<input type="submit" class="btn btn-outline-success" id="update" style="float:right;"value="수정완료 "  >
+							</div>
+							<input type="text" class="form-control" placeholder="제목 " name="noticeTitle" id="noticeTitle" value ="${notice.noticeTitle}"required  >
+							<input type="text" class="form-control" name="noticeWriter" value="${notice.noticeWriter }" readonly required >
+							<input type="text" class="form-control" placeholder="카테고리(ex.원데이클래스)" name="noticeCategory" value="${notice.noticeCategory }" id="notice_class" required >
+						    <textarea class="form-control" name="noticeContent" placeholder="내용"   required  >${notice.noticeContent }</textarea>
 							<br />
-							<input type="submit" class="btn btn-outline-success" value="저장 " >
+							
 						</form>
 					</div>
 				</div>
 			</div>
 	</section>
-	<script>
-	/* 나중에 입력한지 여부체크하기  */
-		function boardValidate(){
-			/* if($("#noticeTitle")) */
-		}
-	</script>
+	
+	
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

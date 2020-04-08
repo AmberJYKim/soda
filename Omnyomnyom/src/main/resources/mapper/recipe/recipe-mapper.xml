@@ -72,7 +72,7 @@
 	<select id="selectRecIngList" resultType="recipeIngredient">
 		select 
 			*
-		from 
+		from
 			tb_rec_ingredients 
 		where 
 			recipe_no=#{recipeNo}
@@ -83,4 +83,27 @@
 		from
 			TB_menu_category
 	</select>
+	<select id="selectLikeOne" resultType="like">
+		select
+			*
+		from
+			TB_like
+		where
+			recipe_no = #{recipeNo}
+			and
+			member_id = #{memberId}
+	</select>
+	<insert id="insertLike" parameterType="like">
+		insert into tb_like
+		values(
+    		#{memberId},
+    		#{recipeNo}
+		)
+	</insert>
+	<delete id="deleteLike">
+		delete from tb_like 
+		where 
+			member_id = #{memberId} 
+			and recipe_no = #{recipeNo}
+	</delete>
 </mapper>

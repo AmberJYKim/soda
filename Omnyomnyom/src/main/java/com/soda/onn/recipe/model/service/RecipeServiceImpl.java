@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.recipe.model.dao.RecipeDAO;
+import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
@@ -70,4 +71,18 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeDAO.selectCategoryList();
 	}
 
+	@Override
+	public Like selectLikeOne(Like l) {
+		return recipeDAO.selectLikeOne(l);
+	}
+
+	@Override
+	public int insertLike(Like like) {
+		return recipeDAO.insertLike(like);
+	}
+
+	@Override
+	public int deleteLike(Like like) {
+		return recipeDAO.deleteLike(like);
+	}
 }

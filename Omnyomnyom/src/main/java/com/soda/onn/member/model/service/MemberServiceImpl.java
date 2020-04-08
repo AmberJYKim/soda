@@ -74,9 +74,11 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public Member memberInfo(String memberId) {
 		return memberDAO.memberInfo(memberId);
-		
-		
-		
+	}
+
+	@Override
+	public int updateInfo(Map<String, Object> params) {
+		return memberDAO.updateInfo(params);
 	}
 
 	

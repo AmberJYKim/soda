@@ -67,5 +67,21 @@ public class ChefDAOImpl implements ChefDAO {
 	public int chefNoticeInsert(Notice notice) {
 		return sqlSession.insert("chef.chefNoticeInsert", notice);
 	}
+	@Override
+	public Notice chefNoticeView(int noticeNo) {
+		return sqlSession.selectOne("chef.chefNoticeView", noticeNo);
+	}
+	@Override
+	public List<Notice> noticeSelectAll(String chefId) {
+		return sqlSession.selectList("chef.noticeSelectAll", chefId);
+	}
+	@Override
+	public int chefNoticeDelete(int noticeNo) {
+		return sqlSession.delete("chef.chefNoticeDelete", noticeNo);
+	}
+	@Override
+	public int chefnoticeUpdate(Notice notice) {
+		return sqlSession.update("chef.noticeUpdate",notice);
+	}
 
 }
