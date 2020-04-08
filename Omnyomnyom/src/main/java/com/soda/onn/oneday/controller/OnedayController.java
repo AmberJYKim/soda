@@ -14,8 +14,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
-
 import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -129,16 +127,15 @@ public class OnedayController {
 
 	
 //	원데이 클래스 예약뷰로 이동 
-
 	@PostMapping("/oneday_reservation")
 	public ModelAndView reservation(@ModelAttribute ModelAndView mav,
 									@ModelAttribute Reservation reservation,
+									@ModelAttribute Oneday oneday,
 									@ModelAttribute ReservationRequest reservationrequest,
-									HttpSession session, RedirectAttributes redirectAttributes,
 									@RequestParam(value="onedayclassNo") int onedayclassNo,
-									@RequestParam(value="onedayTimeNo" ) int onedayTimeNo
+									@RequestParam(value="onedayTimeNo" ) int onedayTimeNo,
+									HttpSession session
 									) {
-		
 		log.debug("클래스 넘버={}", onedayclassNo);
 		log.debug("타임 넘버={}", onedayclassNo);
 		
@@ -155,9 +152,8 @@ public class OnedayController {
 		session.setAttribute("reservationrequest", reservationrequest);
 		
 //		int result = onedayService.insertReservation(reservationrequest);
-		
+		mav.addObject("Oneday", oneday);
 		mav.addObject("reservationrequest", reservationrequest);
-		mav.setViewName("/oneday/oneday_reservation");
 		
 		return mav;
 	}
@@ -172,15 +168,20 @@ public class OnedayController {
 	
 	
 //	원데이 클래스 예약 동의뷰로 이동 
-	@GetMapping("/agree.do")
-	public String agree() {
-		return "oneday/oneday_agree";
+	@GetMapping("/oneday_agree")
+	public void agree() {
+		
 		
 	}
 //	원데이 클래스 예약 결제뷰로 이동 
-	@GetMapping("/pay.do")
-	public String pay() {
-		return "oneday/oneday_pay";
+	@GetMapping("/oneday_pay")
+	public ModelAndView pay(@ModelAttribute ModelAndView mav,HttpSession session) {
+		
+		ReservationRequest reservationrequest = (ReservationRequest) session.getAttribute("reservationrequest");
+		
+		mav.addObject("reservationrequest", reservationrequest);
+		
+		return mav;
 		
 	}
 //	원데이 클래스 예약완료 뷰로 이동 
