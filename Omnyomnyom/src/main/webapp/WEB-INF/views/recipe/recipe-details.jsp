@@ -18,9 +18,9 @@
     <script>
     	$(function(){
     		<c:choose>
-    			<c:when test="${isLike}">
-    				$('#recipe_like').children().html('favorite_border');
-					$('#recipe_like').one('click',recipeLike);
+    			<c:when test="${isLiked}">
+    				$('#recipe_like').children().html('favorite');
+					$('#recipe_like').one('click',recipeUnlike);
     			</c:when>
     			<c:otherwise>
     				$('#recipe_like').children().html('favorite_border');
@@ -46,7 +46,7 @@
             player.loadVideoById(setVideoId, s);
         }
         
-        function recipeLike(){        	
+        function recipeLike(){
         	$.ajax({
 				url:"${pageContext.request.contextPath}/recipe/${memberLoggedIn.memberId}/like/${recipe.recipeNo}",
 				success : function(data) {
@@ -64,7 +64,7 @@
         	
         }
         
-        function recipeUnlike(){        	
+        function recipeUnlike(){
         	$.ajax({
 				url:"${pageContext.request.contextPath}/recipe/${memberLoggedIn.memberId}/unlike/${recipe.recipeNo}",
 				success : function(data) {

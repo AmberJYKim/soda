@@ -50,6 +50,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.service.RecipeService;
 import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
@@ -88,7 +89,6 @@ public class RecipeController {
 			Like result = recipeService.selectLikeOne(l);
 		
 			isLiked = result!=null?true:false;
-			
 		}
 		log.debug("{}",isLiked);
 		
@@ -293,7 +293,7 @@ public class RecipeController {
 		Like like = new Like(memberId, recipeNo);
 		int result = recipeService.insertLike(like);
 		
-		return "t";
+		return result>0?"t":"f";
 	}
 	
 	@GetMapping(value = "/{memberId}/unlike/{recipeNo}", produces = "text/plain;charset=UTF-8")
@@ -305,7 +305,7 @@ public class RecipeController {
 		Like like = new Like(memberId, recipeNo);
 		int result = recipeService.deleteLike(like);
 		
-		return "t";
+		return result>0?"t":"f";
 	}
 	
 	/*

@@ -29,4 +29,8 @@ public interface RecipeDAO {
 	List<MenuCategory> selectCategoryList();
 
 	Like selectLikeOne(Like l);
+
+	int insertLike(Like like);
+
+	int deleteLike(Like like);
 }

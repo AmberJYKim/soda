@@ -78,13 +78,11 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public int insertLike(Like like) {
-		// TODO Auto-generated method stub
-		return 0;
+		return recipeDAO.insertLike(like);
 	}
 
 	@Override
 	public int deleteLike(Like like) {
-		// TODO Auto-generated method stub
-		return 0;
+		return recipeDAO.deleteLike(like);
 	}
 }

@@ -77,4 +77,14 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	public Like selectLikeOne(Like l) {
 		return sqlSession.selectOne("recipe.selectLikeOne", l);
 	}
+
+	@Override
+	public int insertLike(Like like) {
+		return sqlSession.insert("recipe.insertLike", like);
+	}
+
+	@Override
+	public int deleteLike(Like like) {
+		return sqlSession.delete("recipe.deleteLike", like);
+	}
 }
