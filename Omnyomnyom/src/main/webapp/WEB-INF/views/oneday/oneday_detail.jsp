@@ -219,6 +219,8 @@ function initTmap(){
                         <div class="classes-info">
                             <h2>${oneday.onedayName }</h2>
                             <p>${oneday.memberId }</p>
+                            <!-- 예약할 시 필요한 no -->
+                            <input type="number" name="onedayclassNo" style="display: none" value="${oneday.onedayclassNo}"/>
                             <h4 id="price" class="onedayprice"><fmt:formatNumber value="${oneday.onedayPrice }" pattern="#,###"/></h4>
                             <ul>
                                 <li><i class="material-icons">alarm_on</i>클래스 소요시간 : ${oneday.onedayTime}시간</li>
@@ -226,18 +228,20 @@ function initTmap(){
                                 <li><i class="material-icons">person_outline</i>최소인원 : ${oneday.onedayMinper}명</li>
                             </ul>
                             <h2>클래스 날짜</h2>
-                         
                         	<div class="col-md-3">
-                        	<div class="row">
-                      
-                    	<select class="circle-select" id="selectDate" name="selectDate" onchange="dateSelect(this.value);">
-                    	<c:forEach items="${list}" var="time">
-                    	
-                            <option value="${time.onedayTimeDate}">${time.onedayTimeDate}</option>
-                        </c:forEach>
-                        </select>
-                			</div>
-						</div>
+                        	
+                        		<div class="row">
+                        		<c:forEach items="${list}" var="time">
+                        		<input type="number" name="onedayTimeNo" style="display: none" value="${time.onedayTimeNo}"/>
+                        		</c:forEach>
+                        		
+			                    	<select class="circle-select" id="regDate" name="regDate">
+			                    	<c:forEach items="${list}" var="time">
+			                            <option value="${time.onedayTimeDate}">${time.onedayTimeDate}</option>			                    		
+			                        </c:forEach>
+			                        </select>
+		                		</div>
+							</div>
 						<!-- <script>
 							function dateSelect(selectDate) {
 								$.ajax({
@@ -270,14 +274,34 @@ function initTmap(){
                                                
 	                            <div class="option ">
 									<span class="count"><button type="button" class="btn down" id="countdown">-</button> 
-									<input type="number" class="inp" id="count" value="1" min="1"> 
+									<input type="number" class="inp" id="count" name="personnel" value="1" min="1"> 
 									<button type="button" class="btn up" id="countup">+</button></span>
 								</div>
                             </div>
                                            
                             <p class="onedayprice"><span id="total_price" class="onedayprice">20,000</span>원</p>
                            	
+                           	<input type="number" id="input_price" name="resPrice" style="display: none;" value=""/>
+      	
+                           	<script>
+      							$(document).on('click','#countup, #countdown', function(){
+      								
+      								
+      								let tPrice = $('#total_price').text();
+      								
+      								console.log(tPrice);
+      								
+      								let sPrice = tPrice.split(',').join('');
+      								sPrice =Number(sPrice);
+      								console.log(sPrice);
+      								$('#input_price').attr("value",sPrice); 
+      								
+      							});                  		
+                           		
+                           	</script>
+                           	<%-- <c:if test="${not empty memberLoggedIn}"> --%>
                             <input class="site-btn sb-gradient reservation_class" type="submit" value="신청하기"/>
+                        	<%-- </c:if> --%>
                         </div>
                     </div>
                     <div class="sb-widget">

@@ -17,6 +17,7 @@ import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.OnedayTime;
 
 import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.ReservationRequest;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -111,6 +112,17 @@ public class OnedayServiceImpl implements OnedayService {
 		// TODO Auto-generated method stub
 		return onedayDAO.selectTimeList(onedayclassNo);
 	}
+
+
+	@Override
+	public int insertReservation(ReservationRequest reservationrequest) {
+		// TODO Auto-generated method stub
+		return onedayDAO.insertReservation(reservationrequest);
+	}
+
+
+
+
 
 
 

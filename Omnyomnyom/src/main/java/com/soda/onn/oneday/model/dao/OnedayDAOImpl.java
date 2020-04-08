@@ -15,6 +15,7 @@ import com.soda.onn.oneday.model.vo.Oneday;
 import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.OnedayTime;
 import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.ReservationRequest;
 
 @Repository
 public class OnedayDAOImpl implements OnedayDAO{
@@ -79,6 +80,13 @@ public class OnedayDAOImpl implements OnedayDAO{
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("oneday.detailTime", onedayclassNo);
 	}
+
+	@Override
+	public int insertReservation(ReservationRequest reservationrequest) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("oneday.insertReservation", reservationrequest);
+	}
+
 
 
 

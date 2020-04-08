@@ -11,6 +11,7 @@ import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.OnedayTime;
 
 import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.ReservationRequest;
 
 public interface OnedayService {
 
@@ -26,9 +27,12 @@ public interface OnedayService {
 
 //	List<Oneday> selectDateList(String detailedAddr, String onedayName);
 
-
 	List<Oneday> selectDateList(Map<String, String> sec);
 
 	List<OnedayTime> selectTimeList(int onedayclassNo);
+
+	int insertReservation(ReservationRequest reservationrequest);
+
+
 
 }

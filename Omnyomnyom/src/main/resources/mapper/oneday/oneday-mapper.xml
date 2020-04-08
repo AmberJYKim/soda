@@ -67,6 +67,22 @@ where onedayclass_no = #{onedayclassNo}
 			)
 </insert>
 
+<insert id="insertReservation">
+	insert into
+		tb_reservation 
+			values(
+				seq_reservation.nextval,
+				#{memberId},
+				#{onedaytimeNo},
+				#{onedayclassNo},
+				default,
+				#{personnel},
+				default,
+				#{resPrice}
+		)
+</insert>
+
+
 <select id="selectDateList"  resultType="Oneday">
 select *
 from
@@ -84,16 +100,10 @@ and onedayclass_no = (select oct.onedayclass_no from
 						tb_onedayclasstime oct where oct.onedayclass_no = oc.onedayclass_no 
 						and 
 						TRUNC(onedaytime_date) = #{onedayTimeDate})
-
-
-
-
 </if> -->
 
 </where>
 order by onedayclass_no desc
-
-
 </select>
 
 
