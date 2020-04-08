@@ -70,5 +70,26 @@ public class ChefServiceImpl implements ChefService {
 	public int chefNoticeInsert(Notice notice) {
 		return chefDAO.chefNoticeInsert(notice);
 	}
+
+	@Override
+	public Notice chefNoticeView(int noticeNo) {
+		return chefDAO.chefNoticeView(noticeNo);
+	}
+
+	@Override
+	public List<Notice> noticeSelectAll(String chefId) {
+		return chefDAO.noticeSelectAll(chefId);
+	}
+
+	@Override
+	public int chefNoticeDelete(int noticeNo) {
+		return chefDAO.chefNoticeDelete(noticeNo);
+	}
+
+
+	@Override
+	public int chefnoticeUpdate(Notice notice) {
+		return chefDAO.chefnoticeUpdate(notice);
+	}
 	
 }
