@@ -19,9 +19,9 @@ public class ReservationCancel extends Reservation implements Serializable{
 
 	private String cancelReason;
 
-	public ReservationCancel(int reservationNo, String memberId, Oneday oneday, Date regDate, int personnel,
-			String cancel, String cancelReason) {
-		super(reservationNo, memberId, oneday, regDate, personnel, cancel);
+	public ReservationCancel(int reservationNo, String reserMemberId, Oneday oneday, String regDate, int personnel,
+			String cancel, String cancelReason, int resPrice) {
+		super(reservationNo, reserMemberId, oneday, regDate, personnel, cancel, resPrice);
 		this.cancelReason = cancelReason;
 	}
 

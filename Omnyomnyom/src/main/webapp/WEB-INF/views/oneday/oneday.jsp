@@ -15,7 +15,7 @@
 <!-- 원데이 클래스 검색 -->
 <script>
 function oneday_search(){
-	location.href="${pageContext.request.contextPath }/oneday/search.do";
+	location.href="${pageContext.request.contextPath }/oneday/oneday_search";
 }
 </script>
 
@@ -36,21 +36,26 @@ function oneday_search(){
                     <p>원데이클래스 검색</p>
                 </div>
                 <div class="col-xl-10">
-                    <form class="event-filter-form">
+                    <form class="event-filter-form" method="get" action="${pageContext.request.contextPath }/oneday/oneday_search">
                         <div class="ef-item">
                             <i class="material-icons">event_available</i>
-                            <input type="text" placeholder="날짜로 검색" class="event-date">
+                            <!-- <input type="text" id="onedayTimeDate" name="onedayTimeDate" placeholder="날짜로 검색" class="event-date"> -->
+                       		<input
+									class="input__field input__field--yoshiko datepicker-here"
+									type="text" id="input-date" name="onedayTimeDate" data-language='kr' data-date-format='yy/mm/dd'
+									data-timepicker="" autocomplete="off" />
                         </div>
                         <div class="ef-item">
                             <i class="material-icons">map</i>
-                            <input type="text" placeholder="위치로 검색">
+                            <input type="text" id="detailedAddr" name="detailedAddr" placeholder="위치로 검색">
                         </div>
                         <div class="ef-item">
                             <i class="material-icons">search</i>
-                            <input type="text" placeholder="">
+                            <input type="text" id="onedayName" name="onedayName" placeholder="검색어를 입력하세요.">
                         </div>
-                       <!--  -->
-                        <input class="site-btn sb-gradient" type="button" value="클래스 검색" onclick="oneday_search();">
+                       <!-- 아무것도 입력하지 않으면 업로드 순 -->
+                       <!-- 해당 값 입력시 입력 값에 대한 정보 불러옴 -->
+                        <input class="site-btn sb-gradient" type="submit" value="클래스 검색">
                     </form>
                 </div>
             </div>

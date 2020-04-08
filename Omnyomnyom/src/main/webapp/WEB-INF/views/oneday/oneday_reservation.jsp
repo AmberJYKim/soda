@@ -158,7 +158,7 @@
                                         <td class="td-wthie-back"><span id="price">75,000원</span></td>
                                         <td class="">
                                             <div class="input-group">
-                                                <span class="input-group-btn">
+                                                <span class="input-group-btn" id="countdown">
                                                     <button type="button" class="btn btn-default btn-number" id="adultMinus">
                                                         <span class="glyphicon glyphicon-minus">-</span>
                                                 </button>
@@ -166,7 +166,7 @@
                                                 <div class="selected-amount">
                                                     <input type="text" name="adultValue" class="form-control input-number" value="5" min="0" max="10"> <span class="input-group-btn"></span>
                                                 </div>
-                                                <span class="input-group-btn">
+                                                <span class="input-group-btn" id="countup">
                                                     <button type="button" class="btn btn-default btn-number"
                                                     id="adultPlus">
                                                         <span class="glyphicon glyphicon-plus">+</span>
@@ -196,6 +196,33 @@
             </div>
     </section>
     <!-- Event Details Section end -->
+    
+    <script>
+    function countChange(b){
+        $count = $("#count");
+        let cnum = Number($count.val())+Number(b);
+        if(cnum<=0){
+            $count.text(1);
+            cnum = 1;
+        }
+        $count.val(cnum);
+        let price = $("#price").text()
+        price = price.replace(/\,/g,"");
+        let ppap = Number(price)*cnum;
+        $("#total_price").text(String(ppap).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+/*          $("#total_price").text(Number(price)*cnum); */
+    }
+    
+    $("#countup").on("click",function(){
+        countChange(1);
+    });
+    $("#countdown").on("click",function(){
+        countChange(-1);
+    });
+    $("#count").on("keyup",function(){
+        countChange(0);
+    });
+    </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
     

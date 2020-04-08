@@ -76,7 +76,7 @@
 							</span>
 							<!-- 클래스 비용 입력란 -->
 							<span class="input input--yoshiko"> <!-- 클래스 비용 input -->
-								<input class="input__field input__field--yoshiko" type="number" step="1000" min="1000"  id="input-class-cost" name="price"/> 
+								<input class="input__field input__field--yoshiko" type="number" step="1000" min="1000"  id="input-class-cost" name="onedayPrice"/> 
 								<!-- 클래스 비용 라벨 --> 
 								<label class="input__label input__label--yoshiko" for="input-class-cost"> 
 								<span class="input__label-content input__label-content--yoshiko" data-content="클래스 비용">클래스 비용</span>
@@ -144,7 +144,7 @@
 								<span class="input input--yoshiko col-9 p-0"> <!-- 클래스 날짜 input -->
 									<input
 									class="input__field input__field--yoshiko datepicker-here"
-									type="text" id="input-date" name="classdate" data-language='kr'
+									type="text" id="input-date" data-language='kr' data-date-format='yyyy/mm/dd' data-time-format='hh:ii'
 									data-timepicker="true" autocomplete="off" />
 								</span>
 

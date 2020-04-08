@@ -50,7 +50,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.service.RecipeService;
+import com.soda.onn.recipe.model.vo.Like;
+import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 
@@ -73,20 +76,36 @@ public class RecipeController {
 	
 	@GetMapping("/recipe-details")
 	public void recipedetails(@RequestParam("recipeNo")int recipeNo,
+							  HttpServletRequest request,
 							  Model model) {
+		Member member = (Member)request.getSession().getAttribute("memberLoggedIn");
+		boolean isLiked = false;
+		boolean isScraped = false;
+		
+		
+		if(member != null) {
+			Like l = new Like(member.getMemberId(), recipeNo);
+			
+			Like result = recipeService.selectLikeOne(l);
+		
+			isLiked = result!=null?true:false;
+		}
+		log.debug("{}",isLiked);
+		
 		Recipe recipe = recipeService.selectRecipeOne(recipeNo);
 		
 		recipe.setIngredientList(recipeService.selectRecIngList(recipeNo));
 		
-		
-		
+		model.addAttribute("isLiked",isLiked);
 		model.addAttribute("recipe",recipe);
 		
 	}
 	
 	@GetMapping("/recipeUpload")
-	public void recipeUpload() {
-		
+	public void recipeUpload(Model model) {
+		List<MenuCategory> categoryList = recipeService.selectCategoryList();
+		log.debug("{}",categoryList);
+		model.addAttribute("categoryList", categoryList);
 	}
 	
 	@PostMapping("/recipeUpload")
@@ -98,13 +117,16 @@ public class RecipeController {
 							 @RequestParam(value = "ingr_mass") String[] ingrMass,
 							 @RequestParam(value = "tn_firstname") int[] cookTime,
 							 @RequestParam(value = "tn_lastname") String[] cookery,
-							 @RequestParam(value = "ingr_number") int[] ingNo) {
+							 @RequestParam(value = "ingr_number") int[] ingNo,
+							 @ModelAttribute("memberLoggedIn")Member member) {
 		
 //		log.debug("{}",chef);
 //		recipe.setChefId(chef.getMemberId());
 //		recipe.setChefNick(chef.getMemberNick());
 		recipe.setChefId(chefId);
 		recipe.setChefNick(chefNick);
+		
+		log.debug("{}",member);
 		
 		log.debug("{}",recipe);
 		
@@ -262,7 +284,29 @@ public class RecipeController {
 		return gson.toJson(jArray);
 	}
 	
+	@GetMapping(value = "/{memberId}/like/{recipeNo}", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String insertLike(@PathVariable("memberId")String memberId,
+						 @PathVariable("recipeNo")int recipeNo) {
+		log.debug("like");
+		
+		Like like = new Like(memberId, recipeNo);
+		int result = recipeService.insertLike(like);
+		
+		return result>0?"t":"f";
+	}
 	
+	@GetMapping(value = "/{memberId}/unlike/{recipeNo}", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String deleteLike(@PathVariable("memberId")String memberId,
+						 @PathVariable("recipeNo")int recipeNo) {
+		log.debug("unlike");
+		
+		Like like = new Like(memberId, recipeNo);
+		int result = recipeService.deleteLike(like);
+		
+		return result>0?"t":"f";
+	}
 	
 	/*
 	 * Copyright 2020 the original author or authors.

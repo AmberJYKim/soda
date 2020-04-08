@@ -33,6 +33,8 @@ public interface MemberService {
 
 	Member memberInfo(String memberId);
 
+	int updateInfo(Map<String, Object> params);
+
 
 
 
