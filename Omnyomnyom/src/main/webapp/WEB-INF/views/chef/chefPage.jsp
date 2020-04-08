@@ -327,16 +327,22 @@
                             </div>
                         </div>
                     </div>
+                    
+                    
+                    
+                    
+                 <!-- 클래스 목록들 start -->
                     <div class="tab-pane fade" id="onedayclass" role="tabpanel" aria-labelledby="contact-tab">
-                        <!-- 클래스 목록들 start -->
                         <div class="row f-class">
                             <div class="col-lg-6">
                                 <h6 class="">인기 클래스</h6>
                             </div>
-                            <div class="col-lg-6">
-                                <button type="button" class="btn btn-outline-danger">클래스 관리</button>
-                                <button type="button" class="btn btn-outline-danger">클래스 업로드</button>
-                            </div>
+                            <c:if test="${memberLoggedIn.memberRoll eq 'C' and memberLoggedIn.memberNick eq chef.chefNickName}"> 
+	                            <div class="col-lg-6">
+	                                <button type="button" class="btn btn-outline-danger">클래스 관리</button>
+	                                <button type="button" class="btn btn-outline-danger">클래스 업로드</button>
+	                            </div>
+                            </c:if>
                         </div>
                         <div class="row">
                             <div class="col-md-3">
