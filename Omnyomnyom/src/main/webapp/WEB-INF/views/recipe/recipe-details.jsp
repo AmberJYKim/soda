@@ -18,7 +18,7 @@
     <script>
     	$(function(){
     		<c:choose>
-    			<c:when test="${isLiked}">
+    			<c:when test="${isLiked != null}">
     				$('#recipe_like').children().html('favorite');
 					$('#recipe_like').one('click',recipeUnlike);
     			</c:when>
@@ -27,6 +27,16 @@
     				$('#recipe_like').one('click',recipeLike);
     			</c:otherwise>
     		</c:choose>
+    		<c:choose>
+				<c:when test="${scrap != null}">
+					$('#recipe_scrap').children().html('스크랩 해제');
+					$('#recipe_scrap').on('click',recipeUnscrap);
+				</c:when>
+				<c:otherwise>
+					$('#recipe_scrap').children().html('스크랩');
+					$('#recipe_scrap').on('click',recipeScrap);
+				</c:otherwise>
+			</c:choose>
     	});
     
         var tag = document.createElement('script'); //이거 뭔지 모름
@@ -79,11 +89,59 @@
 				}
 			});
         	
-        	
         }
         
         function recipeScrap(){
-        	$('#recipe_scrap').html('스크랩 해제');
+			let val = prompt("스크랩 내용을 입력하세요.","");
+        	
+        	console.log(val);
+        	if(!$.trim(val)){
+        		if(val != null)
+        			alert("스크랩 하려면 내용을 입력하세요.");
+        		return;
+        	}
+        	let $recipe_scrap = $('#recipe_scrap');
+        	
+        	$recipe_scrap.off('click');
+        	
+        	$.ajax({
+				url:"${pageContext.request.contextPath}/recipe/scrap/${recipe.recipeNo}?memo="+val,
+				success : function(data) {
+					if(data == 't'){
+						
+						$recipe_scrap.children().html('스크랩 해제');
+						$recipe_scrap.on('click',recipeUnscrap);
+					}
+				},
+				error : function(x, s, e) {
+					console.log(x, s, e);
+				}
+			});
+        }
+        
+        function recipeUnscrap(){
+        	let bool = confirm('스크랩을 해제하시겠습니까?');
+        	
+        	if(!bool)
+        		return;
+        	
+        	let $recipe_scrap = $('#recipe_scrap');
+        	
+        	$recipe_scrap.off('click');
+        	
+        	$.ajax({
+				url:"${pageContext.request.contextPath}/recipe/unscrap/${recipe.recipeNo}",
+				success : function(data) {
+					if(data == 't'){
+						
+						$recipe_scrap.children().html('스크랩');
+						$recipe_scrap.on('click',recipeScrap);
+					}
+				},
+				error : function(x, s, e) {
+					console.log(x, s, e);
+				}
+			});
         }
     </script><!-- 레시피 영상  Section -->
     <section class="classes-details-section spad overflow-hidden">
@@ -122,7 +180,7 @@
                             <div class="col-lg-7 text-left text-md-right">
                             	<c:if test="${memberLoggedIn != null}">
                             		<a id="recipe_like" style="cursor:pointer;"><i class="material-icons"></i></a><!-- favorite -->
-                            		<a onclick="recipeScrap(this)" style="cursor:pointer;"><div id="recipe_scrap" class="cd-price">스크랩</div></a>
+                            		<a id="recipe_scrap" style="cursor:pointer;"><div class="cd-price"></div></a>
                                 </c:if>
                             </div>
                         </div>
