@@ -14,7 +14,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;

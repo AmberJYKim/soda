@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.member.model.vo.Notice;
+import com.soda.onn.oneday.model.vo.Oneday;
 import com.soda.onn.recipe.model.vo.Recipe;
 
 @Repository
@@ -82,6 +83,10 @@ public class ChefDAOImpl implements ChefDAO {
 	@Override
 	public int chefnoticeUpdate(Notice notice) {
 		return sqlSession.update("chef.noticeUpdate",notice);
+	}
+	@Override
+	public List<Oneday> onedaySelectAll(String chefId) {
+		return sqlSession.selectList("chef.onedaySelectAll",chefId);
 	}
 
 }
