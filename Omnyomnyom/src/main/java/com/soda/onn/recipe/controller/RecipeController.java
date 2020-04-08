@@ -1,6 +1,8 @@
 package com.soda.onn.recipe.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.RowBounds;
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
@@ -79,24 +81,27 @@ public class RecipeController {
 							  HttpServletRequest request,
 							  Model model) {
 		Member member = (Member)request.getSession().getAttribute("memberLoggedIn");
-		boolean isLiked = false;
-		boolean isScraped = false;
+		Like l =null;
+		Scrap s = null;
 		
 		
 		if(member != null) {
-			Like l = new Like(member.getMemberId(), recipeNo);
+			l = new Like(member.getMemberId(), recipeNo);
 			
-			Like result = recipeService.selectLikeOne(l);
-		
-			isLiked = result!=null?true:false;
+			l = recipeService.selectLikeOne(l);
+			
+			s = new Scrap(recipeNo, member.getMemberId(), null, null, null, null);
+			
+			s = recipeService.selectScrap(s);
 		}
-		log.debug("{}",isLiked);
+		log.debug("{}",l);
 		
 		Recipe recipe = recipeService.selectRecipeOne(recipeNo);
 		
 		recipe.setIngredientList(recipeService.selectRecIngList(recipeNo));
 		
-		model.addAttribute("isLiked",isLiked);
+		model.addAttribute("scrap",s);
+		model.addAttribute("isLiked",l);
 		model.addAttribute("recipe",recipe);
 		
 	}
@@ -287,7 +292,7 @@ public class RecipeController {
 	@GetMapping(value = "/{memberId}/like/{recipeNo}", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String insertLike(@PathVariable("memberId")String memberId,
-						 @PathVariable("recipeNo")int recipeNo) {
+							 @PathVariable("recipeNo")int recipeNo) {
 		log.debug("like");
 		
 		Like like = new Like(memberId, recipeNo);
@@ -299,7 +304,7 @@ public class RecipeController {
 	@GetMapping(value = "/{memberId}/unlike/{recipeNo}", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String deleteLike(@PathVariable("memberId")String memberId,
-						 @PathVariable("recipeNo")int recipeNo) {
+							 @PathVariable("recipeNo")int recipeNo) {
 		log.debug("unlike");
 		
 		Like like = new Like(memberId, recipeNo);
@@ -307,6 +312,38 @@ public class RecipeController {
 		
 		return result>0?"t":"f";
 	}
+
+	@GetMapping(value = "/unscrap/{recipeNo}", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String deleteScrap(HttpSession session,
+						 	  @PathVariable("recipeNo")int recipeNo) {
+		log.debug("unscraped");
+		log.debug("{}",(Member)session.getAttribute("memberLoggedIn"));
+		Scrap scrap = new Scrap(recipeNo, ((Member)session.getAttribute("memberLoggedIn")).getMemberId(), null, null, null, null);
+		
+		log.debug("{}",scrap);
+		
+		int result = recipeService.deleteScrap(scrap);
+		
+		return result>0?"t":"f";
+	}
+	
+	@GetMapping(value = "/scrap/{recipeNo}", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String insertScrap(HttpSession session,
+						 	  @PathVariable("recipeNo")int recipeNo,
+						 	  @RequestParam("memo")String memo) {
+		log.debug("scraped");
+		log.debug("{}",(Member)session.getAttribute("memberLoggedIn"));
+		Scrap scrap = new Scrap(recipeNo, ((Member)session.getAttribute("memberLoggedIn")).getMemberId(), null, memo, null, null);
+		
+		log.debug("{}",scrap);
+		
+		int result = recipeService.insertScrap(scrap);
+		
+		return result>0?"t":"f";
+	}
+	
 	
 	/*
 	 * Copyright 2020 the original author or authors.
