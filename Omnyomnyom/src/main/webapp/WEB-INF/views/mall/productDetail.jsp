@@ -8,6 +8,16 @@
 <jsp:param value="상품상세 - ${ingMall.ingMallName } " name="pageTitle"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mall_common.css" />
+<style>
+#total_price{
+	font-weight: bold;
+    font-size: 28px;
+    line-height: 30px;
+    letter-spacing: -0.5px;
+    word-break: break-all;
+    color: rgb(73, 73, 231)
+}
+</style>
  <!--  Section start -->
     <section class="classes-details-section spad overflow-hidden">
         <div class="container">
@@ -18,14 +28,14 @@
 
                             <div id="sectionView">
                                 <div class="inner_view">
-                                    <div class="thumb" style="background-image: url(&quot;https://img-cf.kurly.com/shop/data/goods/158519696333y0.jpg&quot;);"><img src="${pageContext.request.contextPath }/resources/images" alt="상품 대표 이미지" class="bg"></div>
+                                    <div class="thumb" style="background-image: url(&quot;https://img-cf.kurly.com/shop/data/goods/158519696333y0.jpg&quot;);"><img src="${pageContext.request.contextPath }/resources/images/ingredient/${ingMall.mallEngPrCategory }/${ingMall.mallEngCdCategory }/${ingMall.prevImg } "alt="상품 대표 이미지" class="bg"></div>
                                     <p class="goods_name"><span class="btn_share"></span> <strong class="name">${ingMall.ingMallName}</strong></p>
                                     <p class="goods_price">
                                         <span class="position">
                                             <span class="dc">
-                                                    <span class="dc_price">${ingMall.price }
-                                                    <span class="won">원</span>
+                                                    <span class="dc_price" id="price"><fmt:formatNumber value="${ingMall.price }" pattern="#,###" />
                                         </span>
+                                                    <span class="won">원</span>
                                         </span>
                                         </span>
 
@@ -56,28 +66,27 @@
                             <div id="cartPut">
                                 <div class="cart_option cart_type2">
                                     <div class="inner_option">
-                                        <strong class="tit_cart">${ingMall.ingMallName}</strong>
+                                        <strong class="tit_cart">333</strong>
                                         <div class="in_option">
                                             <div class="list_goods">
 
-                                                <ul class="list list_nopackage">
+												<ul class="list list_nopackage">
                                                     <li class="on"><span class="btn_position"><button type="button" class="btn_del"><span class="txt">삭제하기</span></button>
-                                                        </span> <span class="name">${ingMall.ingMallName}</span> <span class="tit_item">구매수량</span>
+                                                        </span> <span class="name">[다향오리] 덕팸</span> <span class="tit_item">구매수량</span>
                                                         <div class="option">
-<!--                                                             <span class="count"><button type="button" class="btn down">수량내리기</button> <input type="number" readonly="readonly" onfocus="this.blur()" class="inp"> <button type="button" class="btn up">수량올리기</button></span> -->
-                                                            <span class="price"><span class="dc_price">${ingMall.price }원</span>
-
+                                                            <span class="count"><button type="button" class="btn down" id="countdown">수량내리기</button> <input type="number" class="inp" id="count" value="1" min="1"> <button type="button" class="btn up" id="countup">수량올리기</button></span>
                                                             </span>
                                                         </div>
                                                     </li>
                                                 </ul>
+
                                             </div>
                                             <div class="total">
                                                 <div class="price">
-                                                    <strong class="tit">총 상품금액 :</strong>
+                                                    <strong class="tit" >총 상품금액 : <span class="dc_price" id="total_price">${ingMall.price }</span>
 
                                                     <span class="sum">
-                                                         <span class="num">000000</span>
+                                                         <span class="num"></span>
                                                     <span class="won">원</span>
                                                     </span>
                                                 </div>
@@ -90,15 +99,18 @@
                                                 <button type="button" class="btn btn_alarm off">1:1문의</button>
                                             </div>
                                             <span class="btn_type1">
-                                                <input type="button" class="txt_type" value="장바구니 담기" onclick="shoppingBasket();">
+                                                <input type="button" class="txt_type" value="장바구니 담기" id="add-shoppingBasket">
                                             </span>
                                         </div>
 
                                     </div>
                                 </div>
-                                <form name="frmBuyNow" method="post" action="/shop/order/order.php"><input type="hidden" name="mode" value="addItem"> <input type="hidden" name="goodsno" value=""></form>
-                                <form name="frmWishlist" method="post"></form>
-                            </div>
+<%--                                 <form id="add-ShoppingBasket" name="frmBuyNow" method="post" action="/shop/order/order.php">
+	                                <input type="hidden" id="stock" name="stock" value=""> 
+	                                <input type="hidden" id="ingNo" name="ingNo" value="${ingMall.ingMallNo}">
+	                            </form>
+ --%>
+                             </div>
                         </div>
                     </div>
 
@@ -117,9 +129,57 @@
     </section>
     <!--  Section end -->
     <script>
-    function shoppingBasket(){
-    	location.href="${pageContext.request.contextPath }/mall/shoppingBasket"
-    }
+    $(function(){
+	    $("#add-shoppingBasket").on("click",function(){
+	    	shoppingBasket();
+	    });
+	    
+	    function countChange(b){
+	    	$count = $("#count");
+	    	let cnum = Number($count.val())+Number(b);
+	    	if(cnum<=0){
+				$count.text(1);
+				cnum = 1;
+	    	}
+	    	$count.val(cnum);
+	    	let price = $("#price").text()
+	    	price = price.replace(/\,/g,"");
+	    	let ppap = Number(price)*cnum;
+	    	$("#total_price").text(String(ppap).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+/* 	    	$("#total_price").text(Number(price)*cnum); */
+
+	    }
+	    
+	    $("#countup").on("click",function(){
+	    	countChange(1);
+	    });
+	    $("#countdown").on("click",function(){
+	    	countChange(-1);
+	    });
+	    $("#count").on("keyup",function(){
+	    	countChange(0);
+	    });
+	    
+	    function shoppingBasket(){
+	    	let ingMall = {"ingMallNo":"${ingMall.ingMallNo}",
+	    			       "stock":$("#count").val()}	 
+	    	$.ajax({
+		    	url:"${pageContext.request.contextPath}/mall/shopping/add",
+		    	data : ingMall,
+		    	dataType : 'text',
+		    	method : "POST",
+		    	success : data =>{
+		    	/* 재료목록 교체작업 */
+		    		alert(data);
+			    	console.log(data)
+		    	},
+		    	error : (x,s,e) =>{
+		    		alert(data);
+		    	}
+			});
+	    };
+    });
     </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
