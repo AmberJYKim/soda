@@ -32,6 +32,7 @@ import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.common.util.ChefRequestUtils;
 import com.soda.onn.member.model.vo.Notice;
+import com.soda.onn.oneday.model.vo.Oneday;
 import com.soda.onn.recipe.model.vo.Recipe;
 
 import lombok.extern.slf4j.Slf4j;
@@ -115,8 +116,11 @@ public class ChefController {
 		log.debug("chefId={}",chefId);
 		List<Recipe> recipeList = chefservice.recipeSelectAll(chefNickName);
 		List<Notice> noticeList = chefservice.noticeSelectAll(chefId);
+		List<Oneday> onedayList = chefservice.onedaySelectAll(chefId);
 		log.debug("RecipeList = {}",recipeList);
+		log.debug("onedayList = {}",onedayList);
 		
+		mav.addObject("onedayList",onedayList);
 		mav.addObject("noticeList",noticeList);
 		mav.addObject("recipeList", recipeList);
 		mav.addObject("chef", chef);

@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.member.model.vo.Notice;
+import com.soda.onn.oneday.model.vo.Oneday;
 import com.soda.onn.recipe.model.vo.Recipe;
 
 public interface ChefService {
@@ -39,5 +40,7 @@ public interface ChefService {
 	int chefNoticeDelete(int noticeNo);
 
 	int chefnoticeUpdate(Notice notice);
+
+	List<Oneday> onedaySelectAll(String chefId);
 
 }

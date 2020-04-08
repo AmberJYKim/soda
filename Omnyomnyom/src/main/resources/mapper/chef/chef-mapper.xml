@@ -25,6 +25,10 @@
 	<result column="regdated" property="regDate"/>
 </resultMap>
 
+<resultMap type="Oneday" id="onedayMap" >
+	
+</resultMap>
+
 <select id="recipeSelectAll" parameterType="String" resultType="Recipe">
 select
 	*
@@ -179,4 +183,16 @@ where
 	notice_no = #{noticeNo}
 
 </update>
+
+<select id="onedaySelectAll" resultMap="onedayMap">
+select 
+	*
+from
+	TB_onedayclass
+where 
+	member_id = #{chefId}
+order by
+	onedayclass_no 
+</select>
+
 </mapper>
