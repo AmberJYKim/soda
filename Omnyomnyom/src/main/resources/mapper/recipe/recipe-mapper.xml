@@ -72,7 +72,7 @@
 	<select id="selectRecIngList" resultType="recipeIngredient">
 		select 
 			*
-		from 
+		from
 			tb_rec_ingredients 
 		where 
 			recipe_no=#{recipeNo}
@@ -82,5 +82,15 @@
 			*
 		from
 			TB_menu_category
+	</select>
+	<select id="selectLikeOne" resultType="like">
+		select
+			*
+		from
+			TB_like
+		where
+			recipe_no = #{recipeNo}
+			and
+			member_id = #{memberId}
 	</select>
 </mapper>
