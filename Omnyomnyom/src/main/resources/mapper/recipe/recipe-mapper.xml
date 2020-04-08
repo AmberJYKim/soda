@@ -77,4 +77,48 @@
 		where 
 			recipe_no=#{recipeNo}
 	</select>
+	
+	<select id="recipeSerachByIng" resultType="recipeWithIngCnt">
+		    SELECT J.INCLUDE_NO, C.CHEF_PROFILE, R.* 
+		    	FROM TB_RECIPE R JOIN 
+		    		(SELECT COUNT(*) INCLUDE_NO, T.RECIPE_NO 
+		    			FROM (SELECT * FROM TB_REC_INGREDIENTS WHERE INGREDIENT_NO IN
+							<if test="ingNoArr != null">				
+							<foreach collection="ingNoArr" item="item" open="(" separator="," close=")">
+								#{item}
+							</foreach>
+							</if>
+							) T GROUP BY RECIPE_NO ORDER BY 1 DESC) J 
+                ON R.RECIPE_NO = J.RECIPE_NO
+                LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID
+	</select>
+	
+	
+	<select id="selectPopRecipe" resultType="recipeWithIngCnt">
+		SELECT * FROM(
+			SELECT ROWNUM RNUM, P.* FROM (
+				SELECT R.*, C.CHEF_PROFILE FROM TB_RECIPE R LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID ORDER BY VIEW_COUNT) P
+			)WHERE RNUM &lt; 11
+	</select>
+	
+	<select id="selectPopIngredient" resultType="Ingredient">
+	SELECT * FROM 
+		(SELECT ROWNUM RNUM, I.* FROM TB_INGREDIENT I RIGHT JOIN 
+				(SELECT COUNT(*) CNT, INGREDIENT_NO FROM TB_REC_INGREDIENTS WHERE INGREDIENT_NO IS NOT NULL  GROUP BY INGREDIENT_NO  ORDER BY CNT DESC) P
+                    ON I.INGREDIENT_NO = P.INGREDIENT_NO
+                    <where>
+	                    <if test="subCtg != null">
+	                    AND ING_CD_CATEGORY = #{subCtg}  
+	                    </if>
+	                    <if test="mainCtg != null">
+	                    AND ING_PR_CATEGORY = #{mainCtg}  
+	                    </if>
+                    </where>
+                    )
+		WHERE RNUM &lt; 13
+	</select>
+	
+	<select id="selectMenuSubCtg" resultType="string">
+		select * from tb_menu_ctg
+	</select>	
 </mapper>

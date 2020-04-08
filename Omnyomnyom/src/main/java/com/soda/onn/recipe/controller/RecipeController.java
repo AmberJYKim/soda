@@ -1,7 +1,5 @@
 package com.soda.onn.recipe.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import org.apache.ibatis.session.RowBounds;
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,19 +13,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.soda.onn.common.base.PageBar;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -49,10 +49,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.soda.onn.mall.model.vo.Ingredient;
-import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.recipe.model.service.RecipeService;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -207,20 +207,31 @@ public class RecipeController {
 		
 	}
 	
+	//메뉴검색 페이지 요청 시 인기영상과 메뉴 카테고리 가져가기
 	@GetMapping("/recipe-menu-search")
-	public void recipemenusearch() {
+	public ModelAndView recipemenusearch(ModelAndView mav) {
+		List<RecipeWithIngCnt> popRecipe = recipeService.selectPopRecipe();
+		List<String> menuCtg = recipeService.selectMenuCtg();
 		
+		mav.addObject("popRecipe", popRecipe);
+		mav.setViewName("recipe/recipe-menu-search");
+		
+		return mav;
 	}
 	
+	//레시피 페이지 이동 -냉부
 	@GetMapping("/ingredientsSelection")
-	public String selectedIngredientsList() {
+	public ModelAndView selectedIngredientsList(ModelAndView mav) {
 		
+		List<RecipeWithIngCnt> popRecipe = recipeService.selectPopRecipe();
+		log.debug(popRecipe.toString());
+		mav.addObject("popRecipe", popRecipe);
+		mav.setViewName("recipe/ingredientsSelection");
 		
-		
-		return "recipe/ingredientsSelection";
+		return mav;
 	}
 	
-	//중분류카테고리 가져오기 처리용
+	//중분류카테고리 가져오기 처리용 -냉부
 	@GetMapping("getSubCtg")
 	@ResponseBody
 	public List<String> selectIngSubCtg(String mainCtg) {
@@ -328,21 +339,35 @@ public class RecipeController {
         return new YouTube.Builder(httpTransport, JSON_FACTORY, credential)
             .setApplicationName(APPLICATION_NAME)
             .build();
+        
     }
 	
 	//중분류 선택에 따른 재료가져오기 처리
 	@GetMapping(value ="getIng", produces="text/plain;charset=UTF-8")
 	@ResponseBody
-	public String selectIngredients(@RequestParam(value="cPage", defaultValue="1") int cPage, String subCtg, HttpServletRequest request ) {
+	public String selectIngredients(@RequestParam(value="cPage", defaultValue="1") int cPage, String subCtg, String mainCtg, HttpServletRequest request ) {
 		
 		Map<String, Object> maps = new HashMap<>();
-				
-		List<Ingredient> ingList = recipeService.selectIngredients(subCtg, cPage, NUMPERPAGE);
+				List<Ingredient> ingList = new ArrayList<>();
+		
+		maps.put("mainCtg", mainCtg);
+		maps.put("subCtg", subCtg);
+		
+		if(subCtg.equals("인기재료")) {
+			if(maps.get("subCtg").equals("인기재료"));
+			maps.put("subCtg", null);
+			if(maps.get("mainCtg").equals("인기재료"));
+			maps.put("mainCtg", null);
+			ingList = recipeService.selectPopIngredient(maps);
+		}else {
+			ingList = recipeService.selectIngredients(subCtg, cPage, NUMPERPAGE);
+		}
 		log.debug("controller list={}", ingList.toString());
+		log.debug("subCtg============{}", subCtg);
 		
 		//서브카태고리 재료 총 갯수 조회
 		int ingCnt = recipeService.selectIngredientsCnt(subCtg);
-
+		
 		//카테고리 갯수에 따른 페이징 여부 (12개 이하일 경우 페이징 하지 않음)
 		if(ingCnt > 12) {
 			ingCnt = (int)Math.ceil((double)ingCnt/12);
@@ -363,18 +388,21 @@ public class RecipeController {
 	//선택한 재료로 레시피 검색하기
 	@GetMapping(value="recipeSerachByIng", produces="text/plain;charset=UTF-8")
 	@ResponseBody
-	public String recipeSerachByIng(@RequestParam String selectedIngList) {
+	public String recipeSerachByIng(@RequestParam("ingNoArr[]") List<Integer> ingNoArr) {
 		
+		log.debug("ingredientNo======={}", ingNoArr);
 		
-		log.debug("selectedIngList======={}", selectedIngList);
+		Map<String, Object> maps = new HashMap<>();
+		maps.put("ingNoArr", ingNoArr);
+				
+		List<RecipeWithIngCnt> rlist = recipeService.recipeSerachByIng(maps);
+		log.debug("rlist================{}", rlist.toString());
 		
+		maps.put("recipeList", rlist);
 		
-//		List<Recipe> rlist = recipeService.recipeSerachByIng(selectedIngList);
-		
-//		String recipeList = new Gson().toJson(rlist);
-		String recipeList = new Gson().toJson("아아 서공적");
-
-		return recipeList ;
+		return new Gson().toJson(maps);
 		
 	}
+	
+	
 }
