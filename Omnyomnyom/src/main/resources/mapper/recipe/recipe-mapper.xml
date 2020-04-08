@@ -119,6 +119,6 @@
 	</select>
 	
 	<select id="selectMenuSubCtg" resultType="string">
-		select * from tb_menu_ctg
+		select * from tb_menu_ctg;
 	</select>	
 </mapper>
