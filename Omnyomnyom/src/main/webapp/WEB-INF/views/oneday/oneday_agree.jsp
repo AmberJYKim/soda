@@ -118,8 +118,8 @@
 
                     </article>
                     <article class=" col-xl-1.5">
-                        <a href="${pageContext.request.contextPath }/oneday/reservation.do" class="tm-color-white tm-btn-white-bordered">이전</a>
-                        <a href="${pageContext.request.contextPath }/oneday/pay.do" class="tm-color-white tm-btn-white-bordered">다음</a>
+                        <a href="${pageContext.request.contextPath }/oneday/oneday_reservation" class="tm-color-white tm-btn-white-bordered">이전</a>
+                        <a href="${pageContext.request.contextPath }/oneday/oneday_pay" class="tm-color-white tm-btn-white-bordered">다음</a>
                 </div>
 
             </div>
