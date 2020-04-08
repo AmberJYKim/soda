@@ -7,6 +7,16 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="장바구니" name="pageTitle" />
 </jsp:include>
+<style>
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.p-img{
+	border-radius: 50%;
+}
+</style>
 <!-- Event Details Section -->
 <link rel="stylesheet" 	href="${pageContext.request.contextPath }/resources/css/mall_delivery_info.css" />
 <section class="event-details-section spad overflow-hidden">
@@ -34,6 +44,7 @@
 				<a><span class="badge">02</span> 선택된 상품 리스트</a> <a><span
 					class="badge">03</span> 배송지 정보</a> <a><span class="badge ">04</span>결제
 					정보</a> <a><span class="badge ">05</span>결제 완료</a>
+			</div>
 			</div>
 
 
@@ -63,7 +74,7 @@
 								</div>
 								<hr>
 								<c:forEach items="${sbList }" var="sb">
-									<div class="row">
+									<div class="row sb-area">
 										<div class="ckbox col-md-1">
 											<input type="checkbox" name="" id="" checked>
 										</div>
@@ -74,16 +85,18 @@
 										</div>
 										<div class="col-md-7">
 											<div class="inner-col pline">
-												<span class="p-name">${sb.ingMallName }</span><span class="p-info">(${sb.minUnit }당, <fmt:formatNumber value="${sb.price }" pattern="#,###" />)</span>
+												<span class="p-name">${sb.ingMallName }</span><span class="p-info">(${sb.minUnit }당, (<span class="price"><fmt:formatNumber value="${sb.price }" pattern="#,###" /></span>)</span>
 											</div>
 											<div class="inner-col">
-												<i class="fa fa-minus btns"></i> <input type="text"
-													class="qty" title="구매수량" value="${sb.sbStock}"  /> <i
+												<i class="fa fa-minus btns"></i> <input type="number"
+													class="qty count" title="구매수량" value="${sb.sbStock}"  /> <i
 													class="fa fa-plus btns"></i>
 											</div>
 										</div>
 										<div class="col-md-2 md-total-price">
-											~원 <i class="fa fa-trash btns" aria-hidden="true"
+										<span class="sum-price">
+										<fmt:formatNumber value="${sb.price * sb.sbStock }" pattern="#,###" /></span>원
+											 <i class="fa fa-trash btns" aria-hidden="true"
 												onclick="delproduct();"></i>
 										</div>
 	
@@ -96,7 +109,7 @@
 						<div class="row font-17 lline">
 							<div class="col total-price">
 								<div>
-									전체 상품 가격 :<span id="total_price">  346,000 원 </span>
+									전체 상품 가격 <span id="total_price">  </span>원
 								</div>
 							</div>
 							<div class="col order">
@@ -112,11 +125,6 @@
 		<!-- 장바구니 끝  -->
 </section>
 <!-- Event Details Section end -->
-<style>
-.p-img{
-	border-radius: 50%;
-}
-</style>
 
 <script>
 	$(function () {
@@ -124,34 +132,72 @@
 	    cursors();
 	    totalPrice();
 	})
+	//	체크박스
 	$(document).on("click",".ckbox",function(){
     	$box = $(this).children();
     	$box.attr('checked',!$box.prop("checked"));
+    	totalPrice();
     })
+    //	수량 Input 
+    		   .on("keyup",".count",function(){
+    	changePrice($(this),$(this).val());
+    })
+    
+    // 수량 +/- 버튼
 	function cursors() {
 	    $(".btns").css("cursor", "pointer").on("click", function (e) {
 	        let $nowcl = $(this).attr('class');
-	        console.log($nowcl);
-	        //
+			let $input = $(this);
+	        
 	        if ($nowcl.includes('fa-plus')) {
-	        	let $input = $(this).prev();
+	        	$input = $(this).prev();
 	            let $qty = parseInt($input.val());
 	            $input.val($qty+1);
 	        } else if ($nowcl.includes('fa-minus')) {
-	        	let $input = $(this).next();
+	        	$input = $(this).next();
 	            let $qty = parseInt($input.val());
 	            $input.val($qty-1);
-	            if($input.val()<=0)
-		            $input.val(1);
 	        }
+	        changePrice($input,$input.val());
 	    });
 	}
-	function changePrice(){
-		
+	
+	function changePrice($obj,count){
+    	if(count<=0){
+    		$obj.val(1);
+    		count='1';
+    	}
+
+		let price = $obj.parents(".sb-area").find(".price").text();
+    	price = price.replace(/\,/g,"");
+		count = count.replace(/\,/g,"");
+		let sumPrice = Number(count)*Number(price);
+		let $minTotal = $obj.parents(".sb-area").find(".sum-price");
+		$minTotal.text(String(sumPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+		totalPrice();
 	}
 	function totalPrice(){
-		$("#total_price").text(String(ppap).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+		let totalPrice = 0;
+		$(".sb-area").find(".ckbox input").each(function(index,item){
+			console.log(1);
+			console.log(item);
+			console.log($(item).parents(".sb-area"));
+			console.log($(item).parents(".sb-area").find(".sum-price").text());
+			if($(item).is(":checked")){
+				let price = $(item).parents(".sb-area").find(".sum-price").text();
+			console.log("----");
+				console.log(price);
+			console.log("----");
+		    	price = price.replace(/\,/g,"");
+				totalPrice += Number(price);
+			}
+		})
+		console.log(totalPrice);
+		$("#total_price").text(String(totalPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ",")); 
 	}
+	$(".mvToSelectedProduct").click(function(){
+		
+	});
 </script>
 
 

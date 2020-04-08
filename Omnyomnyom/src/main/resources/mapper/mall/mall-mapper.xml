@@ -85,5 +85,13 @@
 	<result column="ENG_CD_CATEGORY" property="mallEngCdCategory"/>
 	<result column="ING_FILENAME" property="prevImg"/>
 </resultMap>
+<select id="selectIngMallSearch" resultMap="ingMallMap">
+	select 
+		*
+	from
+		tb_ingredient_mall
+	where
+		INGREDIENT_NO = (select INGREDIENT_NO from tb_ingredient where INGREDIENT_NAME like '%'||#{keyword}||'%')
+</select>
 
 </mapper>

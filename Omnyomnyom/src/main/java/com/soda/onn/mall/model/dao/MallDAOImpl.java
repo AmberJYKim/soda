@@ -54,6 +54,11 @@ public class MallDAOImpl implements MallDAO {
 	public List<ShoppingBasket> selectSBList(String memberId) {
 		return sqlSession.selectList("mall.selectSBList",memberId);
 	}
+
+	@Override
+	public List<IngredientMall> selectIngMallSearch(String keyword) {
+		return sqlSession.selectList("mall.selectIngMallSearch", keyword);
+	}
 	
 
 }

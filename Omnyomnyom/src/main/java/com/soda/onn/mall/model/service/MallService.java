@@ -24,4 +24,6 @@ public interface MallService {
 
 	List<ShoppingBasket> selectSBList(String memberId);
 
+	List<IngredientMall> selectIngMallSearch(String keyword);
+
 }

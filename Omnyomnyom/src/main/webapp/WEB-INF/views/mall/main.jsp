@@ -12,6 +12,9 @@
 .search-bar-header{
 	margin-top: 45px;
 }
+.product_container{
+	margin: 5px;  
+}
 </style>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mall_delivery_info.css" />
@@ -31,7 +34,7 @@
         <div class="event-filter-warp search-bar-header">
             <div class="row">
                 <div class="col-12">
-                    <form class="event-filter-form row">
+                    <form class="event-filter-form row" action="${pageContext.request.contextPath }/mall/search">
                     	<div class="col"></div>
                         <div class="ef-item col-5">
                             <i class="material-icons">search</i>
@@ -95,15 +98,14 @@
 
 <script>
 	function ingredient_list(e){
-		let subCtg = $(e).text();
+		let subCtg = {'subCtg' : $(e).text()};
 		$.ajax({
-		    	url:"${pageContext.request.contextPath}/mall/seachList/"+subCtg+"/ajax",
-	    	data : subCtg,
+	    	url:"${pageContext.request.contextPath}/mall/seachList/ajax",
 	    	dataType : 'json',
 	    	method : "GET",
+	    	data : subCtg,
 	    	success : data =>{
 	    	/* 재료목록 교체작업 */
-	    		console.log(data);
 		        $(e).addClass("active");
 		        $(e).parent().siblings().find("p").removeClass("active");
 		        $(".product_container").remove();
@@ -119,12 +121,19 @@
 	                       +"</div>"
 	                       +"</div>";
 			    	$(".ingre-list").append(ingMall);
+			    	price_comma();
 		    	});
 	    	},
 	    	error : (x,s,e) =>{
 	    		console.log(x,s,e);
 	    	}
 		});
+	}
+	function price_comma(){
+		console.log("진입");
+		$(".price-font").each(function(index,item){
+			$(item).text($(item).text().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+		})
 	}
 	
     function cd_category(e){

@@ -63,7 +63,15 @@ public class MallController {
 		log.debug("result--"+result);
 		return "장바구니에 넣었습니다!";
 	}
-	
+//	검색 결과
+	@GetMapping("/search")
+	public void search(@RequestParam("keyword") String keyword,
+					   Model model) {
+		List<IngredientMall> list = mallService.selectIngMallSearch(keyword);
+		
+		model.addAttribute("list", list);
+		
+	}
 	
 // 뇸뇸몰 상품 상세페이지 이동 
 	@GetMapping("/productDetail")
@@ -75,9 +83,9 @@ public class MallController {
 		return mav;
 	}
 	
-	@GetMapping(value = "/seachList/{subCtg}/ajax", produces = "text/plain;charset=UTF-8")
+	@GetMapping(value = "/seachList/ajax", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String searchList(@PathVariable("subCtg") String subCtg){
+	public String searchList(String subCtg){
 		log.debug("접근");
 		log.debug(subCtg);
 		List<IngredientMall> list = mallService.selectIngredientList(subCtg);

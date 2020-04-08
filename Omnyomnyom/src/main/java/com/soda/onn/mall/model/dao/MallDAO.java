@@ -24,4 +24,6 @@ public interface MallDAO {
 
 	List<ShoppingBasket> selectSBList(String memberId);
 
+	List<IngredientMall> selectIngMallSearch(String keyword);
+
 }

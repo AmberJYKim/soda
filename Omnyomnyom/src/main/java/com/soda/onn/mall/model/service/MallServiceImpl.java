@@ -54,4 +54,9 @@ public class MallServiceImpl implements MallService {
 		return mallDAO.selectSBList(memberId);
 	}
 
+	@Override
+	public List<IngredientMall> selectIngMallSearch(String keyword) {
+		return mallDAO.selectIngMallSearch(keyword);
+	}
+
 }
