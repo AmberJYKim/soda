@@ -284,7 +284,7 @@
                     </li>
                     <li><a href="${pageContext.request.contextPath}/mall/main">뇸뇸몰</a></li>
                     <li><a href="${pageContext.request.contextPath}/chef/chefList.do">셰프</a></li>
-                    <li><a href="${pageContext.request.contextPath}/oneday/oneday.do">원데이 클래스</a></li>
+                    <li><a href="${pageContext.request.contextPath}/oneday/oneday">원데이 클래스</a></li>
                     <li><a href="contact.html">사이트 안내</a>
                         <ul class="sub-menu">
                             <li><a href="classes.html">사이트 소개</a></li>
