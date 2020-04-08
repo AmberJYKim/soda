@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -39,6 +41,8 @@ import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Attachment;
 import com.soda.onn.oneday.model.vo.Oneday;
 import com.soda.onn.oneday.model.vo.OnedayTime;
+import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.ReservationRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -115,8 +119,6 @@ public class OnedayController {
 		List<OnedayTime> list = onedayService.selectTimeList(onedayclassNo);
 		
 		
-
-		
 		log.debug("list={}", list);
 
 		
@@ -126,10 +128,37 @@ public class OnedayController {
 
 	
 //	원데이 클래스 예약뷰로 이동 
+
 	@PostMapping("/oneday_reservation")
-	public void reservation() {
+	public ModelAndView reservation(@ModelAttribute ModelAndView mav,
+									@ModelAttribute Reservation reservation,
+									@ModelAttribute ReservationRequest reservationrequest,
+									HttpSession session, RedirectAttributes redirectAttributes,
+									@RequestParam(value="onedayclassNo") int onedayclassNo,
+									@RequestParam(value="onedayTimeNo" ) int onedayTimeNo
+									) {
 		
+		log.debug("클래스 넘버={}", onedayclassNo);
+		log.debug("타임 넘버={}", onedayclassNo);
 		
+		String memberId = ((Member) session.getAttribute("memberLoggedIn")).getMemberId();
+			
+//		reservation.setReserMemberId(memberId);
+		
+		reservationrequest.setReserMemberId(memberId);
+		reservationrequest.setOnedayclassNo(onedayclassNo);
+		reservationrequest.setOnedaytimeNo(onedayTimeNo);
+		
+		System.out.println(reservationrequest);
+		System.out.println(reservation);
+		session.setAttribute("reservationrequest", reservationrequest);
+		
+//		int result = onedayService.insertReservation(reservationrequest);
+		
+		mav.addObject("reservationrequest", reservationrequest);
+		mav.setViewName("/oneday/oneday_reservation");
+		
+		return mav;
 	}
 	
 //	원데이 클래스 예약
