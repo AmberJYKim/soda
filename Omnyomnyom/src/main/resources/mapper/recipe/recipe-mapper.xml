@@ -93,4 +93,17 @@
 			and
 			member_id = #{memberId}
 	</select>
+	<insert id="insertLike" parameterType="like">
+		insert into tb_like
+		values(
+    		#{memberId},
+    		#{recipeNo}
+		)
+	</insert>
+	<delete id="deleteLike">
+		delete from tb_like 
+		where 
+			member_id = #{memberId} 
+			and recipe_no = #{recipeNo}
+	</delete>
 </mapper>
