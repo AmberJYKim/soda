@@ -2,6 +2,8 @@ package com.soda.onn.chef.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +31,9 @@ import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.common.util.ChefRequestUtils;
+import com.soda.onn.member.model.vo.Notice;
+import com.soda.onn.oneday.model.vo.Oneday;
+import com.soda.onn.recipe.model.vo.Recipe;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,7 +66,6 @@ public class ChefController {
 			
 			ch.setChefCategoryList(categoryList);
 			
-//			log.debug("{}",ch.getChefCategoryList());
 		}
 		
         
@@ -101,15 +105,63 @@ public class ChefController {
 }
 	
 //	셰프 채널 이동 
-	@GetMapping("/{memberNickName}/chefpage")
+	@GetMapping(value="/{memberNickName}/chefPage",
+			    produces= "text/plain;charset=utf-8")
 	@ResponseBody
-	public ModelAndView chefpage(@PathVariable("memberNickName") String memberNickName,
+	public ModelAndView chefPage(@PathVariable("memberNickName") String chefNickName,
 						ModelAndView mav) {
 		
-		Chef chef = chefservice.chefSelectOne(memberNickName);
+		Chef chef = chefservice.chefSelectOne(chefNickName);
+		String chefId = chef.getChefId();
+		log.debug("chefId={}",chefId);
+		List<Recipe> recipeList = chefservice.recipeSelectAll(chefNickName);
+		List<Notice> noticeList = chefservice.noticeSelectAll(chefId);
+		List<Oneday> onedayList = chefservice.onedaySelectAll(chefId);
+		log.debug("RecipeList = {}",recipeList);
+		log.debug("onedayList = {}",onedayList);
 		
+		mav.addObject("onedayList",onedayList);
+		mav.addObject("noticeList",noticeList);
+		mav.addObject("recipeList", recipeList);
 		mav.addObject("chef", chef);
 		mav.setViewName("chef/chefPage");
+		return mav;
+	}
+	
+// 셰프공지사항 글쓰기 폼 이동 
+	@GetMapping("/chefNotice")
+	public void chefNotice(){
+	}
+	
+// 셰프공지사항 글쓰기 Insert 이동 
+	@PostMapping("/chefNotice")
+	public String  chefNoticeInsert(Notice notice,
+									Model model){
+		
+		
+		int result = chefservice.chefNoticeInsert(notice);
+		log.debug("notice@ = {}",notice);
+
+//		redirectAttributes.addFlashAttribute(result>0?"공지사항 등록 완료!":"공지사항 등록 실패!");
+		log.debug("result={}",result);
+		
+		String url = "";
+		
+		if(result <= 0) url = "redirect:/chef/chefNotice";
+		else  url = "redirect:/chef/noticeView?noticeNo="+notice.getNoticeNo();
+		
+	    return url;
+		
+	}
+		
+   @GetMapping("/noticeView")
+	public ModelAndView chefNoticeView(@RequestParam(value ="noticeNo")  int noticeNo,
+										ModelAndView mav) {
+		
+		Notice notice  = chefservice.chefNoticeView(noticeNo);
+		
+		mav.addObject("notice", notice);
+		mav.setViewName("chef/noticeView");
 		return mav;
 	}
 	
@@ -182,5 +234,37 @@ public class ChefController {
 		
 		return "redirect:/";
 	}
-
+	
+	@PostMapping("/noticeDelete")
+	public String chefNoticeDelete(@RequestParam(value="noticeNo") int noticeNo,
+								   @RequestParam(value="memberNickName") String memberNickName) {
+		log.debug("memberNickName@Delete ={}",memberNickName);
+		int result = chefservice.chefNoticeDelete(noticeNo);
+		
+		try {
+			
+			String nickName = URLEncoder.encode(memberNickName, "UTF-8");
+			nickName = nickName.replaceAll("\\+", "%20");
+			log.debug("memberNickName@Delete@@@@ ={}",nickName);
+			return "redirect:/chef/"+nickName+"/chefPage";
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "redirect:/";
+	}
+	
+	@PostMapping("/noticeUpdate")
+	public String chefNoticeUpdate(Notice notice,
+								   Model model) {
+		model.addAttribute("notice", notice);
+		return"chef/noticeUpdate";
+	}
+	
+	@PostMapping("/noticeUpdateDone")
+	public String chefNoticeUpdateDone(Notice notice) {
+		log.debug("notice@Update={}",notice);
+		int result = chefservice.chefnoticeUpdate(notice);
+		return "redirect:/chef/noticeView?noticeNo="+notice.getNoticeNo();
+	}
 }

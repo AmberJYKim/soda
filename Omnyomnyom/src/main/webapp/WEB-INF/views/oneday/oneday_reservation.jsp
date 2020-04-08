@@ -108,74 +108,40 @@
                     <div class="row text-center">
                         <article class="col-xl-4 tm-article" id="infoView">
                             <h3 class="tm-color-primary tm-article-title-1">클래스 소개</h3>
-                            <img src="/img/hero-slider/main2.jpg">
+                            <img src="${pageContext.request.contextPath}/resources/upload/onedayclass/${oneday.onedayImg}" alt="클래스 이미지">
                         </article>
 
 
                         <article class=" col-xl-2.5 tm-article" name="dateTimeView">
                             <h3 class="tm-color-primary tm-article-title-1"> 날짜</h3>
-                            <h4 id="date">
-                                2020/3/26
-                            </h4>
+                            <h4 id="date_hidden" style="display: none;">${reservationrequest.regDate}</h4>
+                            
+							
+                            
+                            <h4 id="date"></h4>
                             <p id="time-title" class="box_subtitle">❖ 선택하신 시간을 확인해 주세요.</p>
-
-                            <table id="time-table" class="time-table">
-                                <tr>
-                                    <th>시간</th>
-                                    <th>잔여수</th>
-                                    <th>선택여부</th>
-                                </tr>
-                                <tr>
-                                    <td>10:00</td>
-                                    <td id="remainCnt">20</td>
-                                    <td class="td-white-back">
-                                        <input type="checkbox" class="timeCheck" name="timeCheck" value="10:00" onclick="">
-                                        <input type="hidden" id="remainChk" value="20">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>13:00</td>
-                                    <td id="remainCnt">20</td>
-                                    <td class="td-white-back">
-                                        <input type="checkbox" class="timeCheck" name="timeCheck" value="10:00" onclick="">
-                                        <input type="hidden" id="remainChk" value="20">
-                                    </td>
-                                </tr>
-                            </table>
-
+							
+							<h4 id="time"></h4>
+                           
+							<script>
+							
+									var t = $("#date_hidden").text();
+									var d = t.split(' ');
+									
+									$("#date").text(d[0]);
+									$("#time").text(d[1]);
+						
+							</script>
 
                         </article>
                         <article class="col-xl-2.5  tm-article">
 
-                            <h3 class="tm-color-primary tm-article-title-1">인원 선택</h3>
+                            <h2 class="tm-color-primary tm-article-title-1">${reservationrequest.personnel}명</h2>
 
                             <article class="col-xl-2.5  tm-article">
-                                <p class="box_subtitle">❖ 인원을 선택 해주세요.</p>
+                                
 
-                                <table id="amount-table">
-                                    <tr>
-                                        <th>인원</th>
-                                        <td class="td-wthie-back"><span id="price">75,000원</span></td>
-                                        <td class="">
-                                            <div class="input-group">
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default btn-number" id="adultMinus">
-                                                        <span class="glyphicon glyphicon-minus">-</span>
-                                                </button>
-                                                </span>
-                                                <div class="selected-amount">
-                                                    <input type="text" name="adultValue" class="form-control input-number" value="5" min="0" max="10"> <span class="input-group-btn"></span>
-                                                </div>
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default btn-number"
-                                                    id="adultPlus">
-                                                        <span class="glyphicon glyphicon-plus">+</span>
-                                                </button>
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
+                               <h3>${reservationrequest.resPrice}원</h3>
                             </article>
 
                         </article>
@@ -188,14 +154,41 @@
                         <input type="hidden" name="adultPrice" value="50000" />
                 </form>
                 <article class=" col-xl-1.5">
-                    <a href="" class="tm-color-white tm-btn-white-bordered">이전</a>
-                    <a href="${pageContext.request.contextPath }/oneday/agree.do" class="tm-color-white tm-btn-white-bordered">다음</a>
+                    <a href="${pageContext.request.contextPath }/oneday/oneday_detail?onedayclassNo=${reservationrequest.onedayclassNo}" class="tm-color-white tm-btn-white-bordered">이전</a>
+                    <a href="${pageContext.request.contextPath }/oneday/oneday_agree" class="tm-color-white tm-btn-white-bordered">다음</a>
                 </article>
                 </div>
 
             </div>
     </section>
     <!-- Event Details Section end -->
+    
+    <script>
+    function countChange(b){
+        $count = $("#count");
+        let cnum = Number($count.val())+Number(b);
+        if(cnum<=0){
+            $count.text(1);
+            cnum = 1;
+        }
+        $count.val(cnum);
+        let price = $("#price").text()
+        price = price.replace(/\,/g,"");
+        let ppap = Number(price)*cnum;
+        $("#total_price").text(String(ppap).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+/*          $("#total_price").text(Number(price)*cnum); */
+    }
+    
+    $("#countup").on("click",function(){
+        countChange(1);
+    });
+    $("#countdown").on("click",function(){
+        countChange(-1);
+    });
+    $("#count").on("keyup",function(){
+        countChange(0);
+    });
+    </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
     

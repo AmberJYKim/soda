@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.soda.onn.mall.model.vo.Ingredient;
+import com.soda.onn.mypage.model.vo.Scrap;
+import com.soda.onn.recipe.model.vo.Like;
+import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
@@ -65,7 +68,42 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	public List<RecipeIngredient> selectRecIngList(int recipeNo) {
 		return sqlSession.selectList("recipe.selectRecIngList", recipeNo);
 	}
+	
+	@Override
+	public List<MenuCategory> selectCategoryList() {
+		return sqlSession.selectList("recipe.selectCategoryList");
+	}
 
+	@Override
+	public Like selectLikeOne(Like l) {
+		return sqlSession.selectOne("recipe.selectLikeOne", l);
+	}
+
+	@Override
+	public int insertLike(Like like) {
+		return sqlSession.insert("recipe.insertLike", like);
+	}
+
+	@Override
+	public int deleteLike(Like like) {
+		return sqlSession.delete("recipe.deleteLike", like);
+	}
+
+	@Override
+	public Scrap selectScrap(Scrap s) {
+		return sqlSession.selectOne("recipe.selectScrap",s);
+	}
+
+	@Override
+	public int deleteScrap(Scrap scrap) {
+		return sqlSession.delete("recipe.deleteScrap", scrap);
+	}
+
+	@Override
+	public int insertScrap(Scrap scrap) {
+		return sqlSession.insert("recipe.insertScrap", scrap);
+	}
+	
 	@Override
 	public List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps) {
 		return sqlSession.selectList("recipe.recipeSerachByIng", maps);

@@ -1,16 +1,26 @@
 package com.soda.onn.oneday.model.service;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.One;
 import org.apache.ibatis.session.RowBounds;
+import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.soda.onn.oneday.model.dao.OnedayDAO;
 import com.soda.onn.oneday.model.vo.Oneday;
 import com.soda.onn.oneday.model.vo.OnedayReview;
-import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.OnedayTime;
 
+import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.ReservationRequest;
+
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 public class OnedayServiceImpl implements OnedayService {
 
@@ -18,18 +28,39 @@ public class OnedayServiceImpl implements OnedayService {
 	private OnedayDAO onedayDAO;
 
 	@Override
-	public int deleteOneday(int onedayNo) {
-		return onedayDAO.deleteOneday(onedayNo);
+	public int deleteOneday(int onedayclassNo) {
+		return onedayDAO.deleteOneday(onedayclassNo);
 	}
-
+	
+	
 	@Override
-	public int insertOneday(Oneday oneday) {
-		return onedayDAO.insertOneday(oneday);
+	public int insertOneday(Oneday oneday,  List<String> otiList) {
+		
+		int result = onedayDAO.insertOneday(oneday);
+
+		if(result>0)
+			for(int i=0; i<otiList.size(); i++) {
+				OnedayTime onedayTime = new OnedayTime();
+				
+				onedayTime.setOnedayTimeDate(otiList.get(i));
+				
+				onedayTime.setOnedayNoo(oneday.getOnedayclassNo());
+				
+				Log.debug("원데이클래스 no = " + onedayTime);
+				onedayDAO.insertTime(onedayTime);
+			}
+		
+		return result;
 	}
-
+	
 	@Override
-	public Oneday selectOne(int onedayNo) {
-		return onedayDAO.selectOne(onedayNo);
+	public Oneday selectOne(int onedayclassNo) {
+		
+		Oneday one = onedayDAO.selectOne(onedayclassNo);
+		
+		one.setOnedayTimeList(onedayDAO.selectTimeList(onedayclassNo));
+
+		return one;
 	}
 
 
@@ -42,7 +73,62 @@ public class OnedayServiceImpl implements OnedayService {
 	public List<OnedayReview> selectOnedayReviewList(RowBounds rowBounds) {
 		return onedayDAO.selectOnedayReviewList(rowBounds);
 	}
+
+
+//	@Override
+//	public List<Oneday> selectDateList(String detailedAddr, String onedayName) {
+//		List<Oneday> list = onedayDAO.selectDateList(detailedAddr, onedayName);
+//		
+//		for (Oneday one : list) {
+//			one.setOnedayTimeList(onedayDAO.selectTimeOne(one.getOnedayclassNo()));
+//////			원데이 클래스의 넘버를 매개변수로하는  OnedayTime을 selectOne하는 것.
+//////			거기에서 불러온 값을 Oenday의 private List<OnedayTime> onedayTimeList;에 담음.
+//		
+//		}
+//	
+//		return list;
+//		
+//	}
+
+
+
+	@Override
+	public List<Oneday> selectDateList(Map<String, String> sec) {
+		List<Oneday> list = onedayDAO.selectDateList(sec);
+		
+		for (Oneday one : list) {
+			one.setOnedayTimeList(onedayDAO.selectTimeList(one.getOnedayclassNo()));
+////			원데이 클래스의 넘버를 매개변수로하는  OnedayTime을 selectOne하는 것.
+////			거기에서 불러온 값을 Oenday의 private List<OnedayTime> onedayTimeList;에 담음.
+		
+		}
 	
+		return list;
+	}
+
+
+	@Override
+	public List<OnedayTime> selectTimeList(int onedayclassNo) {
+		// TODO Auto-generated method stub
+		return onedayDAO.selectTimeList(onedayclassNo);
+	}
+
+
+	@Override
+	public int insertReservation(ReservationRequest reservationrequest) {
+		// TODO Auto-generated method stub
+		return onedayDAO.insertReservation(reservationrequest);
+	}
+
+
+
+
+
+
+
+
+
+
 	
 	
 }

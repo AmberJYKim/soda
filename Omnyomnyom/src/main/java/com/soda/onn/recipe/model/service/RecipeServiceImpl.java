@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.soda.onn.mall.model.vo.Ingredient;
+import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.dao.RecipeDAO;
+import com.soda.onn.recipe.model.vo.Like;
+import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
@@ -65,6 +68,41 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeDAO.selectRecIngList(recipeNo);
 	}
 
+	@Override
+	public List<MenuCategory> selectCategoryList() {
+		return recipeDAO.selectCategoryList();
+	}
+
+	@Override
+	public Like selectLikeOne(Like l) {
+		return recipeDAO.selectLikeOne(l);
+	}
+
+	@Override
+	public int insertLike(Like like) {
+		return recipeDAO.insertLike(like);
+	}
+
+	@Override
+	public int deleteLike(Like like) {
+		return recipeDAO.deleteLike(like);
+	}
+
+	@Override
+	public Scrap selectScrap(Scrap s) {
+		return recipeDAO.selectScrap(s);
+	}
+
+	@Override
+	public int deleteScrap(Scrap scrap) {
+		return recipeDAO.deleteScrap(scrap);
+	}
+
+	@Override
+	public int insertScrap(Scrap scrap) {
+		return recipeDAO.insertScrap(scrap);
+	}
+	
 	@Override
 	public List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps) {
 		return recipeDAO.recipeSerachByIng(maps);
