@@ -374,6 +374,7 @@
 			                                        <p>${oneday.memberId }</p>
 			                                    </div>
 			                                </div>
+			                                <!--  -->
 			                                <a href= "${pageContext.request.contextPath }/oneday/oneday_detail?onedayclassNo=${oneday.onedayclassNo}" class="site-btn sb-gradient">예약하기</a>
 			                            </div>
 			                        </div>
