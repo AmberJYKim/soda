@@ -2,6 +2,7 @@ package com.soda.onn.recipe.model.dao;
 
 import java.util.List;
 import java.util.Map;
+import com.soda.onn.recipe.model.vo.Report;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -102,5 +103,10 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	@Override
 	public int insertScrap(Scrap scrap) {
 		return sqlSession.insert("recipe.insertScrap", scrap);
+	}
+
+	@Override
+	public List<Report> selectReportList() {
+		return sqlSession.selectList("recipe.selectReportList");
 	}
 }

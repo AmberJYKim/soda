@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,8 @@ import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.recipe.model.service.RecipeService;
+import com.soda.onn.recipe.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,6 +54,9 @@ public class AdminController {
 
 	@Autowired
 	private MallService mallService;
+
+	@Autowired
+	private RecipeService recipeService;
 	
 	final int NUMPERPAGE = 15;
 	final int PAGEBARSIZE = 10;
@@ -107,8 +113,10 @@ public class AdminController {
 
 	//신고목록
 	@GetMapping("/reportList")
-	public void reportList() {
-		
+	public void reportList(Model model) {
+		List<Report> list = recipeService.selectReportList();
+		model.addAttribute("list", list);
+
 	}
 	
 	

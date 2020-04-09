@@ -26,7 +26,7 @@
     <transactionManager type="JDBC"/>
     <dataSource type="POOLED">
       <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
-      <property name="url" value="jdbc:oracle:thin:@soda.cutvihlwwddv.us-east-2.rds.amazonaws.com:1521:ORCL"/>
+      <property name="url" value="jdbc:oracle:thin:@soda.cair6eoynqo1.ap-northeast-2.rds.amazonaws.com:1521:ORCL"/>
       <property name="username" value="soda"/>
       <property name="password" value="sohyunEdahae"/>
     </dataSource>
