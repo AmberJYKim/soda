@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.ChefRequest;
+import com.soda.onn.common.base.PageBar;
 import com.soda.onn.mall.model.service.MallService;
 import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.member.model.service.MemberService;
@@ -51,16 +53,25 @@ public class MypageController {
 	@Autowired
 	private MemberService memberService;
 	
+	final int NUMPERPAGE = 15;
+	final int PAGEBARSIZE = 10;
+
 	
+	private RowBounds rowBounds = null;
+	
+	
+	//마이페이지 클릭시 첫 화면(회원정보수정 화면)
 	@GetMapping("/main")
 	public void mypageMain() {
 		
 	}
-		
+	
+	//회원정보수정
 	@GetMapping("/updateinfo")
 	public String updateInfo(HttpSession session,
 							 RedirectAttributes redirectAttributes,
 							 Member member) {
+
 		if(session.getAttribute("memberLoggedIn") != null) {
 			
 			Member loginUser = (Member) session.getAttribute("memberLoggedIn");
@@ -95,32 +106,59 @@ public class MypageController {
 		model.addAttribute("chefRequest", chefRequest);
 	}
 	
+	//원데이클래스예약 목록 확인
 	@GetMapping("/onedayList")
 	public void onedayList(HttpSession session, 
 						   Model model,
 						   @RequestParam(value="cPage", defaultValue="1") int cPage) {
+
 		int numPerPage = 15;
-		String memberId = (String) session.getAttribute("");
 		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		
+		String memberId = member.getMemberId();
+		log.debug("onedayList memberId={}", memberId);
+
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
 		log.debug("reservationList={}",reservationList);
 		model.addAttribute("reservationList", reservationList);
 	}
 	
-	@GetMapping("/qnaMsg")
-	public void qnaMsg() {
+	@GetMapping("/directMsg")
+	public void directMsg() {
 		
 	}
 	
+	//일반유저 스크랩 목록
 	@GetMapping("/scrapList")
-	public ModelAndView scrapList(HttpSession session) {
-		ModelAndView mav = new ModelAndView();
-		String memberId = (String)session.getAttribute("memberLoggedIn");
+	public ModelAndView scrapList(HttpSession session,
+								 @RequestParam(value="cPage", defaultValue="1") int cPage, 
+								 HttpServletRequest request) {
 		
-		List<Scrap> scrapList = mypageService.selectScrapList(memberId);
+		log.debug("scrapList = {}", session);
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		log.debug("scrapList memberId={}", memberId);
+		
+		ModelAndView mav = new ModelAndView();
+		
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
+		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+		int pageEnd = pageStart+PAGEBARSIZE-1;
+		int totalCount = chefService.selectChefRequestListCnt();
+		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		
+		List<Scrap> list = mypageService.selectScrapList(memberId, rowBounds);
+		
+		
+		mav.addObject("list", list);
+		mav.addObject("paging", paging);
 		mav.setViewName("mypage/scrapList");
-		mav.addObject("scrapList", scrapList);
+		
 		return mav;
 	}
 	
@@ -128,6 +166,42 @@ public class MypageController {
 	public ModelAndView onedayReservation(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		return mav;
+	}
+	
+	//스크랩 삭제
+	@GetMapping("/deleteScrap")
+	public String deleteScrap(@RequestParam("recipeNo") int recipeNo,
+							  RedirectAttributes redirectAttributes) {
+		
+		int result = mypageService.deleteScrap(recipeNo);
+		redirectAttributes.addFlashAttribute("msg", result>0?"스크랩이 삭제 됐습니다.":"삭제 할 스크랩이 없습니다.");
+		
+		return "redirect:/mypage/scrapList";
+	}
+	
+	//스크랩 메모 수정
+	@GetMapping("updateScrap")
+	public String updateScrap(Scrap scrap,
+							  HttpSession session,
+							  RedirectAttributes redirectAttributes) {
+
+		Member scrapId = (Member)session.getAttribute("memberLoggedIn");
+		log.debug("updateScrap scrapId.getMemberId()={}", scrapId.getMemberId());
+
+		scrap.setScrapId(scrapId.getMemberId());
+		log.debug("updateScrap scrap={}", scrap);
+		
+		int result = mypageService.updateScrap(scrap);
+		log.debug("updateScrap result={}", result);
+				
+		redirectAttributes.addFlashAttribute("msg", result>0?"스크랩 메모 수정 성공.":"스크랩 메모 수정 실패.");
+		
+		return "redirect:/mypage/scrapList";
+	}
+	
+	@GetMapping("/directMsg")
+	public void directMsg() {
+		
 	}
 	
 }
