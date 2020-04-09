@@ -40,4 +40,6 @@ public interface RecipeDAO {
 	int deleteScrap(Scrap scrap);
 
 	int insertScrap(Scrap scrap);
+
+	int increaseReadCount(int recipeNo);
 }
