@@ -199,9 +199,6 @@ public class MypageController {
 		return "redirect:/mypage/scrapList";
 	}
 	
-	@GetMapping("/directMsg")
-	public void directMsg() {
-		
-	}
+
 	
 }
