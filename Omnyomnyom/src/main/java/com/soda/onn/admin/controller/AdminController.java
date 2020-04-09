@@ -137,8 +137,14 @@ public class AdminController {
 		Map<String, String> chefReq = new HashMap<>();
 		chefReq.put("chefId",chefId);
 		chefReq.put("variable",variable);
-		int result = chefService.chefRequestUpdate(chefReq);
-		log.debug("result={}",result);
+		
+		
+		ChefRequest chefreq = chefService.selectChefRequest(chefId);
+		chefreq.setChefReqOk(variable);
+		
+		int result1 = chefService.chefRequestUpdate(chefreq);
+//		int result2 = chefService.
+		log.debug("result1={}",result1);
 		return "redirect:/admin/chefRequestList";
 	}
 

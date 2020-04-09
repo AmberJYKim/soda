@@ -97,5 +97,11 @@ public class ChefServiceImpl implements ChefService {
 	public List<Oneday> onedaySelectAll(String chefId) {
 		return chefDAO.onedaySelectAll(chefId);
 	}
+
+	@Override
+	public int chefRequestUpdate(ChefRequest chefreq) {
+		
+		return chefDAO.chefRequestUpdate(chefreq);
+	}
 	
 }
