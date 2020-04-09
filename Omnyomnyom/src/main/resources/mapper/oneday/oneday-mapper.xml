@@ -4,22 +4,27 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="oneday">
 
-<select id="selectReservationList" resultMap="ReservationMap">
+<select id="selectReservationList" resultType="reservation">
 	select
 		*
 	from
 		tb_reservation 
-	<if test="memberId != NULL">
-	where
+	<where>
+		<if test="memberId != null AND memberId = ''">
 		member_id = #{memberId}
-	</if>
+		</if>
+	</where>
 	order by 
 		reservation_no desc
 </select>
 
-<resultMap id="ReservationMap" type="Reservation">
-	<result column="member_id" property="reserMemberId"></result>
-</resultMap>
+
+<select id="selectOne" resultType="Oneday">
+select * from
+tb_onedayclass
+where onedayclass_no = #{onedayclassNo}
+</select>
+
 
 <select id="selectOnedayReviewList" resultType="onedayReview">
 	select
@@ -29,14 +34,14 @@
 	order by 
 		review_no desc
 </select>
-<select id="insertOneday" resultType="oneday">
+<insert id="insertOneday">
 	insert into 
 	tb_onedayclass 
 		values (
 				seq_oneday_class.nextval,
 				#{memberId},
 				#{onedayName},
-				#{price},
+				#{onedayPrice},
 				#{onedayContent},
 				#{latitude},
 				#{longitude},
@@ -47,11 +52,77 @@
 				#{onedayImg},
 				<!-- gson 배열로 받음 -->
 				#{menuList}
-				
 			)
-		
+			<selectKey keyProperty="onedayclassNo" resultType="_int" order="AFTER">
+				select seq_oneday_class.currval from dual
+			</selectKey>	
+</insert>
 
+<insert id="insertTime">
+	insert into
+		tb_onedayclasstime
+			values(
+				seq_oneday_time.nextval,
+				#{onedayNoo},
+				to_date(#{onedayTimeDate},'YYYY/MM/DD HH24:Mi')
+			)
+</insert>
+
+<insert id="insertReservation">
+	insert into
+		tb_reservation 
+			values(
+				seq_reservation.nextval,
+				#{memberId},
+				#{onedaytimeNo},
+				#{onedayclassNo},
+				default,
+				#{personnel},
+				default,
+				#{resPrice}
+		)
+</insert>
+
+
+<select id="selectDateList"  resultType="Oneday">
+select *
+from
+TB_onedayclass oc
+<where>
+<if test="detailedAddr != null">
+and detailed_addr like '%${detailedAddr}%'
+</if>
+<if test="onedayName != null">
+and oneday_name like '%${onedayName}%'
+</if>
+<!-- 일정부분 뽑는 것  -->
+<!-- <if test="onedayTimeDate != ''">
+and onedayclass_no = (select oct.onedayclass_no from 
+						tb_onedayclasstime oct where oct.onedayclass_no = oc.onedayclass_no 
+						and 
+						TRUNC(onedaytime_date) = #{onedayTimeDate})
+</if> -->
+
+</where>
+order by onedayclass_no desc
 </select>
+
+
+
+
+<select id="selectTimeList" resultMap="timeCollection">
+	select onedaytime_no, onedayclass_no, to_char(onedaytime_date,'YYYY/MM/DD HH24:Mi') as time
+	from tb_onedayclasstime
+	where onedayclass_no = #{onedayclassNo}
+</select>
+
+
+<resultMap type="OnedayTime" id="timeCollection">
+	<result column="onedayclass_no" property="onedayNoo"/>
+	<result column="time" property="onedayTimeDate"/>
+	
+
+</resultMap>
 
 
 </mapper>

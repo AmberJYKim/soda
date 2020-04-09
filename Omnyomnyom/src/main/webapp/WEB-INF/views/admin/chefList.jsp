@@ -46,7 +46,7 @@
 	                        <div class="col-4 che-list-p">
 	                            <p><%=((Member)chef).getMemberNick()%></p>
 	                            <p><%=((Member)chef).getEmail()%></p>
-	                            <p><%=chef.getMenuPrCategory() %></p>
+	                            <p><%=chef.getChefCategory() %></p>
 	                        </div>
 	                        <div class="col-2"></div>
 	                    </div>
