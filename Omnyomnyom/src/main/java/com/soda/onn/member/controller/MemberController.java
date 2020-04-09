@@ -116,9 +116,6 @@ public class MemberController {
 										@PathVariable("value") String value,
 			Model model) {
 		
-		System.out.println("key = " + key);
-		System.out.println("value = " + value);
-		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(key, value);
 		
@@ -129,7 +126,7 @@ public class MemberController {
 		if(checkMember != null) {
 			isUsable = "ok";
 		}
-		System.out.println("ok인가 아닌가 " + isUsable);
+		log.debug("생성 가능여부 : "+isUsable);
 		map.put("isUsable", isUsable);
 		
 		return map;

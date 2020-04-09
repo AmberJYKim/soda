@@ -2,7 +2,8 @@ package com.soda.onn.recipe.model.service;
 
 import java.util.List;
 import java.util.Map;
-
+import com.soda.onn.recipe.model.vo.Report;
+import com.soda.onn.admin.controller.Report;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mypage.model.vo.Scrap;
@@ -42,7 +43,9 @@ public interface RecipeService {
 
 	int insertScrap(Scrap scrap);
 
-	List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList);
+// 	List<Report> selectReportList();
+
+  List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList);
 
 	List<Recipe> selectRelRecipeList(Recipe recipe);
 

@@ -7,102 +7,18 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="장바구니" name="pageTitle" />
 </jsp:include>
-<!-- Event Details Section -->
-<link rel="stylesheet" 	href="${pageContext.request.contextPath }/resources/css/mall_delivery_info.css" />
 <style>
-.basket {
-	width: 1000px;
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
-
-.order {
-	text-align: right;
-}
-
-.inner-col>input {
-	width: 35px;
-}
-
-.title, .ckbox {
-	text-align: center;
-}
-
-.inner-col {
-	height: 50%;
-	padding: 15px 5px 15px 5px;
-	vertical-align: middle;
-}
-
-.pline {
-	border-bottom: 2px solid rgba(73, 73, 231, 0.459);
-}
-
-.p-img {
-	resize: both;
-	max-width: 98.5px;
-	height: auto;
+.p-img{
 	border-radius: 50%;
-	margin-top: 5px;
-	box-shadow: 0px 0px 0px 3px rgba(73, 73, 231, 0.432);
-}
-
-.p-name {
-	font-weight: 600;
-	font-size: 16px;
-}
-
-.p-info {
-	font-size: 12px
-}
-
-/* 전체상품가격 영역 */
-.lline {
-	border-top: 3px solid rgb(122, 122, 122);
-	border-bottom: 3px solid rgb(122, 122, 122);
-	margin-top: 5px;
-	padding: 20px 10px 20px 10px;
-}
-
-.md-total-price, .ckbox {
-	padding: 50px 0 50px 0;
-	text-align: center;
-}
-
-.total-price {
-	font-size: 16px;
-	font-weight: 700;
-	padding-top: 5px;
-}
-
-/* ? */
-.floatRight span {
-	float: right;
-}
-
-.th_border {
-	border-bottom: 1px solid black;
-}
-
-.font-17 {
-	font-size: 17px;
-}
-
-.nav_text {
-	font-weight: 600;
-	color: hsl(0, 0%, 69%);
-}
-
-.selected_nav {
-	color: #355752;
-}
-
-.section {
-	padding-top: 150px;
-}
-
-.border_bottom {
-	border-bottom: 2px solid black;
 }
 </style>
+<!-- Event Details Section -->
+<link rel="stylesheet" 	href="${pageContext.request.contextPath }/resources/css/mall_delivery_info.css" />
 <section class="event-details-section spad overflow-hidden">
 	<div class="tm-section-2">
 		<div class="container">
@@ -128,6 +44,7 @@
 				<a><span class="badge">02</span> 선택된 상품 리스트</a> <a><span
 					class="badge">03</span> 배송지 정보</a> <a><span class="badge ">04</span>결제
 					정보</a> <a><span class="badge ">05</span>결제 완료</a>
+			</div>
 			</div>
 
 
@@ -156,32 +73,35 @@
 
 								</div>
 								<hr>
-								<div class="row">
-									<div class="ckbox col-md-1">
-										<input type="checkbox" name="" id="" checked>
-									</div>
-									<div class="col-md-2">
-										<img class="p-img"
-											src="/상세페이지/파이널 메인 견본/파이널 메인 견본/img/레시피 재료 소스//육류/돼지고기/구이용.png"
-											alt="">
-									</div>
-									<div class="col-md-7">
-										<div class="inner-col pline">
-											<span class="p-name">고기고기꼬기</span><span class="p-info">(단위.
-												단위당 가격)</span>
+								<c:forEach items="${sbList }" var="sb">
+									<div class="row sb-area">
+										<div class="ckbox col-md-1">
+											<input type="checkbox" name="" id="" checked>
 										</div>
-										<div class="inner-col">
-											<i class="fa fa-minus btns"></i> <input type="text"
-												class="qty" title="구매수량" value="1" readonly /> <i
-												class="fa fa-plus btns"></i>
+										<div class="col-md-2">
+											<img class="p-img"
+												src="${pageContext.request.contextPath }/resources/images/ingredient/${sb.mallEngPrCategory }/${sb.mallEngCdCategory }/${sb.prevImg }"
+												alt="">
 										</div>
+										<div class="col-md-7">
+											<div class="inner-col pline">
+												<span class="p-name">${sb.ingMallName }</span><span class="p-info">(${sb.minUnit }당, (<span class="price"><fmt:formatNumber value="${sb.price }" pattern="#,###" /></span>)</span>
+											</div>
+											<div class="inner-col">
+												<i class="fa fa-minus btns"></i> <input type="number"
+													class="qty count" title="구매수량" value="${sb.sbStock}"  /> <i
+													class="fa fa-plus btns"></i>
+											</div>
+										</div>
+										<div class="col-md-2 md-total-price">
+										<span class="sum-price">
+										<fmt:formatNumber value="${sb.price * sb.sbStock }" pattern="#,###" /></span>원
+											 <i class="fa fa-trash btns" aria-hidden="true"
+												onclick="delproduct();"></i>
+										</div>
+	
 									</div>
-									<div class="col-md-2 md-total-price">
-										~원 <i class="fa fa-trash btns" aria-hidden="true"
-											onclick="delproduct();"></i>
-									</div>
-
-								</div>
+								</c:forEach>
 							</div>
 
 						</div>
@@ -189,7 +109,7 @@
 						<div class="row font-17 lline">
 							<div class="col total-price">
 								<div>
-									전체 상품 가격<span> : 346,000 원 </span>
+									전체 상품 가격 <span id="total_price">  </span>원
 								</div>
 							</div>
 							<div class="col order">
@@ -206,20 +126,79 @@
 </section>
 <!-- Event Details Section end -->
 
-
 <script>
-$(function(){
-	$(".mvToSelectedProduct").on('click', function(){
-		console.log("클릭됨");
+	$(function () {
+	    console.log('ready');
+	    cursors();
+	    totalPrice();
+	})
+	//	체크박스
+	$(document).on("click",".ckbox",function(){
+    	$box = $(this).children();
+    	$box.attr('checked',!$box.prop("checked"));
+    	totalPrice();
+    })
+    //	수량 Input 
+    		   .on("keyup",".count",function(){
+    	changePrice($(this),$(this).val());
+    })
+    
+    // 수량 +/- 버튼
+	function cursors() {
+	    $(".btns").css("cursor", "pointer").on("click", function (e) {
+	        let $nowcl = $(this).attr('class');
+			let $input = $(this);
+	        
+	        if ($nowcl.includes('fa-plus')) {
+	        	$input = $(this).prev();
+	            let $qty = parseInt($input.val());
+	            $input.val($qty+1);
+	        } else if ($nowcl.includes('fa-minus')) {
+	        	$input = $(this).next();
+	            let $qty = parseInt($input.val());
+	            $input.val($qty-1);
+	        }
+	        changePrice($input,$input.val());
+	    });
+	}
 	
-		location.href="${pageContext.request.contextPath}/mall/selectedProductList.do";
+	function changePrice($obj,count){
+    	if(count<=0){
+    		$obj.val(1);
+    		count='1';
+    	}
+
+		let price = $obj.parents(".sb-area").find(".price").text();
+    	price = price.replace(/\,/g,"");
+		count = count.replace(/\,/g,"");
+		let sumPrice = Number(count)*Number(price);
+		let $minTotal = $obj.parents(".sb-area").find(".sum-price");
+		$minTotal.text(String(sumPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+		totalPrice();
+	}
+	function totalPrice(){
+		let totalPrice = 0;
+		$(".sb-area").find(".ckbox input").each(function(index,item){
+			console.log(1);
+			console.log(item);
+			console.log($(item).parents(".sb-area"));
+			console.log($(item).parents(".sb-area").find(".sum-price").text());
+			if($(item).is(":checked")){
+				let price = $(item).parents(".sb-area").find(".sum-price").text();
+			console.log("----");
+				console.log(price);
+			console.log("----");
+		    	price = price.replace(/\,/g,"");
+				totalPrice += Number(price);
+			}
+		})
+		console.log(totalPrice);
+		$("#total_price").text(String(totalPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ",")); 
+	}
+	$(".mvToSelectedProduct").click(function(){
 		
 	});
-	
-});
-
 </script>
-
 
 
 

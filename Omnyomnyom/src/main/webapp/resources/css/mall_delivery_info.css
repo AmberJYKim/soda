@@ -792,6 +792,14 @@ td {
     background-color: transparent;
     border-color: #4949E7;
 }
+#total_price{
+	font-weight: bold;
+	font-size: 28px;
+	line-height: 30px;
+	letter-spacing: -0.5px;
+	word-break: break-all;
+	color: #4949E7;
+}
 
 
 /* insert end */

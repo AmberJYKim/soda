@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.soda.onn.recipe.model.vo.Report;
 
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
@@ -115,7 +116,12 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList) {
+	public List<Report> selectReportList() {
+		return recipeDAO.selectReportList();
+  }
+  
+  @Override
+  public List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList) {
 		List<RecipeIngredient> selectList = new ArrayList<RecipeIngredient>();
 		int mallSize = 15;
 		for(RecipeIngredient r : ingredientList) {

@@ -65,24 +65,104 @@
     <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
     <!-- 회원가입 js -->
     <c:if test="${empty memberLoggedIn}">
-    <script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
 	
 	<script>
+		var idState = false;
+		var nickState = false;
+		
 		//사용 가능한 아이디, 닉네임인지 확인 하는 스크립트
-		$(document).ready(function(){
+	$(document).ready(function(){
+		
+			var signUpButton = document.getElementById('signUp');
+		    var signInButton = document.getElementById('signIn');
+		    var container = document.getElementById('login_container');
+		    signUpButton.addEventListener('click', function(event) {
+		        login_container.classList.add("right-panel-active");
+		    });
 
+		    signInButton.addEventListener('click', function(event) {
+		        login_container.classList.remove("right-panel-active");
+		    });
+		    
+		    
+			$("#phone").on("keyup",function(){
+				$(this).val($(this).val().replace(/\D/g,""))
+			});
+			$("#ssn").on("keyup",function(){
+				$(this).val($(this).val().replace(/\D/g,""))
+			});
+			$("#ssn").on("keyup",function(){
+				$(this).val($(this).val().replace(/\D/g,""))
+			});
+			
+			/*
+			function enrollValidate(){
+				let pwd = $("#password").val().trim();
+				let pwdChk = $("#password_2").val();
+				let email = $("#email").val();
+				let ssn = $("#ssn").val();
+				
+				let regPw = /^{6,20}/;
+//				let regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+				let regSSN = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+
+				//비밀번호 길이검사
+				if(!idState){
+					alert("아이디를 다시 작성해주세요!")
+					return false;
+				}
+				if(!regPw.test(pwd)){
+					alert("비밀번호는 6~20자리 이내로 작성해주세요!")
+					return false;
+				}
+				
+				//비밀번호 확인란 일치검사
+				if(pwd != pwdChk){
+					alert("비밀번호가 일치하지 않습니다!");
+					return false;
+				}
+				
+				//이메일 검사
+				if(!regEmail.test(email)){
+					alert("이메일 형식을 맞춰주세요!")
+					return false;
+				}
+				
+				//닉네임 중복검사 
+				if(!nickState){
+					alert("닉네임을 다시 작성해주세요!")
+					return false;
+				}
+				
+				//주민번호 앞자리 검사
+				if(!regSSN.test(ssn)){
+					alert("생년월일 앞자리를 맞춰주세요!")
+					return false;
+				}
+				
+				alert("성공");
+				
+				return true;
+			} */
+			
 			//memberId input창에서 아이디를 입력 할 경우
 			$("#memberId").on("keyup", function(){
-				console.log("memberId keyup");  /* 여기는 값 들어옴 */
 				memberId = $(this).val().trim();
 
-				console.log($(this).val());  /* 실시간으로 아이디 값 들어오는거 확인 */
-
 				//회원가입 아이디 input창에 값이 없으면 문구 숨김
-				if($("#memberId").val()==''){
+				if(memberId.length <= 4){
 					$(".guide.error").hide();
 					$(".guide.ok").hide();
-				} 	
+					return false;
+				}
+				
+				let regExp1 =  /^[a-z0-9]{5,19}$/gi;
+				if(!regExp1.test(memberId)){
+					return false;
+				}
+				
+				console.log(memberId);
+				
 				signupFun(this);
 			});
 
@@ -112,11 +192,13 @@
 						console.log(data);			
 						if($(e).attr('id') == "memberId"){	
 							if(data.isUsable != "ok"){
+								idState = false;
 								$(".guide.error").hide();
 								$(".guide.ok").show();
 								$("#idDuplicateCheck").val(1);
 							}
 							else{
+								idState = true;
 								$(".guide.error").show();
 								$(".guide.ok").hide();
 								$("#idDuplicateCheck").val(0);
@@ -125,11 +207,13 @@
 
 						if($(e).attr('id') == "memberNick"){
 							if(data.isUsable != "ok"){
+								nickState = false;
 								$(".nickGuide.error").hide();
 								$(".nickGuide.ok").show();
 								$("#idDuplicateCheck").val(1);
 							}
 							else{
+								nickState = true;
 								$(".nickGuide.error").show();
 								$(".nickGuide.ok").hide();
 								$("#idDuplicateCheck").val(0);
@@ -142,9 +226,17 @@
 			});
 		}
 	});				
-	</script>
-	
-    </c:if>
+	</script><!-- 
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+        }
+    }).open();
+</script> -->
+</c:if>
   
 </head>
 <body>
@@ -181,7 +273,6 @@
            		<script>
            		function logout(){
            			location.href = "${pageContext.request.contextPath}/member/logout";
-           			console.log('1');
            		}
            		</script>
            		</c:if>
@@ -203,7 +294,7 @@
 							   			   id="idDuplicateCheck" value="0" />
                                     <span class="error" id="errorId"></span>
                                  
-                                    
+                                    	
                                     <input type="password" name="memberPwd" id="password" placeholder="Password"  required >
                                     <span class="error" id="errorPw"></span>
                                     
@@ -230,7 +321,7 @@
                                     <input type="tel" placeholder="Phone Number(-없이)" name="phone" id="phone" maxlength="11" required>
                                     <span class="error" id="errorPhone"></span>
                                     
-                                    <input type="number" name="ssn" id="ssn" placeholder="ex)19991122"required>
+                                    <input type="text" name="ssn" id="ssn" placeholder="ex)19991122" maxlength="8" required>
                                    
                                     <input type="address" name="address" id="address" placeholder="주소를 입력하세요" required>
                                     <span class="error" id="errorName"></span>

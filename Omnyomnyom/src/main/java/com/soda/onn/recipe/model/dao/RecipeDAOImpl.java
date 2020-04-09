@@ -2,6 +2,7 @@ package com.soda.onn.recipe.model.dao;
 
 import java.util.List;
 import java.util.Map;
+import com.soda.onn.recipe.model.vo.Report;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -107,6 +108,11 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	}
 
 	@Override
+	public List<Report> selectReportList() {
+		return sqlSession.selectList("recipe.selectReportList");
+  }
+  
+  @Override
 	public int increaseReadCount(int recipeNo) {
 		return sqlSession.update("recipe.increaseReadCount", recipeNo);
 	}
