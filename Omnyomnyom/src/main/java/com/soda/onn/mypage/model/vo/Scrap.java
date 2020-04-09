@@ -28,7 +28,4 @@ public class Scrap implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
-
 }

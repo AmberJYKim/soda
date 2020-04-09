@@ -2,16 +2,43 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
 <mapper namespace="chef">
-
 
 <resultMap type="chef" id="chefMap">
 <result column="member_id" property="chefId"/>
 <result column="member_nick" property="chefNickName"/>
 <result column="menu_pr_category" property="chefCategory"/>
+<result column="email" property ="chefEmail"/>
+<result column="regdate" property ="chefRegDate"/>
 </resultMap>
 
-<!-- 전체 셰프 리스 -->
+<resultMap type="chefRequest" id="chefReqMap" >
+	<result column="member_id" property="chefId"/>
+	<result column="member_nick" property="chefNickName"/>
+	<result column="chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
+</resultMap>
+
+<resultMap type="Notice" id="noticeMap" >
+	<result column="member_id" property="noticeWriter"/>
+	<result column="notice_class" property="noticeCategory"/>
+	<result column="regdated" property="regDate"/>
+</resultMap>
+
+<resultMap type="Oneday" id="onedayMap" >
+	
+</resultMap>
+
+<select id="recipeSelectAll" parameterType="String" resultType="Recipe">
+select
+	*
+from
+	tb_recipe
+where chef_nick = #{chefNickName}
+
+</select>
+
+<!-- 전체 셰프 리스트 -->
 <update id="chefRequestUpdate">
 	update 
 		tb_chef_req
@@ -33,6 +60,7 @@
 	order by
 	C.regdate
 </select>
+
 <!-- 특정 셰프 닉네임으로 검색  -->
 <select id="chefSearch" resultMap="chefMap" parameterType="String">
 	select 
@@ -48,12 +76,14 @@
 <select id="chefSelectOne" resultMap="chefMap" parameterType="String">
 	select 
 		C.*, 
-		M.member_nick 
+		M.member_nick ,
+		M.email,
+		C.regdate
 	from
 	 	tb_chef C 
 	join tb_member M 
 	on C.member_Id = M.member_Id	
-	where M.member_nick = #{memberNickName}
+	where M.member_nick = #{chefNickName}
 		
 </select>
 <select id="selectChefRequestList" resultMap="chefReqMap">
@@ -66,11 +96,7 @@
 		c.regdate
 </select>
 
-<resultMap type="chefRequest" id="chefReqMap" >
-	<result column="member_id" property="chefId"/>
-	<result column="member_nick" property="chefNickName"/>
-	<result column="chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
-</resultMap>
+
 
 <select id="selectChefRequest" resultType="chefRequest">
 	select
@@ -104,5 +130,69 @@
 	 ) 
 </insert>
 
+<insert id="chefNoticeInsert">
+	insert into 
+		tb_notice
+	values(
+		seq_notice.nextval,
+		#{noticeWriter},
+		#{noticeCategory},
+		#{noticeTitle},
+		#{noticeContent},
+		default
+	)
+	
+<selectKey keyProperty="noticeNo" resultType="_int" order="AFTER">
+	select seq_notice.currval from dual
+</selectKey> 
+</insert>
+
+<select id="chefNoticeView" resultType="Notice" parameterType="int" resultMap="noticeMap">
+	select
+		*
+	from
+		tb_notice
+	where 
+		notice_no = #{noticeNo}
+</select>
+
+<select id="noticeSelectAll" resultType="Notice" resultMap="noticeMap">
+	select
+		*
+	from
+		tb_notice
+	where 
+		member_id = #{chefId}
+</select>
+
+<delete id="chefNoticeDelete">
+	delete	from
+	tb_notice
+	where
+		notice_no = #{noticeNo} 
+</delete>
+
+<update id="noticeUpdate">
+update 
+	tb_notice
+set
+	notice_class = #{noticeCategory},
+	notice_title = #{noticeTitle},
+	notice_content = #{noticeContent}
+where
+	notice_no = #{noticeNo}
+
+</update>
+
+<select id="onedaySelectAll" resultMap="onedayMap">
+select 
+	*
+from
+	TB_onedayclass
+where 
+	member_id = #{chefId}
+order by
+	onedayclass_no 
+</select>
 
 </mapper>

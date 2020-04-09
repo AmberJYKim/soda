@@ -1,7 +1,7 @@
 package com.soda.onn.oneday.model.vo;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,9 +17,20 @@ import lombok.ToString;
 public class OnedayTime implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
+	
 	private int onedayTimeNo;
-	private Oneday oneday;
-	private Date onedayTimeDate;
-	private int onedayTimeHour;
+	private int onedayNoo;
+	private Oneday oneday; //예약할때 사용.
+	private String onedayTimeDate; 
+	
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	
+	
+	
 }
+
+

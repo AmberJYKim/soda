@@ -207,6 +207,7 @@ select.tm-select::-ms-expand {
 }
 
 .box_subtitle {
+	margin-top: 1rem;
     font-size: 12px;
 }
 

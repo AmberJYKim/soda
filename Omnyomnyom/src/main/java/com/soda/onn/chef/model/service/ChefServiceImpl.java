@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import com.soda.onn.chef.model.dao.ChefDAO;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
+import com.soda.onn.member.model.vo.Notice;
+import com.soda.onn.oneday.model.vo.Oneday;
+import com.soda.onn.recipe.model.vo.Recipe;
 
 @Service
 public class ChefServiceImpl implements ChefService {
@@ -49,13 +52,50 @@ public class ChefServiceImpl implements ChefService {
 	}
 
 	@Override
-	public Chef chefSelectOne(String memberNickName) {
-		return chefDAO.chefSelectOne(memberNickName);
+	public Chef chefSelectOne(String chefNickName) {
+		return chefDAO.chefSelectOne(chefNickName);
   }
   
   @Override
 	public int chefRequestUpdate(Map<String, String> chefReq) {
 		return chefDAO.chefRequestUpdate(chefReq);
+	}
+
+	@Override
+	public List<Recipe> recipeSelectAll(String chefNickName) {
+		
+		return chefDAO.recipeSelectAll(chefNickName);
+	}
+
+	@Override
+	public int chefNoticeInsert(Notice notice) {
+		return chefDAO.chefNoticeInsert(notice);
+	}
+
+	@Override
+	public Notice chefNoticeView(int noticeNo) {
+		return chefDAO.chefNoticeView(noticeNo);
+	}
+
+	@Override
+	public List<Notice> noticeSelectAll(String chefId) {
+		return chefDAO.noticeSelectAll(chefId);
+	}
+
+	@Override
+	public int chefNoticeDelete(int noticeNo) {
+		return chefDAO.chefNoticeDelete(noticeNo);
+	}
+
+
+	@Override
+	public int chefnoticeUpdate(Notice notice) {
+		return chefDAO.chefnoticeUpdate(notice);
+	}
+
+	@Override
+	public List<Oneday> onedaySelectAll(String chefId) {
+		return chefDAO.onedaySelectAll(chefId);
 	}
 	
 }

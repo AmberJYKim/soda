@@ -19,7 +19,7 @@
                 startDate: new Date(),
                 firstDay: '',
                 weekends: [6, 0],
-                dateFormat: '',
+                dateFormat: 'yyyy/mm/dd HH:mi:ss',
                 altField: '',
                 altFieldDateFormat: '@',
                 toggleSelected: true,
@@ -1482,8 +1482,8 @@
                 monthsShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
                 today: 'Сегодня',
                 clear: 'Очистить',
-                dateFormat: 'dd.mm.yyyy',
-                timeFormat: 'hh:ii',
+                dateFormat: 'yyyy/mm/dd',
+                timeFormat: 'hh:mm:ss',
                 firstDay: 1
             }
         };
@@ -2246,8 +2246,8 @@
             monthsShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
             today: '금일',
             clear: 'Clear',
-            dateFormat: 'mm/dd/yyyy',
-            timeFormat: 'hh:ii aa',
+            dateFormat: 'yyyy/mm/dd',
+            timeFormat: 'hh:mm:ss',
             firstDay: 0
         };
 

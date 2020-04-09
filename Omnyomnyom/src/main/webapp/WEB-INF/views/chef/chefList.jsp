@@ -141,7 +141,7 @@
                </c:forEach>      
             </div>
 
-<!-- 셰프클릭시 해당 셰프영상 밑에 뜨 -->
+<!-- 셰프클릭시 해당 셰프영상 밑에 뜨기 -->
 
             <div class="row" id="Ylist">
                 <div class="col-xs-6 col-sm-3 placeholder chef_list">
@@ -211,7 +211,7 @@
 	function go_chefpage(){
     	let chefNickName = $("h6.chefPageGo").attr('id');
     	alert( $("h6.chefPageGo").attr('id'));
-    	location.href = "${pageContext.request.contextPath}/chef/"+chefNickName+"/chefpage";
+    	location.href = "${pageContext.request.contextPath}/chef/"+chefNickName+"/chefPage";
     }
 	</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

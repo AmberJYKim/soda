@@ -18,16 +18,14 @@ public class ReservationCancel extends Reservation implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private String cancelReason;
+  
+	public ReservationCancel(int reservationNo, String reserMemberId, Oneday oneday, String regDate, int personnel,
+			String cancel, String cancelReason, int resPrice) {
+		super(reservationNo, reserMemberId, oneday, regDate, personnel, cancel, resPrice);
+		this.cancelReason = cancelReason;
 
-	public ReservationCancel(int reservationNo, String memberId, Oneday oneday, Date regDate, int personnel,
-			String cancel) {
-		super(reservationNo, memberId, oneday, regDate, personnel, cancel);
-		// TODO Auto-generated constructor stub
 	}
 
 	
-
-	
-
 	 
 }
