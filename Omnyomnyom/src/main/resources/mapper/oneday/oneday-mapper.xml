@@ -4,24 +4,33 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="oneday">
 
-<select id="selectReservationList" resultType="reservation">
+<select id="selectReservationList" resultMap="reservationMap">
 	select
-		*
+		*<!-- res.*, odct.onedaytime_date -->
 	from
-		tb_reservation 
-	<where>
-		<if test="memberId != null AND memberId = ''">
-		member_id = #{memberId}
-		</if>
-	</where>
+		tb_reservation
+		<!--  res join tb_onedayclasstime odct
+         on res.onedayclass_no = odct.onedayclass_no-->
+	<if test="rserMemberId != ''">
+	where
+		member_id = #{reserMemberId}
+	</if>
 	order by 
 		reservation_no desc
 </select>
 
+<resultMap id="reservationMap" type="reservation" >
+	<result column="cancel_check" property="cancel"/>
+	<result column="member_id" property="reserMemberId"/>
+	
+</resultMap>
+
 <select id="selectOne" resultType="Oneday">
-select * from
-tb_onedayclass
-where onedayclass_no = #{onedayclassNo}
+	select
+		*
+	 from
+		tb_onedayclass
+	where onedayclass_no = #{onedayclassNo}
 </select>
 
 
@@ -54,7 +63,7 @@ where onedayclass_no = #{onedayclassNo}
 			)
 			<selectKey keyProperty="onedayclassNo" resultType="_int" order="AFTER">
 				select seq_oneday_class.currval from dual
-			</selectKey>			
+			</selectKey>	
 </insert>
 
 <insert id="insertTime">
