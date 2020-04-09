@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
-<jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
+<jsp:param value="뇸뇸몰" name="pageTitle"/>
 </jsp:include>
 
 <style>
@@ -34,11 +34,11 @@
         <div class="event-filter-warp search-bar-header">
             <div class="row">
                 <div class="col-12">
-                    <form class="event-filter-form row" action="${pageContext.request.contextPath }/mall/search">
+                    <form id="search-ing" class="event-filter-form row" action="${pageContext.request.contextPath }/mall/search" onsubmit="return searchIngMall();">
                     	<div class="col"></div>
                         <div class="ef-item col-5">
                             <i class="material-icons">search</i>
-                            <input type="text" placeholder="">
+                            <input type="text" placeholder="" name="keyword">
                         </div>
                         <button class="site-btn sb-gradient col-2">메뉴 검색</button>
                     	<div class="col"></div>
@@ -180,12 +180,15 @@
     	$(".active").trigger("click");
   /*   	$(".active").click(); */
 		/* $(".main-ctg-menu").find("p")[0].trigger("click"); */
-	    
-	    
-	   
-	    
     	
-    })
+    });
+    function searchIngMall(){
+    	let keyword = $("#search-input").val();
+    	if(keyword.length >= 1)
+    		return false;
+    	return true;
+    }
+
 
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

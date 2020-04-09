@@ -89,9 +89,10 @@
 	select 
 		*
 	from
-		tb_ingredient_mall
+		tb_ingredient_mall im
+        join tb_ingredient i on im.INGREDIENT_NO = i.INGREDIENT_NO
 	where
-		INGREDIENT_NO = (select INGREDIENT_NO from tb_ingredient where INGREDIENT_NAME like '%'||#{keyword}||'%')
+		i.INGREDIENT_NAME like '%'||#{keyword}||'%'
 </select>
 
 </mapper>

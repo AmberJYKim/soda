@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +34,8 @@ public class MallController {
 	@GetMapping("/main")
 	public void productList() {	}
 	
+	
+//	장바구니 가져오기
 	@GetMapping("/shoppingBasket")
 	public String shoppingBasketList(HttpSession session, Model model) {
 		
@@ -46,16 +47,18 @@ public class MallController {
 		
 		return "mall/shoppingBasket";
 	}
-	
+//	????
 	@GetMapping("/selectedProductList")
-	public String slectedProductList() {
+	public String selectedProductList() {
 		return "mall/selectedProductList";
 	}
+	
+//	장바구니 추가
 	@PostMapping(value = "/shopping/add", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String shoppingBasketAdd(@RequestParam("ingMallNo") int ingMallNo,
-								  @RequestParam(value = "stock", defaultValue = "1") int stock,
-								  HttpSession session) {
+								    @RequestParam(value = "stock", defaultValue = "1") int stock,
+								    HttpSession session) {
 		String memberId = ((Member)session.getAttribute("memberLoggedIn")).getMemberId();
 		
 		ShoppingBasket sb = new ShoppingBasket(ingMallNo, memberId, stock);
@@ -63,14 +66,18 @@ public class MallController {
 		log.debug("result--"+result);
 		return "장바구니에 넣었습니다!";
 	}
+	
 //	검색 결과
 	@GetMapping("/search")
-	public void search(@RequestParam("keyword") String keyword,
+	public String search(@RequestParam("keyword") String keyword,
 					   Model model) {
+		log.debug(keyword);
 		List<IngredientMall> list = mallService.selectIngMallSearch(keyword);
 		
 		model.addAttribute("list", list);
+		model.addAttribute("key",keyword);
 		
+		return "mall/searchResult";
 	}
 	
 // 뇸뇸몰 상품 상세페이지 이동 
