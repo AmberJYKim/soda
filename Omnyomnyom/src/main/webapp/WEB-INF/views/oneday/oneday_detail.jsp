@@ -42,6 +42,11 @@ h2{
 .onedayprice{
 	margin-bottom : 20px;
 }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
 
 
 </style>
@@ -191,7 +196,7 @@ function initTmap(){
                             </div>
                         </li>
                     </ul>
-                    <h3 class="comment-title">Leave a Reply</h3>
+                    
                     <form class="singup-form">
                         <div class="row">
                             <div class="col-md-6">
@@ -299,9 +304,9 @@ function initTmap(){
       							});                  		
                            		
                            	</script>
-                           	<%-- <c:if test="${not empty memberLoggedIn}"> --%>
+                           	
                             <input class="site-btn sb-gradient reservation_class" type="submit" value="신청하기"/>
-                        	<%-- </c:if> --%>
+                        	
                         </div>
                     </div>
                     <div class="sb-widget">
