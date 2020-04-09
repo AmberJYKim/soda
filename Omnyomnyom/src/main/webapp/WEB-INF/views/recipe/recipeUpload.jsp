@@ -157,7 +157,7 @@ function view_change(e) {
     } else {
     	$("#videoInput").val('');
     	$("#video_section").attr('src','').hide();
-        $("#url_upload").css('display', 'block');
+        $("#url_upload").css('display', 'flex');
         $("#video_upload").css('display', 'none');
     }
 };
@@ -309,7 +309,7 @@ function frmValidate(){
 							<span class="warning">*영상은 URL업로드 혹은 fileUpload중 한가지만 선택할 수 있습니다.</span>
 							<input type="button" id="video_btn" onclick="view_change(this);" value="영상으로 업로드하기">
                 			<input type="button" id="url_btn" onclick="view_change(this);" value="URL로 업로드하기">
-							<div class="oneday_class_img" id="video_upload">
+							<div class="oneday_class_img" id="video_upload" style="display: none;"	>
 								<div id="uploadbtn" class="uploadbtn" onclick="upload(this)">Upload Files</div>
 								<input name="uploadFile" type='file' id="videoInput" hidden/>
 								<video alt="" controls id="video_section">
@@ -319,7 +319,7 @@ function frmValidate(){
 								</video>
 							</div>
 							
-							<div class="input-group mb-3" id="url_upload" style="display: none;">
+							<div class="input-group mb-3" id="url_upload" >
 								<div class="input-group-prepend">
 								  <span class="input-group-text" id="basic-addon1">URL</span>
 								</div>

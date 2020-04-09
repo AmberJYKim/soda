@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.soda.onn.mall.model.vo.Ingredient;
+import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
 
 public interface RecipeDAO {
 
@@ -42,4 +44,14 @@ public interface RecipeDAO {
 	int insertScrap(Scrap scrap);
 
 	int increaseReadCount(int recipeNo);
+
+	List<IngredientMall> selectIngrMallListIn(Map listMap);
+
+	List<IngredientMall> selectIngrMallListNotIn(Map listMap, int i);
+
+	List<Recipe> selectRelRecipeList(RelRecipeSelecter rrs, int listSize);
+
+	List<Recipe> selectRelRecipeListPr(RelRecipeSelecter rrs, int i);
+
+	List<Recipe> selectRelRecipeListAll(RelRecipeSelecter rrs, int i);
 }

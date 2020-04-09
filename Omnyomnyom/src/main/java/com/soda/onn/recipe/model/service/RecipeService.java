@@ -10,6 +10,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RecipeReply;
 
 public interface RecipeService {
 
@@ -42,4 +43,8 @@ public interface RecipeService {
 	int insertScrap(Scrap scrap);
 
 	List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList);
+
+	List<Recipe> selectRelRecipeList(Recipe recipe);
+
+	List<RecipeReply> selectReplyList(int recipeNo);
 }
