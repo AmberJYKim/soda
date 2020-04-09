@@ -133,6 +133,11 @@
 			and 
 			recipe_no= #{recipeNo}
 	</delete>
+	<update id="increaseReadCount">
+		update tb_recipe 
+		set view_count = view_count +1 
+		where recipe_no = #{recipeNo}
+	</update>
 	
 	<resultMap type="scrap" id="scrapMap">
 		<result column="member_id" property="scrapId"/>

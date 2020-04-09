@@ -1,13 +1,14 @@
 package com.soda.onn.recipe.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.soda.onn.mall.model.vo.Ingredient;
+import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.dao.RecipeDAO;
 import com.soda.onn.recipe.model.vo.Like;
@@ -15,7 +16,9 @@ import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class RecipeServiceImpl implements RecipeService {
 	
@@ -45,7 +48,7 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public int recipeUpload(Recipe recipe, List<RecipeIngredient> ingredientList) {
 		int result = recipeDAO.recipeUpload(recipe);
-		Log.debug("recipeNo={}",recipe.getRecipeNo());
+		log.debug("recipeNo={}",recipe.getRecipeNo());
 		
 		if(result >0) {
 			for(RecipeIngredient ingr : ingredientList) {
@@ -58,7 +61,13 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public Recipe selectRecipeOne(int recipeNo) {
+	public Recipe selectRecipeOne(int recipeNo,boolean hasRead) {
+		int result = 0;
+		
+		if(!hasRead) {
+			result = recipeDAO.increaseReadCount(recipeNo);
+		}
+		
 		return recipeDAO.selectRecipeOne(recipeNo);
 	}
 
@@ -100,5 +109,19 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public int insertScrap(Scrap scrap) {
 		return recipeDAO.insertScrap(scrap);
+	}
+
+	@Override
+	public List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList) {
+		List<RecipeIngredient> selectList = new ArrayList<RecipeIngredient>();
+		
+		for(RecipeIngredient r : ingredientList) {
+			if(r.getIngredientNo() != 0)
+				selectList.add(r);
+		}
+		
+		log.debug("{}",selectList);
+		
+		return null;
 	}
 }

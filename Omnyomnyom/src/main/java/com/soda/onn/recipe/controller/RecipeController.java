@@ -1,6 +1,8 @@
 package com.soda.onn.recipe.controller;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
@@ -51,6 +53,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.soda.onn.mall.model.vo.Ingredient;
+import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.service.RecipeService;
@@ -77,9 +80,38 @@ public class RecipeController {
 	
 	
 	@GetMapping("/recipe-details")
-	public void recipedetails(@RequestParam("recipeNo")int recipeNo,
+	public String recipedetails(@RequestParam("recipeNo")int recipeNo,
 							  HttpServletRequest request,
+							  HttpServletResponse response,
 							  Model model) {
+		
+		Cookie[] cookies = request.getCookies();
+		String recipeCookieVal = "";
+		boolean hasRead = false;
+		
+		if(cookies != null) {
+			for(Cookie c : cookies) {
+				String name = c.getName();
+				String value = c.getValue();
+				if("recipeCookie".equals(name)) {
+					recipeCookieVal = value;
+					if(value.contains("|"+ recipeNo +"|")) {
+						hasRead=true;
+						break;
+					}
+				}
+						
+			}
+		}
+		
+		if(hasRead == false) {
+			recipeCookieVal = recipeCookieVal + "|"+ recipeNo +"|";
+			Cookie recipeCookie = new Cookie("recipeCookie",recipeCookieVal);
+			recipeCookie.setMaxAge(7*24*60*60);
+			recipeCookie.setPath(request.getContextPath()+"/recipe");
+			response.addCookie(recipeCookie);
+		}
+		
 		Member member = (Member)request.getSession().getAttribute("memberLoggedIn");
 		Like l =null;
 		Scrap s = null;
@@ -96,14 +128,17 @@ public class RecipeController {
 		}
 		log.debug("{}",l);
 		
-		Recipe recipe = recipeService.selectRecipeOne(recipeNo);
+		Recipe recipe = recipeService.selectRecipeOne(recipeNo,hasRead);
 		
 		recipe.setIngredientList(recipeService.selectRecIngList(recipeNo));
+		
+		List<IngredientMall> ingrMallList = recipeService.selectingrMallList(recipe.getIngredientList());
 		
 		model.addAttribute("scrap",s);
 		model.addAttribute("isLiked",l);
 		model.addAttribute("recipe",recipe);
 		
+		return "/recipe/recipe-details";
 	}
 	
 	@GetMapping("/recipeUpload")

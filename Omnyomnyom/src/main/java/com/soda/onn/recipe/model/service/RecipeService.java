@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.soda.onn.mall.model.vo.Ingredient;
+import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
@@ -22,7 +23,7 @@ public interface RecipeService {
 
 	List<Ingredient> ingredientAjax(String ingr);
 
-	Recipe selectRecipeOne(int recipeNo);
+	Recipe selectRecipeOne(int recipeNo, boolean hasRead);
 
 	List<RecipeIngredient> selectRecIngList(int recipeNo);
 
@@ -39,4 +40,6 @@ public interface RecipeService {
 	int deleteScrap(Scrap scrap);
 
 	int insertScrap(Scrap scrap);
+
+	List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList);
 }

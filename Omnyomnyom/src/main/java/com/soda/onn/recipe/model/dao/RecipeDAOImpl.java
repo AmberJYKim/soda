@@ -103,4 +103,9 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	public int insertScrap(Scrap scrap) {
 		return sqlSession.insert("recipe.insertScrap", scrap);
 	}
+
+	@Override
+	public int increaseReadCount(int recipeNo) {
+		return sqlSession.update("recipe.increaseReadCount", recipeNo);
+	}
 }
