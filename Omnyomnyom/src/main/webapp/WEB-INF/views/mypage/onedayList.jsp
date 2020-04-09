@@ -7,7 +7,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
 	<jsp:param value="" name="pageTitle"/>
 </jsp:include>
-	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/chef-list.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/chef-list.css"/>
 <!-- 아이디, 비밀번호, 닉네임, 이름,연락처, 이메일, 주소(선택) , 생년월일  -->
 	<div class="container">
 		<div class="section">
@@ -33,13 +33,15 @@
 								<div class="col-2">예약 상태</div>
 							</div>
 							<br>
-							<div class="row">
-								<div class="col-4">원데이 클래스 이름</div>
-								<div class="col-3">2020.03.25<br>18:00 ~ 19:00</div>
-								<div class="col-1">3 명</div>
-								<div class="col-2">18000원<br>(인당 6000원)</div>
-								<div class="col-2">진행중</div>
-							</div>
+							<c:forEach var="res" items="${list }">
+								<div class="row">
+									<div class="col-4">#{res.oneday }</div>
+									<div class="col-3">2020.03.25<br>18:00 ~ 19:00</div>
+									<div class="col-1">3 명</div>
+									<div class="col-2">18000원<br>(인당 6000원)</div>
+									<div class="col-2">진행중</div>
+								</div>
+							</c:forEach>
 							<hr>
 							<div class="row">
 								<div class="col-4">원데이 클래스 이름</div>
