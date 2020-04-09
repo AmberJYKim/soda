@@ -12,26 +12,21 @@
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
 
  <script>
-            $(() => {
+            $(document).ready(function(){
                 $("#Ylist").hide();
                 
                 
                 $("section .row .chef_list").on("click", function(e) {
                 	
-                
-                	
                 	$("h6.chefSelectOne").removeClass("chefPageGo");
                     $(".image_overflow_hidden").css("box-shadow", "none");
                     $(this).find(".image_overflow_hidden").css("box-shadow", "#4949E7 0px 0px 0px 4.5px");
                     console.log($(this));
+                    
                     $("#Ylist").show();
                     $(this).find("h6").addClass("chefPageGo");
-                    
-                    
+           
                 });
-                
-     
-
             });
  </script>
 

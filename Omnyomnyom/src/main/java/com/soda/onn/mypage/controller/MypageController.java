@@ -108,8 +108,8 @@ public class MypageController {
 		model.addAttribute("reservationList", reservationList);
 	}
 	
-	@GetMapping("/qnaMsg")
-	public void qnaMsg() {
+	@GetMapping("/directMsg")
+	public void directMsg() {
 		
 	}
 	
