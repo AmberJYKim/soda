@@ -317,7 +317,7 @@
 			<div class="infor-middle">
 				<!-- 로그인 후 간단한 회원정보 출력해줌 -->
 				<a href="#" class="infor-logo">
-					<img src="img/user.png" alt="">
+					<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="">
 				</a>
 				<p><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
 
@@ -328,7 +328,7 @@
 						<c:when test="${memberLoggedIn.memberRoll eq 'A' }">
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="img/infor/back.PNG" alt="">
+									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/mallManage"> 
 										<p>주문내역확인</p>
@@ -338,7 +338,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="img/infor/back.PNG" alt="">
+									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/mallManage"> 
 										<p>상품관리</p>
@@ -348,7 +348,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="img/infor/back.PNG" alt="">
+									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/chefRequestList"> 
 										<p>셰프신청목록</p>
@@ -358,7 +358,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="img/infor/back.PNG" alt="">
+									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/reportList"> 
 										<p>신고현황</p>
@@ -368,7 +368,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="img/infor/back.PNG" alt="">
+									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/memberList"> 
 										<p>회원조회</p>
@@ -378,7 +378,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="img/infor/back.PNG" alt="">
+									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/qnaMsg"> 
 										<p>문의내역</p>
@@ -392,7 +392,7 @@
 									
 								<div class="insta-item">
 									<div class="insta-img">
-										<img src="img/infor/back.PNG" alt="">
+										<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
 										<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/chef/chefpage">
 											<p>채널가기</p>
@@ -402,7 +402,7 @@
 								</div>
 								<div class="insta-item">
 									<div class="insta-img">
-										<img src="img/infor/back.PNG" alt="">
+										<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
 										<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/recipe/recipeUpload">
 											<p>레시피 등록</p>
@@ -412,7 +412,7 @@
 								</div>
 								<div class="insta-item">
 									<div class="insta-img">
-										<img src="img/infor/back.PNG" alt="">
+										<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
 										<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/oneday/insert">
 											<p>원데이 등록</p>
@@ -423,9 +423,9 @@
 							</c:if>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="img/infor/back.PNG" alt="">
+									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath }/mypage/ondayList">
+									<a href="${pageContext.request.contextPath }/mypage/onedayList">
 										<p>예약확인</p>
 									</a>
 									</div>
@@ -433,7 +433,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="img/infor/back.PNG" alt="">
+									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
 									<div class="insta-hover">
 									<a href="${pageContext.request.contextPath }/mypage/buyList">
 										<p>구매목록</p>
