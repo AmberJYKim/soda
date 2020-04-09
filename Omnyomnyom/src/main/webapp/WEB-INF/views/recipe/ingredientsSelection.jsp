@@ -25,6 +25,10 @@
         </div>
     </div>
 </section>
+
+<style>	
+
+</style>
 <section class="overflow-hidden spad">
 
 	<div class="container col-md-12">
@@ -105,23 +109,25 @@
 	<div class="container col-md-12">
 		<div class="container">
 			<!-- 영상리스트 섹션 -->
+			
 			<div class="row Ylist" id="Ylist">
 				<c:if test="${not empty popRecipe}">
+			
 					<c:forEach items="${popRecipe}" var="rec">
 					<div class="col-xs-6 col-sm-3 placeholder chef_list">
 						<a
-							href="${pageContext.request.contextPath }/recipe/recipeNo=<%-- ${rec.recipeNo } --%>"><img
+							href="${pageContext.request.contextPath }/recipe/recipe-details?recipeNo=${rec.recipeNo }"><img
 							src="https://img.youtube.com/vi/${rec.videoLink }/mqdefault.jpg" alt=""
 							class="chef-Thumbnail">
-							<p class="chef-Thumbnail-title">${rec.videoTitle }</p></a>
+							<div class="forTitle"><p class="chef-Thumbnail-title">${rec.videoTitle }</p></div></a>
 						<div class="row">
 							<div class="col-8">
-								<img src="${rec.chefProfile }" class="" alt=""
+								<img src="${pageContext.request.contextPath }/resources/upload/profile/${rec.chefProfile }" class="" alt=""
 									style="width: 40px; height: 40px; border-radius: 50%;"> <span
 									class="chef-min-name">${rec.chefNick }</span>
 							</div>
-							<div class="col-4 chef-view-count">
-								<span>${rec.viewCount }</span>
+							<div class="col- chef-view-count">
+								<span><small>조회수 : ${rec.viewCount }</small></span>
 							</div>
 						</div>
 					</div>

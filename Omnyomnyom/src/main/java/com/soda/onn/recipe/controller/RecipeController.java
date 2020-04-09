@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
+import org.apache.jasper.tagplugins.jstl.core.Redirect;
+
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -31,6 +33,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.soda.onn.common.base.PageBar;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -59,6 +64,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -242,8 +248,11 @@ public class RecipeController {
 	@GetMapping("/recipe-menu-search")
 	public ModelAndView recipemenusearch(ModelAndView mav) {
 		List<RecipeWithIngCnt> popRecipe = recipeService.selectPopRecipe();
-		List<String> menuCtg = recipeService.selectMenuCtg();
+		// 메뉴카테고리 가져오기 완성하기
+		List<MenuCategory> categoryList = recipeService.selectCategoryList();
 		
+		
+		mav.addObject("menuCategory", categoryList);
 		mav.addObject("popRecipe", popRecipe);
 		mav.setViewName("recipe/recipe-menu-search");
 		
@@ -485,6 +494,24 @@ public class RecipeController {
 		
 		return new Gson().toJson(maps);
 		
+	}
+	
+	//메뉴이름으로 레시피 검색하기
+	@GetMapping("searchByMenu")
+	public ModelAndView recipeSearchByMenu(@RequestParam("searchKeyword") String searchKey) {
+		ModelAndView mav = new ModelAndView();
+		
+		
+		log.debug(searchKey);
+		
+		List<RecipeWithIngCnt> rList = recipeService.recipeSearchByMenu(searchKey);	
+		
+		
+		log.debug(""+rList.toString());
+		mav.addObject("searchedList", rList);
+		mav.setViewName("/recipe/recipe-menu-search");
+		
+		return mav;
 	}
 	
 	

@@ -31,7 +31,7 @@ $().ready(function(){
 				
 				console.log(ingredientNo);
 				
-				let tags = '<p class="'+tname+'" data-ingredientno="'+ingredientNo+'"> <i class="fab fa-slack-hash" />'+tname+'<small><i class="fas fa-times"></i></small></p>';
+				let tags = '<p class="'+tname+'" data-ingredientno="'+ingredientNo+'"> <i class="fab fa-slack-hash" />'+tname+'</p><p><small><i class="fas fa-times"></i></small></p>';
 				$(".selected-ingredients").append(tags);
 			}
 			else{
@@ -228,10 +228,10 @@ $().ready(function(){
 				$.each(RList, function(index, item){
 					let eachRecipe = '<div class="col-xs-6 col-sm-3 placeholder chef_list">' +
 									'<a href="'+contextPath+'/recipe/recipe-details?recipeNo='+item.recipeNo+'"><img src="https://img.youtube.com/vi/'+item.videoLink+'/mqdefault.jpg" alt="" class="chef-Thumbnail">'+
-									'<p class="chef-Thumbnail-title">'+item.videoTitle+'<small>(포함된 재료:'+item.includeNo+'개)</small></p></a>' +
+									'<div class="forTitle"><p class="chef-Thumbnail-title">'+item.videoTitle+'</p><p><small>(포함된 재료:'+item.includeNo+'개)</small></p></div></a>' +
 									'<div class="row"> <div class="col-8">'+
 									'<img src="'+item.chefProfile+'" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;"> <span class="chef-min-name">'+item.chefNick+'</span></div>' +						
-									'<div class="col-4 chef-view-count"> <span> 조회수 :'+item.viewCount+'</span> </div>'+
+									'<div class="col-4 chef-view-count"> <span><small> 조회수 :'+item.viewCount+'</span> </small></div>'+
 									'</div> </div>';
 					
 					

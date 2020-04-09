@@ -48,6 +48,7 @@ public interface RecipeDAO {
 
 	List<Ingredient> selectPopIngredient(Map<String, Object> maps);
 
-	List<String> selectMenuSubCtg();
+	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
+
 
 }

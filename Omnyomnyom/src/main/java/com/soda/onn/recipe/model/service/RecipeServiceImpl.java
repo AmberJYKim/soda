@@ -119,8 +119,10 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public  List<String> selectMenuCtg() {
-		return recipeDAO.selectMenuSubCtg();
+	public List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey) {
+		return recipeDAO.recipeSearchByMenu(searchKey);
 	}
+
+
 
 }

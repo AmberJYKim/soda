@@ -120,11 +120,10 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	}
 
 	@Override
-	public List<String> selectMenuSubCtg() {
-		return sqlSession.selectList("recipe.selectMenuSubCtg");
+	public List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey) {
+		return sqlSession.selectList("recipe.recipeSearchByMenu", searchKey);
 	}
 
 
-	
 	
 }

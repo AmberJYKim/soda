@@ -47,6 +47,7 @@ public interface RecipeService {
 
 	List<Ingredient> selectPopIngredient(Map<String, Object> maps);
 
-	List<String> selectMenuCtg();
+	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
+
 
 }
