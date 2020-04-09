@@ -59,11 +59,14 @@ public class MypageController {
 	
 	private RowBounds rowBounds = null;
 	
+	
+	//마이페이지 클릭시 첫 화면(회원정보수정 화면)
 	@GetMapping("/main")
 	public void mypageMain() {
 		
 	}
-		
+	
+	//회원정보수정
 	@GetMapping("/updateinfo")
 	public String updateInfo(HttpSession session,
 							 RedirectAttributes redirectAttributes,
@@ -103,27 +106,19 @@ public class MypageController {
 		model.addAttribute("chefRequest", chefRequest);
 	}
 	
+	//원데이클래스예약 목록 확인
 	@GetMapping("/onedayList")
 	public void onedayList(HttpSession session, 
 						   Model model,
 						   @RequestParam(value="cPage", defaultValue="1") int cPage) {
-		
-		System.out.println("onedayList 메소드입니다");
-		System.out.println("세션 속성 = "+session.getAttribute("memberLoggedIn"));
-		
+
 		int numPerPage = 15;
 		
-		System.out.println("-------------------------------------------------");
 		Member member = (Member)session.getAttribute("memberLoggedIn");
 		
-		System.out.println("session객체를 member객체에 대입 = "+member);
 		String memberId = member.getMemberId();
-		
-		System.out.println("String에 member객체 id값만 대입 = "+memberId);
-		System.out.println("-------------------------------------------------");
+		log.debug("onedayList memberId={}", memberId);
 
-		
-		
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
 		log.debug("reservationList={}",reservationList);
@@ -135,6 +130,7 @@ public class MypageController {
 		
 	}
 	
+	//일반유저 스크랩 목록
 	@GetMapping("/scrapList")
 	public ModelAndView scrapList(HttpSession session,
 								 @RequestParam(value="cPage", defaultValue="1") int cPage, 
@@ -144,8 +140,7 @@ public class MypageController {
 		
 		Member member = (Member)session.getAttribute("memberLoggedIn");
 		String memberId = member.getMemberId();
-		
-		
+		log.debug("scrapList memberId={}", memberId);
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -173,6 +168,7 @@ public class MypageController {
 		return mav;
 	}
 	
+	//스크랩 삭제
 	@GetMapping("/deleteScrap")
 	public String deleteScrap(@RequestParam("recipeNo") int recipeNo,
 							  RedirectAttributes redirectAttributes) {
@@ -183,20 +179,20 @@ public class MypageController {
 		return "redirect:/mypage/scrapList";
 	}
 	
+	//스크랩 메모 수정
 	@GetMapping("updateScrap")
 	public String updateScrap(Scrap scrap,
 							  HttpSession session,
 							  RedirectAttributes redirectAttributes) {
-		System.out.println(session.getAttribute("memberLoggedIn"));
-		System.out.println("mypageController@updateScrap 메소드 scrap객체 = "+scrap);
+
 		Member scrapId = (Member)session.getAttribute("memberLoggedIn");
-		System.out.println(scrapId.getMemberId());
-		System.out.println("=============================");
+		log.debug("updateScrap scrapId.getMemberId()={}", scrapId.getMemberId());
+
 		scrap.setScrapId(scrapId.getMemberId());
-		System.out.println(scrap);
+		log.debug("updateScrap scrap={}", scrap);
 		
 		int result = mypageService.updateScrap(scrap);
-		System.out.println("mypageController@updateScrap 결과값  = "+result);
+		log.debug("updateScrap result={}", result);
 				
 		redirectAttributes.addFlashAttribute("msg", result>0?"스크랩 메모 수정 성공.":"스크랩 메모 수정 실패.");
 		

@@ -14,13 +14,12 @@
 		<div class="section">
 			<div class="row">
 				<div class="col side_nav">
-					<p class="nav_text ">내 정보보기</p>
-					<p class="nav_text selected_nav	">스크랩목록</p>
-					<p class="nav_text ">예약목록</p>
-					<p class="nav_text ">구매목록</p>
-					<p class="nav_text">셰프 문의</p>
-					<p class="nav_text">1:1 문의</p>
-					
+					<a href="${pageContext.request.contextPath}/mypage/main"><p class="nav_text">내 정보보기</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/onedayList"><p class="nav_text ">예약목록</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/"><p class="nav_text ">구매목록</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/"><p class="nav_text ">1:1 문의</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/scrapList"><p class="nav_text selected_nav">스크랩 목록</p></a>
+					<a href="${pageContext.request.contextPath}/chef/chefInsert"><p class="nav_text">셰프신청</p></a>
 				</div>
 				<div class="col-10">
 					<h4 class="border_bottom">스크랩 목록</h4>
@@ -38,7 +37,6 @@
 						<tbody>
 							<c:forEach var="scrap" varStatus="vs" items="${list }">
 							      <tr class="user-select-area">
-									
 										<th scope="row">${scrap.recipeNo }</th>
 										<td class="user-id">${scrap.videoTitle}</td>
 										<td>${scrap.chefNick }</td>

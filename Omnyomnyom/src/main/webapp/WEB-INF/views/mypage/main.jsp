@@ -18,7 +18,7 @@
 					<a href="${pageContext.request.contextPath}/mypage/onedayList"><p class="nav_text ">예약목록</p></a>
 					<a href="${pageContext.request.contextPath}/mypage/"><p class="nav_text ">구매목록</p></a>
 					<a href="${pageContext.request.contextPath}/mypage/"><p class="nav_text ">1:1 문의</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/scrapList"><p class="nav_text">스크립 목록</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/scrapList"><p class="nav_text">스크랩 목록</p></a>
 					<a href="${pageContext.request.contextPath}/chef/chefInsert"><p class="nav_text">셰프신청</p></a>
 				</div>
 				
