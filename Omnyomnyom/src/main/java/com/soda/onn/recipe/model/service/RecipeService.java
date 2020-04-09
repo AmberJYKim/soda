@@ -5,11 +5,13 @@ import java.util.Map;
 import com.soda.onn.recipe.model.vo.Report;
 import com.soda.onn.admin.controller.Report;
 import com.soda.onn.mall.model.vo.Ingredient;
+import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RecipeReply;
 
 public interface RecipeService {
 
@@ -23,7 +25,7 @@ public interface RecipeService {
 
 	List<Ingredient> ingredientAjax(String ingr);
 
-	Recipe selectRecipeOne(int recipeNo);
+	Recipe selectRecipeOne(int recipeNo, boolean hasRead);
 
 	List<RecipeIngredient> selectRecIngList(int recipeNo);
 
@@ -41,5 +43,11 @@ public interface RecipeService {
 
 	int insertScrap(Scrap scrap);
 
-	List<Report> selectReportList();
+// 	List<Report> selectReportList();
+
+  List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList);
+
+	List<Recipe> selectRelRecipeList(Recipe recipe);
+
+	List<RecipeReply> selectReplyList(int recipeNo);
 }

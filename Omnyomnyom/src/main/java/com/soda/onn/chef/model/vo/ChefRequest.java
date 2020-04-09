@@ -35,6 +35,7 @@ public class ChefRequest implements Serializable{
 	private String chefReqOk;
 	
 	private Map<String, String> snsMap;
+	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

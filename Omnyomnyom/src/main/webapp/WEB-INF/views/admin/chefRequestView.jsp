@@ -19,7 +19,7 @@
 	<jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
 	</jsp:include>
 
-  
+  	<script src="${pageContext.request.contextPath }/resources/js/class-insert.js"></script>
     <!--  해당 페이지 css-->
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/chefInsert.css" />
 
@@ -178,8 +178,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col text-center">
-                        <h2 class="tm-section-title">셰프 신청</h2>
-                        <p class="tm-color-white tm-section-subtitle">당신을 응원합니다.</p>
+                        <h2 class="tm-section-title">셰프 신청목록 </h2>
+                        <!-- <p class="tm-color-white tm-section-subtitle">당신을 응원합니다.</p> -->
                     </div>
                 </div>
             </div>
@@ -199,10 +199,8 @@
     <!-- Event Details Section -->
     <section class="event-details-section spad overflow-hidden">
         <div class="container">
-            <form action="${pageContext.request.contextPath}/chef/chefInsert" 
-            	  method="POST"
-            	  onsubmit=""
-            	  enctype="multipart/form-data">
+      
+            
               <%-- <%Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
               	System.out.println(memberLoggedIn.getMemberId());%> --%>
 				 <input type="text" name="chefId" value="${memberLoggedIn.memberId}" hidden/> 
@@ -215,7 +213,10 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">주 종목</span>
                     </div>
-                    <input type="text" class="form-control" name="menuPrCategory" class="some_class_name"  aria-label="Username" aria-describedby="basic-addon1">
+                  
+                    <input type="text" class="form-control" name="menuPrCategory" class="some_class_name"  
+                    		value="${categoryStr }" aria-label="Username" aria-describedby="basic-addon1" readonly>
+                    
                 </div>
 
                 <div class="row" style="margin-top:100px;">
@@ -226,9 +227,8 @@
                         <hr>
                         <p style="font-size: 10px; color:red;">*규격은 200px*200px 입니다.</p>
                         <div class="chef_img">
-                            <div id="uploadbtn" onclick="upload(this)">Upload Files</div>
-                            <input type='file' name="chefProfileimg" id="imgInput" hidden/>
-                            <img src="#" alt="" id="image_section">
+                            <img src="${pageContext.request.contextPath }/resources/upload/profile/${chefRequest.chefProfile}" 
+                            	 style="display: inline-block !important;"alt="" id="image_section">
                         </div>
 
                     </div>
@@ -241,7 +241,7 @@
                         <p style="font-size: 10px; color:red; margin-left:5px; float: right; position:relative; top: 25px;">*채널명은 닉네임과 동일하게 진행됩니다.</p>
                         <span class="input input--yoshiko">
                                     <!-- 클래스명 input -->
-                                    <input class="input__field input__field--yoshiko" type="text" id="input-class-name" name="chefNickName" value="${memberLoggedIn.memberNick }" readonly />
+                                    <input class="input__field input__field--yoshiko" type="text" id="input-class-name" name="chefNickName" value="${chefRequest.chefNickName }" readonly />
                                     <!-- 클래스명 라벨 -->
                                     <label class="input__label input__label--yoshiko" for="input-class-name">
                                         <span class="input__label-content input__label-content--yoshiko" data-content="채널명(닉네임)">채널명(닉네임)</span>
@@ -252,7 +252,7 @@
                         <p style="font-size: 10px; color:red; margin-left:5px; float: right; position:relative; top: 25px;">*운영하시는 사업장을 홍보해 드립니다. (업장명/주소)</p>
                         <span class="input input--yoshiko">
                                     <!-- 클래스명 input -->
-                                    <input class="input__field input__field--yoshiko" name="businessInfo" type="text" id="input-class-name" />
+                                    <input class="input__field input__field--yoshiko" name="businessInfo" type="text" id="input-class-name" value="${chefRequest.businessInfo}" readonly/>
                                     <!-- 클래스명 라벨 -->
                                     <label class="input__label input__label--yoshiko" for="input-class-name">
                                         <span class="input__label-content input__label-content--yoshiko" data-content="사업장 정보">사업장 정보</span>
@@ -262,14 +262,14 @@
                     <!-- sns 정보 등록  -->
                     <div class="col-lg-12">
                         <hr>
-                        <h3 class="mall_isnert_title title_auto">SNN 등록</h3>
-                        <p class="title_info">셰프님의 sns의 아이디를 등록해 주세요.</p>
+                        <h3 class="mall_isnert_title title_auto">SNN </h3>
+                        <p class="title_info">셰프님의 sns 정보입니다. </p>
                         <hr>
                     </div>
                     <div class="col-lg-6">
                         <span class="input input--yoshiko">
                             <!-- 클래스명 input -->
-                            <input class="input__field input__field--yoshiko"  type="text" name="facebook" id="input-class-name" />
+                            <input class="input__field input__field--yoshiko"  type="text" name="facebook" id="input-class-name" value="${snsMap['facebook']}" />
                             <!-- 클래스명 라벨 -->
                             <label class="input__label input__label--yoshiko" for="input-class-name">
                                 <span class="input__label-content input__label-content--yoshiko" data-content="페이스북">페이스북</span>
@@ -279,7 +279,7 @@
                     <div class="col-lg-6">
                         <span class="input input--yoshiko">
                             <!-- 클래스명 input -->
-                            <input class="input__field input__field--yoshiko" type="text" name="insta" id="input-class-name" />
+                            <input class="input__field input__field--yoshiko" type="text" name="insta" id="input-class-name" value="${snsMap['insta ']}"/>
                             <!-- 클래스명 라벨 -->
                             <label class="input__label input__label--yoshiko" for="input-class-name">
                                 <span class="input__label-content input__label-content--yoshiko" data-content="인스타그램">인스타그램</span>
@@ -298,20 +298,22 @@
                 <div class="row">
                     <div class="col-lg-12 m-auto">
                         <!-- 영상으로 업로드  -->
+                     <c:if test="">
                         <div class="vidoe_upload" id="video_upload">
                             <div id="vidoe_uploadbtn" class="uploadbtn" onclick="videoUpload(this)">Upload Files</div>
                             <input  type='file' id="videoInput" name="chefApVideoimg" hidden/>
                             <!-- <img src="#" alt="" id="image_section"> -->
-                            <video alt="" controls id="video_section">
+                            <video alt="" controls id="video_section" src="${pageContext.request.contextPath }/resources/upload/chefApVideo/${chefRequest.chefApVideo}">
                                 <!-- <source class="image_section_src" src="#" type='video/webm; codecs="vp8.0, vorbis"'>
                                 <source class="image_section_src" src="#" type='video/ogg; codecs="theora, vorbis"'> -->
                                 <!-- <source class="image_section_src" src="#" type='video/mp4'> -->
                             </video>
                         </div>
+                       </c:if>
                         <!-- url 업로드  -->
                         <span class="input input--yoshiko" style="display:none" id="url_upload">
                             <!-- 클래스명 input -->
-                            <input class="input__field input__field--yoshiko" type="text" id="input-class-name" name="chefApRink"/>
+                            <input class="input__field input__field--yoshiko" type="text" id="input-class-name" value="${chefRequest.chefApVideo}" />
                             <!-- 클래스명 라벨 -->
                             <label class="input__label input__label--yoshiko" for="input-class-name">
                                 <span class="input__label-content input__label-content--yoshiko" data-content="영상 링크">영상 링크</span>
@@ -323,18 +325,20 @@
                 <h3 class="mall_isnert_title title_auto">자기소개 등록</h3>
                 <p class="title_info">셰프님의 간략한 자기 소개 부탁드립니다. </p>
                 <hr>
-                <textarea cols="118" rows="10" name="chefContent"></textarea>
+                <div cols="118" rows="10" name="chefContent">${chefRequest.chefContent }</div>
                 <div class="sb-widget">
-                    <!-- 셰프 신청버튼 -->
-                    <input type="submit" class="site-btn sb-gradient reservation_class" value="등록하기">
+                 <form style="display: none" action="${pageContext.request.contextPath }/admin/chefRequest" method="POST" id="request_put">
+					  <input type="hidden" id="chefId" name="chefId" value="${chefRequest.chefId }"/>
+					  <input type="hidden" id="variable" name="variable" value=""/>
+			     </form>
+					<input type="button" class="site-btn sb-gradient reservation_class ac_ok_btn" value="셰프수락 ">
+                    <input type="button" class="site-btn sb-gradient reservation_class ac_no_btn" value="셰프거절 ">
                 </div>
-            </form>
-           
         </div>
     </section>
-   <script src="${pageContext.request.contextPath }/resources/js/classie.js"></script>
+  <script src="${pageContext.request.contextPath }/resources/js/classie.js"></script>
   <script>
-        (function() {
+        $(function() {
             // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
             if (!String.prototype.trim) {
                 (function() {
@@ -364,6 +368,17 @@
                     classie.remove(ev.target.parentNode, 'input--filled');
                 }
             }
-        })();
+            //submit 버튼 
+            	$(".ac_ok_btn").on("click",function(){
+					$("#variable").val("Y");
+					$("#request_put").submit();
+				});
+				
+				$(".ac_no_btn").on("click",function(){
+					$("#variable").val("N");
+					$("#request_put").submit();
+				});
+            
+        });
     </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
