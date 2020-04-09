@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.soda.onn.mall.model.vo.Ingredient;
+import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
 
 @Repository
 public class RecipeDAOImpl  implements RecipeDAO{
@@ -107,5 +109,34 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	@Override
 	public int increaseReadCount(int recipeNo) {
 		return sqlSession.update("recipe.increaseReadCount", recipeNo);
+	}
+
+	@Override
+	public List<IngredientMall> selectIngrMallListIn(Map listMap) {
+		return sqlSession.selectList("recipe.selectIngrMallListIn", listMap);
+	}
+
+	@Override
+	public List<IngredientMall> selectIngrMallListNotIn(Map listMap, int i) {
+		RowBounds rowBounds = new RowBounds(0, i);
+		return sqlSession.selectList("recipe.selectIngrMallListNotIn", listMap, rowBounds);
+	}
+
+	@Override
+	public List<Recipe> selectRelRecipeList(RelRecipeSelecter rrs, int listSize) {
+		RowBounds rowBounds = new RowBounds(0, listSize);
+		return sqlSession.selectList("recipe.selectRelRecipeList", rrs, rowBounds);
+	}
+
+	@Override
+	public List<Recipe> selectRelRecipeListPr(RelRecipeSelecter rrs, int i) {
+		RowBounds rowBounds = new RowBounds(0, i);
+		return sqlSession.selectList("recipe.selectRelRecipeListPr", rrs, rowBounds);
+	}
+
+	@Override
+	public List<Recipe> selectRelRecipeListAll(RelRecipeSelecter rrs, int i) {
+		RowBounds rowBounds = new RowBounds(0, i);
+		return sqlSession.selectList("recipe.selectRelRecipeListAll", rrs, rowBounds);
 	}
 }

@@ -1,6 +1,7 @@
 package com.soda.onn.recipe.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,8 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RecipeReply;
+import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -114,14 +117,68 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList) {
 		List<RecipeIngredient> selectList = new ArrayList<RecipeIngredient>();
-		
+		int mallSize = 15;
 		for(RecipeIngredient r : ingredientList) {
 			if(r.getIngredientNo() != 0)
 				selectList.add(r);
 		}
+		Map listMap = new HashMap<String, List<RecipeIngredient>>();
 		
-		log.debug("{}",selectList);
+		listMap.put("selectList", selectList);
 		
+		log.debug("{},{}",listMap.get("selectList"), selectList.size());
+		
+		List<IngredientMall> mallList = null;
+		
+		if(selectList.size() >0)
+			mallList = recipeDAO.selectIngrMallListIn(listMap);
+		else
+			mallList = new ArrayList<IngredientMall>();
+		
+		log.debug("{},{}",mallList, mallList.size());
+		List<IngredientMall> addList = null;
+		if(mallList.size()<mallSize) {
+			addList = recipeDAO.selectIngrMallListNotIn(listMap,mallSize-mallList.size());
+			log.debug("{}",addList);
+			mallList.addAll(addList);
+		}
+		
+		
+		
+		return mallList;
+	}
+
+	@Override
+	public List<Recipe> selectRelRecipeList(Recipe recipe) {
+		int listSize = 5;
+		RelRecipeSelecter rrs = new RelRecipeSelecter(recipe.getCategory(), recipe.getRecipeNo(), null);
+		
+		List<Recipe> relRecipes = recipeDAO.selectRelRecipeList(rrs,listSize);
+		
+		if(relRecipes == null)
+			relRecipes = new ArrayList<Recipe>();
+		
+		rrs.setCategory(recipe.getCategory().split("/")[0]);
+		rrs.setRelRecipeList(relRecipes);
+		
+		if(relRecipes.size()<listSize) {
+			List<Recipe> prRelRecipes = recipeDAO.selectRelRecipeListPr(rrs,listSize-relRecipes.size());
+			relRecipes.addAll(prRelRecipes);
+		}
+
+		rrs.setRelRecipeList(relRecipes);
+		
+		if(relRecipes.size()<listSize) {
+			List<Recipe> allRelRecipes = recipeDAO.selectRelRecipeListAll(rrs,listSize-relRecipes.size());
+			relRecipes.addAll(allRelRecipes);
+		}
+		
+		return relRecipes;
+	}
+
+	@Override
+	public List<RecipeReply> selectReplyList(int recipeNo) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

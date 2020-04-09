@@ -138,6 +138,92 @@
 		set view_count = view_count +1 
 		where recipe_no = #{recipeNo}
 	</update>
+	<select id="selectIngrMallListIn" resultMap="ingrMallMap">
+		select 
+			M.* ,
+			I.eng_pr_category||'/'||I.eng_cd_category||'/'||I.ing_filename prev_img,
+			I.ingredient_name
+		from 
+			tb_Ingredient_mall M
+			Join tb_ingredient I
+				on M.ingredient_no = I.ingredient_no
+		where
+			M.ingredient_no in
+			<foreach collection="selectList" item="ingr" open="(" separator="," close=")">
+				#{ingr.ingredientNo}
+			</foreach>
+			
+	</select>
+	<select id="selectIngrMallListNotIn" resultMap="ingrMallMap">
+		select 
+			M.*,
+			I.eng_pr_category||'/'||I.eng_cd_category||'/'||I.ing_filename prev_img,
+			I.ingredient_name
+		from 
+			tb_Ingredient_mall M
+			Join tb_ingredient I
+				on M.ingredient_no = I.ingredient_no
+		<where>
+			<if test="selectList.size > 0">
+			M.ingredient_no not in
+			<foreach collection="selectList" item="ingr" open="(" separator="," close=")">
+				#{ingr.ingredientNo}
+			</foreach>
+			</if>
+		</where>
+		order by
+			M.stock desc
+	</select>
+	<select id="selectRelRecipeList" resultType="recipe">
+		select 
+			*
+		from 
+			tb_recipe 
+		where 
+			category = #{category}
+			and
+			recipe_no != #{recipeNo}
+		order by
+			view_count desc
+	</select>
+	<select id="selectRelRecipeListPr" resultType="recipe">
+		select 
+			*
+		from 
+			tb_recipe 
+		where 
+			category = #{category}
+			and
+			recipe_no != #{recipeNo}
+			<if test="relRecipeList != null">
+				<if test="relRecipeList.size>0">
+				and recipe_no not in
+				<foreach collection="relRecipeList" item="relRecipe" open="(" separator="," close=")">
+					#{relRecipe.recipeNo}
+				</foreach>
+				</if>
+			</if>
+		order by
+			view_count desc
+	</select>
+	<select id="selectRelRecipeListAll" resultType="recipe">
+		select 
+			*
+		from 
+			tb_recipe 
+		where
+			recipe_no != #{recipeNo}
+			<if test="relRecipeList != null">
+				<if test="relRecipeList.size>0">
+				and recipe_no not in
+				<foreach collection="relRecipeList" item="relRecipe" open="(" separator="," close=")">
+					#{relRecipe.recipeNo}
+				</foreach>
+				</if>
+			</if>
+		order by
+			view_count desc
+	</select>
 	
 	<resultMap type="scrap" id="scrapMap">
 		<result column="member_id" property="scrapId"/>
@@ -146,5 +232,17 @@
 		<result column="memo" property="meMo"/>
 		<result column="chef_nick" property="chefNick"/>
 		<result column="video_title" property="videoTitle"/>
+	</resultMap>
+	
+	<resultMap type="ingredientMall" id="ingrMallMap">
+		<id column="ingredient_no" property="ingMallNo"/>
+		<result column="ingredient_name" property="ingMallName"/>
+		<result column="prev_img" property="prevImg"/>
+		<result column="price" property="price"/>
+		<result column="stock" property="stock"/>
+		<result column="min_unit" property="minUnit"/>
+		<result column="ing_origin" property="ingOrigin"/>
+		<result column="shelf_life" property="shelfLife"/>
+		<result column="ing_info" property="ingInfo"/>
 	</resultMap>
 </mapper>
