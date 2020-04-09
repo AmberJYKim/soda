@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="oneday">
 
-<select id="selectReservationList" resultType="Reservation">
+<select id="selectReservationList" resultMap="ReservationMap">
 	select
 		*
 	from
@@ -16,6 +16,10 @@
 	order by 
 		reservation_no desc
 </select>
+
+<resultMap id="ReservationMap" type="Reservation">
+	<result column="member_id" property="reserMemberId"></result>
+</resultMap>
 
 <select id="selectOnedayReviewList" resultType="onedayReview">
 	select

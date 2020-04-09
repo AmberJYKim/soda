@@ -14,6 +14,10 @@
 		member_id = #{memberId}
 </select>
 
+<resultMap id="scrapMap" type="scrap">
+	<result column="member_id" property="scrapId"></result>
+
+</resultMap>
 
 <delete id="deleteScrap">
 	delete from
@@ -22,10 +26,6 @@
 
 </delete>
 
-<resultMap id="scrapMap" type="scrap">
-	<result column="member_id" property="scrapId"></result>
-
-</resultMap>
 
 <update id="updateScrap">
 	update

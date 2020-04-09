@@ -33,9 +33,9 @@
 								<div class="col-2">예약 상태</div>
 							</div>
 							<br>
-							<c:forEach var="res" items="${list }">
+							<c:forEach var="Reservation" items="${list }">
 								<div class="row">
-									<div class="col-4">#{res.oneday }</div>
+									<div class="col-4">#{Reservation.oneday }</div>
 									<div class="col-3">2020.03.25<br>18:00 ~ 19:00</div>
 									<div class="col-1">3 명</div>
 									<div class="col-2">18000원<br>(인당 6000원)</div>
