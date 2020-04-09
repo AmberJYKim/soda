@@ -28,6 +28,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    
     <!-- Stylesheets -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.min.css" />
@@ -37,12 +38,18 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/slicknav.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/animate.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/util.css" />
-
+<!--  -->
     <!-- Main Stylesheets -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
     <!-- login.css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/login.css" />
-
+	
+	<!-- WebSocket:sock.js CDN -->	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
+    
+    <!-- WebSocket: stomp.js CDN -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+    
     <!-- [if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -287,9 +294,9 @@
                     <li><a href="${pageContext.request.contextPath}/oneday/oneday">원데이 클래스</a></li>
                     <li><a href="contact.html">사이트 안내</a>
                         <ul class="sub-menu">
+                        	<li><a href="${pageContext.request.contextPath}/mypage/directMsg">1:1문의 </a></li>
                             <li><a href="classes.html">사이트 소개</a></li>
                             <li><a href="classes-details.html">공지사항</a></li>
-                            <li><a href="classes-details.html">FAQ</a></li>
                         </ul>
                     </li>
                 </ul>

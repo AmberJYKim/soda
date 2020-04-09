@@ -2,6 +2,7 @@ package com.soda.onn.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -94,10 +95,37 @@ public class AdminController {
 
 		
 		List<ChefRequest> chefRequestList = chefService.selectChefRequestList(rowBounds); 
+		
+		log.debug("chefRequestList={}",chefRequestList);
 		mav.addObject("paging", paging);
 		mav.addObject("chefRequestList", chefRequestList);
 		mav.setViewName("admin/chefRequestList");
 		
+		return mav;
+	}
+	@GetMapping("/{memberId}/chefRequestView")
+	public ModelAndView chefRequestView(@PathVariable(value="memberId")String memberId,
+										ModelAndView mav) {
+		
+		ChefRequest chefRequest = chefService.selectChefRequest(memberId);
+		log.debug("chefRequest@goView={}",chefRequest);
+		
+	    Gson gson = new Gson();
+	    Map<String,String> snsMap = gson.fromJson(chefRequest.getSns(),  new TypeToken<Map<String,String>>(){}.getType());
+	    List<Map<String,String>> categoryList = gson.fromJson(chefRequest.getMenuPrCategory(),  new TypeToken<List<Map<String,String>>>(){}.getType());
+	    log.debug("snsMap={}",snsMap);
+	    log.debug("categoryListMap={}",categoryList);
+	    
+	    
+	    String categoryStr = "";
+	    for(int i=0; i<categoryList.size(); i++) {
+	    	String category = (categoryList.get(i)).get("value");
+	    	categoryStr += ","+category;
+	    }
+	    mav.addObject("chefRequest", chefRequest);
+	    mav.addObject("snsMap", snsMap);
+	    mav.addObject("categoryStr", categoryStr);
+		mav.setViewName("/admin/chefRequestView");
 		return mav;
 	}
 	@PostMapping("/chefRequest")

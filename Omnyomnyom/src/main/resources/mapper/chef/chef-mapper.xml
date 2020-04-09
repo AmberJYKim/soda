@@ -16,7 +16,8 @@
 <resultMap type="chefRequest" id="chefReqMap" >
 	<result column="member_id" property="chefId"/>
 	<result column="member_nick" property="chefNickName"/>
-	<result column="chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
+	<result column="chef_sns" property="sns"/>
+	<result column="chef_appeal_video" property="chefApVideo"/>
 </resultMap>
 
 <resultMap type="Notice" id="noticeMap" >
@@ -91,20 +92,24 @@ where chef_nick = #{chefNickName}
 		*
 	from
 		tb_chef_req c
-		join tb_member m using(member_id)
+		join tb_member m 
+		using(member_id)
 	order by
 		c.regdate
 </select>
 
 
 
-<select id="selectChefRequest" resultType="chefRequest">
+<select id="selectChefRequest" resultMap="chefReqMap">
 	select
-		*
+		C.*,
+        M.member_nick
 	from
-		TB_chef_req
+		tb_chef_req C
+		join tb_member M
+		on C.member_Id = M.member_Id	
 	where
-		member_id = #{memberId}
+		C.member_id = #{memberId}
 </select>
 
 <select id="selectChefRequestListCnt" resultType="string">
