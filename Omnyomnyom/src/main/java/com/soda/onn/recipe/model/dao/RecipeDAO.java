@@ -7,7 +7,6 @@ import com.soda.onn.recipe.model.vo.Report;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mypage.model.vo.Scrap;
-import com.soda.onn.recipe.model.service.Report;
 import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
@@ -45,9 +44,9 @@ public interface RecipeDAO {
 
 	int insertScrap(Scrap scrap);
 
-// 	List<Report> selectReportList();
+ 	List<Report> selectReportList();
 
-  int increaseReadCount(int recipeNo);
+    int increaseReadCount(int recipeNo);
 
 	List<IngredientMall> selectIngrMallListIn(Map listMap);
 
