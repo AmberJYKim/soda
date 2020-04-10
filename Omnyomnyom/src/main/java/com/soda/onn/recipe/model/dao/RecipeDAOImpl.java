@@ -3,6 +3,7 @@ package com.soda.onn.recipe.model.dao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.soda.onn.recipe.model.vo.Report;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.soda.onn.mall.model.vo.Ingredient;
+import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
@@ -102,6 +104,45 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	@Override
 	public int insertScrap(Scrap scrap) {
 		return sqlSession.insert("recipe.insertScrap", scrap);
+	}
+	
+	@Override
+	public List<Report> selectReportList() {
+		return sqlSession.selectList("recipe.selectReportList");
+  }
+  
+  @Override
+	public int increaseReadCount(int recipeNo) {
+		return sqlSession.update("recipe.increaseReadCount", recipeNo);
+	}
+
+	@Override
+	public List<IngredientMall> selectIngrMallListIn(Map listMap) {
+		return sqlSession.selectList("recipe.selectIngrMallListIn", listMap);
+	}
+
+	@Override
+	public List<IngredientMall> selectIngrMallListNotIn(Map listMap, int i) {
+		RowBounds rowBounds = new RowBounds(0, i);
+		return sqlSession.selectList("recipe.selectIngrMallListNotIn", listMap, rowBounds);
+	}
+
+	@Override
+	public List<Recipe> selectRelRecipeList(RelRecipeSelecter rrs, int listSize) {
+		RowBounds rowBounds = new RowBounds(0, listSize);
+		return sqlSession.selectList("recipe.selectRelRecipeList", rrs, rowBounds);
+	}
+
+	@Override
+	public List<Recipe> selectRelRecipeListPr(RelRecipeSelecter rrs, int i) {
+		RowBounds rowBounds = new RowBounds(0, i);
+		return sqlSession.selectList("recipe.selectRelRecipeListPr", rrs, rowBounds);
+	}
+
+	@Override
+	public List<Recipe> selectRelRecipeListAll(RelRecipeSelecter rrs, int i) {
+		RowBounds rowBounds = new RowBounds(0, i);
+		return sqlSession.selectList("recipe.selectRelRecipeListAll", rrs, rowBounds);
 	}
 	
 	@Override

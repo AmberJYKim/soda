@@ -1,7 +1,9 @@
 package com.soda.onn.recipe.controller;
 
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
@@ -57,6 +59,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.soda.onn.mall.model.vo.Ingredient;
+import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.service.RecipeService;
@@ -65,6 +68,8 @@ import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
+import com.soda.onn.recipe.model.vo.RecipeQuestion;
+import com.soda.onn.recipe.model.vo.RecipeReply;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -82,11 +87,40 @@ public class RecipeController {
 	private RowBounds rowBounds = null;
 	
 	
-	
+	//레시피 뷰
 	@GetMapping("/recipe-details")
-	public void recipedetails(@RequestParam("recipeNo")int recipeNo,
+	public String recipedetails(@RequestParam("recipeNo")int recipeNo,
 							  HttpServletRequest request,
+							  HttpServletResponse response,
 							  Model model) {
+		
+		Cookie[] cookies = request.getCookies();
+		String recipeCookieVal = "";
+		boolean hasRead = false;
+		
+		if(cookies != null) {
+			for(Cookie c : cookies) {
+				String name = c.getName();
+				String value = c.getValue();
+				if("recipeCookie".equals(name)) {
+					recipeCookieVal = value;
+					if(value.contains("|"+ recipeNo +"|")) {
+						hasRead=true;
+						break;
+					}
+				}
+						
+			}
+		}
+		
+		if(hasRead == false) {
+			recipeCookieVal = recipeCookieVal + "|"+ recipeNo +"|";
+			Cookie recipeCookie = new Cookie("recipeCookie",recipeCookieVal);
+			recipeCookie.setMaxAge(7*24*60*60);
+			recipeCookie.setPath(request.getContextPath()+"/recipe");
+			response.addCookie(recipeCookie);
+		}
+		
 		Member member = (Member)request.getSession().getAttribute("memberLoggedIn");
 		Like l =null;
 		Scrap s = null;
@@ -103,16 +137,32 @@ public class RecipeController {
 		}
 		log.debug("{}",l);
 		
-		Recipe recipe = recipeService.selectRecipeOne(recipeNo);
+		Recipe recipe = recipeService.selectRecipeOne(recipeNo,hasRead);
 		
 		recipe.setIngredientList(recipeService.selectRecIngList(recipeNo));
 		
+		List<IngredientMall> ingrMallList = recipeService.selectingrMallList(recipe.getIngredientList());
+		
+		List<Recipe> relationRecipes =recipeService.selectRelRecipeList(recipe); 
+		
+		List<RecipeReply> replyList = recipeService.selectReplyList(recipe.getRecipeNo());
+		
+//		List<RecipeQuestion> questionList = recipeService.selectQuestionList(recipe.getRecipeNo());
+		
+		log.debug("{}",ingrMallList);
+		
+		log.debug("{}",relationRecipes);
+		
+		model.addAttribute("relationRecipes",relationRecipes);
+		model.addAttribute("ingrMallList", ingrMallList);
 		model.addAttribute("scrap",s);
 		model.addAttribute("isLiked",l);
 		model.addAttribute("recipe",recipe);
 		
+		return "/recipe/recipe-details";
 	}
 	
+	//레시피 업로드 폼
 	@GetMapping("/recipeUpload")
 	public void recipeUpload(Model model) {
 		List<MenuCategory> categoryList = recipeService.selectCategoryList();
@@ -120,8 +170,9 @@ public class RecipeController {
 		model.addAttribute("categoryList", categoryList);
 	}
 	
+	//레시피 업로드
 	@PostMapping("/recipeUpload")
-	public void recipeUpload(Recipe recipe,
+	public String recipeUpload(Recipe recipe,
 							 @RequestParam(value = "chefId") String chefId,
 							 @RequestParam(value = "chefNick") String chefNick,
 							 @RequestParam(value = "uploadFile") MultipartFile uploadFile,
@@ -226,10 +277,10 @@ public class RecipeController {
 		for(int i =0;i < cookTime.length ;i++) {
 			
 			if(i>0)
-				recipe.setTimeline(recipe.getTimeline()+",");
+				recipe.setTimeline(recipe.getTimeline()+"⇔");
 			
 			recipe.setCookingTime(recipe.getCookingTime()+cookTime[i]);
-			recipe.setTimeline(recipe.getTimeline() + cookTime[i]+":"+cookery[i]);
+			recipe.setTimeline(recipe.getTimeline() + cookTime[i]+"∮"+cookery[i]);
 		}
 		
 		log.debug("{}",recipe);
@@ -237,8 +288,13 @@ public class RecipeController {
 		int result = recipeService.recipeUpload(recipe,ingredientList);
 		
 		log.debug("insert Result={}", result>0?true:false);
+		
+		if(result<=0)
+			return "redirect:/recipe/recipeUpload";
+		
+		return "redirect:/recipe/recipe-details?recipeNo=" + recipe.getRecipeNo();
 	}
-	
+
 	@GetMapping("/recipeUpdate")
 	public void recipeUpdate() {
 		
@@ -287,6 +343,7 @@ public class RecipeController {
 		return subCtgList;
 	}
 	
+	//레시피 업로드 폼에서 재료명 가져오기 위한 에이잭스
 	@GetMapping(value = "/{ingredient}/ajax", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String ingredientAjax(@PathVariable("ingredient") String ingr) {
@@ -310,6 +367,7 @@ public class RecipeController {
 		return gson.toJson(jArray);
 	}
 	
+	//레시피 뷰에서 좋아요
 	@GetMapping(value = "/{memberId}/like/{recipeNo}", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String insertLike(@PathVariable("memberId")String memberId,
@@ -322,6 +380,7 @@ public class RecipeController {
 		return result>0?"t":"f";
 	}
 	
+	//레시피 뷰에서 좋아요 취소
 	@GetMapping(value = "/{memberId}/unlike/{recipeNo}", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String deleteLike(@PathVariable("memberId")String memberId,
@@ -334,6 +393,7 @@ public class RecipeController {
 		return result>0?"t":"f";
 	}
 
+	//레시피 뷰 스크랩 해제
 	@GetMapping(value = "/unscrap/{recipeNo}", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String deleteScrap(HttpSession session,
@@ -349,6 +409,7 @@ public class RecipeController {
 		return result>0?"t":"f";
 	}
 	
+	//레시피 뷰 스크랩
 	@GetMapping(value = "/scrap/{recipeNo}", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String insertScrap(HttpSession session,
@@ -395,6 +456,7 @@ public class RecipeController {
      * @return an authorized Credential object.
      * @throws IOException
      */
+    //유튜브 등록 전 권한 받기
     public static Credential authorize(final NetHttpTransport httpTransport) throws IOException {
         // Load client secrets.
     	
@@ -424,6 +486,7 @@ public class RecipeController {
      * @return an authorized API client service
      * @throws GeneralSecurityException, IOException
      */
+    //유튜브 권한 요청 및 유튜브 객체 제작
     public static YouTube getService() throws GeneralSecurityException, IOException {
     	
         final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
