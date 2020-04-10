@@ -71,7 +71,7 @@
                             <a style=" font-weight:900; "class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="ture">홈</a>
                         </li>
                         <li class="nav-item">
-                            <a  style=" font-weight:900; " class="nav-link" id="profile-tab" data-toggle="tab" href="#video" role="tab" aria-controls="profile" aria-selected="false">레시피</a>
+                            <a  style=" font-weight:900; " class="nav-link" id="profile-tab" data-toggle="tab" href="#video" role="tab" aria-controls="profile" aria-selected="false">동영상</a>
                         </li>
                 
                         <li class="nav-item">
@@ -145,7 +145,7 @@
                         <hr>
                         <!-- 홈-인기동영상 -->
                         <div class="container" id="fav-video">
-                            <h6>인기 레시피</h6>
+                            <h6>인기 동영상</h6>
                             <div class="row">
                                 <div class="col-lg-3 upload-video">
                                     <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
@@ -173,7 +173,7 @@
                         <!-- 홈-업로드한 동영상 -->
                         <div class="container" id="upload-video">
 
-                            <h6>업로드한 레시피 </h6>
+                            <h6>업로드한 동영상</h6>
                             <div class="row">
                                 <div class="col-lg-3 upload-video">
                                     <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
@@ -198,15 +198,14 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- 레시피 탭 클릭시 나오는 모든 영상 (업로드 순) -->
+                    <!-- 동영상 탭 클릭시 나오는 모든 영상 (업로드 순) -->
                     <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="upvideo container" id="video-upload-video">
-                            <h6>업로드한 레시피 </h6>
+                            <h6>업로드한 동영상</h6>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <button type="button" class="btn btn-outline-danger">레시피 관리</button>
-                                    <button type="button" class="btn btn-outline-danger" onclick="recipeUpload();">레시피 업로드</button>
+                                    <button type="button" class="btn btn-outline-danger">동영상 관리</button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="recipeUpload();">동영상 업로드</button>
                                 </div>
                             </div>
 					<script>

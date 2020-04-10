@@ -18,10 +18,8 @@ public class DingDong implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private int dingdongNo;
-	private String dingMemberId;
 	private String dingdongContent;
 	private String dingdongLink;
 	private int dingdongRead;
-	private Date dingRegDate;
+	private Date regDate;
 }

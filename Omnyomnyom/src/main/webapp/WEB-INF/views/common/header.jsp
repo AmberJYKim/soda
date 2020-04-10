@@ -28,7 +28,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-    
     <!-- Stylesheets -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.min.css" />
@@ -38,18 +37,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/slicknav.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/animate.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/util.css" />
-<!--  -->
+
     <!-- Main Stylesheets -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
     <!-- login.css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/login.css" />
-	
-	<!-- WebSocket:sock.js CDN -->	
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
-    
-    <!-- WebSocket: stomp.js CDN -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
-    
+
     <!-- [if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -65,104 +58,24 @@
     <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
     <!-- 회원가입 js -->
     <c:if test="${empty memberLoggedIn}">
+    <script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
 	
 	<script>
-		var idState = false;
-		var nickState = false;
-		
 		//사용 가능한 아이디, 닉네임인지 확인 하는 스크립트
-	$(document).ready(function(){
-		
-			var signUpButton = document.getElementById('signUp');
-		    var signInButton = document.getElementById('signIn');
-		    var container = document.getElementById('login_container');
-		    signUpButton.addEventListener('click', function(event) {
-		        login_container.classList.add("right-panel-active");
-		    });
+		$(document).ready(function(){
 
-		    signInButton.addEventListener('click', function(event) {
-		        login_container.classList.remove("right-panel-active");
-		    });
-		    
-		    
-			$("#phone").on("keyup",function(){
-				$(this).val($(this).val().replace(/\D/g,""))
-			});
-			$("#ssn").on("keyup",function(){
-				$(this).val($(this).val().replace(/\D/g,""))
-			});
-			$("#ssn").on("keyup",function(){
-				$(this).val($(this).val().replace(/\D/g,""))
-			});
-			
-			/*
-			function enrollValidate(){
-				let pwd = $("#password").val().trim();
-				let pwdChk = $("#password_2").val();
-				let email = $("#email").val();
-				let ssn = $("#ssn").val();
-				
-				let regPw = /^{6,20}/;
-//				let regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-				let regSSN = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
-
-				//비밀번호 길이검사
-				if(!idState){
-					alert("아이디를 다시 작성해주세요!")
-					return false;
-				}
-				if(!regPw.test(pwd)){
-					alert("비밀번호는 6~20자리 이내로 작성해주세요!")
-					return false;
-				}
-				
-				//비밀번호 확인란 일치검사
-				if(pwd != pwdChk){
-					alert("비밀번호가 일치하지 않습니다!");
-					return false;
-				}
-				
-				//이메일 검사
-				if(!regEmail.test(email)){
-					alert("이메일 형식을 맞춰주세요!")
-					return false;
-				}
-				
-				//닉네임 중복검사 
-				if(!nickState){
-					alert("닉네임을 다시 작성해주세요!")
-					return false;
-				}
-				
-				//주민번호 앞자리 검사
-				if(!regSSN.test(ssn)){
-					alert("생년월일 앞자리를 맞춰주세요!")
-					return false;
-				}
-				
-				alert("성공");
-				
-				return true;
-			} */
-			
 			//memberId input창에서 아이디를 입력 할 경우
 			$("#memberId").on("keyup", function(){
+				console.log("memberId keyup");  /* 여기는 값 들어옴 */
 				memberId = $(this).val().trim();
 
+				console.log($(this).val());  /* 실시간으로 아이디 값 들어오는거 확인 */
+
 				//회원가입 아이디 input창에 값이 없으면 문구 숨김
-				if(memberId.length <= 4){
+				if($("#memberId").val()==''){
 					$(".guide.error").hide();
 					$(".guide.ok").hide();
-					return false;
-				}
-				
-				let regExp1 =  /^[a-z0-9]{5,19}$/gi;
-				if(!regExp1.test(memberId)){
-					return false;
-				}
-				
-				console.log(memberId);
-				
+				} 	
 				signupFun(this);
 			});
 
@@ -192,13 +105,11 @@
 						console.log(data);			
 						if($(e).attr('id') == "memberId"){	
 							if(data.isUsable != "ok"){
-								idState = false;
 								$(".guide.error").hide();
 								$(".guide.ok").show();
 								$("#idDuplicateCheck").val(1);
 							}
 							else{
-								idState = true;
 								$(".guide.error").show();
 								$(".guide.ok").hide();
 								$("#idDuplicateCheck").val(0);
@@ -207,13 +118,11 @@
 
 						if($(e).attr('id') == "memberNick"){
 							if(data.isUsable != "ok"){
-								nickState = false;
 								$(".nickGuide.error").hide();
 								$(".nickGuide.ok").show();
 								$("#idDuplicateCheck").val(1);
 							}
 							else{
-								nickState = true;
 								$(".nickGuide.error").show();
 								$(".nickGuide.ok").hide();
 								$("#idDuplicateCheck").val(0);
@@ -226,17 +135,9 @@
 			});
 		}
 	});				
-	</script><!-- 
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-    new daum.Postcode({
-        oncomplete: function(data) {
-            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-        }
-    }).open();
-</script> -->
-</c:if>
+	</script>
+	
+    </c:if>
   
 </head>
 <body>
@@ -273,6 +174,7 @@
            		<script>
            		function logout(){
            			location.href = "${pageContext.request.contextPath}/member/logout";
+           			console.log('1');
            		}
            		</script>
            		</c:if>
@@ -294,7 +196,7 @@
 							   			   id="idDuplicateCheck" value="0" />
                                     <span class="error" id="errorId"></span>
                                  
-                                    	
+                                    
                                     <input type="password" name="memberPwd" id="password" placeholder="Password"  required >
                                     <span class="error" id="errorPw"></span>
                                     
@@ -321,7 +223,7 @@
                                     <input type="tel" placeholder="Phone Number(-없이)" name="phone" id="phone" maxlength="11" required>
                                     <span class="error" id="errorPhone"></span>
                                     
-                                    <input type="text" name="ssn" id="ssn" placeholder="ex)19991122" maxlength="8" required>
+                                    <input type="number" name="ssn" id="ssn" placeholder="ex)19991122"required>
                                    
                                     <input type="address" name="address" id="address" placeholder="주소를 입력하세요" required>
                                     <span class="error" id="errorName"></span>
@@ -376,8 +278,8 @@
                 <ul class="main-menu">
                     <li><a href="about.html" class="active">레시피</a>
                         <ul class="sub-menu">
-                            <li><a href="${pageContext.request.contextPath }/recipe/recipe-menu-search.do">메뉴</a></li>
-                            <li><a href="${pageContext.request.contextPath}/recipe/ingredientsSelection.do">냉장고 재료</a></li>
+                            <li><a href="${pageContext.request.contextPath }/recipe/recipe-menu-search">메뉴</a></li>
+                            <li><a href="${pageContext.request.contextPath}/recipe/ingredientsSelection">냉장고 재료</a></li>
                         </ul>
                     </li>
                     <li><a href="${pageContext.request.contextPath}/mall/main">뇸뇸몰</a></li>
@@ -385,9 +287,9 @@
                     <li><a href="${pageContext.request.contextPath}/oneday/oneday">원데이 클래스</a></li>
                     <li><a href="contact.html">사이트 안내</a>
                         <ul class="sub-menu">
-                        	<li><a href="${pageContext.request.contextPath}/mypage/directMsg">1:1문의 </a></li>
                             <li><a href="classes.html">사이트 소개</a></li>
                             <li><a href="classes-details.html">공지사항</a></li>
+                            <li><a href="classes-details.html">FAQ</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -408,7 +310,7 @@
 			<div class="infor-middle">
 				<!-- 로그인 후 간단한 회원정보 출력해줌 -->
 				<a href="#" class="infor-logo">
-					<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="">
+					<img src="img/user.png" alt="">
 				</a>
 				<p><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
 
@@ -419,7 +321,7 @@
 						<c:when test="${memberLoggedIn.memberRoll eq 'A' }">
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
+									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/mallManage"> 
 										<p>주문내역확인</p>
@@ -429,7 +331,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
+									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/mallManage"> 
 										<p>상품관리</p>
@@ -439,7 +341,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
+									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/chefRequestList"> 
 										<p>셰프신청목록</p>
@@ -449,7 +351,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
+									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/reportList"> 
 										<p>신고현황</p>
@@ -459,7 +361,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
+									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/memberList"> 
 										<p>회원조회</p>
@@ -469,7 +371,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
+									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/admin/qnaMsg"> 
 										<p>문의내역</p>
@@ -483,7 +385,7 @@
 									
 								<div class="insta-item">
 									<div class="insta-img">
-										<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
+										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/chef/chefpage">
 											<p>채널가기</p>
@@ -493,7 +395,7 @@
 								</div>
 								<div class="insta-item">
 									<div class="insta-img">
-										<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
+										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/recipe/recipeUpload">
 											<p>레시피 등록</p>
@@ -503,7 +405,7 @@
 								</div>
 								<div class="insta-item">
 									<div class="insta-img">
-										<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
+										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
 										<a href="${pageContext.request.contextPath }/oneday/insert">
 											<p>원데이 등록</p>
@@ -514,9 +416,9 @@
 							</c:if>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
+									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath }/mypage/onedayList">
+									<a href="${pageContext.request.contextPath }/mypage/ondayList">
 										<p>예약확인</p>
 									</a>
 									</div>
@@ -524,7 +426,7 @@
 							</div>
 							<div class="insta-item">
 								<div class="insta-img">
-									<img src="${pageContext.request.contextPath}/resources/images/infor/back.PNG" alt="">
+									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
 									<a href="${pageContext.request.contextPath }/mypage/buyList">
 										<p>구매목록</p>

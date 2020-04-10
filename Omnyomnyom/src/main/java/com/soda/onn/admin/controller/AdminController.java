@@ -2,7 +2,6 @@ package com.soda.onn.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,13 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -37,8 +37,6 @@ import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.Reservation;
-import com.soda.onn.recipe.model.service.RecipeService;
-import com.soda.onn.recipe.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,12 +59,10 @@ public class AdminController {
 
 	@Autowired
 	private MallService mallService;
-
-	@Autowired
-	private RecipeService recipeService;
 	
 	final int NUMPERPAGE = 15;
 	final int PAGEBARSIZE = 10;
+
 	
 	private RowBounds rowBounds = null;
 	
@@ -75,8 +71,8 @@ public class AdminController {
 	public ModelAndView chefList() {
 		ModelAndView mav = new ModelAndView();
 		
-		List<Chef> chefList = chefService.selectChefAllList();
-		mav.addObject("chefList", chefList);
+//		List<Chef> chefList = chefService.selectChefAllList();
+//		mav.addObject("chefList", chefList);
 		mav.setViewName("admin/chefList");
 		
 		return mav;
@@ -98,37 +94,10 @@ public class AdminController {
 
 		
 		List<ChefRequest> chefRequestList = chefService.selectChefRequestList(rowBounds); 
-		
-		log.debug("chefRequestList={}",chefRequestList);
 		mav.addObject("paging", paging);
 		mav.addObject("chefRequestList", chefRequestList);
 		mav.setViewName("admin/chefRequestList");
 		
-		return mav;
-	}
-	@GetMapping("/{memberId}/chefRequestView")
-	public ModelAndView chefRequestView(@PathVariable(value="memberId")String memberId,
-										ModelAndView mav) {
-		
-		ChefRequest chefRequest = chefService.selectChefRequest(memberId);
-		log.debug("chefRequest@goView={}",chefRequest);
-		
-	    Gson gson = new Gson();
-	    Map<String,String> snsMap = gson.fromJson(chefRequest.getSns(),  new TypeToken<Map<String,String>>(){}.getType());
-	    List<Map<String,String>> categoryList = gson.fromJson(chefRequest.getMenuPrCategory(),  new TypeToken<List<Map<String,String>>>(){}.getType());
-	    log.debug("snsMap={}",snsMap);
-	    log.debug("categoryListMap={}",categoryList);
-	    
-	    
-	    String categoryStr = "";
-	    for(int i=0; i<categoryList.size(); i++) {
-	    	String category = (categoryList.get(i)).get("value");
-	    	categoryStr += ","+category;
-	    }
-	    mav.addObject("chefRequest", chefRequest);
-	    mav.addObject("snsMap", snsMap);
-	    mav.addObject("categoryStr", categoryStr);
-		mav.setViewName("/admin/chefRequestView");
 		return mav;
 	}
 	@PostMapping("/chefRequest")
@@ -140,23 +109,15 @@ public class AdminController {
 		Map<String, String> chefReq = new HashMap<>();
 		chefReq.put("chefId",chefId);
 		chefReq.put("variable",variable);
-		
-		
-		ChefRequest chefreq = chefService.selectChefRequest(chefId);
-		chefreq.setChefReqOk(variable);
-		
-		int result1 = chefService.chefRequestUpdate(chefreq);
-//		int result2 = chefService.
-		log.debug("result1={}",result1);
+		int result = chefService.chefRequestUpdate(chefReq);
+		log.debug("result={}",result);
 		return "redirect:/admin/chefRequestList";
 	}
 
 	//신고목록
 	@GetMapping("/reportList")
-	public void reportList(Model model) {
-		List<Report> list = recipeService.selectReportList();
-		model.addAttribute("list", list);
-
+	public void reportList() {
+		
 	}
 	
 	
@@ -224,8 +185,10 @@ public class AdminController {
 		mav.addObject("paging", paging);
 		mav.addObject("buyHistoryListList", buyHistoryListList);
 		mav.setViewName("admin/ingredientList");
+
 		
 		return mav;
+
 	}
 		
 	//회원목록

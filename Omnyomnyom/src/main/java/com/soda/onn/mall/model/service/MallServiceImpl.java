@@ -11,7 +11,6 @@ import com.soda.onn.mall.model.dao.MallDAO;
 import com.soda.onn.mall.model.dao.MallDAOImpl;
 import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.mall.model.vo.IngredientMall;
-import com.soda.onn.mall.model.vo.ShoppingBasket;
 
 @Service
 public class MallServiceImpl implements MallService {
@@ -40,23 +39,8 @@ public class MallServiceImpl implements MallService {
 	}
 
 	@Override
-	public IngredientMall selectIngMallOne(int ingMallNo) {
-		return mallDAO.selectIngMallOne(ingMallNo);
-	}
-
-	@Override
-	public int insertShoppingBasket(ShoppingBasket sb) {
-		return mallDAO.insertShoppingBasket(sb);
-	}
-
-	@Override
-	public List<ShoppingBasket> selectSBList(String memberId) {
-		return mallDAO.selectSBList(memberId);
-	}
-
-	@Override
-	public List<IngredientMall> selectIngMallSearch(String keyword) {
-		return mallDAO.selectIngMallSearch(keyword);
+	public IngredientMall selectIngMallOne(int ingredientNo) {
+		return mallDAO.selectIngMallOne(ingredientNo);
 	}
 
 }

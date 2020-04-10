@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.mall.model.vo.IngredientMall;
-import com.soda.onn.mall.model.vo.ShoppingBasket;
 
 @Repository
 public class MallDAOImpl implements MallDAO {
@@ -40,25 +39,9 @@ public class MallDAOImpl implements MallDAO {
 	}
 
 	@Override
-	public IngredientMall selectIngMallOne(int ingMallNo) {
-		return sqlSession.selectOne("mall.selectIngMallOne",ingMallNo);
+	public IngredientMall selectIngMallOne(int ingredientNo) {
+		return sqlSession.selectOne("mall.selectIngMallOne",ingredientNo);
 		}
-
-
-	@Override
-	public int insertShoppingBasket(ShoppingBasket sb) {
-		return sqlSession.insert("mall.insertShoppingBasket", sb);
-	}
-
-	@Override
-	public List<ShoppingBasket> selectSBList(String memberId) {
-		return sqlSession.selectList("mall.selectSBList",memberId);
-	}
-
-	@Override
-	public List<IngredientMall> selectIngMallSearch(String keyword) {
-		return sqlSession.selectList("mall.selectIngMallSearch", keyword);
-	}
 	
 
 }

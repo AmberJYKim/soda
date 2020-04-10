@@ -11,7 +11,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
-import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
+import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 
 public interface RecipeDAO {
 
@@ -43,7 +43,7 @@ public interface RecipeDAO {
 	int deleteScrap(Scrap scrap);
 
 	int insertScrap(Scrap scrap);
-
+	
  	List<Report> selectReportList();
 
     int increaseReadCount(int recipeNo);
@@ -57,4 +57,14 @@ public interface RecipeDAO {
 	List<Recipe> selectRelRecipeListPr(RelRecipeSelecter rrs, int i);
 
 	List<Recipe> selectRelRecipeListAll(RelRecipeSelecter rrs, int i);
+	
+	List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps);
+
+	List<RecipeWithIngCnt> selectPopRecipe();
+
+	List<Ingredient> selectPopIngredient(Map<String, Object> maps);
+
+	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
+
+
 }

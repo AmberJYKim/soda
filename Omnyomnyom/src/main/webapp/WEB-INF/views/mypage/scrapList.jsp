@@ -7,19 +7,30 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
 	<jsp:param value="" name="pageTitle"/>
 </jsp:include>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/user-list.css"/>
+	<link rel="stylesheet" href="css/user-list.css"/>
 
+
+	<script>
+		$(function(){
+			$(".user-select-area").on("click",function(){
+				let userid = $(this).find(".user-id").val();
+				location.href = "링크"+userid;
+			});
+		});
+
+	</script>
 <!-- 아이디, 비밀번호, 닉네임, 이름,연락처, 이메일, 주소(선택) , 생년월일  -->
 	<div class="container">
 		<div class="section">
 			<div class="row">
 				<div class="col side_nav">
-					<a href="${pageContext.request.contextPath}/mypage/main"><p class="nav_text">내 정보보기</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/onedayList"><p class="nav_text ">예약목록</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/"><p class="nav_text ">구매목록</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/"><p class="nav_text ">1:1 문의</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/scrapList"><p class="nav_text selected_nav">스크랩 목록</p></a>
-					<a href="${pageContext.request.contextPath}/chef/chefInsert"><p class="nav_text">셰프신청</p></a>
+					<p class="nav_text ">내 정보보기</p>
+					<p class="nav_text selected_nav	">스크랩목록</p>
+					<p class="nav_text ">예약목록</p>
+					<p class="nav_text ">구매목록</p>
+					<p class="nav_text">셰프 문의</p>
+					<p class="nav_text">1:1 문의</p>
+					
 				</div>
 				<div class="col-10">
 					<h4 class="border_bottom">스크랩 목록</h4>
@@ -27,25 +38,50 @@
 					<table class="table">
 						<thead>
 						  <tr>
-							<th>번호 </th>
+							<th> </th>
 							<th>레시피</th>
 							<th>셰프</th>
 							<th>스크랩 날짜</th>
-							<th>스크랩 메모</th>
 						  </tr>
 						</thead>
 						<tbody>
-							<c:forEach var="scrap" varStatus="vs" items="${list }">
-							      <tr class="user-select-area">
-										<th scope="row">${scrap.recipeNo }</th>
-										<td class="user-id">${scrap.videoTitle}</td>
-										<td>${scrap.chefNick }</td>
-										<td>${scrap.regDate }</td>
-										<td><input type="text" value="${scrap.meMo }" id="scrapMemo${vs.count }"/></td>
-				    					<td><button type="submit" class="deleteScrap"  onclick="updateScrap(${scrap.recipeNo},'scrapMemo${vs.count }');">메모 수정</button></td>
-				    					<td><button type="button" class="deleteScrap" onclick="deleteScrap(${scrap.recipeNo});">스크랩 삭제</button></td>
-								  </tr>
-							 </c:forEach>
+						  <tr class="user-select-area">
+							<th scope="row">1</th>
+							<td class="user-id">레시피 이름</td>
+							<td>1종원</td>
+							<td>2020.02.20</td>
+						  </tr>
+						  <tr class="user-select-area">
+							<th scope="row">1</th>
+							<td class="user-id">죠리퐁 우유 부어먹기</td>
+							<td>2종원</td>
+							<td>2020.02.20</td>
+						  </tr>
+						  <tr class="user-select-area">
+							<th scope="row">1</th>
+							<td class="user-id">우유 죠리퐁 부어먹기</td>
+							<td>2종원</td>
+							<td>2020.02.20</td>
+						  </tr>
+						  <tr class="user-select-area">
+							<th scope="row">1</th>
+							<td class="user-id">죠리퐁 우유 부어먹기</td>
+							<td>2종원</td>
+							<td>2020.02.20</td>
+						  </tr>
+						  <tr class="user-select-area">
+							<th scope="row">1</th>
+							<td class="user-id">죠리퐁 우유 부어먹기</td>
+							<td>2종원</td>
+							<td>2020.02.20</td>
+						  </tr>
+						  <tr class="user-select-area">
+							<th scope="row">1</th>
+							<td class="user-id">죠리퐁 우유 부어먹기</td>
+							<td>2종원</td>
+							<td>2020.02.20</td>
+						  </tr>
+						  
 						</tbody>
 					  </table>
 					  <div class="site-pagination pt-3.5">
@@ -58,20 +94,7 @@
 			</div>
 		</div>
 	</div>
-<script>
 
-	function deleteScrap(recipeNo){
-		location.href = "${pageContext.request.contextPath}/mypage/deleteScrap?recipeNo="+recipeNo;
-	}
-
-	function updateScrap(recipeNo, scrapMemo){
-		console.log("여기는 updateScrap이야");
-		console.log($("#"+scrapMemo).val());
-		location.href = "${pageContext.request.contextPath}/mypage/updateScrap?recipeNo="+recipeNo+"&meMo="+$("#"+scrapMemo).val();
-
-	}
- 
-</script>
 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

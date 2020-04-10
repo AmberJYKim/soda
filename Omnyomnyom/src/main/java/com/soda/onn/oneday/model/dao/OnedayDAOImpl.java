@@ -1,7 +1,6 @@
 package com.soda.onn.oneday.model.dao;
 
 import java.sql.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,11 +48,8 @@ public class OnedayDAOImpl implements OnedayDAO{
 	}
 
 	@Override
-	public List<Reservation> selectReservationList(String reserMemberId, RowBounds rowBounds) {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("reserMemberId", reserMemberId);
-		
-		return sqlSession.selectList("oneday.selectReservationList", map, rowBounds);
+	public List<Reservation> selectReservationList(String memberId, RowBounds rowBounds) {
+		return sqlSession.selectList("oneday.selectReservationList", memberId, rowBounds);
 	}
 
 	@Override

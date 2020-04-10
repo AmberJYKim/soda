@@ -1,11 +1,14 @@
 package com.soda.onn.recipe.controller;
 
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
+import org.apache.jasper.tagplugins.jstl.core.Redirect;
+
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,6 +35,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.soda.onn.common.base.PageBar;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -61,6 +67,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 import com.soda.onn.recipe.model.vo.RecipeQuestion;
 import com.soda.onn.recipe.model.vo.RecipeReply;
 
@@ -293,20 +300,34 @@ public class RecipeController {
 		
 	}
 	
+	//메뉴검색 페이지 요청 시 인기영상과 메뉴 카테고리 가져가기
 	@GetMapping("/recipe-menu-search")
-	public void recipemenusearch() {
+	public ModelAndView recipemenusearch(ModelAndView mav) {
+		List<RecipeWithIngCnt> popRecipe = recipeService.selectPopRecipe();
+		// 메뉴카테고리 가져오기 완성하기
+		List<MenuCategory> categoryList = recipeService.selectCategoryList();
 		
+		
+		mav.addObject("menuCategory", categoryList);
+		mav.addObject("popRecipe", popRecipe);
+		mav.setViewName("recipe/recipe-menu-search");
+		
+		return mav;
 	}
 	
+	//레시피 페이지 이동 -냉부
 	@GetMapping("/ingredientsSelection")
-	public String selectedIngredientsList() {
+	public ModelAndView selectedIngredientsList(ModelAndView mav) {
 		
+		List<RecipeWithIngCnt> popRecipe = recipeService.selectPopRecipe();
+		log.debug(popRecipe.toString());
+		mav.addObject("popRecipe", popRecipe);
+		mav.setViewName("recipe/ingredientsSelection");
 		
-		
-		return "recipe/ingredientsSelection";
+		return mav;
 	}
 	
-	//중분류카테고리 가져오기 처리용
+	//중분류카테고리 가져오기 처리용 -냉부
 	@GetMapping("getSubCtg")
 	@ResponseBody
 	public List<String> selectIngSubCtg(String mainCtg) {
@@ -479,37 +500,82 @@ public class RecipeController {
 	//중분류 선택에 따른 재료가져오기 처리
 	@GetMapping(value ="getIng", produces="text/plain;charset=UTF-8")
 	@ResponseBody
-	public String selectIngredients(@RequestParam(value="cPage", defaultValue="1") int cPage, String subCtg, HttpServletRequest request ) {
-		log.debug("subCtg controller = {}", subCtg);
+	public String selectIngredients(@RequestParam(value="cPage", defaultValue="1") int cPage, String subCtg, String mainCtg, HttpServletRequest request ) {
 		
 		Map<String, Object> maps = new HashMap<>();
+				List<Ingredient> ingList = new ArrayList<>();
 		
-				
-		List<Ingredient> ingList = recipeService.selectIngredients(subCtg, cPage, NUMPERPAGE);
+		maps.put("mainCtg", mainCtg);
+		maps.put("subCtg", subCtg);
+		
+		if(subCtg.equals("인기재료")) {
+			if(maps.get("subCtg").equals("인기재료"));
+			maps.put("subCtg", null);
+			if(maps.get("mainCtg").equals("인기재료"));
+			maps.put("mainCtg", null);
+			ingList = recipeService.selectPopIngredient(maps);
+		}else {
+			ingList = recipeService.selectIngredients(subCtg, cPage, NUMPERPAGE);
+		}
 		log.debug("controller list={}", ingList.toString());
+		log.debug("subCtg============{}", subCtg);
 		
 		//서브카태고리 재료 총 갯수 조회
 		int ingCnt = recipeService.selectIngredientsCnt(subCtg);
-
+		
 		//카테고리 갯수에 따른 페이징 여부 (12개 이하일 경우 페이징 하지 않음)
-		if(ingCnt < 12) {
-			ingCnt = ingCnt % 12;
-			log.debug("ingCnt 12보다 큼 ===={}", ingCnt);
+		if(ingCnt > 12) {
+			ingCnt = (int)Math.ceil((double)ingCnt/12);
 		} else {
-			ingCnt = 0;
-			log.debug("ingCnt 12보다 작음 ===={}", ingCnt);
+			ingCnt = 1;
 		}
 		
-//		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);		
 		//재료&페이징 맵에 담기
-		
 		maps.put("ingList", ingList);
 		maps.put("ingCnt", ingCnt);
-		
+		maps.put("cPage", cPage);
 		
 		String gList = new Gson().toJson(maps);
 
 		return gList;
 	}
+	
+	//선택한 재료로 레시피 검색하기
+	@GetMapping(value="recipeSerachByIng", produces="text/plain;charset=UTF-8")
+	@ResponseBody
+	public String recipeSerachByIng(@RequestParam("ingNoArr[]") List<Integer> ingNoArr) {
+		
+		log.debug("ingredientNo======={}", ingNoArr);
+		
+		Map<String, Object> maps = new HashMap<>();
+		maps.put("ingNoArr", ingNoArr);
+				
+		List<RecipeWithIngCnt> rlist = recipeService.recipeSerachByIng(maps);
+		log.debug("rlist================{}", rlist.toString());
+		
+		maps.put("recipeList", rlist);
+		
+		return new Gson().toJson(maps);
+		
+	}
+	
+	//메뉴이름으로 레시피 검색하기
+	@GetMapping("searchByMenu")
+	public ModelAndView recipeSearchByMenu(@RequestParam("searchKeyword") String searchKey) {
+		ModelAndView mav = new ModelAndView();
+		
+		
+		log.debug(searchKey);
+		
+		List<RecipeWithIngCnt> rList = recipeService.recipeSearchByMenu(searchKey);	
+		
+		
+		log.debug(""+rList.toString());
+		mav.addObject("searchedList", rList);
+		mav.setViewName("/recipe/recipe-menu-search");
+		
+		return mav;
+	}
+	
 	
 }

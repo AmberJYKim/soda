@@ -21,7 +21,6 @@ public class Scrap implements Serializable {
 	private int recipeNo; //얘로 레시피 타이틀이랑 쉐프 닉네임 가져올것//기본키 이자 외래키
 	private String scrapId; //유저 아이디
 	private Date regDate;
-
 	private String meMo;
 	private String chefNick;
 	private String videoTitle;

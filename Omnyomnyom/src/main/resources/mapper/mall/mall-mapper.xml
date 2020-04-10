@@ -13,7 +13,7 @@
 		member_id = #{memberId}
 </select>
 
-<select id="selectIngredientList" resultMap="ingMallMap">
+<select id="selectIngredientList" resultType="IngredientMall">
 	select
 		*
 	from
@@ -46,53 +46,12 @@
 	join tb_ingredient using(ingredient_no)
 		
 	where
-		ingredient_no = #{ingMallNo}
+		ingredient_no = #{ingredientNo}
 </select>
 <resultMap type="IngredientMall" id="ingMallMap">
 	<id column="ingredient_no" property="ingMallNo"/>
 	<result column="ingredient_name" property="ingMallName"/>
 	<result column="ING_FILENAME" property="prevImg"/>
-	<result column="ENG_PR_CATEGORY" property="mallEngPrCategory"/>
-	<result column="ENG_CD_CATEGORY" property="mallEngCdCategory"/>
 </resultMap>
-
-<insert id="insertShoppingBasket">
-	insert into
-		tb_shopping_basket
-	values(
-		#{sbMemberId},
-		#{sbIngNo},
-		#{sbStock})
-</insert>
-<select id="selectSBList" resultMap="sbMap">
-	select
-		sb.*,i.INGREDIENT_NAME, ig.PRICE, ig.MIN_UNIT, i.ENG_PR_CATEGORY, i.ENG_CD_CATEGORY, i.ING_FILENAME
-	from
-		tb_shopping_basket sb
-		join tb_ingredient_mall ig on sb.INGREDIENT_NO = ig.INGREDIENT_NO
-		join tb_ingredient i on sb.INGREDIENT_NO = i.INGREDIENT_NO
-	where
-		sb.member_Id = #{memberId}
-</select>
-<resultMap type="ShoppingBasket" id="sbMap">
-	<id column="INGREDIENT_NO" property="sbIngNo"/>
-	<result column="stock" property="sbStock"/>
-	<result column="MEMBER_ID" property="sbMemberId"/>
-	<result column="INGREDIENT_NAME" property="ingMallName"/>
-	<result column="INGREDIENT_NAME" property="ingMallName"/>
-	<result column="MIN_UNIT" property="minUnit"/>
-	<result column="ENG_PR_CATEGORY" property="mallEngPrCategory"/>
-	<result column="ENG_CD_CATEGORY" property="mallEngCdCategory"/>
-	<result column="ING_FILENAME" property="prevImg"/>
-</resultMap>
-<select id="selectIngMallSearch" resultMap="ingMallMap">
-	select 
-		*
-	from
-		tb_ingredient_mall im
-        join tb_ingredient i on im.INGREDIENT_NO = i.INGREDIENT_NO
-	where
-		i.INGREDIENT_NAME like '%'||#{keyword}||'%'
-</select>
 
 </mapper>

@@ -43,7 +43,5 @@ public interface ChefDAO {
 
 	List<Oneday> onedaySelectAll(String chefId);
 
-	int chefRequestUpdate(ChefRequest chefreq);
-
 }
 

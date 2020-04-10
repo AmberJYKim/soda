@@ -1,5 +1,6 @@
 package com.soda.onn.recipe.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.soda.onn.recipe.model.vo.Report;
@@ -16,7 +17,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
-import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
+import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 
 @Repository
 public class RecipeDAOImpl  implements RecipeDAO{
@@ -27,7 +28,6 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	
 	@Override
 	public List<Ingredient> ingredientAjax(String ingr) {
-		// TODO Auto-generated method stub
 		return sqlSession.selectList("recipe.ingredientAjax", ingr);
 	}
 
@@ -53,7 +53,6 @@ public class RecipeDAOImpl  implements RecipeDAO{
 
 	@Override
 	public int recipeUpload(Recipe recipe) {
-		// TODO Auto-generated method stub
 		return sqlSession.insert("recipe.recipeUpload", recipe);
 	}
 
@@ -71,7 +70,7 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	public List<RecipeIngredient> selectRecIngList(int recipeNo) {
 		return sqlSession.selectList("recipe.selectRecIngList", recipeNo);
 	}
-
+	
 	@Override
 	public List<MenuCategory> selectCategoryList() {
 		return sqlSession.selectList("recipe.selectCategoryList");
@@ -106,7 +105,7 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	public int insertScrap(Scrap scrap) {
 		return sqlSession.insert("recipe.insertScrap", scrap);
 	}
-
+	
 	@Override
 	public List<Report> selectReportList() {
 		return sqlSession.selectList("recipe.selectReportList");
@@ -145,4 +144,27 @@ public class RecipeDAOImpl  implements RecipeDAO{
 		RowBounds rowBounds = new RowBounds(0, i);
 		return sqlSession.selectList("recipe.selectRelRecipeListAll", rrs, rowBounds);
 	}
+	
+	@Override
+	public List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps) {
+		return sqlSession.selectList("recipe.recipeSerachByIng", maps);
+	}
+
+	@Override
+	public List<RecipeWithIngCnt> selectPopRecipe() {
+		return sqlSession.selectList("recipe.selectPopRecipe");
+	}
+
+	@Override
+	public List<Ingredient> selectPopIngredient(Map<String, Object> maps) {
+		return sqlSession.selectList("recipe.selectPopIngredient", maps);
+	}
+
+	@Override
+	public List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey) {
+		return sqlSession.selectList("recipe.recipeSearchByMenu", searchKey);
+	}
+
+
+	
 }
