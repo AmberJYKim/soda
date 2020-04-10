@@ -20,17 +20,17 @@ public interface MallDAO {
 
 	IngredientMall selectIngMallOne(int ingMallNo);
 
-	int insertCart(Cart sb);
-
 	List<Cart> selectCartList(String memberId);
-
+	
 	List<IngredientMall> selectIngMallSearch(String keyword);
 
-	int deleteCart(Cart sb);
-	
-	Cart selectCart(Cart sb);
+	int insertCart(Cart sb);
 
+	Cart selectCart(Cart sb);
+	
 	int updateCart(Cart sb);
+
+	int deleteCart(Cart sb);
 	
 
 

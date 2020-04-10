@@ -88,9 +88,5 @@ public class ChefDAOImpl implements ChefDAO {
 	public List<Oneday> onedaySelectAll(String chefId) {
 		return sqlSession.selectList("chef.onedaySelectAll",chefId);
 	}
-	@Override
-	public int chefRequestUpdate(ChefRequest chefreq) {
-			return sqlSession.update("chef.chefRequestUpdate", chefreq);
-	}
 
 }

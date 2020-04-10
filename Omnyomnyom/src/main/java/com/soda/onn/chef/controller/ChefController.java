@@ -179,7 +179,6 @@ public class ChefController {
 							@RequestParam(value ="insta") String insta,
 							@RequestParam(value="chefProfileimg",required=true) MultipartFile chefProfile,
 							@RequestParam(value="chefApVideoimg", required=true) MultipartFile chefApVideo,
-							@RequestParam(value="chefApRink", required=true) String chefApRink,
 							RedirectAttributes redirectAttribute) {
 		
 //		System.out.println(chefRequest);
@@ -197,49 +196,37 @@ public class ChefController {
 		
 		chefRequest.setSns(snsGson);
 		
-//		프로필 사진 리네임 정책 
+		
+		//프로필 사진 닉네임으로 파일명 저장하기; 
 		String profileOriginalFileName = chefProfile.getOriginalFilename();
+		String chefAPVideoOriginalFileName = chefApVideo.getOriginalFilename();
+
 		String profileRenamedFileName = ChefRequestUtils.getRenamedFileName(profileOriginalFileName, chefRequest.getChefNickName());
+		String videoRenamedFileName = ChefRequestUtils.getRenamedFileName(chefAPVideoOriginalFileName , chefRequest.getChefNickName());
+		
+		//파일 이동
 		String profileSaveDirectory = request.getServletContext().getRealPath("/resources/upload/profile");
+		String chefApVideoSaveDirectory = request.getServletContext().getRealPath("/resources/upload/chefApVideo");
 		try {
 			chefProfile.transferTo(new File(profileSaveDirectory,profileRenamedFileName));
-		} catch (IllegalStateException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			chefApVideo.transferTo(new File(chefApVideoSaveDirectory,videoRenamedFileName));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		//실제 파일데이터 originalFileName, renamedFileName을 db에 저장
 		chefRequest.setChefProfile(profileRenamedFileName);
+		chefRequest.setChefApVideo(videoRenamedFileName);
+//		
+//		List<Map<String,String>> list = (List<Map<String,String>>)new Gson().fromJson(chefRequest.getMenuPrCategory(), 
+//																   					  new TypeToken<List<Map<String,String>>>(){}.getType());
+//        
+//        if(!list.isEmpty()) {
+//            log.debug(list.get(0).get("value"));
+//        }
+//		
 		
-		log.debug("chefApVideo={}",chefApVideo);
-		
-//		비디오 영상을 받을 경우 
-		if(chefApVideo.isEmpty()) {
-			chefRequest.setChefApVideo(chefApRink);
-		
-		}else {
-
-			//프로필 사진 닉네임으로 파일명 저장하기; 
-			String chefAPVideoOriginalFileName = chefApVideo.getOriginalFilename();
-	
-			String videoRenamedFileName = ChefRequestUtils.getRenamedFileName(chefAPVideoOriginalFileName , chefRequest.getChefNickName());
-			
-			//파일 이동
-			String chefApVideoSaveDirectory = request.getServletContext().getRealPath("/resources/upload/chefApVideo");
-			try {
-				chefApVideo.transferTo(new File(chefApVideoSaveDirectory,videoRenamedFileName));
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			chefRequest.setChefApVideo(videoRenamedFileName);
-	
-		}
-	
-			log.debug("chefApRink={}",chefApRink);
-	
 
 		int result = chefservice.chefRequest(chefRequest);
 		String msg=result > 0 ? "셰프신청이 완료되었습니다.":"셰프신청에 실패하셨습니다.";

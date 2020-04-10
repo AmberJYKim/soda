@@ -186,6 +186,7 @@
 		order by
 			view_count desc
 	</select>
+	
 	<select id="selectRelRecipeListPr" resultType="recipe">
 		select 
 			*
@@ -206,6 +207,7 @@
 		order by
 			view_count desc
 	</select>
+	
 	<select id="selectRelRecipeListAll" resultType="recipe">
 		select 
 			*
@@ -233,7 +235,7 @@
 		<result column="chef_nick" property="chefNick"/>
 		<result column="video_title" property="videoTitle"/>
 	</resultMap>
-	
+		
 	<resultMap type="ingredientMall" id="ingrMallMap">
 		<id column="ingredient_no" property="ingMallNo"/>
 		<result column="ingredient_name" property="ingMallName"/>
@@ -245,4 +247,51 @@
 		<result column="shelf_life" property="shelfLife"/>
 		<result column="ing_info" property="ingInfo"/>
 	</resultMap>
+	
+	<select id="recipeSerachByIng" resultType="recipeWithIngCnt">
+		    SELECT J.INCLUDE_NO, C.CHEF_PROFILE, R.* 
+		    	FROM TB_RECIPE R JOIN 
+		    		(SELECT COUNT(*) INCLUDE_NO, T.RECIPE_NO 
+		    			FROM (SELECT * FROM TB_REC_INGREDIENTS WHERE INGREDIENT_NO IN
+							<if test="ingNoArr != null">				
+							<foreach collection="ingNoArr" item="item" open="(" separator="," close=")">
+								#{item}
+							</foreach>
+							</if>
+							) T GROUP BY RECIPE_NO ORDER BY 1) J 
+                ON R.RECIPE_NO = J.RECIPE_NO
+                LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID
+	</select>
+	
+	
+	<select id="selectPopRecipe" resultType="recipeWithIngCnt">
+		SELECT * FROM(
+			SELECT ROWNUM RNUM, P.* FROM (
+				SELECT R.*, C.CHEF_PROFILE FROM TB_RECIPE R LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID ORDER BY VIEW_COUNT DESC) P
+			)WHERE RNUM &lt; 11
+	</select>
+	
+	<select id="selectPopIngredient" resultType="Ingredient">
+	SELECT * FROM 
+		(SELECT ROWNUM RNUM, I.* FROM TB_INGREDIENT I RIGHT JOIN 
+				(SELECT COUNT(*) CNT, INGREDIENT_NO FROM TB_REC_INGREDIENTS WHERE INGREDIENT_NO IS NOT NULL  GROUP BY INGREDIENT_NO  ORDER BY CNT DESC) P
+                    ON I.INGREDIENT_NO = P.INGREDIENT_NO
+                    <where>
+	                    <if test="subCtg != null">
+	                    AND ING_CD_CATEGORY = #{subCtg}  
+	                    </if>
+	                    <if test="mainCtg != null">
+	                    AND ING_PR_CATEGORY = #{mainCtg}  
+	                    </if>
+                    </where>
+                    )
+		WHERE RNUM &lt; 13
+	</select>
+	
+	<select id="recipeSearchByMenu" resultType="recipeWithIngCnt">
+		SELECT R.*, C.CHEF_PROFILE FROM TB_RECIPE R 
+								LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID 
+			WHERE MENU_NAME LIKE '%'||#{searchKey}||'%' OR video_title like '%'||#{searchKey}||'%'
+	</select>
+
 </mapper>

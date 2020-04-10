@@ -23,8 +23,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +37,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
+import com.soda.onn.chef.model.service.ChefService;
+import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.common.util.Utils;
 import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.oneday.model.service.OnedayService;
@@ -53,6 +57,9 @@ public class OnedayController {
 
 	@Autowired
 	private OnedayService onedayService;
+	@Autowired
+	private ChefService chefservice;
+
 	
 //	원데이 클래스 메인뷰로 이동 
 	@GetMapping("/oneday")
@@ -68,8 +75,123 @@ public class OnedayController {
 	}
 	
 //	클래스 관리 페이지로 이동
-	@GetMapping("/class_manager.do")
-	public void classManager() {
+	@GetMapping("/class_manager")
+	@ResponseBody
+	public ModelAndView classManager(ModelAndView mav, HttpSession session) {
+		log.debug("oneday_manager @ onedayController = 원데이클래스 관리페이지로 이동합니다!");
+		String MemberNickName = ((Member) session.getAttribute("memberLoggedIn")).getMemberNick();
+		Chef chef = chefservice.chefSelectOne(MemberNickName);
+		String chefId = chef.getChefId();
+		List<Oneday> onedayList = chefservice.onedaySelectAll(chefId);
+		log.debug("onedayList = {}",onedayList);
+		
+		mav.addObject("onedayList",onedayList);
+		return mav;
+	}
+	
+//	원데이클래스 수정페이지로 이동
+	@PostMapping("/oneday_update")
+	public ModelAndView classUpdateView(@ModelAttribute ModelAndView mav,
+									RedirectAttributes redirectAttributes,
+									HttpSession session,
+									@RequestParam(value="onedayclassNo") int onedayclassNo) {
+		log.debug("oneday_update @ controller = 원데이클래스 수정페이지로 이동합니다.");
+		log.debug("update@onedayclassNo = "+onedayclassNo);
+		String memberId = ((Member) session.getAttribute("memberLoggedIn")).getMemberId();
+		
+		Oneday oneday = onedayService.selectOne(onedayclassNo);
+		
+		log.debug("oneday@controller(update)/selectOne={}", oneday);
+		
+		
+		List<OnedayTime> list = onedayService.selectTimeList(onedayclassNo);
+		
+		
+		log.debug("update@list={}", list);
+		
+		mav.addObject("memberId",memberId);
+		mav.addObject("list", list);
+		mav.addObject("oneday", oneday);
+		
+		return mav;
+	}
+//	원데이클래스 수정실행
+	@PostMapping("/class_update")
+	public ModelAndView classUpdate(@ModelAttribute Oneday oneday,
+								   RedirectAttributes redirectAttributes,
+								   @RequestParam(value="onedayTimeM", defaultValue = "0")int onedayTimeM,
+								   @RequestParam(value="onedayImgFile", required = false) MultipartFile onedayImg,
+								   @RequestParam(value="classdate") String[] onedayTimeList,
+								   HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		
+		log.debug("class_update @ controller = 원데이클래스 수정절차를 실행합니다.");
+		
+		
+		List<Attachment> addImgList = new ArrayList<>();
+		if(!onedayImg.isEmpty()) {
+			String originalFileName = onedayImg.getOriginalFilename();
+			String renamedFileName = Utils.getRenamedFileName(originalFileName);			
+			
+			//파일 이동시킴
+			String saveDirectory = request.getServletContext().getRealPath("/resources/upload/onedayclass");
+			
+			try {
+				
+				onedayImg.transferTo(new File(saveDirectory, renamedFileName));
+			} catch (IllegalStateException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			//실제 데이터 -> db 저장
+			Attachment addImg = new Attachment();
+			addImg.setOriginalFileName(originalFileName);
+			addImg.setRenamedFileName(renamedFileName);
+			log.debug("classupdate @ addImg={}",addImg);
+			addImgList.add(addImg);
+			
+			oneday.setOnedayImg(renamedFileName);
+		}
+		//이미지 확인
+		log.debug("classupdate @ addImgList={}", addImgList);
+		
+		//String[]의 
+		
+		
+		List<String> otiList = new ArrayList<String>(Arrays.asList(onedayTimeList));
+	
+		if(otiList != null) {
+			for (int i=0; i<otiList.size(); i++) {
+				System.out.println("classupdate @ otiList = "+ otiList.get(i));
+			}
+		}
+		
+		System.out.println("classupdate @ otiList = "+otiList);
+		
+		int result = onedayService.classUpdate(oneday, otiList);
+		
+		mav.addObject("onedayTimeM", onedayTimeM);
+		log.debug("onedayclassNo="+ oneday.getOnedayclassNo());
+		mav.setViewName("redirect:/oneday/oneday_detail?onedayclassNo="+oneday.getOnedayclassNo());
+		return mav;
+		
+	} 
+
+	
+//  원데이클래스 삭제
+	@PostMapping("/class_delete")
+	public String classDelete(
+								RedirectAttributes redirectAttributes,
+								@RequestParam(value ="onedayclassNo")int onedayclassNo) {
+		
+		int result = onedayService.deleteOneday(onedayclassNo);
+		
+		String msg ="";
+		
+		redirectAttributes.addFlashAttribute("msg",result>0?"원데이클래스를 정상적으로삭제하였습니다.":"원데이클래스를 삭제하기 못하였습니다.");
+		
+		return "redirect:/oneday/class_manager";
 		
 	}
 	
@@ -100,7 +222,6 @@ public class OnedayController {
 		
 		List<Oneday> list = onedayService.selectDateList(sec);
 		mav.addObject("list", list);
-		
 		System.out.println("[["+list+"]]");
 		
 		return mav;
@@ -110,7 +231,7 @@ public class OnedayController {
 	@GetMapping("/oneday_detail")
 	public void detail(@RequestParam(value="onedayclassNo") int onedayclassNo, Model model) {
 		
-		log.debug("클래스 no = "+onedayclassNo);
+		log.debug("oneday_detail @클래스 no = "+onedayclassNo);
 		
 		Oneday oneday = onedayService.selectOne(onedayclassNo);
 		log.debug("controller@oneday/selectOne={}", oneday);
@@ -159,12 +280,6 @@ public class OnedayController {
 		return mav;
 	}
 	
-//	원데이 클래스 예약
-//	@PostMapping("/oneday_reservation")
-//	public String reservation() {
-//		
-//	}
-	
 	
 	
 	
@@ -193,20 +308,6 @@ public class OnedayController {
 	}
 	
 	
-	//원데이클래스 개설 뷰 제공
-	/*
-	 * @GetMapping("/class_insert.do") public String insert(HttpSession session,
-	 * RedirectAttributes redirectAttributes) {
-	 * 
-	 * Member member = (Member)session.getAttribute("멤버 로그드 뭐시기");
-	 * 
-	 * if(member != null && "C".equals(member.getMemberRoll())) return
-	 * "oneday/class_insert";
-	 * 
-	 * redirectAttributes.addFlashAttribute("msg", "셰프만 만들 수 있어요!"); return
-	 * "redirect:/"; }
-	 */
-	
 	//원데이클래스 Insert 하기
 	@PostMapping("/insert.do")
 	public ModelAndView insert(@ModelAttribute Oneday oneday, 
@@ -215,8 +316,12 @@ public class OnedayController {
 							   @RequestParam(value="onedayTimeM", defaultValue = "0")int onedayTimeM,
 							   @RequestParam(value="onedayImgFile", required = false) MultipartFile onedayImg,
 							   @RequestParam(value="classdate") String[] onedayTimeList,
+							   HttpSession session,
 							   HttpServletRequest request) {
 		log.debug("원데이클래스 등록 절차를 시작합니다!");
+		String memberId = ((Member) session.getAttribute("memberLoggedIn")).getMemberId(); 
+		String memberNickName = ((Member) session.getAttribute("memberLoggedIn")).getMemberNick();
+		
 		//파일 처리
 		List<Attachment> addImgList = new ArrayList<>();
 		if(!onedayImg.isEmpty()) {
@@ -273,39 +378,17 @@ public class OnedayController {
 		
 		//requestParam으로 value값, defaultValue 값 => 변수 선언해줌
 		
+		mav.addObject("memberNickName", memberNickName);
+		mav.addObject("memberId", memberId);
 		mav.addObject("onedayTimeM", onedayTimeM);
 		mav.setViewName("redirect:/");
 		
 		return mav;
 	}
 	
-	/*
-	 * @GetMapping("/oneday_search") public ModelAndView nomalSearch(@ModelAttribute
-	 * Oneday oneday, ModelAndView mav, RedirectAttributes redirectAttributes) {
-	 * 
-	 * 
-	 * return mav; }
-	 */
+
 	
-	
-	//	원데이클래스 수정 뷰 제공
-	@PutMapping("/update")
-	public String update(@RequestParam("onedayclassNo") int onedayclassNo) {
-		Oneday oneday = onedayService.selectOne(onedayclassNo);
-		return "";
-	}
-	
-//	원데이클래스 삭제
-	@DeleteMapping("/delete")
-	public String delete(@RequestParam("onedayclassNo") int onedayclassNo) {
-		
-		//글 작성자 or 관리자 검사
-		
-		//클래스 삭제
-		int result = onedayService.deleteOneday(onedayclassNo);
-		
-		return "";
-	}
+
 	
 	
 	

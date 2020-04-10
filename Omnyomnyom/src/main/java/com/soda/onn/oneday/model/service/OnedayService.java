@@ -33,6 +33,10 @@ public interface OnedayService {
 
 	int insertReservation(ReservationRequest reservationrequest);
 
+	int classUpdate(Oneday oneday, List<String> otiList);
+
+	
+
 
 
 }

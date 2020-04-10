@@ -1,6 +1,5 @@
 package com.soda.onn.mall.controller;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.soda.onn.mall.model.service.MallService;
-import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mall.model.vo.Cart;
+import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,12 @@ public class MallController {
 	
 //	뇸뇸몰 Main 이동 
 	@GetMapping("/main")
-	public void productList() {	}
+	public ModelAndView productList() {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("");
+		return mav;
+	}
 	
 	
 //	장바구니 가져오기
@@ -52,9 +56,9 @@ public class MallController {
 		
 		return "mall/Cart";
 	}
-//	????
+	
 	@GetMapping("/selectedProductList")
-	public String selectedProductList() {
+	public String slectedProductList() {
 		return "mall/selectedProductList";
 	}
 	
@@ -100,9 +104,9 @@ public class MallController {
 	
 // 뇸뇸몰 상품 상세페이지 이동 
 	@GetMapping("/productDetail")
-	public ModelAndView productDetail(@RequestParam("ingMallNo") int ingMallNo) {
+	public ModelAndView productDetail(@RequestParam("ingredientNo") int ingredientNo) {
 		ModelAndView mav = new ModelAndView();
-		IngredientMall ingMall = mallService.selectIngMallOne(ingMallNo);
+		IngredientMall ingMall = mallService.selectIngMallOne(ingredientNo);
 		mav.addObject("ingMall",ingMall);
 		mav.setViewName("mall//productDetail");
 		return mav;

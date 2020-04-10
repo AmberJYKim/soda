@@ -10,6 +10,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 import com.soda.onn.recipe.model.vo.RecipeReply;
 
 public interface RecipeService {
@@ -41,7 +42,7 @@ public interface RecipeService {
 	int deleteScrap(Scrap scrap);
 
 	int insertScrap(Scrap scrap);
-
+	
  	List<Report> selectReportList();
 
     List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList);
@@ -49,4 +50,14 @@ public interface RecipeService {
 	List<Recipe> selectRelRecipeList(Recipe recipe);
 
 	List<RecipeReply> selectReplyList(int recipeNo);
+	
+	List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps);
+
+	List<RecipeWithIngCnt> selectPopRecipe();
+
+	List<Ingredient> selectPopIngredient(Map<String, Object> maps);
+
+	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
+
+
 }

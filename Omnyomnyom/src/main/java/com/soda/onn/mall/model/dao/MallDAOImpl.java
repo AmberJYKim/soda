@@ -1,10 +1,8 @@
 package com.soda.onn.mall.model.dao;
 
 import java.util.List;
-import java.util.Random;
 
 import org.apache.ibatis.session.RowBounds;
-import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,10 +38,9 @@ public class MallDAOImpl implements MallDAO {
 	}
 
 	@Override
-	public IngredientMall selectIngMallOne(int ingMallNo) {
-		return sqlSession.selectOne("mall.selectIngMallOne",ingMallNo);
+	public IngredientMall selectIngMallOne(int ingredientNo) {
+		return sqlSession.selectOne("mall.selectIngMallOne",ingredientNo);
 		}
-
 
 	@Override
 	public int insertCart(Cart sb) {

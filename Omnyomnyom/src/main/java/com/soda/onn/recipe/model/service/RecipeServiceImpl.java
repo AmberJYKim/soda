@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.soda.onn.recipe.model.vo.Report;
@@ -19,6 +20,7 @@ import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 import com.soda.onn.recipe.model.vo.RecipeReply;
 import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
+import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -114,6 +116,7 @@ public class RecipeServiceImpl implements RecipeService {
 	public int insertScrap(Scrap scrap) {
 		return recipeDAO.insertScrap(scrap);
 	}
+	
 
 	@Override
 	public List<Report> selectReportList() {
@@ -187,4 +190,27 @@ public class RecipeServiceImpl implements RecipeService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps) {
+		return recipeDAO.recipeSerachByIng(maps);
+	}
+
+	@Override
+	public List<RecipeWithIngCnt> selectPopRecipe() {
+		return recipeDAO.selectPopRecipe();
+	}
+
+	@Override
+	public List<Ingredient> selectPopIngredient(Map<String, Object> maps) {
+		return recipeDAO.selectPopIngredient(maps);
+	}
+
+	@Override
+	public List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey) {
+		return recipeDAO.recipeSearchByMenu(searchKey);
+	}
+
+
+
 }

@@ -83,6 +83,23 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	
+	//회원가입용 AJAX 메소드
+	@GetMapping("/enroll.do")
+	@ResponseBody
+	public Boolean enroll(@RequestParam("") String col,
+					   @RequestParam("") String value) {
+		
+		Boolean chkBool = true;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(col, value);
+		Member member = memberService.selectMember(map);
+		if(member != null)
+			chkBool = false;
+			
+		return chkBool;
+	}	
+	
 	//회원가입요청
 	@PostMapping("/enroll")
 	public String enroll(Member member,
@@ -116,6 +133,9 @@ public class MemberController {
 										@PathVariable("value") String value,
 			Model model) {
 		
+		System.out.println("key = " + key);
+		System.out.println("value = " + value);
+		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(key, value);
 		
@@ -126,7 +146,7 @@ public class MemberController {
 		if(checkMember != null) {
 			isUsable = "ok";
 		}
-		log.debug("생성 가능여부 : "+isUsable);
+		System.out.println("ok인가 아닌가 " + isUsable);
 		map.put("isUsable", isUsable);
 		
 		return map;
@@ -221,5 +241,14 @@ public class MemberController {
 				return resultMap;
 	}
 	
+	
+	@GetMapping("/memberInfo")
+	public String memberInfo(@RequestParam("memberId") String memberId) {
+		
+		Member memberInfo = memberService.memberInfo(memberId);
+		
+		
+		return null;
+	}
 
 }
