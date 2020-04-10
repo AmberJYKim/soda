@@ -509,10 +509,13 @@ public class RecipeController {
 		maps.put("subCtg", subCtg);
 		
 		if(subCtg.equals("인기재료")) {
-			if(maps.get("subCtg").equals("인기재료"));
+			if(maps.get("subCtg").equals("인기재료"))
 			maps.put("subCtg", null);
-			if(maps.get("mainCtg").equals("인기재료"));
+			if(maps.get("mainCtg").equals("인기재료"))
 			maps.put("mainCtg", null);
+			
+			log.debug(" 카테고리 설정 받아온값 mainCtg=={} subCtg== {}", mainCtg, subCtg);
+			log.debug(" 카테고리 설정 후 mainCtg=={} subCtg== {}", maps.get("mainCtg"), maps.get("subCtg"));
 			ingList = recipeService.selectPopIngredient(maps);
 		}else {
 			ingList = recipeService.selectIngredients(subCtg, cPage, NUMPERPAGE);
