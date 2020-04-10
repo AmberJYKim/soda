@@ -4,10 +4,10 @@
 }
 
 
-/* vue �ъ�⑹�� ���� */
+/* vue 사용시 적용 */
 
 
-/* 湲곕낯 ���댁���� ��移� �↔린 */
+/* 기본 레이아웃 위치 잡기 */
 
 #header,
 #container,
@@ -32,10 +32,10 @@
 }
 
 
-/* body scroll留�湲� */
+/* body scroll막기 */
 
 
-/* �고�� 吏��� */
+/* 폰트 지정 */
 
 body,
 input,
@@ -71,7 +71,7 @@ ul {
 }
 
 
-/* �쇱���� 怨듯�� */
+/* 폼요소 공통 */
 
 textarea::placeholder,
 input[type='search']::placeholder,
@@ -141,7 +141,7 @@ input[type='number']::-ms-clear {
 }
 
 
-/* old_湲곕낯���� ���댁���� �대���� */
+/* old_기본정의 레이아웃 클래스 */
 
 .layout-wrapper {
     position: relative;
@@ -210,7 +210,7 @@ input[type='number']::-ms-clear {
 }
 
 
-/* old_湲곕낯���� �ㅽ���� �대���� */
+/* old_기본정의 스타일 클래스 */
 
 .styled-highlight-color {
     color: #9d65a1
@@ -234,7 +234,7 @@ input[type='number']::-ms-clear {
 }
 
 
-/* old_���� 議곗�� */
+/* old_수량 조절 */
 
 .styled-ea-controller {
     float: left;
@@ -283,7 +283,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* old_��釉����댁� ���� */
+/* old_서브페이지 상단 */
 
 .layout-page-image {
     padding: 40px 0;
@@ -316,7 +316,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* old_���대� �ㅽ���� */
+/* old_테이블 스타일 */
 
 .styled-table {
     width: 100%;
@@ -355,7 +355,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ�� 媛����ы�� */
+/* 장바구니 개선사항 */
 
 .btn_goodsDel {
     display: inline-block;
@@ -402,7 +402,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 怨듯��_泥댄�щ��� */
+/* 공통_체크박스 */
 
 .label_check {
     display: inline-block;
@@ -453,7 +453,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 怨듯��_���ㅽ�명���ъ�⑹���깃����댁� */
+/* 공통_텍스트형사용자등급아이콘 */
 
 .grade_comm .ico_grade {
     display: inline-block;
@@ -508,7 +508,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ################# */
 
 
-/* 怨듯��_��洹����댁���� */
+/* 공통_신규레이아웃 */
 
 
 /* ################# */
@@ -556,7 +556,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 援щ���_layout : 而⑦��痢��� 諛곌꼍�� �ㅼ�닿��� case */
+/* 구버전_layout : 컨텐츠에 배경이 들어가는 case */
 
 .aticle_old {
     width: 100%
@@ -588,7 +588,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ���댁�濡�耳��댁�� */
+/* 페이지로케이션 */
 
 .page_aticle .page_location {
     width: 1050px;
@@ -611,7 +611,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 怨듯��_���댁����댄�� */
+/* 공통_페이지타이틀 */
 
 .page_aticle .head_aticle {
     padding: 5px 0 24px
@@ -667,7 +667,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �댁�⑹���� */
+/* 내용없음 */
 
 .page_aticle .no_data {
     padding: 50px 0;
@@ -677,7 +677,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 怨듯��_紐⑸�type1_蹂대�쇱���ш������댁�遺������� */
+/* 공통_목록type1_보라색사각형아이콘붙는타입 */
 
 .page_aticle .list_type1 li {
     overflow: hidden;
@@ -702,7 +702,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 怨듯��_���대� */
+/* 공통_테이블 */
 
 .page_aticle .tbl {
     width: 100%
@@ -737,7 +737,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 怨듯��_踰��� */
+/* 공통_버튼 */
 
 .group_btn {
     overflow: hidden;
@@ -778,7 +778,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ��濡�洹몃���ㅻ�(����媛�����猷���,Vuejs ���댁�����) */
+/* 프로그래스바(회원가입완료시,Vuejs 페이지적용) */
 
 .bg_loading {
     position: fixed;
@@ -804,7 +804,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �쇱���ν����怨듯�� */
+/* 폼입력타입공통 */
 
 .user_form {
     width: 1050px;
@@ -822,7 +822,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �ъ�⑹��硫��닿났�� */
+/* 사용자메뉴공통 */
 
 #userMenu {
     width: 1050px;
@@ -967,7 +967,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* SNB怨듯�� */
+/* SNB공통 */
 
 #snb {
     float: left;
@@ -1033,7 +1033,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 怨쇨굅_怨듯�듭����_���댁� */
+/* 과거_공통수정_페이징 */
 
 .page_aticle .layout-pagination {
     font-size: 0
@@ -1080,7 +1080,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ###### */
 
 
-/* 諛곗�≪���寃���寃곌낵 */
+/* 배송지역검색결과 */
 
 #layerDSR {
     display: none
@@ -1389,7 +1389,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* top諛�濡�媛�湲곕��� */
+/* top바로가기버튼 */
 
 #pageTop {
     overflow: hidden;
@@ -1440,13 +1440,13 @@ only screen and (min-resolution: 1.5dppx) {
 /* ###### */
 
 
-/* 二쇰Ц�� */
+/* 주문서 */
 
 
 /* ###### */
 
 
-/* ����紐⑸� */
+/* 상품목록 */
 
 .order_goodslist .show_tbl {
     display: none
@@ -1517,7 +1517,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 二쇰Ц�ㅽ��,二쇰Ц��猷� */
+/* 주문실패,주문완료 */
 
 .section_orderend .head_section {
     padding-bottom: 19px
@@ -1559,7 +1559,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 二쇰Ц������(二쇰Ц�ㅽ��,二쇰Ц��猷�|����) */
+/* 주문서작성(주문실패,주문완료|상속) */
 
 .section_settle .head_section {
     padding-top: 50px
@@ -1613,13 +1613,13 @@ only screen and (min-resolution: 1.5dppx) {
 /* ######## */
 
 
-/* �λ�援щ�� */
+/* 장바구니 */
 
 
 /* ######## */
 
 
-/* �λ�援щ��_怨듯�� */
+/* 장바구니_공통 */
 
 .section_cart .tbl_comm {
     width: 100%
@@ -1664,7 +1664,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ��_��泥댁����+���댁�ы�� */
+/* 장바구니_전체선택+안내사항 */
 
 .section_cart .all_select .tit {
     font-weight: 700;
@@ -1754,7 +1754,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ��_紐⑸�_���� */
+/* 장바구니_목록_상품 */
 
 .section_cart .tbl_header .all_select {
     padding-left: 20px
@@ -1960,7 +1960,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ��_紐⑸�_�⑦�ㅼ������쇰�� */
+/* 장바구니_목록_패키지상품일때 */
 
 .section_cart .view_goods .name_goods {
     margin-left: 76px;
@@ -1998,7 +1998,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ��_紐⑸�_留ㅼ������쇰�� */
+/* 장바구니_목록_매진상품일때 */
 
 .goods_soldout .label_check.disabled {
     background-position: 0 0
@@ -2025,7 +2025,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ��_�곗�댄�곗������ */
+/* 장바구니_데이터없을때 */
 
 .section_cart .no_data {
     padding: 100px 0;
@@ -2038,7 +2038,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ��_理�醫���蹂� */
+/* 장바구니_최종정보 */
 
 .cart_amount {
     overflow: hidden;
@@ -2207,7 +2207,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �깃����몄������ */
+/* 등급할인없을때 */
 
 .cart_amount.cell_except .list {
     width: 200px
@@ -2245,7 +2245,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ############# */
 
 
-/* 留��댁뺄由� 怨듯�� */
+/* 마이컬리 공통 */
 
 
 /* ############# */
@@ -2499,13 +2499,13 @@ only screen and (min-resolution: 1.5dppx) {
 /* ###################### */
 
 
-/* 留��댁뺄由�_二쇰Ц�댁��&���� */
+/* 마이컬리_주문내역&상세 */
 
 
 /* ###################### */
 
 
-/* 二쇰Ц�댁��_紐⑸� */
+/* 주문내역_목록 */
 
 .section_orderlist .list_order {
     padding-top: 10px;
@@ -2724,7 +2724,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 二쇰Ц�댁������ */
+/* 주문내역상세 */
 
 .section_orderview .tbl_type2 {
     border-bottom: 1px solid #dddfe1
@@ -2809,7 +2809,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 二쇰Ц�댁������_���댄�� */
+/* 주문내역상세_타이틀 */
 
 .section_orderview .link_type {
     position: relative;
@@ -2833,7 +2833,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 二쇰Ц�댁������_����紐⑸� */
+/* 주문내역상세_상품목록 */
 
 .section_orderview .chk_cart {
     position: absolute;
@@ -2946,7 +2946,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 二쇰Ц�댁������_����紐⑸�_�⑦�ㅼ����� */
+/* 주문내역상세_상품목록_패키지타입 */
 
 .section_orderview .tbl_type1 .tit_package td {
     padding: 20px 0 14px 30px
@@ -2959,7 +2959,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 二쇰Ц�댁������_����利�踰��� */
+/* 주문내역상세_영수증버튼 */
 
 .section_orderview .tbl_receipt {
     border: 0 none
@@ -2985,7 +2985,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 二쇰Ц�댁������_二쇰Ц痍⑥�� */
+/* 주문내역상세_주문취소 */
 
 .section_orderview .order_cancel {
     padding: 30px 0 0;
@@ -3039,13 +3039,13 @@ only screen and (min-resolution: 1.5dppx) {
 /* ######## */
 
 
-/* 二쇰Ц痍⑥�� */
+/* 주문취소 */
 
 
 /* ######## */
 
 
-/* 怨듯��_�쇰���ㅻ��� ������ ����1 - 異���怨듯�듭�대���댁�� ���� �쇰���ㅻ��� */
+/* 공통_라디오버튼 디자인 타입1 - 추후공통이되어야 하는 라디오버튼 */
 
 .section_cancel .label_radio {
     font-size: 14px;
@@ -3087,7 +3087,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 二쇰Ц痍⑥�� */
+/* 주문취소 */
 
 .section_cancel {
     padding: 60px 0 230px;
@@ -3245,7 +3245,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 二쇰Ц痍⑥��_�깃났or�ㅽ�� */
+/* 주문취소_성공or실패 */
 
 .section_cancel .cancel_result {
     padding-top: 169px;
@@ -3270,7 +3270,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 二쇰Ц痍⑥��_�깃났 */
+/* 주문취소_성공 */
 
 .section_cancel .result_success .cancel_result {
     padding-top: 155px;
@@ -3309,7 +3309,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ################# */
 
 
-/* 留��댁뺄由�_���щ��寃� */
+/* 마이컬리_늘사는것 */
 
 
 /* ################# */
@@ -3406,7 +3406,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* #################### */
 
 
-/* 留��댁뺄由�_������由쎄�  */
+/* 마이컬리_나의적립금  */
 
 
 /* #################### */
@@ -3525,7 +3525,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ################# */
 
 
-/* 留��댁뺄由�_����荑��� */
+/* 마이컬리_나의쿠폰 */
 
 
 /* ################# */
@@ -3647,7 +3647,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ####################### */
 
 
-/* 留��댁뺄由�_鍮�諛�踰��몄�ы���� */
+/* 마이컬리_비밀번호재확인 */
 
 
 /* ####################### */
@@ -3715,7 +3715,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ################# */
 
 
-/* 怨�媛��쇳��_�������� */
+/* 고객센터_상품제안 */
 
 
 /* ################# */
@@ -3745,7 +3745,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ################# */
 
 
-/* 怨�媛��쇳��_��肄��ъ�� */
+/* 고객센터_에코포장 */
 
 
 /* ################# */
@@ -3775,7 +3775,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ################# */
 
 
-/* ����臾몄�� */
+/* 상품문의 */
 
 
 /* ################# */
@@ -3805,7 +3805,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ############### */
 
 
-/* 二쇰Ц��_二쇰Ц��猷� */
+/* 주문서_주문완료 */
 
 
 /* ############### */
@@ -4137,13 +4137,13 @@ only screen and (min-resolution: 1.5dppx) {
 /* ########## */
 
 
-/* ��湲곌����� */
+/* 후기게시판 */
 
 
 /* ########## */
 
 
-/* ��湲곗�곌린_���댁�댁���� */
+/* 후기쓰기_레이어영역 */
 
 .head_section.layer_type {
     position: relative
@@ -4221,7 +4221,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ��湲곗�곌린_湲��곌린���� */
+/* 후기쓰기_글쓰기영역 */
 
 .section_write .goods_info {
     overflow: hidden;
@@ -4474,7 +4474,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ������湲� */
+/* 상품후기 */
 
 .section_review .layout-pagination {
     margin-top: 30px
@@ -4554,7 +4554,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ������湲�_���깃��ν��湲� */
+/* 상품후기_작성가능후기 */
 
 .section_review .list_before {
     padding-top: 10px
@@ -4667,7 +4667,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ������湲�_���깆��猷���湲�_紐⑸�_�대┫�� */
+/* 상품후기_작성완료후기_목록_열릴때 */
 
 .section_review .list_after li {
     border-bottom: 2px solid #ddd
@@ -4832,7 +4832,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ������湲�_���깆��猷���湲�_紐⑸�留� */
+/* 상품후기_작성완료후기_목록만 */
 
 .section_review .list_after .view {
     display: none
@@ -4920,7 +4920,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ������湲�_�댁�⑹���� */
+/* 상품후기_내용없음 */
 
 .section_review .list_after li.no_data,
 .section_review .list_before .no_data {
@@ -4932,13 +4932,13 @@ only screen and (min-resolution: 1.5dppx) {
 /* ######## */
 
 
-/* ����紐⑸� */
+/* 상품목록 */
 
 
 /* ######## */
 
 
-/* ����紐⑸�_LNB */
+/* 상품목록_LNB */
 
 #lnbMenu {
     padding-top: 26px
@@ -5039,7 +5039,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ����紐⑸�_���몄�由� */
+/* 상품목록_예외처리 */
 
 #lnbMenu .event_list {
     display: block;
@@ -5074,7 +5074,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ����紐⑸�_���� */
+/* 상품목록_정렬 */
 
 #goodsList .list_ability {
     position: relative
@@ -5191,7 +5191,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ����紐⑸�_紐⑸� */
+/* 상품목록_목록 */
 
 #goodsList .bnr_category {
     display: none
@@ -5441,7 +5441,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ############ */
 
 
-/* ����二쇰Ц臾몄�� */
+/* 대량주문문의 */
 
 
 /* ############ */
@@ -5483,7 +5483,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ����二쇰Ц臾몄�� ���� */
+/* 대량주문문의 팝업 */
 
 .reg_agree .layer {
     display: none;
@@ -5583,7 +5583,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ########*/
 
 
-/* 1:1臾몄��_old */
+/* 1:1문의_old */
 
 
 /* ########*/
@@ -5601,7 +5601,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 寃���湲����� */
+/* 게시글안내 */
 
 .list_type1.old li {
     overflow: hidden;
@@ -5635,13 +5635,13 @@ only screen and (min-resolution: 1.5dppx) {
 /* ######## */
 
 
-/* ����媛��� */
+/* 회원가입 */
 
 
 /* ######## */
 
 
-/* ���댁����댄�� */
+/* 페이지타이틀 */
 
 .page_aticle .head_join {
     width: 1050px;
@@ -5738,7 +5738,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ���대�泥�由� 諛� 遺�湲곗�由ъ�ㅽ���� */
+/* 테이블처리 및 분기처리스타일 */
 
 .member_join .boardWrite td.memberCols1 {
     width: 149px;
@@ -5794,7 +5794,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �대���� �몄�踰��� ���� */
+/* 휴대폰 인증번호 확인 */
 
 .member_join .mobile .phone_num input[type="text"] {
     float: left;
@@ -6006,7 +6006,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �댁�⑹�쎄����� */
+/* 이용약관동의 */
 
 .member_join .reg_agree .check {
     display: block;
@@ -6129,7 +6129,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ID,PW ���몄���� �몄����� ���ㅽ��  */
+/* ID,PW 틀렸을때 노출되는 텍스트  */
 
 .member_join .txt_guide {
     display: none;
@@ -6152,7 +6152,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 怨듯��_泥댄�щ���,�쇰���ㅻ��� */
+/* 공통_체크박스,라디오버튼 */
 
 .member_join .boardWrite input[type="radio"],
 .member_join .boardWrite input[type="checkbox"] {
@@ -6164,7 +6164,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 泥댄�щ��� */
+/* 체크박스 */
 
 .member_join .inp_check {
     float: left
@@ -6181,7 +6181,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �쇰���ㅻ��� */
+/* 라디오버튼 */
 
 .member_join .group_radio {
     display: block;
@@ -6257,7 +6257,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/*����媛��� ����*/
+/*회원가입 팝업*/
 
 .reg_agree .bg_dim {
     display: none;
@@ -6363,7 +6363,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ############ */
 
 
-/* 媛��몄��蹂댁���� */
+/* 개인정보수정 */
 
 
 /* ############ */
@@ -6412,7 +6412,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ####### */
 
 
-/* �������� */
+/* 상품상세 */
 
 
 /* ####### */
@@ -6818,7 +6818,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ����怨듭����湲� */
+/* 소셜공유하기 */
 
 #shareLayer {
     position: relative
@@ -6960,7 +6960,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ######## */
 
 
-/* 寃���寃곌낵 */
+/* 검색결과 */
 
 
 /* ######## */
@@ -7200,14 +7200,14 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �댁�⑹�쎄� */
+/* 이용약관 */
 
 .page_agreement .btn_history .on {
     display: none
 }
 
 
-/* �댁�⑹���� */
+/* 이용안내 */
 
 .page_guide {
     padding-top: 50px
@@ -7339,13 +7339,13 @@ only screen and (min-resolution: 1.5dppx) {
 /* ############ */
 
 
-/* 濡�洹몄��&鍮����� */
+/* 로그인&비회원 */
 
 
 /* ############ */
 
 
-/* 踰��쇨났�� - �대�밸갑���� �ъ�⑹�� PC���� ���� 踰��� */
+/* 버튼공통 - 해당방식의 사용은 PC에는 없는 버전 */
 
 .btn_type1,
 .btn_type2 {
@@ -7416,7 +7416,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 怨듯�� */
+/* 공통 */
 
 .section_login {
     width: 340px;
@@ -7513,7 +7513,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �뱀��蹂� */
+/* 섹션별 */
 
 .section_login .login_view {
     text-align: center
@@ -7596,7 +7596,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* ���대��/鍮�諛�踰��� 李얘린 */
+/* 아이디/비밀번호 찾기 */
 
 .section_login .find_view {
     padding-top: 26px;
@@ -7658,7 +7658,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 鍮�諛�踰��� */
+/* 비밀번호 */
 
 .section_login .new_pw .tit_email {
     letter-spacing: 0
@@ -7695,7 +7695,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �몄����� */
+/* 인증팝업 */
 
 .section_login #certPopLayer {
     display: none;
@@ -7749,13 +7749,13 @@ only screen and (min-resolution: 1.5dppx) {
 /* ########### */
 
 
-/* �λ�援щ���닿린 */
+/* 장바구니담기 */
 
 
 /* ########### */
 
 
-/* �λ�援щ���닿린_怨듯�� */
+/* 장바구니담기_공통 */
 
 #cartPut * {
     font-family: 'Noto Sans';
@@ -7786,7 +7786,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�⑦�ㅼ������몃��ㅽ���� */
+/* 장바구니담기_패키지셀렉트박스타입 */
 
 #cartPut .cart_option .box_select {
     display: block
@@ -7885,7 +7885,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�⑦�ㅼ������몃��ㅽ����_���댄�� */
+/* 장바구니담기_패키지셀렉트박스타입_아이템 */
 
 #cartPut .cart_option .list {
     overflow: hidden;
@@ -7930,7 +7930,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_���댄��_����移댁�댄�� */
+/* 장바구니담기_아이템_수량카운터 */
 
 #cartPut .cart_option .list .option {
     overflow: hidden
@@ -8003,7 +8003,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_���댄��_湲��� */
+/* 장바구니담기_아이템_금액 */
 
 #cartPut .cart_option .list .price {
     font-weight: 700;
@@ -8017,7 +8017,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�⑷�湲��� */
+/* 장바구니담기_합계금액 */
 
 #cartPut .cart_option .total .price {
     overflow: hidden;
@@ -8078,7 +8078,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_踰���*/
+/* 장바구니담기_버튼*/
 
 #cartPut .cart_option .group_btn {
     overflow: hidden;
@@ -8168,7 +8168,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�깃났 */
+/* 장바구니담기_성공 */
 
 #cartPut .cart_option .success {
     padding: 40px 0 25px;
@@ -8182,7 +8182,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ####################################### */
 
 
-/* �λ�援щ���닿린 : cart_type2 => �������� ���� */
+/* 장바구니담기 : cart_type2 => 상품상세 상단 */
 
 
 /* ####################################### */
@@ -8194,7 +8194,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�⑦�ㅼ������몃��ㅽ���� */
+/* 장바구니담기_패키지셀렉트박스타입 */
 
 #cartPut .cart_type2 .box_select {
     margin-top: -1px;
@@ -8218,7 +8218,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 而щ━�⑥�ㅼ�멸꼍�� */
+/* 컬리패스인경우 */
 
 #cartPut .cart_type2 .option_pass .total {
     padding-top: 126px;
@@ -8226,7 +8226,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�⑦�ㅼ������몃��ㅽ����_���댄�� */
+/* 장바구니담기_패키지셀렉트박스타입_아이템 */
 
 #cartPut .cart_type2 .list li {
     float: right;
@@ -8241,14 +8241,14 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_���댄��_����移댁�댄�� */
+/* 장바구니담기_아이템_수량카운터 */
 
 #cartPut .cart_type2 .list .option {
     padding-top: 9px
 }
 
 
-/* �λ�援щ���닿린_�명�⑦�ㅼ�����_���댄�� */
+/* 장바구니담기_노패키지타입_아이템 */
 
 #cartPut .cart_type2 .list_nopackage {
     padding: 0
@@ -8283,7 +8283,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_���댄��_湲��� */
+/* 장바구니담기_아이템_금액 */
 
 #cartPut .cart_type2 .list .price {
     float: right;
@@ -8298,7 +8298,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�⑷�湲��� */
+/* 장바구니담기_합계금액 */
 
 #cartPut .cart_type2 .total {
     padding: 20px 0 20px;
@@ -8310,7 +8310,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 踰��쇱���� */
+/* 버튼요소 */
 
 #cartPut .cart_type2 .view_function {
     display: block;
@@ -8322,7 +8322,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ############################################# */
 
 
-/* �λ�援щ���닿린 : cart_type1 => �������� ���댁�댄���� */
+/* 장바구니담기 : cart_type1 => 상품상세 레이어타입 */
 
 
 /* ############################################# */
@@ -8341,7 +8341,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�λ�援щ���쇱�湲� */
+/* 장바구니담기_장바구니펼치기 */
 
 #cartPut .cart_type1 .bar_open {
     display: block;
@@ -8377,7 +8377,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�⑦�ㅼ������몃��ㅽ���� */
+/* 장바구니담기_패키지셀렉트박스타입 */
 
 #cartPut .cart_type1 .box_select {
     width: 900px;
@@ -8408,14 +8408,14 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�⑦�ㅼ������몃��ㅽ����_���댄�� */
+/* 장바구니담기_패키지셀렉트박스타입_아이템 */
 
 #cartPut .cart_type1 .list .btn_del {
     top: 0
 }
 
 
-/* �λ�援щ���닿린_���댄��(�⑦��+�⑦�ㅼ�) */
+/* 장바구니담기_아이템(단품+패키지) */
 
 #cartPut .cart_type1 .list {
     width: 900px;
@@ -8459,7 +8459,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_���댄��_湲��� */
+/* 장바구니담기_아이템_금액 */
 
 #cartPut .cart_type1 .list .price {
     float: right;
@@ -8471,14 +8471,14 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�명�⑦�ㅼ�����_���댄�� */
+/* 장바구니담기_노패키지타입_아이템 */
 
 #cartPut .cart_type1 .list_nopackage .btn_del {
     display: none
 }
 
 
-/* �λ�援щ���닿린_�⑷�湲��� */
+/* 장바구니담기_합계금액 */
 
 #cartPut .cart_type1 .total {
     width: 900px;
@@ -8503,7 +8503,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 踰��쇱���� */
+/* 버튼요소 */
 
 #cartPut .cart_type1 .group_btn {
     width: 900px;
@@ -8534,7 +8534,7 @@ only screen and (min-resolution: 1.5dppx) {
 /* ############################################# */
 
 
-/* �λ�援щ���닿린 : cart_type3 => ���댁�� */
+/* 장바구니담기 : cart_type3 => 레이어 */
 
 
 /* ############################################# */
@@ -8640,7 +8640,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* �λ�援щ���닿린_�⑷�湲��� */
+/* 장바구니담기_합계금액 */
 
 #cartPut .cart_type3 .total {
     padding-top: 20px
@@ -8677,7 +8677,7 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 
-/* 踰��쇱���� */
+/* 버튼요소 */
 
 #cartPut .cart_type3 .group_btn {
     overflow: hidden;
