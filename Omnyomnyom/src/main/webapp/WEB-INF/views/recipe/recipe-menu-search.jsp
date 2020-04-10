@@ -14,6 +14,7 @@
     	request.setCharacterEncoding("UTF-8");
 	    
     %>
+    
     <script>
     	var contextPath = "${pageContext.request.contextPath}";    
     	/* ------------------------------------------------------- */
