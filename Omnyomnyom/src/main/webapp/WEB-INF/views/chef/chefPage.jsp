@@ -40,12 +40,14 @@
 		
 	};
 	function classManage() {
-		location.href="${pageContext.request.contextPath}/oneday/class_manager.do";
+		location.href = "${pageContext.request.contextPath}/oneday/class_manager";
 	};
 	function classUpload(){
-		location.href="${pageContext.request.contextPath}/oneday/class_insert.do";
+		location.href = "${pageContext.request.contextPath}/oneday/class_insert";
 	}
     
+	
+
     </script>		
     <section class="page-top-section page-sp set-bg" data-setbg="">
         <div class="container">
@@ -339,9 +341,11 @@
                             </div>
                             <c:if test="${memberLoggedIn.memberRoll eq 'C' and memberLoggedIn.memberNick eq chef.chefNickName}"> 
 	                            <div class="col-lg-6">
-	                                <button type="button" class="btn btn-outline-danger">클래스 관리</button>
-	                                <button type="button" class="btn btn-outline-danger">클래스 업로드</button>
+	                                <button type="button" class="btn btn-outline-danger" onclick="classManage();">클래스 관리</button>
+	                                <button type="button" class="btn btn-outline-danger" onclick="classUpload();">클래스 업로드</button>
+	                               
 	                            </div>
+	                           
                             </c:if>
                         </div>
                         <div class="row">

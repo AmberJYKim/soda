@@ -37,6 +37,12 @@ public interface OnedayDAO {
 
 	int insertReservation(ReservationRequest reservationrequest);
 
+	int classUpdate(Oneday oneday);
+
+
+
+
+
 
 
 
