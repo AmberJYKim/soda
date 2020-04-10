@@ -70,11 +70,9 @@ $().ready(function(){
 					let subCtgList = ' '; 
 					$.each(data,function(index, item){
 						
-						if(index == 0){
-							subCtgList += '<li> <p class="active">'+item+'</p> </li>';
-						}else{
+						
 						subCtgList += '<li> <p>'+item+'</p> </li>';
-						}
+						
 						
 						console.log(item);
 					});
@@ -82,13 +80,13 @@ $().ready(function(){
 					$(".sub-ctg-menu").html(subCtgList);
 					 
 					IngsLoad();
-					$(".sub-ctg-menu p.active").trigger('click');
 				},
 				error : (x,s,e) =>{
 					console.log(x,s,e);
 				}
 			});
 			
+			$(".sub-ctg-menu p.active").trigger('click');
 			
 		});
 	}; //서브 카테고리 교체 끝

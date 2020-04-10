@@ -164,28 +164,7 @@
 			<!-- 영상리스트 섹션 -->
 			
 			<div class="row Ylist" id="Ylist">
-				<c:if test="${not empty popRecipe && empty searchedList}">
-					<c:forEach items="${popRecipe}" var="rec">
-					<div class="col-xs-6 col-sm-3 placeholder chef_list">
-						<a
-							href="${pageContext.request.contextPath }/recipe/recipe-details?recipeNo=${rec.recipeNo }"><img
-							src="https://img.youtube.com/vi/${rec.videoLink }/mqdefault.jpg" alt=""
-							class="chef-Thumbnail">
-							<div class="forTitle"><p class="chef-Thumbnail-title">${rec.videoTitle }</p></div></a>
-						<div class="row">
-							<div class="col-8">
-								<img src="${pageContext.request.contextPath }/resources/upload/profile/${rec.chefProfile }" class="" alt=""
-									style="width: 40px; height: 40px; border-radius: 50%;"> <span
-									class="chef-min-name">${rec.chefNick }</span>
-							</div>
-							<div class="col- chef-view-count">
-								<span><small>조회수 : ${rec.viewCount }</small></span>
-							</div>
-						</div>
-					</div>
-					</c:forEach>
-				</c:if> searchedList
-					<c:if test="${not empty searchedList }">
+				<c:if test="${not empty searchedList }">
 					<c:forEach items="${searchedList}" var="rec">
 					<div class="col-xs-6 col-sm-3 placeholder chef_list">
 						<a
@@ -206,6 +185,28 @@
 					</div>
 					</c:forEach>
 				</c:if>
+				
+				<c:if test="${not empty popRecipe}">
+					<c:forEach items="${popRecipe}" var="rec">
+					<div class="col-xs-6 col-sm-3 placeholder chef_list">
+						<a
+							href="${pageContext.request.contextPath }/recipe/recipe-details?recipeNo=${rec.recipeNo }"><img
+							src="https://img.youtube.com/vi/${rec.videoLink }/mqdefault.jpg" alt=""
+							class="chef-Thumbnail">
+							<div class="forTitle"><p class="chef-Thumbnail-title">${rec.videoTitle }</p></div></a>
+						<div class="row">
+							<div class="col-8">
+								<img src="${pageContext.request.contextPath }/resources/upload/profile/${rec.chefProfile }" class="" alt=""
+									style="width: 40px; height: 40px; border-radius: 50%;"> <span
+									class="chef-min-name">${rec.chefNick }</span>
+							</div>
+							<div class="col- chef-view-count">
+								<span><small>조회수 : ${rec.viewCount }</small></span>
+							</div>
+						</div>
+					</div>
+					</c:forEach>
+				</c:if> 
 			</div>
 		</div>
 		<!-- end-->

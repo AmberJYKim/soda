@@ -186,6 +186,7 @@
 		order by
 			view_count desc
 	</select>
+	
 	<select id="selectRelRecipeListPr" resultType="recipe">
 		select 
 			*
@@ -206,6 +207,7 @@
 		order by
 			view_count desc
 	</select>
+	
 	<select id="selectRelRecipeListAll" resultType="recipe">
 		select 
 			*
