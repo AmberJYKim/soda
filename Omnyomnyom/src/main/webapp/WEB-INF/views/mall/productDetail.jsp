@@ -117,9 +117,57 @@
     </section>
     <!--  Section end -->
     <script>
-    function shoppingBasket(){
-    	location.href="${pageContext.request.contextPath }/mall/shoppingBasket"
-    }
+    $(function(){
+	    $("#add-shoppingBasket").on("click",function(){
+	    	shoppingBasket();
+	    });
+	    
+	    function countChange(b){
+	    	$count = $("#count");
+	    	let cnum = Number($count.val())+Number(b);
+	    	if(cnum<=0){
+				$count.text(1);
+				cnum = 1;
+	    	}
+	    	$count.val(cnum);
+	    	let price = $("#price").text()
+	    	price = price.replace(/\,/g,"");
+	    	let ppap = Number(price)*cnum;
+	    	$("#total_price").text(String(ppap).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+/* 	    	$("#total_price").text(Number(price)*cnum); */
+
+	    }
+	    
+	    $("#countup").on("click",function(){
+	    	countChange(1);
+	    });
+	    $("#countdown").on("click",function(){
+	    	countChange(-1);
+	    });
+	    $("#count").on("keyup",function(){
+	    	countChange(0);
+	    });
+	    
+	    function shoppingBasket(){
+	    	let ingMall = {"ingMallNo":"${ingMall.ingMallNo}",
+	    			       "stock":$("#count").val()}	 
+	    	$.ajax({
+		    	url:"${pageContext.request.contextPath}/mall/cart/add",
+		    	data : ingMall,
+		    	dataType : 'text',
+		    	method : "POST",
+		    	success : data =>{
+		    	/* 재료목록 교체작업 */
+		    		alert(data);
+			    	console.log(data)
+		    	},
+		    	error : (x,s,e) =>{
+		    		alert(data);
+		    	}
+			});
+	    };
+    });
     </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

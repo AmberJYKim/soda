@@ -6,6 +6,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.mall.model.vo.IngredientMall;
+import com.soda.onn.mall.model.vo.Cart;
 
 public interface MallDAO {
 
@@ -17,6 +18,20 @@ public interface MallDAO {
 
 	List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds);
 
-	IngredientMall selectIngMallOne(int ingredientNo);
+	IngredientMall selectIngMallOne(int ingMallNo);
+
+	List<Cart> selectCartList(String memberId);
+	
+	List<IngredientMall> selectIngMallSearch(String keyword);
+
+	int insertCart(Cart sb);
+
+	Cart selectCart(Cart sb);
+	
+	int updateCart(Cart sb);
+
+	int deleteCart(Cart sb);
+	
+
 
 }
