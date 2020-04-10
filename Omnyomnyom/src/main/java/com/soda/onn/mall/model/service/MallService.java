@@ -6,7 +6,6 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.mall.model.vo.IngredientMall;
-import com.soda.onn.mall.model.vo.ShoppingBasket;
 
 public interface MallService {
 
@@ -18,12 +17,6 @@ public interface MallService {
 
 	List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds);
 
-	IngredientMall selectIngMallOne(int ingMallNo);
-
-	int insertShoppingBasket(ShoppingBasket sb);
-
-	List<ShoppingBasket> selectSBList(String memberId);
-
-	List<IngredientMall> selectIngMallSearch(String keyword);
+	IngredientMall selectIngMallOne(int ingredientNo);
 
 }

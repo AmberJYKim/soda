@@ -15,21 +15,11 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShoppingBasket  extends IngredientMall implements Serializable{
+public class ShoppingBasket implements Serializable{
 	private static final long serialVersionUID = 1L;
 
-	private int sbIngNo;
-	private String sbMemberId;
-	private int sbStock;
-	
-	public ShoppingBasket(int ingMallNo, String ingMallName, String prevImg, int price, int stock, String minUnit,
-			String ingOrigin, int shelfLife, String ingInfo, String mallEngPrCategory, String mallEngCdCategory,
-			int sbIngNo, String sbMemberId, int sbStock) {
-		super(ingMallNo, ingMallName, prevImg, price, stock, minUnit, ingOrigin, shelfLife, ingInfo, mallEngPrCategory,
-				mallEngCdCategory);
-		this.sbIngNo = sbIngNo;
-		this.sbMemberId = sbMemberId;
-		this.sbStock = sbStock;
-	}
-	
+	private int ingredientNo;
+	private List<IngredientMall> ingredientMall;
+	private int stock;
+	private Date regDate;
 }

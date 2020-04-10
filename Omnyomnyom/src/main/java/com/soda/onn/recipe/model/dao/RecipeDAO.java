@@ -12,7 +12,6 @@ import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
-import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
 
 public interface RecipeDAO {
 
