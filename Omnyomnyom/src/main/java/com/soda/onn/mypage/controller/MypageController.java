@@ -1,6 +1,5 @@
 package com.soda.onn.mypage.controller;
 
-import java.nio.channels.SeekableByteChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +25,7 @@ import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.mypage.model.service.MypageService;
+import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Reservation;
@@ -153,7 +152,7 @@ public class MypageController {
 		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
 		
 		List<Scrap> list = mypageService.selectScrapList(memberId, rowBounds);
-		
+		System.out.println("여기는 스크랩목록 = " + list);
 		
 		mav.addObject("list", list);
 		mav.addObject("paging", paging);
@@ -199,9 +198,29 @@ public class MypageController {
 		return "redirect:/mypage/scrapList";
 	}
 	
+	//알림 목록
+	@GetMapping("/dingdongList")
+	public ModelAndView dingdongList(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		Member userId = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = userId.getMemberId();
+		System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
+		
+		List<DingDong> list = mypageService.selectDingList(memberId);
+		System.out.println("여기는 알림목록  = "+list);
+		
+		mav.addObject("list", list);
+		mav.setViewName("/mypage/dingdongList");
+		
+		return mav;
+	}
+	
 	@GetMapping("/directMsg")
 	public void directMsg() {
 		
 	}
+	
+	
 	
 }

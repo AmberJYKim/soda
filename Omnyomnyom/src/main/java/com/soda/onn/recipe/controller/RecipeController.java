@@ -1,17 +1,12 @@
 package com.soda.onn.recipe.controller;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.ibatis.session.RowBounds;
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,6 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,9 +30,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.soda.onn.common.base.PageBar;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -61,6 +61,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -483,5 +484,63 @@ public class RecipeController {
 
 		return gList;
 	}
+	
+//	@GetMapping("/report")
+//	@ResponseBody
+//	public String report(String memberId, int replyNo, String memo) {
+//		
+//		String userId = memberId;
+//		int repNo = replyNo;
+//		Map<String, Object> maps = new HashMap<>();
+//
+//		Report rep = new Report(memberId, replyNo, null, memo);
+//		
+//		Report rp = recipeService.selectReport(rep); 
+//			
+//		String result = " ";
+//		if(rp != null) {
+//			
+//			result = "이미 신고한 댓글 입니다";
+//			
+//		}else {
+//		
+//			int rst = recipeService.insertReport(rep);
+//			
+//			if(rst == 1) {
+//				result = "신고가 등록되었습니다.";
+//			}
+//		}
+//		
+//		String gsonresult = new Gson().toJson(result);
+//		 
+//		return gsonresult;
+//	}
+	
+	@GetMapping("/report")
+	@ResponseBody
+	public String report(String memberId, int replyNo, Date dateReport, String memo) {
+		
+		Report rp = new Report(memberId, replyNo, dateReport , memo);
+		
+		Report rep = recipeService.selectReport(rp);
+		
+		String result = "";
+		
+		if(rep != null) {
+			result = "신고한 내역이 있는 댓글은 신고접수를 할 수가 없습니다.";
+		}
+		else {
+			int reportInsert = recipeService.insertReport(rp);
+			
+			if(reportInsert == 1) {
+				result = "신고가 접수 되었습니다.";	
+			}
+		}
+		
+		String gsonresult = new Gson().toJson(result);
+		 
+		return gsonresult;
+	}
+	
 	
 }

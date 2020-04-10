@@ -14,6 +14,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.Report;
 
 @Repository
 public class RecipeDAOImpl  implements RecipeDAO{
@@ -107,5 +108,15 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	@Override
 	public int increaseReadCount(int recipeNo) {
 		return sqlSession.update("recipe.increaseReadCount", recipeNo);
+	}
+
+	@Override
+	public Report selectReport(Report rp) {
+		return sqlSession.selectOne("recipe.selectReport", rp);
+	}
+
+	@Override
+	public int insertReport(Report rp) {
+		return sqlSession.insert("recipe.insertReport", rp);
 	}
 }

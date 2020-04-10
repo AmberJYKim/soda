@@ -15,7 +15,7 @@
 </select>
 
 <resultMap id="scrapMap" type="scrap">
-	<result column="member_id" property="scrapId"></result>
+	<result column="member_id" property="scrapId"/>
 
 </resultMap>
 
@@ -38,5 +38,18 @@
 		member_id = #{scrapId}
 
 </update>
+
+<select id="selectDingList" resultMap="dingMap">
+	select
+		*
+	from
+		tb_dingdong
+	where 
+		member_id = #{dingMemberId}
+</select>
+
+<resultMap id="dingMap" type="dingdong">
+	<result column="member_id" property="dingMemberId"/>
+</resultMap>
 
 </mapper>

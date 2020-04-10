@@ -15,6 +15,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -123,5 +124,15 @@ public class RecipeServiceImpl implements RecipeService {
 		log.debug("{}",selectList);
 		
 		return null;
+	}
+
+	@Override
+	public Report selectReport(Report rp) {
+		return recipeDAO.selectReport(rp);
+	}
+
+	@Override
+	public int insertReport(Report rp) {
+		return recipeDAO.insertReport(rp);
 	}
 }

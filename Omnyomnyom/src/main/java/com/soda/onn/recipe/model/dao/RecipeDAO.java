@@ -9,6 +9,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.Report;
 
 public interface RecipeDAO {
 
@@ -42,4 +43,8 @@ public interface RecipeDAO {
 	int insertScrap(Scrap scrap);
 
 	int increaseReadCount(int recipeNo);
+
+	Report selectReport(Report rp);
+
+	int insertReport(Report rp);
 }
