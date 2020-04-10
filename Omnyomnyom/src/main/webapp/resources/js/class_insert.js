@@ -2,6 +2,13 @@
 	window.onload = function() {
 		
 		$("#input-date").datepicker({
+			
+			minDate : new Date()
+			
+		});
+		
+		
+		$("#input-date").datepicker({
 			onSelect: function onSelect(dattte){
 				console.log("찍힌 시간"+dattte);
 			}

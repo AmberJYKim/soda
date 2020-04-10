@@ -6,7 +6,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8" />
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="원데이 클래스 등록" name="pageTitle" />
+	<jsp:param value="원데이 클래스 수정" name="pageTitle" />
 </jsp:include>
 
 <!-- css -->
@@ -24,21 +24,21 @@
 
 <section class="event-details-section spad overflow-hidden">
 	<div class="container">
-		<form action="insert.do" method="post" enctype="multipart/form-data">
-		<!-- 셰프채널 = memberId, Nickname 입력란-->
-		<input type="text" id="input-class-channel" name="memberId" value="${memberLoggedIn.memberId }" hidden/> 
-		<input type="text" id="input-class-channel" name="memberNickname" value="${memberLoggedIn.memberNick }" hidden/> 
+		<form action="class_update" method="post" enctype="multipart/form-data">
+		<!-- 셰프채널 = memberId 입력란-->
+		<input type="text" id="input-class-channel" name="memberId" value="${memberLoggedIn.memberId}" hidden/> 
+		<input type="number" name="onedayclassNo" value="${oneday.onedayclassNo}" hidden/>	
 			<div class="row">
 				<div class="col-lg-7">
 					<!-- 이미지 등록 -->
 					<div class="oneday_class_img">
 						<div id="uploadbtn" onclick="upload(this)">Upload Files</div>
-						<input type='file' id="imgInput" name="onedayImgFile" hidden /> <img src="#" alt="" id="image_section">
+						<input type='file' id="imgInput" name="onedayImgFile" value="${oneday.onedayImg}" hidden/><img src="#" alt="" id="image_section">
 					</div>
 
 					<!-- ck에디터 -->
 					<div class="event-details w-100">
-						<textarea name="onedayContent"></textarea>
+						<textarea name="onedayContent">${oneday.onedayContent}</textarea>
 					</div>
 				</div>
 
@@ -50,28 +50,28 @@
 							<!-- 클래스 명 입력란 -->
 							<span class="input input--yoshiko"> 
 							<!-- 클래스명 input --> 
-							<input class="input__field input__field--yoshiko" type="text" id="input-class-name" name="onedayName"/> 
+							<input class="input__field input__field--yoshiko" type="text" id="input-class-name" name="onedayName" value="${oneday.onedayName}" required="required"/> 
 							<!-- 클래스명 라벨 --> 
 							<label class="input__label input__label--yoshiko" for="input-class-name"> 
-							<span class="input__label-content input__label-content--yoshiko" data-content="클래스명">클래스명</span>
+							<span class="input__label-content input__label-content--yoshiko" data-content=""></span>
 							</label>
 							</span>
 								
 							<!-- 메뉴 입력란 -->
 							<span class="input input--yoshiko"> 
 							<!-- 클래스명 input --> 
-							<input class="input__field input__field--yoshiko" type="text" id="input-menu-name" name="menuList"/> 
+							<input class="input__field input__field--yoshiko" type="text" id="input-menu-name" name="menuList" value="${oneday.menuList }" required="required"/> 
 							<!-- 클래스명 라벨 --> 
 							<label class="input__label input__label--yoshiko" for="input-menu-name"> 
-							<span class="input__label-content input__label-content--yoshiko" data-content="메뉴명">메뉴명</span>
+							<span class="input__label-content input__label-content--yoshiko" data-content=""></span>
 							</label>
 							</span>
 							<!-- 클래스 비용 입력란 -->
 							<span class="input input--yoshiko"> <!-- 클래스 비용 input -->
-								<input class="input__field input__field--yoshiko" type="number" step="1000" min="1000"  id="input-class-cost" name="onedayPrice"/> 
+								<input class="input__field input__field--yoshiko" type="number" step="1000" min="1000"  id="input-class-cost" name="onedayPrice" value="${oneday.onedayPrice}" required="required"/> 
 								<!-- 클래스 비용 라벨 --> 
 								<label class="input__label input__label--yoshiko" for="input-class-cost"> 
-								<span class="input__label-content input__label-content--yoshiko" data-content="클래스 비용">클래스 비용</span>
+								<span class="input__label-content input__label-content--yoshiko" data-content=""></span>
 							</label>
 							</span>
 							
@@ -83,19 +83,19 @@
 								<!-- 시간 입력란 -->
 								<span class="input input--yoshiko col px-1"> <!-- 시간 input -->
 									<input class="input__field input__field--yoshiko" type="number"
-									id="input-class-time-h" name="onedayTime" min="0" autocomplete="off" /> 
+									id="input-class-time-h" name="onedayTime" value="${oneday.onedayTime }" min="0" autocomplete="off" required="required"/> 
 									<!-- 시간 라벨 -->
 									<label class="input__label input__label--yoshiko" for="input-class-time-h"> 
-									<span class="input__label-content input__label-content--yoshiko" data-content="시간">시간</span>
+									<span class="input__label-content input__label-content--yoshiko" data-content=""></span>
 								</label>
 								</span>
 								<!-- 분 입력란 -->
 								<span class="input input--yoshiko col pr-0"> 
 								<!-- 분 input -->
-								<input class="input__field input__field--yoshiko" type="number" id="input-class-time-m" name="onedayTimeM" min="0" max="59" autocomplete="off" />
+								<input class="input__field input__field--yoshiko" type="number" id="input-class-time-m" name="onedayTimeM"  value="00" min="0" max="59" autocomplete="off" required="required"/>
 									<!-- 분 라벨 --> 
 								<label class="input__label input__label--yoshiko" for="input-class-time-m"> 
-								<span class="input__label-content input__label-content--yoshiko" data-content="분">분</span>
+								<span class="input__label-content input__label-content--yoshiko" data-content="">분</span>
 								</label>
 								</span>
 							</div>
@@ -104,26 +104,25 @@
 							<div class="row">
 								<!-- 최대 정원 인원 입력란 -->
 								<span class="input input--yoshiko col"> <!-- 최대 정원 인원 input -->
-									<input class="input__field input__field--yoshiko" type="number" id="input-class-max" name="onedayMaxper" min="0" max="100" autocomplete="off" /> 
+									<input class="input__field input__field--yoshiko" type="number" id="input-class-max" name="onedayMaxper" value="${oneday.onedayMaxper }" min="0" max="100" autocomplete="off" required="required"/> 
 									<!-- 정원 인원 라벨 -->
 									<label class="input__label input__label--yoshiko" for="input-class-max"> 
-									<span class="input__label-content input__label-content--yoshiko" data-content="정원 인원">정원 인원</span>
+									<span class="input__label-content input__label-content--yoshiko" data-content=""></span>
 								</label>
 								</span>
 								<!-- 최소 인원 입력란 -->
 								<span class="input input--yoshiko col"> <!-- 최소 인원 input -->
-									<input class="input__field input__field--yoshiko" type="number" id="input-class-min" name="onedayMinper" min="0" max="100" autocomplete="off" /> 
+									<input class="input__field input__field--yoshiko" type="number" id="input-class-min" name="onedayMinper" value="${oneday.onedayMinper }" min="0" max="100" autocomplete="off" required="required"/> 
 									<!-- 최소 인원 라벨 -->
 									<label class="input__label input__label--yoshiko" for="input-class-min"> 
-									<span class="input__label-content input__label-content--yoshiko" data-content="최소 인원">최소 인원</span>
+									<span class="input__label-content input__label-content--yoshiko" data-content=""></span>
 								</label>
 								</span>
 							</div>
 							<!-- 클래스 주소 입력란 -->
-							<!-- 클래스 주소 input -->
 							<span class="input input--yoshiko"> 
 								<input class="input__field input__field--yoshiko" type="text"
-								id="sample6_address" name="Addr" onclick="sample6_execDaumPostcode()" required="required" readonly="readonly"/> 
+								id="sample6_address" name="Addr" value="${oneday.addr }" onclick="sample6_execDaumPostcode()" required="required" readonly="readonly"/> 
 								<!-- 클래스 주소 라벨 --> 
 								<label class="input__label input__label--yoshiko" for="input-class-adress"> 
 								<span class="input__label-content input__label-content--yoshiko" data-content=""></span>	
@@ -134,7 +133,7 @@
 							<input type="text" id="sample6_extraAddress" placeholder="참고항목" hidden/>
 							<span class="input input--yoshiko"> <!-- 클래스 주소 input -->
 								<input class="input__field input__field--yoshiko" type="text"
-								id="sample6_detailAddress" name="detailedAddr" required="required"/> <!-- 클래스 주소 라벨 --> <label
+								id="sample6_detailAddress" name="detailedAddr" value="${oneday.detailedAddr}" required="required"/> <!-- 클래스 주소 라벨 --> <label
 								class="input__label input__label--yoshiko"
 								for="input-class-adress"> <span
 									class="input__label-content input__label-content--yoshiko"
@@ -193,6 +192,7 @@
 						        }).open();
 						    }
 						</script>
+
 							<h5 class="insert-title">클래스 날짜</h5>
 							<!-- 클래스 날짜 입력란 -->
 							<div class="row m-auto">
@@ -200,9 +200,9 @@
 									<input
 									class="input__field input__field--yoshiko datepicker-here"
 									type="text" id="input-date" data-language='kr' data-date-format='yyyy/mm/dd' data-time-format='hh:ii'
-									data-timepicker="true" autocomplete="off" />
+									data-timepicker="true" autocomplete="off"/>
 								</span>
-
+							
 								<div class="col py-1 pr-0 input">
 									<!-- 클래스 날ㅉ 버튼 -->
 									<button class="site-btn sb-gradient px-3"
@@ -216,9 +216,10 @@
 					</div>
 					<div class="sb-widget col py-1 pr-0 input">
 						<!-- 위도/경도 더미 값 -->
-						<input type="number" name="latitude" value="150" hidden/><input type="number" name="longitude" value="150" hidden/>
+						<input type="number" name="latitude" value="150" hidden/>
+						<input type="number" name="longitude" value="150" hidden/>
 						<!-- 클래스 등록 버튼 -->
-						<input type="submit" class="site-btn sb-gradient px-3 reservation_class" value="등록하기"></input>
+						<input type="submit" class="site-btn sb-gradient px-3 reservation_class" value="수정하기 "/>
 					</div>
 				</div>
 			</div>

@@ -50,7 +50,8 @@ where onedayclass_no = #{onedayclassNo}
 				#{onedayMinper},
 				#{onedayImg},
 				<!-- gson 배열로 받음 -->
-				#{menuList}
+				#{menuList},
+				#{Addr}
 			)
 			<selectKey keyProperty="onedayclassNo" resultType="_int" order="AFTER">
 				select seq_oneday_class.currval from dual
@@ -119,9 +120,49 @@ order by onedayclass_no desc
 <resultMap type="OnedayTime" id="timeCollection">
 	<result column="onedayclass_no" property="onedayNoo"/>
 	<result column="time" property="onedayTimeDate"/>
-	
-
 </resultMap>
+
+
+
+<delete id="deleteOneday">
+	delete from
+	tb_onedayclass
+	where
+		onedayclass_no = #{onedayclassNo}
+</delete>
+
+
+<update id="classUpdate">
+	update
+	tb_onedayclass
+	set
+	oneday_name = #{onedayName},
+	oneday_price = #{onedayPrice},
+	oneday_content = #{onedayContent},
+	Latitude = #{latitude},
+	longitude = #{longitude},
+	Addr = #{Addr},
+	detailed_addr = #{detailedAddr},
+	oneday_time = #{onedayTime},
+	oneday_maxper = #{onedayMaxper},
+	oneday_minper = #{onedayMinper},
+	oneday_img = #{onedayImg},
+	menu_list = #{menuList}
+	
+	where onedayclass_No = #{onedayclassNo}
+</update>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </mapper>

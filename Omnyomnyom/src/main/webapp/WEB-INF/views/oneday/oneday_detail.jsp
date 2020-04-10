@@ -54,7 +54,7 @@ margin: 0;
     <script src="${pageContext.request.contextPath}/resources/js/datepicker.kr.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/datepicker.min.js"></script> --%>
 <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx7bb92e75ffef47048e91236e1d383347"></script>
+<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxef268e11d2dc431a8ad959b54870e233"></script>
 <script type="text/javascript">
 
 var map, marker;
@@ -80,7 +80,7 @@ function initTmap(){
 			url:"https://apis.openapi.sk.com/tmap/pois?version=1&format=json&callback=result",
 			async:false,
 			data:{
-				"appKey" : "l7xx7bb92e75ffef47048e91236e1d383347",
+				"appKey" : "l7xxef268e11d2dc431a8ad959b54870e233",
 				"searchKeyword" : searchKeyword,
 				"resCoordType" : "EPSG3857",
 				"reqCoordType" : "WGS84GEO",
@@ -247,32 +247,7 @@ function initTmap(){
 			                        </select>
 		                		</div>
 							</div>
-						<!-- <script>
-							function dateSelect(selectDate) {
-								$.ajax({
-									type: "POST",
-									url: "${pageContext.request.contextPath}/oneday/oneday_detail",
-									dataType:"json",
-									data: {param:selectDate},
-									success: function(result){
-										
-										//select Box 초기화
-										$("#classtime").find("option").remove().end().append("<option value=''>전체</option>");
-										
-										//배열 개수 만큼 option 추가
-										$.each(result, function(i){
-											$("#classtime").append("<option value='"+result[i]+"'>"+result[i]+"</option>")
-											
-										});
-										
-										
-									},
-									error: function (jqXHR, textStatus, errorThrown){
-										alert("오류가 발생하였습니다.");
-									}
-								});
-							}
-						</script> -->
+
 								
                             <h2>인원 선택</h2>
                            	<div class="input-group">
@@ -284,13 +259,12 @@ function initTmap(){
 								</div>
                             </div>
                                            
-                            <p class="onedayprice"><span id="total_price" class="onedayprice">20,000</span>원</p>
+                            <p class="onedayprice"><span id="total_price" class="onedayprice"><fmt:formatNumber value="${oneday.onedayPrice }" pattern="#,###"/></span>원</p>
                            	
-                           	<input type="number" id="input_price" name="resPrice" style="display: none;" value=""/>
+                           	<input type="number" id="input_price" name="resPrice" style="display: none;" value="${oneday.onedayPrice }"/>
       	
                            	<script>
       							$(document).on('click','#countup, #countdown', function(){
-      								
       								
       								let tPrice = $('#total_price').text();
       								
@@ -312,12 +286,12 @@ function initTmap(){
                     <div class="sb-widget">
                         <div class="class-map">
                             <h3>클래스 위치</h3>
-                            <p><i class="material-icons">map</i>${oneday.detailedAddr }</p>
+                            <p><i class="material-icons">map</i>${oneday.addr}${oneday.detailedAddr }</p>
                             <!-- 지도 api -->
                            <body onload="initTmap();">
 								<div class="mapser">
-									<input type="text" class="text_custom form-control" id="searchKeyword" name="searchKeyword" value="${oneday.detailedAddr }">	
-									<button id="btn_select" class="site-btn sb-gradient reservation_class">위치 검색</button>
+									<input type="text" class="text_custom form-control" id="searchKeyword" name="searchKeyword" value="${oneday.addr}${oneday.detailedAddr }">	
+									<input id="btn_select" class="site-btn sb-gradient reservation_class" value="위치 검색">
 								</div>
 								<div>
 									
@@ -333,6 +307,7 @@ function initTmap(){
     </section>
     <!-- Event Details Section end -->
      <script>
+     
     function countChange(b){
         $count = $("#count");
         let cnum = Number($count.val())+Number(b);

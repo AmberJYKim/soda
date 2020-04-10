@@ -87,6 +87,14 @@ public class OnedayDAOImpl implements OnedayDAO{
 		return sqlSession.insert("oneday.insertReservation", reservationrequest);
 	}
 
+	@Override
+	public int classUpdate(Oneday oneday) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("oneday.classUpdate", oneday);
+	}
+
+
+
 
 
 
