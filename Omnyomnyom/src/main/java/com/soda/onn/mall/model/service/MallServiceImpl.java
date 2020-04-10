@@ -1,17 +1,16 @@
 package com.soda.onn.mall.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.soda.onn.mall.model.dao.MallDAO;
-import com.soda.onn.mall.model.dao.MallDAOImpl;
 import com.soda.onn.mall.model.vo.BuyHistory;
+import com.soda.onn.mall.model.vo.Cart;
 import com.soda.onn.mall.model.vo.IngredientMall;
-import com.soda.onn.mall.model.vo.ShoppingBasket;
 
 @Service
 public class MallServiceImpl implements MallService {
@@ -45,18 +44,37 @@ public class MallServiceImpl implements MallService {
 	}
 
 	@Override
-	public int insertShoppingBasket(ShoppingBasket sb) {
-		return mallDAO.insertShoppingBasket(sb);
+	public int insertCart(Cart sb) {
+		Cart sb2 = mallDAO.selectCart(sb);
+		if(sb2 != null) {
+			sb.setSbStock(sb.getSbStock()+sb2.getSbStock());
+			return mallDAO.updateCart(sb);
+		}
+		else return mallDAO.insertCart(sb);
 	}
 
 	@Override
-	public List<ShoppingBasket> selectSBList(String memberId) {
-		return mallDAO.selectSBList(memberId);
+	public List<Cart> selectCartList(String memberId) {
+		return mallDAO.selectCartList(memberId);
 	}
 
 	@Override
 	public List<IngredientMall> selectIngMallSearch(String keyword) {
 		return mallDAO.selectIngMallSearch(keyword);
+	}
+
+	@Override
+	public List<IngredientMall> selectCheckOutIng(List<Integer> ingredientNoList) {
+		List<IngredientMall> ingMallList = new ArrayList<IngredientMall>();
+		for(int i:ingredientNoList) 
+			ingMallList.add(mallDAO.selectIngMallOne(i));
+			
+		return ingMallList;
+	}
+
+	@Override
+	public int deleteCart(Cart sb) {
+		return mallDAO.deleteCart(sb);
 	}
 
 }

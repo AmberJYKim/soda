@@ -73,31 +73,30 @@ input[type="number"]::-webkit-inner-spin-button {
 
 								</div>
 								<hr>
-								<c:forEach items="${sbList }" var="sb">
+								<c:forEach items="${cartList }" var="cart">
 									<div class="row sb-area">
 										<div class="ckbox col-md-1">
 											<input type="checkbox" name="" id="" checked>
 										</div>
 										<div class="col-md-2">
 											<img class="p-img"
-												src="${pageContext.request.contextPath }/resources/images/ingredient/${sb.mallEngPrCategory }/${sb.mallEngCdCategory }/${sb.prevImg }"
+												src="${pageContext.request.contextPath }/resources/images/ingredient/${cart.mallEngPrCategory }/${cart.mallEngCdCategory }/${cart.prevImg }"
 												alt="">
 										</div>
 										<div class="col-md-7">
 											<div class="inner-col pline">
-												<span class="p-name">${sb.ingMallName }</span><span class="p-info">(${sb.minUnit }당, (<span class="price"><fmt:formatNumber value="${sb.price }" pattern="#,###" /></span>)</span>
+												<span class="p-name">${cart.ingMallName }</span><span class="p-info">(${cart.minUnit }당, (<span class="price"><fmt:formatNumber value="${cart.price }" pattern="#,###" /></span>)</span>
 											</div>
 											<div class="inner-col">
-												<i class="fa fa-minus btns"></i> <input type="number"
-													class="qty count" title="구매수량" value="${sb.sbStock}"  /> <i
-													class="fa fa-plus btns"></i>
+												<i class="fa fa-minus btns"></i> 
+												<input type="number" class="qty count" title="구매수량" value="${cart.sbStock}"  /> 
+												<i class="fa fa-plus btns"></i>
 											</div>
 										</div>
 										<div class="col-md-2 md-total-price">
 										<span class="sum-price">
-										<fmt:formatNumber value="${sb.price * sb.sbStock }" pattern="#,###" /></span>원
-											 <i class="fa fa-trash btns" aria-hidden="true"
-												onclick="delproduct();"></i>
+										<fmt:formatNumber value="${cart.price * sb.sbStock }" pattern="#,###" /></span>원
+											 <i class="fa fa-trash" onclick="delproduct(${cart.sbIngNo},this);"></i>
 										</div>
 	
 									</div>
@@ -128,20 +127,33 @@ input[type="number"]::-webkit-inner-spin-button {
 
 <script>
 	$(function () {
-	    console.log('ready');
 	    cursors();
 	    totalPrice();
 	})
+	
 	//	체크박스
 	$(document).on("click",".ckbox",function(){
     	$box = $(this).children();
     	$box.attr('checked',!$box.prop("checked"));
     	totalPrice();
-    })
+  		})
     //	수량 Input 
     		   .on("keyup",".count",function(){
     	changePrice($(this),$(this).val());
     })
+    
+    // 장바구니 상품 삭제
+    function delproduct(ingMallNo,target){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/mall/cart/del/"+ingMallNo,
+	    	type : "DELETE",
+	    	success : function(){
+		    	console.log('삭제성공');
+		    	$(target).parents(".sb-area").remove();
+		    	totalPrice();
+	    	}
+		})
+	}
     
     // 수량 +/- 버튼
 	function cursors() {
@@ -179,20 +191,12 @@ input[type="number"]::-webkit-inner-spin-button {
 	function totalPrice(){
 		let totalPrice = 0;
 		$(".sb-area").find(".ckbox input").each(function(index,item){
-			console.log(1);
-			console.log(item);
-			console.log($(item).parents(".sb-area"));
-			console.log($(item).parents(".sb-area").find(".sum-price").text());
 			if($(item).is(":checked")){
 				let price = $(item).parents(".sb-area").find(".sum-price").text();
-			console.log("----");
-				console.log(price);
-			console.log("----");
 		    	price = price.replace(/\,/g,"");
 				totalPrice += Number(price);
 			}
 		})
-		console.log(totalPrice);
 		$("#total_price").text(String(totalPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ",")); 
 	}
 	$(".mvToSelectedProduct").click(function(){

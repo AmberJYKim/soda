@@ -165,7 +165,7 @@
 	    	let ingMall = {"ingMallNo":"${ingMall.ingMallNo}",
 	    			       "stock":$("#count").val()}	 
 	    	$.ajax({
-		    	url:"${pageContext.request.contextPath}/mall/shopping/add",
+		    	url:"${pageContext.request.contextPath}/mall/cart/add",
 		    	data : ingMall,
 		    	dataType : 'text',
 		    	method : "POST",

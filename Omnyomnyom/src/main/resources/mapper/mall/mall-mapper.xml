@@ -56,7 +56,9 @@
 	<result column="ENG_CD_CATEGORY" property="mallEngCdCategory"/>
 </resultMap>
 
-<insert id="insertShoppingBasket">
+
+<!-- 장바구니  -->
+<insert id="insertCart">
 	insert into
 		tb_shopping_basket
 	values(
@@ -64,7 +66,37 @@
 		#{sbIngNo},
 		#{sbStock})
 </insert>
-<select id="selectSBList" resultMap="sbMap">
+<update id="updateCart">
+	update
+		tb_shopping_basket
+	set
+		stock = ${sbStock}
+	where
+		member_id = #{sbMemberId} 
+		and
+		ingredient_no = #{sbIngNo}
+</update>
+<select id="selectCart" resultMap="sbMap">
+	select
+		ingredient_no, stock
+	from
+		tb_shopping_basket
+	where
+		member_id = #{sbMemberId}
+		and
+		ingredient_no = #{sbIngNo}
+</select>
+<delete id="deleteCart">
+	delete from
+		tb_shopping_basket
+	where
+		member_id = #{sbMemberId}
+		and
+		ingredient_no = #{sbIngNo}
+</delete>
+
+
+<select id="selectCartList" resultMap="sbMap">
 	select
 		sb.*,i.INGREDIENT_NAME, ig.PRICE, ig.MIN_UNIT, i.ENG_PR_CATEGORY, i.ENG_CD_CATEGORY, i.ING_FILENAME
 	from
@@ -74,7 +106,7 @@
 	where
 		sb.member_Id = #{memberId}
 </select>
-<resultMap type="ShoppingBasket" id="sbMap">
+<resultMap type="Cart" id="sbMap">
 	<id column="INGREDIENT_NO" property="sbIngNo"/>
 	<result column="stock" property="sbStock"/>
 	<result column="MEMBER_ID" property="sbMemberId"/>
