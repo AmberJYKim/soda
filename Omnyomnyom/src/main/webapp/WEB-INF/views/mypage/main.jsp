@@ -25,7 +25,7 @@
 				
 				
 				<div class="col-10">
-					<form action="<%=request.getContextPath()%>/mypage/updateinfo" method="get">
+					<form action="<%=request.getContextPath()%>/mypage/updateinfo "id="form1" method="get">
 						<h4 class="border_bottom">내 정보보기</h4>
 						<br>
 							<table class="table">

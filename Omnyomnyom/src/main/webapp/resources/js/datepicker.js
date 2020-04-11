@@ -39,7 +39,7 @@
                 selectOtherYears: true,
                 moveToOtherYearsOnSelect: true,
 
-                minDate: '',
+                minDate: new Date(),
                 maxDate: '',
                 disableNavWhenOutOfRange: true,
 

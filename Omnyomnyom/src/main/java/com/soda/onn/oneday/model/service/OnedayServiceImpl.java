@@ -75,20 +75,6 @@ public class OnedayServiceImpl implements OnedayService {
 	}
 
 
-//	@Override
-//	public List<Oneday> selectDateList(String detailedAddr, String onedayName) {
-//		List<Oneday> list = onedayDAO.selectDateList(detailedAddr, onedayName);
-//		
-//		for (Oneday one : list) {
-//			one.setOnedayTimeList(onedayDAO.selectTimeOne(one.getOnedayclassNo()));
-//////			원데이 클래스의 넘버를 매개변수로하는  OnedayTime을 selectOne하는 것.
-//////			거기에서 불러온 값을 Oenday의 private List<OnedayTime> onedayTimeList;에 담음.
-//		
-//		}
-//	
-//		return list;
-//		
-//	}
 
 
 
@@ -119,6 +105,31 @@ public class OnedayServiceImpl implements OnedayService {
 		// TODO Auto-generated method stub
 		return onedayDAO.insertReservation(reservationrequest);
 	}
+
+
+	@Override
+	public int classUpdate(Oneday oneday, List<String> otiList) {
+		// TODO Auto-generated method stub
+		int result =  onedayDAO.classUpdate(oneday);
+		
+		if(result>0)
+			for(int i=0; i<otiList.size(); i++) {
+				OnedayTime onedayTime = new OnedayTime();
+				
+				onedayTime.setOnedayTimeDate(otiList.get(i));
+				
+				onedayTime.setOnedayNoo(oneday.getOnedayclassNo());
+				
+				Log.debug("원데이클래스 no = " + onedayTime);
+				onedayDAO.insertTime(onedayTime);
+			}
+		
+		
+		return result;
+		
+	}
+
+
 
 
 

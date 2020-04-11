@@ -4,9 +4,9 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mypage">
 
-<select id="selectScrapList" resultMap="scrapMap">
+<select id="selectScrapList" resultType="scrap">
 	select
-		s.*, r.chef_nick, r.video_title
+		*
 	from
 		tb_scrap s join tb_recipe r
 			on s.recipe_no = r.recipe_no
@@ -22,22 +22,10 @@
 <delete id="deleteScrap">
 	delete from
 		tb_scrap
-	where recipe_no	= #{recipeNo}
-
-</delete>
-
-
-<update id="updateScrap">
-	update
-		tb_scrap
-	set
-		memo = #{meMo}
 	where
-		recipe_no = #{recipeNo}
-		AND
-		member_id = #{scrapId}
+		member_id = ${memberId}
+</select>
 
-</update>
 
 <select id="selectDingList" resultMap="dingMap">
 	select

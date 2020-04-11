@@ -2,7 +2,6 @@ package com.soda.onn.mypage.model.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,8 +16,8 @@ public class MypageDAOImpl implements MypageDAO {
 	private SqlSession sqlSession;
 
 	@Override
-	public List<Scrap> selectScrapList(String memberId, RowBounds rowBounds) {
-		return sqlSession.selectList("mypage.selectScrapList", memberId, rowBounds);
+	public List<Scrap> selectScrapList(String memberId) {
+		return sqlSession.selectList("mypage.selectScrapList", memberId);
 	}
 
 	@Override
@@ -35,6 +34,4 @@ public class MypageDAOImpl implements MypageDAO {
 	public List<DingDongList> selectDingList(String memberId) {
 		return sqlSession.selectList("mypage.selectDingList", memberId);
 	}
-
-
 }

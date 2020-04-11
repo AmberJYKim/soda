@@ -2,7 +2,7 @@ package com.soda.onn.recipe.model.service;
 
 import java.util.List;
 import java.util.Map;
-
+import com.soda.onn.recipe.model.vo.Report;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mypage.model.vo.Scrap;
@@ -11,6 +11,8 @@ import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 import com.soda.onn.recipe.model.vo.Report;
+import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
+import com.soda.onn.recipe.model.vo.RecipeReply;
 
 public interface RecipeService {
 
@@ -41,6 +43,23 @@ public interface RecipeService {
 	int deleteScrap(Scrap scrap);
 
 	int insertScrap(Scrap scrap);
+	
+ 	List<Report> selectReportList();
+
+    List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList);
+
+	List<Recipe> selectRelRecipeList(Recipe recipe);
+
+	List<RecipeReply> selectReplyList(int recipeNo);
+	
+	List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps);
+
+	List<RecipeWithIngCnt> selectPopRecipe();
+
+	List<Ingredient> selectPopIngredient(Map<String, Object> maps);
+
+	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
+
 
 	List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList);
 

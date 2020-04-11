@@ -17,6 +17,4 @@ public interface MypageService {
 
 	List<DingDongList> selectDingList(String memberId);
 
-
-
 }

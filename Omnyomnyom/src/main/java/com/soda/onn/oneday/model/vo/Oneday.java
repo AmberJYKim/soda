@@ -25,6 +25,7 @@ public class Oneday  implements Serializable{
 	private String onedayContent;
 	private double latitude; //위도
 	private double longitude; //경도
+	private String Addr;
 	private String detailedAddr; //상세주소 !
 	private int onedayTime; //소요시간 => 시간 
 	private int onedayMaxper;

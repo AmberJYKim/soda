@@ -11,251 +11,116 @@
 
 	<link href="${pageContext.request.contextPath }/resources/css/class-manager.css" rel="stylesheet" type="text/css">
     <!-- 원데이 클래스 관리 -->
-    <!-- 대부분 임채성이 만든 클래스 목록들 부분을 활용-->
+        
+    <section class="page-top-section page-sp set-bg" data-setbg="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 m-auto text-white">
+
+                    <h2>${chef.chefNickName}CHEF CHANNAL</h2>
+					<p>환영합니다~ 요리와 썸타보실래요?</p>
+                </div>
+            </div>
+        </div>
+            <div class="container">
+       
+    </div>
+    </section>
     <section class="classes-details-section spad overflow-hidden">
         <!-- 컨테이너 시작 -->
         <div class="container">
             <!-- 버튼 부분 -->
             <div class="row">
                 <div class="col clearfix">
-                    <button type="button" class="btn btn-outline-danger float-right">클래스 삭제</button>
-                    <button type="button" class="btn btn-outline-danger float-right">클래스 업로드</button>
+                    <button type="button" class="btn btn-outline-danger float-right" id="classdel" name="classdel">클래스 삭제</button>
+                    <button type="button" class="btn btn-outline-danger float-right" id="classupdate" name="classupdate">클래스 수정</button>
                 </div>
             </div>
             <!-- 클래스 리스트 시작 -->
+            <form role="form" method="POST">
             <div class="row">
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="classes-item-warp">
-                            <!-- 삭제 버튼을 위한 체크박스 부분 -->
-                            <input type="checkbox" name="" id="">
-                            <div class="classes-item item_rate">
-                                <div class="ci-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/classes/cook.jpg" alt="">
-                                </div>
-                                <div class="ci-text">
-                                    <h4>클래스명</h4>
-                                    <div class="ci-metas">
-                                        <div class="ci-meta"><i class="material-icons">event_available</i>Mon, Wed, Fri</div>
-                                        <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                                    </div>
-                                    <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                                </div>
-                                <div class="ci-bottom">
-                                    <div class="ci-author">
-                                        <img src="${pageContext.request.contextPath}/resources/images/classes/author/1.jpg" alt="">
-                                        <div class="author-text">
-                                            <h6>클래스명</h6>
-                                            <p>셰프이름</p>
-                                        </div>
-                                    </div>
-                                    <!-- 수정버튼 부분 -->
-                                    <a href="" class="site-btn sb-gradient">수정하기</a>
-                                </div>
-                            </div>
+                         <c:forEach items="${onedayList }" var="oneday" varStatus="vs">
+			                <div class="col-md-3">
+			                    <div class="classes-item-warp">
+			                        <div class="classes-item item_rate">
+			                <input type="checkbox" id="onedayclassNo" name="onedayclassNo" value="${oneday.onedayclassNo}"/>
+			                            <div class="ci-img">
+			                                <img src="${pageContext.request.contextPath }/resources/upload/onedayclass/${oneday.onedayImg}" alt="클래스 사진">
+			                            </div>
+			                            <div class="ci-text">
+			                                <h4>${oneday.onedayName}</h4>
+			                                <c:if test="${not empty oneday.onedayTimeList}">
+			                                <c:forEach items="${oneday.onedayTimeList }" var="tl">
+			                                <div class="ci-metas">
+			                                 <c:if test="${tl.onedayNoo eq oneday.onedayclassNo}">
+			                                    <div class="ci-meta"><i class="material-icons">event_available</i>${tl.onedayTimeDate }</div>
+			                                    <%-- <div class="ci-meta"><i class="material-icons">${tl.onedayNoo}</i></div> --%>
+			                                </c:if>
+			                                </div>
+			                                </c:forEach>
+			                                </c:if>
+			                                <p>${oneday.onedayclassNo}</p>
+			                            </div>
+			                            <div class="ci-bottom">
+			                                <div class="ci-author">
+			                                    <img src="${pageContext.request.contextPath }/resources/upload/profile/chef_default.png" alt="셰프 사진">
+			                                    <div class="author-text">
+			                                        <h6>${chef.chefNickName}</h6>
+			                                        <p>${oneday.memberId }</p>
+			                                    </div>
+			                                </div>
+			                                <!--  -->
+			                                <a href= "${pageContext.request.contextPath }/oneday/oneday_detail?onedayclassNo=${oneday.onedayclassNo}" class="site-btn sb-gradient">예약하기</a>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </c:forEach>
                         </div>
-                    </div>
-                    <!--  -->
-                    <div class="col-md-3">
-                        <div class="classes-item-warp">
-                            <input type="checkbox" name="" id="">
-                            <div class="classes-item item_rate">
-                                <div class="ci-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/classes/cook.jpg" alt="">
-                                </div>
-                                <div class="ci-text">
-                                    <h4>클래스명</h4>
-                                    <div class="ci-metas">
-                                        <div class="ci-meta"><i class="material-icons">event_available</i>Mon, Wed, Fri</div>
-                                        <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                                    </div>
-                                    <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                                </div>
-                                <div class="ci-bottom">
-                                    <div class="ci-author">
-                                        <img src="${pageContext.request.contextPath}/resources/images/classes/author/1.jpg" alt="">
-                                        <div class="author-text">
-                                            <h6>클래스명</h6>
-                                            <p>셰프이름</p>
-                                        </div>
-                                    </div>
-                                    <a href="" class="site-btn sb-gradient">수정하기</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="classes-item-warp">
-                            <input type="checkbox" name="" id="">
-                            <div class="classes-item item_rate">
-                                <div class="ci-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/classes/cook.jpg" alt="">
-                                </div>
-                                <div class="ci-text">
-                                    <h4>클래스명</h4>
-                                    <div class="ci-metas">
-                                        <div class="ci-meta"><i class="material-icons">event_available</i>Mon, Wed, Fri</div>
-                                        <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                                    </div>
-                                    <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                                </div>
-                                <div class="ci-bottom">
-                                    <div class="ci-author">
-                                        <img src="${pageContext.request.contextPath}/resources/images/classes/author/1.jpg" alt="">
-                                        <div class="author-text">
-                                            <h6>클래스명</h6>
-                                            <p>셰프이름</p>
-                                        </div>
-                                    </div>
-                                    <a href="" class="site-btn sb-gradient">수정하기</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="classes-item-warp">
-                            <input type="checkbox" name="" id="">
-                            <div class="classes-item item_rate">
-                                <div class="ci-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/classes/cook.jpg" alt="">
-                                </div>
-                                <div class="ci-text">
-                                    <h4>클래스명</h4>
-                                    <div class="ci-metas">
-                                        <div class="ci-meta"><i class="material-icons">event_available</i>Mon, Wed, Fri</div>
-                                        <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                                    </div>
-                                    <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                                </div>
-                                <div class="ci-bottom">
-                                    <div class="ci-author">
-                                        <img src="${pageContext.request.contextPath}/resources/images/classes/author/1.jpg" alt="">
-                                        <div class="author-text">
-                                            <h6>클래스명</h6>
-                                            <p>셰프이름</p>
-                                        </div>
-                                    </div>
-                                    <a href="" class="site-btn sb-gradient">수정하기</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 줄바꿈 -->
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="classes-item-warp">
-                            <input type="checkbox" name="" id="">
-                            <div class="classes-item item_rate">
-                                <div class="ci-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/classes/cook.jpg" alt="">
-                                </div>
-                                <div class="ci-text">
-                                    <h4>클래스명</h4>
-                                    <div class="ci-metas">
-                                        <div class="ci-meta"><i class="material-icons">event_available</i>Mon, Wed, Fri</div>
-                                        <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                                    </div>
-                                    <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                                </div>
-                                <div class="ci-bottom">
-                                    <div class="ci-author">
-                                        <img src="${pageContext.request.contextPath}/resources/images/classes/author/1.jpg" alt="">
-                                        <div class="author-text">
-                                            <h6>클래스명</h6>
-                                            <p>셰프이름</p>
-                                        </div>
-                                    </div>
-                                    <a href="" class="site-btn sb-gradient">수정하기</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="classes-item-warp">
-                            <input type="checkbox" name="" id="">
-                            <div class="classes-item item_rate">
-                                <div class="ci-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/classes/cook.jpg" alt="">
-                                </div>
-                                <div class="ci-text">
-                                    <h4>클래스명</h4>
-                                    <div class="ci-metas">
-                                        <div class="ci-meta"><i class="material-icons">event_available</i>Mon, Wed, Fri</div>
-                                        <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                                    </div>
-                                    <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                                </div>
-                                <div class="ci-bottom">
-                                    <div class="ci-author">
-                                        <img src="${pageContext.request.contextPath}/resources/images/classes/author/1.jpg" alt="">
-                                        <div class="author-text">
-                                            <h6>클래스명</h6>
-                                            <p>셰프이름</p>
-                                        </div>
-                                    </div>
-                                    <a href="" class="site-btn sb-gradient">수정하기</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="classes-item-warp">
-                            <input type="checkbox" name="" id="">
-                            <div class="classes-item item_rate">
-                                <div class="ci-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/classes/cook.jpg" alt="">
-                                </div>
-                                <div class="ci-text">
-                                    <h4>클래스명</h4>
-                                    <div class="ci-metas">
-                                        <div class="ci-meta"><i class="material-icons">event_available</i>Mon, Wed, Fri</div>
-                                        <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                                    </div>
-                                    <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                                </div>
-                                <div class="ci-bottom">
-                                    <div class="ci-author">
-                                        <img src="${pageContext.request.contextPath}/resources/images/classes/author/1.jpg" alt="">
-                                        <div class="author-text">
-                                            <h6>클래스명</h6>
-                                            <p>셰프이름</p>
-                                        </div>
-                                    </div>
-                                    <a href="" class="site-btn sb-gradient">수정하기</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="classes-item-warp">
-                            <input type="checkbox" name="" id="">
-                            <div class="classes-item item_rate">
-                                <div class="ci-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/classes/cook.jpg" alt="">
-                                </div>
-                                <div class="ci-text">
-                                    <h4>클래스명</h4>
-                                    <div class="ci-metas">
-                                        <div class="ci-meta"><i class="material-icons">event_available</i>Mon, Wed, Fri</div>
-                                        <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                                    </div>
-                                    <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                                </div>
-                                <div class="ci-bottom">
-                                    <div class="ci-author">
-                                        <img src="${pageContext.request.contextPath}/resources/images/classes/author/1.jpg" alt="">
-                                        <div class="author-text">
-                                            <h6>클래스명</h6>
-                                            <p>셰프이름</p>
-                                        </div>
-                                    </div>
-                                    <a href="" class="site-btn sb-gradient">수정하기</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        </form>
+                        <script>
+                        var formObj = $("form[role='form']")
+                        
+                        $(document).ready(function(){
+                   	
+                        	$('#classdel').on('click', function(){
+                        		
+                        		var result = confirm("해당 클래스를 삭제하시겠습니까?");
+                        		
+                        		if(result){
+                        		formObj.attr("action", "class_delete");
+                        	/* 	formObj.attr("method", "post"); */
+                        		formObj.submit();
+                        		
+                        		var onedayclassNo = $("#onedayclassNo").val();
+                        			                        			
+                        		}
+                        		else{
+                        			location.replace('${pageContext.request.contextPath}/oneday/class_manager');
+                        			
+                        		}
+                        		
+                        		
+                        	});
+                        	
+                        	$('#classupdate').on('click', function(){
+                        		var update = confirm("해당 클래스를 수정하시겠습니까?");
+                        		
+                        		if(update){
+                        			formObj.attr("action", "oneday_update");
+                        			formObj.submit();
+                        			
+                        			var onedayclassNo = $("#onedayclassNo").val();
+                        		}
+                        		else{
+                        			location.replace('${pageContext.request.contextPath}/oneday/class_manager');
+                        		}
+
+                        	});	
+
+                        });
+                      </script>  
                 <!-- 페이지 바 -->
                 <div class="container">
                     <div class="row">
