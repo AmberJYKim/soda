@@ -50,7 +50,11 @@ public class MypageController {
 	@Autowired
 	private MemberService memberService;
 	
+	final int NUMPERPAGE = 15;
+	final int PAGEBARSIZE = 10;
 	
+	private RowBounds rowBounds = null;
+
 	@GetMapping("/main")
 	public void mypageMain() {
 		
