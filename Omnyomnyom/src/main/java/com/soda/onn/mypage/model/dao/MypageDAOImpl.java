@@ -7,7 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.soda.onn.mypage.model.vo.DingDong;
+import com.soda.onn.mypage.model.vo.DingDongList;
 import com.soda.onn.mypage.model.vo.Scrap;
 
 @Repository
@@ -32,7 +32,7 @@ public class MypageDAOImpl implements MypageDAO {
 	}
 
 	@Override
-	public List<DingDong> selectDingList(String memberId) {
+	public List<DingDongList> selectDingList(String memberId) {
 		return sqlSession.selectList("mypage.selectDingList", memberId);
 	}
 
