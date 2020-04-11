@@ -227,6 +227,24 @@
 			view_count desc
 	</select>
 	
+	<select id="selectReport" resultMap="reportMap">
+		select
+			*
+		from
+			tb_report;
+	</select>
+	
+	<insert id="reportMap">
+		insert into
+			tb_report
+		values(
+			#{repMemberId},
+			#{replyNo},
+			#{reportDate},
+			#{reportReason}
+		)
+	</insert>
+	
 	<resultMap type="scrap" id="scrapMap">
 		<result column="member_id" property="scrapId"/>
 		<result column="recipe_no" property="recipeNo"/>
@@ -234,6 +252,10 @@
 		<result column="memo" property="meMo"/>
 		<result column="chef_nick" property="chefNick"/>
 		<result column="video_title" property="videoTitle"/>
+	</resultMap>
+	
+	<resultMap id="reportMap" type="report">
+		<result column="member_id" property="repMemberId"></result>
 	</resultMap>
 		
 	<resultMap type="ingredientMall" id="ingrMallMap">

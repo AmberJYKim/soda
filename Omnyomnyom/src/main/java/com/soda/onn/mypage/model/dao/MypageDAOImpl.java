@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.soda.onn.mypage.model.vo.DingDongList;
 import com.soda.onn.mypage.model.vo.Scrap;
 
 @Repository
@@ -19,4 +20,18 @@ public class MypageDAOImpl implements MypageDAO {
 		return sqlSession.selectList("mypage.selectScrapList", memberId);
 	}
 
+	@Override
+	public int deleteScrap(int recipeNo) {
+		return sqlSession.delete("mypage.deleteScrap", recipeNo);
+	}
+
+	@Override
+	public int updateScrap(Scrap scrap) {
+		return sqlSession.update("mypage.updateScrap", scrap);
+	}
+
+	@Override
+	public List<DingDongList> selectDingList(String memberId) {
+		return sqlSession.selectList("mypage.selectDingList", memberId);
+	}
 }

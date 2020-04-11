@@ -9,7 +9,7 @@
 </jsp:include>
 
 	<link rel="stylesheet" href="css/user-list.css"/>
-	<link rel="stylesheet" href="css/chef-list.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mypage/chef-list.css"/>
 
 
 	<script>
@@ -26,14 +26,13 @@
 		<div class="section">
 			<div class="row">
 				<div class="col side_nav">
-					<p class="nav_text ">내 정보보기</p>
-					<p class="nav_text 	">스크랩목록</p>
-					<p class="nav_text ">예약목록</p>
-					<p class="nav_text ">구매목록</p>
-					<p class="nav_text ">셰프 문의</p>
-					<p class="nav_text selected_nav">문의목록</p>
-					<p class="nav_text">1:1 문의</p>
-					
+					<a href="${pageContext.request.contextPath}/mypage/main"><p class="nav_text">내 정보보기</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/onedayList"><p class="nav_text">예약목록</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/buyList"><p class="nav_text">구매목록</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/qnaMsg"><p class="nav_text selected_nav">1:1 문의</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/scrapList"><p class="nav_text">스크랩 목록</p></a>
+					<a href="${pageContext.request.contextPath}/chef/chefInsert"><p class="nav_text">셰프신청</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/dingdongList"><p class="nav_text">알림목록</p></a>
 				</div>
 				<div class="col-10">
 					<h4 class="border_bottom">문의목록</h4>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.soda.onn.mypage.model.dao.MypageDAO;
+import com.soda.onn.mypage.model.vo.DingDongList;
 import com.soda.onn.mypage.model.vo.Scrap;
 
 @Service
@@ -19,4 +20,18 @@ public class MypageServiceImpl implements MypageService {
 		return mypageDAO.selectScrapList(memberId);
 	}
 
+	@Override
+	public int deleteScrap(int recipeNo) {
+		return mypageDAO.deleteScrap(recipeNo);
+	}
+
+	@Override
+	public int updateScrap(Scrap scrap) {
+		return mypageDAO.updateScrap(scrap);
+	}
+
+	@Override
+	public List<DingDongList> selectDingList(String memberId) {
+		return mypageDAO.selectDingList(memberId);
+	}
 }

@@ -1,4 +1,4 @@
-package com.soda.onn.member.model.vo;
+package com.soda.onn.mypage.model.vo;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -14,11 +14,14 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class DingDong implements Serializable{
-
+public class DingDongList implements Serializable{
+	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	
-	private int dongdongNo;
+	private int dingdongNo;
 	private String dingMemberId;
 	private String dingdongContent;
 	private String dingdongLink;
@@ -28,5 +31,4 @@ public class DingDong implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
 }

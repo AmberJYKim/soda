@@ -18,6 +18,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.Report;
 import com.soda.onn.recipe.model.vo.RecipeReply;
 import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
@@ -190,6 +191,16 @@ public class RecipeServiceImpl implements RecipeService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Report selectReport(Report rp) {
+		return recipeDAO.selectReport(rp);
+	}
+
+	@Override
+	public int insertReport(Report rp) {
+		return recipeDAO.insertReport(rp);
+	}
 	
 	@Override
 	public List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps) {
@@ -210,7 +221,5 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey) {
 		return recipeDAO.recipeSearchByMenu(searchKey);
 	}
-
-
 
 }

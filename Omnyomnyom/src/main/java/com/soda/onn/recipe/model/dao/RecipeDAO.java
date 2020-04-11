@@ -68,4 +68,9 @@ public interface RecipeDAO {
 	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
 
 
+	int increaseReadCount(int recipeNo);
+
+	Report selectReport(Report rp);
+
+	int insertReport(Report rp);
 }

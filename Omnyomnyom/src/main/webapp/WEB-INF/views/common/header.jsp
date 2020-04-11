@@ -382,7 +382,6 @@
 						</c:when>
 						<c:otherwise>
 							<c:if test="${memberLoggedIn.memberRoll eq 'C' }">
-									
 								<div class="insta-item">
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
@@ -448,7 +447,7 @@
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath }/mypage/scarpList">
+									<a href="${pageContext.request.contextPath}/mypage/scrapList">
 										<p>스크랩 목록</p>
 									</a>
 									</div>
@@ -473,7 +472,7 @@
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/mypage/chefRequest">
+										<a href="${pageContext.request.contextPath }/chef/chefInsert">
 											<p>셰프신청</p>
 										</a>
 										</div>

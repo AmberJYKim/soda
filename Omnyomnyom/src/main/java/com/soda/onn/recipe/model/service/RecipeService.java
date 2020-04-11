@@ -10,6 +10,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.Report;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 import com.soda.onn.recipe.model.vo.RecipeReply;
 
@@ -60,4 +61,9 @@ public interface RecipeService {
 	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
 
 
+	List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList);
+
+	Report selectReport(Report rp);
+
+	int insertReport(Report rp);
 }

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,8 +39,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.soda.onn.common.base.PageBar;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -67,6 +72,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.Report;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 import com.soda.onn.recipe.model.vo.RecipeQuestion;
 import com.soda.onn.recipe.model.vo.RecipeReply;
@@ -543,6 +549,32 @@ public class RecipeController {
 		return gList;
 	}
 	
+	
+	@GetMapping("/report")
+	@ResponseBody
+	public String report(String memberId, int replyNo, Date dateReport, String memo) {
+		
+		Report rp = new Report(memberId, replyNo, dateReport , memo);
+		
+		Report rep = recipeService.selectReport(rp);
+		
+		String result = "";
+		
+		if(rep != null) {
+			result = "신고한 내역이 있는 댓글은 신고접수를 할 수가 없습니다.";
+		}
+		else {
+			int reportInsert = recipeService.insertReport(rp);
+			
+			if(reportInsert == 1) {
+				result = "신고가 접수 되었습니다.";	
+			}
+		}
+		
+		String gsonresult = new Gson().toJson(result);
+		 
+		return gsonresult;
+  }
 	//선택한 재료로 레시피 검색하기
 	@GetMapping(value="recipeSerachByIng", produces="text/plain;charset=UTF-8")
 	@ResponseBody

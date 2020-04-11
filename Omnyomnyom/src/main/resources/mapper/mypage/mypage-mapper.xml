@@ -8,10 +8,36 @@
 	select
 		*
 	from
+		tb_scrap s join tb_recipe r
+			on s.recipe_no = r.recipe_no
+	where
+		member_id = #{memberId}
+</select>
+
+<resultMap id="scrapMap" type="scrap">
+	<result column="member_id" property="scrapId"/>
+
+</resultMap>
+
+<delete id="deleteScrap">
+	delete from
 		tb_scrap
 	where
 		member_id = ${memberId}
 </select>
 
+
+<select id="selectDingList" resultMap="dingMap">
+	select
+		*
+	from
+		tb_dingdong
+	where 
+		member_id = #{dingMemberId}
+</select>
+
+<resultMap id="dingMap" type="dingdong">
+	<result column="member_id" property="dingMemberId"/>
+</resultMap>
 
 </mapper>
