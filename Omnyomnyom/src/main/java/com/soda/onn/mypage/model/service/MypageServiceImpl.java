@@ -2,6 +2,7 @@ package com.soda.onn.mypage.model.service;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ public class MypageServiceImpl implements MypageService {
 	private MypageDAO mypageDAO;
 	
 	@Override
-	public List<Scrap> selectScrapList(String memberId) {
-		return mypageDAO.selectScrapList(memberId);
+	public List<Scrap> selectScrapList(String memberId, RowBounds rowBounds) {
+		return mypageDAO.selectScrapList(memberId, rowBounds);
 	}
 
 	@Override
