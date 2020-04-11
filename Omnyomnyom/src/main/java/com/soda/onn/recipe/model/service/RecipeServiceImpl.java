@@ -222,4 +222,9 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeDAO.recipeSearchByMenu(searchKey);
 	}
 
+	@Override
+	public List<Recipe> recipeSelectAll(String chefNickName) {
+		return recipeDAO.recipeSelectAll(chefNickName);
+	}
+
 }

@@ -40,14 +40,12 @@
 		
 	};
 	function classManage() {
-		location.href = "${pageContext.request.contextPath}/oneday/class_manager";
+		location.href="${pageContext.request.contextPath}/oneday/class_manager.do";
 	};
 	function classUpload(){
-		location.href = "${pageContext.request.contextPath}/oneday/class_insert";
+		location.href="${pageContext.request.contextPath}/oneday/class_insert.do";
 	}
     
-	
-
     </script>		
     <section class="page-top-section page-sp set-bg" data-setbg="">
         <div class="container">
@@ -73,7 +71,7 @@
                             <a style=" font-weight:900; "class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="ture">홈</a>
                         </li>
                         <li class="nav-item">
-                            <a  style=" font-weight:900; " class="nav-link" id="profile-tab" data-toggle="tab" href="#video" role="tab" aria-controls="profile" aria-selected="false">동영상</a>
+                            <a  style=" font-weight:900; " class="nav-link" id="profile-tab" data-toggle="tab" href="#video" role="tab" aria-controls="profile" aria-selected="false">레시피</a>
                         </li>
                 
                         <li class="nav-item">
@@ -147,67 +145,42 @@
                         <hr>
                         <!-- 홈-인기동영상 -->
                         <div class="container" id="fav-video">
-                            <h6>인기 동영상</h6>
+                            <h6>인기 레시피</h6>
                             <div class="row">
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
+                               <c:forEach items="${ popList}" var="recipe" end="3">
+	                                <div class="col-lg-3 upload-video">
+	                                    <img src="https://img.youtube.com/vi/${recipe.videoLink }/mqdefault.jpg" alt="" width="300" height="150">
+	                                    <h6 style="margin-top:10px;">${recipe.videoTitle}</h6>
+	                                    <li style="font-size: 13px; color:gray; margin-top:2px;">조회수 : ${recipe.viewCount}회</li>
+	                                </div>
+                              </c:forEach>
                             </div>
                         </div>
                         <hr>
                         <!-- 홈-업로드한 동영상 -->
                         <div class="container" id="upload-video">
 
-                            <h6>업로드한 동영상</h6>
+                            <h6>업로드한 레시피 </h6>
                             <div class="row">
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
+                                 <c:forEach items="${recipeList}" var="recipe" end="3">
+	                                <div class="col-lg-3 upload-video">
+	                                    <img src="https://img.youtube.com/vi/${recipe.videoLink }/mqdefault.jpg" alt="" width="300" height="150">
+	                                    <h6 style="margin-top:10px;">${recipe.videoTitle}</h6>
+	                                    <li style="font-size: 13px; color:gray; margin-top:2px;">조회수 : ${recipe.viewCount}회</li>
+	                                </div>
+                              </c:forEach>
                             </div>
                         </div>
                     </div>
-                    <!-- 동영상 탭 클릭시 나오는 모든 영상 (업로드 순) -->
+                    
+ <!-- 레시피 탭 클릭시 나오는 모든 영상 (업로드 순) -->
                     <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="upvideo container" id="video-upload-video">
-                            <h6>업로드한 동영상</h6>
+                            <h6>업로드한 레시피 </h6>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <button type="button" class="btn btn-outline-danger">동영상 관리</button>
-                                    <button type="button" class="btn btn-outline-danger" onclick="recipeUpload();">동영상 업로드</button>
+                                    <button type="button" class="btn btn-outline-danger">레시피 관리</button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="recipeUpload();">레시피 업로드</button>
                                 </div>
                             </div>
 					<script>
@@ -215,49 +188,18 @@
 						location.href ="${pageContext.request.contextPath }/recipe/recipeUpload";
 					}
 					</script>
-                            <div class="row">
+                     <div class="row">
+                            <c:forEach items="${recipeList}" var="recipe">
+                          
                                 <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
+                                    <img src="https://img.youtube.com/vi/${recipe.videoLink }/mqdefault.jpg" alt="" width="300" height="150">
+                                    <h6 style="margin-top:10px;">${recipe.videoTitle}</h6>
+                                    <li style="font-size: 13px; color:gray; margin-top:2px;">조회수 : ${recipe.viewCount}회</li>
                                 </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6>백종원의 불맛나는 짬뽕을 5분안에 어떻게 만들까??</h6>
-                                    <li>조회수 : 16.5만회</li>
-                                </div>
+                              </c:forEach>
                             </div>
                         </div>
+                        
                         <div class="site-pagination pt-3.5">
                             <a href="#"><i class="material-icons">keyboard_arrow_left</i></a>
                             <div class="site-pagination pt-3.5">
@@ -341,11 +283,9 @@
                             </div>
                             <c:if test="${memberLoggedIn.memberRoll eq 'C' and memberLoggedIn.memberNick eq chef.chefNickName}"> 
 	                            <div class="col-lg-6">
-	                                <button type="button" class="btn btn-outline-danger" onclick="classManage();">클래스 관리</button>
-	                                <button type="button" class="btn btn-outline-danger" onclick="classUpload();">클래스 업로드</button>
-	                               
+	                                <button type="button" class="btn btn-outline-danger">클래스 관리</button>
+	                                <button type="button" class="btn btn-outline-danger">클래스 업로드</button>
 	                            </div>
-	                           
                             </c:if>
                         </div>
                         <div class="row">

@@ -315,5 +315,15 @@
 								LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID 
 			WHERE MENU_NAME LIKE '%'||#{searchKey}||'%' OR video_title like '%'||#{searchKey}||'%'
 	</select>
-
+	
+	<select id="recipeSelectAll" resultType="recipe">
+		select 
+			*
+		from 
+			tb_recipe
+		where
+			chef_nick = #{chefNickName}
+		order by regdate
+	</select>
+	
 </mapper>

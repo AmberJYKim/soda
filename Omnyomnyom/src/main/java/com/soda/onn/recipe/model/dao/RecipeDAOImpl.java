@@ -173,4 +173,9 @@ public class RecipeDAOImpl  implements RecipeDAO{
 		return sqlSession.selectList("recipe.recipeSearchByMenu", searchKey);
 	}
 
+	@Override
+	public List<Recipe> recipeSelectAll(String chefNickName) {
+		return sqlSession.selectList("recipe.recipeSelectAll",chefNickName);
+	}
+
 }

@@ -70,4 +70,6 @@ public interface RecipeDAO {
 	Report selectReport(Report rp);
 
 	int insertReport(Report rp);
+
+	List<Recipe> recipeSelectAll(String chefNickName);
 }
