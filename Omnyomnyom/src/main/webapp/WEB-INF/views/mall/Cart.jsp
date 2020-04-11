@@ -78,12 +78,10 @@
 												<span class="p-name">${cart.ingMallName }</span> <span class="p-info">(${cart.minUnit }당, <span class="price"><fmt:formatNumber value="${cart.price }" pattern="#,###" /></span>원)</span>
 											</div>
 											<div class="inner-col">
-												<form class="cart-frm">
 													<i class="fa fa-minus btns"></i> 
 													<input type="hidden" name="sbIngNo" value="${cart.sbIngNo }">
 													<input type="number" name="sbStock" class="qty count" title="구매수량" value="${cart.sbStock}"  /> 
 													<i class="fa fa-plus btns"></i>
-												</form>
 											</div>
 										</div>
 										<div class="col-md-2 md-total-price">
@@ -105,7 +103,7 @@
 							</div>
 							<div class="col order">
 								<button type="button"
-									class="btn btn-primary mvToSelectedProduct">선택 상품 주문하기</button>
+									class="btn btn-primary mvToSelectedIngMall">선택 상품 주문하기</button>
 							</div>
 						</div>
 
@@ -118,6 +116,7 @@
 <!-- Event Details Section end -->
 
 <script>
+	var localUrl = "${pageContext.request.contextPath}"; 
 	$(function () {
 	    cursors();
 	    totalPrice();
@@ -125,19 +124,24 @@
 	
 	//	체크박스
 	$(document).on("click",".ckbox",function(){
-    	$box = $(this).children();
-    	$box.attr('checked',!$box.prop("checked"));
-    	totalPrice();
-  		})
+			    	$box = $(this).children();
+			    	$box.attr('checked',!$box.prop("checked"));
+			    	totalPrice();
+				})
     //	수량 Input 
     		   .on("keyup",".count",function(){
-    	changePrice($(this),$(this).val());
-    })
+  					changePrice($(this),$(this).val());
+   				})
+    		   .on("click",".p-img",function(){
+    			   $(this).parents(".sb-area").find(".chbox-obj").trigger("click");
+    		    })
+    		   
+    		   
     
     // 장바구니 상품 삭제
     function delproduct(ingMallNo,target){
 		$.ajax({
-			url:"${pageContext.request.contextPath}/mall/cart/del/"+ingMallNo,
+			url: localUrl+"/mall/cart/del/"+ingMallNo,
 	    	type : "DELETE",
 	    	success : function(){
 		    	console.log('삭제성공');
@@ -191,17 +195,38 @@
 		})
 		$("#total_price").text(String(totalPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ",")); 
 	}
-	$(".mvToSelectedProduct").click(function(){
+	$(".mvToSelectedIngMall").click(function(){
 		let buyList = new Array();
 		let i = 0;
 		console.log($(this));
 		$(".chbox-obj").each(function(index,item){
 			if($(item).is(":checked")){
-				let frm = $(item).parents(".sb-area").find("form").serializeArray();
-				buyList[i++] = frm;
+				let ingNo = $(item).parents(".sb-area").find("[name='sbIngNo']").val();
+				let stock = $(item).parents(".sb-area").find("[name='sbStock']").val();
+				buyList[i++] = {'sbIngNo':ingNo,
+								'sbStock':stock};
 			}
 		})
+		/* console.log(buyList); */
+		$(location)
+		$.ajax({
+			url  : localUrl+"/mall/selectedIngMallList",
+			type : "GET",
+			data : {"buyList":buyList},
+			dataType : 'json',
+			success : function(url){
+				console.log("성공");
+				$(location).attr('href',url);
 		console.log(buyList);
+			},
+			error : (x,s,e)=>{
+				console.log("실패");
+		console.log(buyList);
+				
+			}
+			
+			
+		})
 	});
 </script>
 

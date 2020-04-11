@@ -24,13 +24,13 @@ public interface MallDAO {
 	
 	List<IngredientMall> selectIngMallSearch(String keyword);
 
-	int insertCart(Cart sb);
+	int insertCart(Cart cart);
 
-	Cart selectCart(Cart sb);
+	Cart selectCart(Cart cart);
 	
-	int updateCart(Cart sb);
+	int updateCart(Cart cart);
 
-	int deleteCart(Cart sb);
+	int deleteCart(Cart cart);
 	
 
 

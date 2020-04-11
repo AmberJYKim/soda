@@ -20,14 +20,14 @@ public interface MallService {
 
 	IngredientMall selectIngMallOne(int ingMallNo);
 
-	int insertCart(Cart sb);
+	int insertCart(Cart cart);
+
+	int deleteCart(Cart cart);
 
 	List<Cart> selectCartList(String memberId);
-
+	
 	List<IngredientMall> selectIngMallSearch(String keyword);
-
+	
 	List<IngredientMall> selectCheckOutIng(List<Integer> ingredientNoList);
-
-	int deleteCart(Cart sb);
 
 }

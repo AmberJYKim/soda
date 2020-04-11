@@ -1,9 +1,11 @@
 package com.soda.onn.mall.controller;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -57,9 +60,20 @@ public class MallController {
 		return "mall/Cart";
 	}
 	
-	@GetMapping("/selectedProductList")
-	public String slectedProductList() {
-		return "mall/selectedProductList";
+	@GetMapping(value = "/selectedIngMallList", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String selectedIngMallList(HttpServletRequest request
+									  /*@RequestParam("buyList") List<IngredientMall> buyList*/) {
+//		@RequestParam("list") List<Map<String,String>> list,
+		log.debug("진입");
+		Enumeration<String> params = request.getParameterNames();
+		while(params.hasMoreElements()) {
+		    String name = (String)params.nextElement();
+		    System.out.println(request.getParameter(name));
+		    String value = request.getParameter(name);
+		    System.out.println(value);
+		}
+		return "mall/selectedIngMallList";
 	}
 	
 	@DeleteMapping(value = "/cart/del/{ingMallNo}", produces = "text/plain;charset=UTF-8")
@@ -115,8 +129,6 @@ public class MallController {
 	@ResponseBody
 	public String searchList(String subCtg){
 		List<IngredientMall> list = mallService.selectIngredientList(subCtg);
-		for(IngredientMall im:list)
-			log.debug(im.toString());
 		return new Gson().toJson(list);
 	}
 	
