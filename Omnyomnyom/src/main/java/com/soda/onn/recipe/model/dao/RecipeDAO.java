@@ -67,5 +67,7 @@ public interface RecipeDAO {
 
 	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
 
+	List<String> selectMenuSubCtg(String mainCtg);
+
 
 }

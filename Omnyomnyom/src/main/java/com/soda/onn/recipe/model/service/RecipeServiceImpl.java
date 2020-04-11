@@ -210,6 +210,11 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeDAO.recipeSearchByMenu(searchKey);
 	}
 
+	@Override
+	public List<String> selectMenuSubCtg(String mainCtg) {
+		return recipeDAO.selectMenuSubCtg(mainCtg);
+	}
+
 
 
 }
