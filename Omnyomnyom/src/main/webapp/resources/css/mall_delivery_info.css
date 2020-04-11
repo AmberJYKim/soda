@@ -795,3 +795,93 @@ td {
 
 
 /* insert end */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.p-img{
+	border-radius: 50%;
+}
+#total_price{
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 30px;
+    letter-spacing: -0.5px;
+    word-break: break-all;
+    color: #4949e7;
+}
+.basket {
+	width: 1000px;
+}
+.order {
+	text-align: right;
+}
+.inner-col>input {
+	width: 35px;
+}
+.title, .ckbox {
+	text-align: center;
+}
+.inner-col {
+	height: 50%;
+	padding: 15px 5px 15px 5px;
+	vertical-align: middle;
+}
+.pline {
+	border-bottom: 2px solid rgba(73, 73, 231, 0.459);
+}
+.p-img {
+	resize: both;
+	max-width: 98.5px;
+	height: auto;
+	border-radius: 50%;
+	margin-top: 5px;
+	box-shadow: 0px 0px 0px 3px rgba(73, 73, 231, 0.432);
+}
+.p-name {
+	font-weight: 600;
+	font-size: 16px;
+}
+.p-info {
+	font-size: 12px
+}
+/* 전체상품가격 영역 */
+.lline {
+	border-top: 3px solid rgb(122, 122, 122);
+	border-bottom: 3px solid rgb(122, 122, 122);
+	margin-top: 5px;
+	padding: 20px 10px 20px 10px;
+}
+.md-total-price, .ckbox {
+	padding: 50px 0 50px 0;
+	text-align: center;
+}
+.total-price {
+	font-size: 16px;
+	font-weight: 700;
+	padding-top: 5px;
+}
+/* ? */
+.floatRight span {
+	float: right;
+}
+.th_border {
+	border-bottom: 1px solid black;
+}
+.font-17 {
+	font-size: 17px;
+}
+.nav_text {
+	font-weight: 600;
+	color: hsl(0, 0%, 69%);
+}
+.selected_nav {
+	color: #355752;
+}
+.section {
+	padding-top: 150px;
+}
+.border_bottom {
+	border-bottom: 2px solid black;
+}

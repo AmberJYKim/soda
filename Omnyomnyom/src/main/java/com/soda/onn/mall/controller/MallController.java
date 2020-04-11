@@ -81,7 +81,6 @@ public class MallController {
 	public String cartInsert(@RequestParam("ingMallNo") int ingMallNo,
 							 @RequestParam(value = "stock", defaultValue = "1") int stock,
 							 HttpSession session) {
-		log.debug("추가 진입");
 		String memberId = ((Member)session.getAttribute("memberLoggedIn")).getMemberId();
 		
 		Cart sb = new Cart(ingMallNo, memberId, stock);
@@ -93,7 +92,6 @@ public class MallController {
 	@GetMapping("/search")
 	public String search(@RequestParam("keyword") String keyword,
 					   Model model) {
-		log.debug(keyword);
 		List<IngredientMall> list = mallService.selectIngMallSearch(keyword);
 		
 		model.addAttribute("list", list);
@@ -104,21 +102,24 @@ public class MallController {
 	
 // 뇸뇸몰 상품 상세페이지 이동 
 	@GetMapping("/productDetail")
-	public ModelAndView productDetail(@RequestParam("ingredientNo") int ingredientNo) {
+	public ModelAndView productDetail(@RequestParam("ingMallNo") int ingMallNo) {
 		ModelAndView mav = new ModelAndView();
-		IngredientMall ingMall = mallService.selectIngMallOne(ingredientNo);
+		IngredientMall ingMall = mallService.selectIngMallOne(ingMallNo);
 		mav.addObject("ingMall",ingMall);
 		mav.setViewName("mall//productDetail");
 		return mav;
 	}
 
 //	검색결과 Ajax 응답
-	@GetMapping(value = "/seachList/ajax", produces = "text/plain;charset=UTF-8")
+	@GetMapping(value = "/seachList.ajax", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String searchList(String subCtg){
 		List<IngredientMall> list = mallService.selectIngredientList(subCtg);
+		for(IngredientMall im:list)
+			log.debug(im.toString());
 		return new Gson().toJson(list);
 	}
+	
 //	구매정보 확인
 	@GetMapping("/checkOut")
 	public ModelAndView CheckOut(@RequestParam("items") List<Integer> ingredientNoList,

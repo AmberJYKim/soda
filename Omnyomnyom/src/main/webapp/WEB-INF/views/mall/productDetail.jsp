@@ -5,9 +5,20 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
-<jsp:param value="상품상세 - ${ingMall.ingMallName } " name="pageTitle"/>
+<jsp:param value="상품 - ${ingMall.ingMallName } " name="pageTitle"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mall_common.css" />
+<style>
+#total_price{
+	font-weight: bold;
+    font-size: 28px;
+    line-height: 30px;
+    letter-spacing: -0.5px;
+    word-break: break-all;
+    color: rgb(73, 73, 231)
+}
+</style>
+
  <!--  Section start -->
     <section class="classes-details-section spad overflow-hidden">
         <div class="container">
@@ -18,14 +29,17 @@
 
                             <div id="sectionView">
                                 <div class="inner_view">
-                                    <div class="thumb" style="background-image: url(&quot;https://img-cf.kurly.com/shop/data/goods/158519696333y0.jpg&quot;);"><img src="${pageContext.request.contextPath }/resources/images" alt="상품 대표 이미지" class="bg"></div>
+                                    <div class="thumb" style="background-image: url(&quot;https://img-cf.kurly.com/shop/data/goods/158519696333y0.jpg&quot;);">
+		                            	<img src="${pageContext.request.contextPath }/resources/images/ingredient/<c:if test="${ingMall.prevImg eq 'Ingredient_default.png'}">${ingMall.prevImg }</c:if><c:if test="${ingMall.prevImg ne 'Ingredient_default.png' }">${ingMall.mallEngPrCategory}/${ingMall.mallEngCdCategory}/${ingMall.prevImg}</c:if>" alt="${ingMall.ingMallName }의 이미지" class="bg">
+                                    </div>
+                                    
                                     <p class="goods_name"><span class="btn_share"></span> <strong class="name">${ingMall.ingMallName}</strong></p>
                                     <p class="goods_price">
                                         <span class="position">
                                             <span class="dc">
-                                                    <span class="dc_price">${ingMall.price }
-                                                    <span class="won">원</span>
+                                                    <span class="dc_price" id="price"><fmt:formatNumber value="${ingMall.price }" pattern="#,###" />
                                         </span>
+                                                    <span class="won">원</span>
                                         </span>
                                         </span>
 
@@ -59,25 +73,20 @@
                                         <strong class="tit_cart">${ingMall.ingMallName}</strong>
                                         <div class="in_option">
                                             <div class="list_goods">
-
                                                 <ul class="list list_nopackage">
                                                     <li class="on"><span class="btn_position"><button type="button" class="btn_del"><span class="txt">삭제하기</span></button>
                                                         </span> <span class="name">${ingMall.ingMallName}</span> <span class="tit_item">구매수량</span>
                                                         <div class="option">
-<!--                                                             <span class="count"><button type="button" class="btn down">수량내리기</button> <input type="number" readonly="readonly" onfocus="this.blur()" class="inp"> <button type="button" class="btn up">수량올리기</button></span> -->
-                                                            <span class="price"><span class="dc_price">${ingMall.price }원</span>
-
-                                                            </span>
+                                                            <span class="count"><button type="button" class="btn down" id="countdown">수량내리기</button> <input type="number" class="inp" id="count" value="1" min="1"> <button type="button" class="btn up" id="countup">수량올리기</button></span>
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div class="total">
                                                 <div class="price">
-                                                    <strong class="tit">총 상품금액 :</strong>
-
+                                                    <strong class="tit" >총 상품금액 : </strong><span class="dc_price" id="total_price"><fmt:formatNumber value="${ingMall.price }" pattern="#,###" /></span>
                                                     <span class="sum">
-                                                         <span class="num">000000</span>
+                                                         <span class="num"></span>
                                                     <span class="won">원</span>
                                                     </span>
                                                 </div>
@@ -90,14 +99,12 @@
                                                 <button type="button" class="btn btn_alarm off">1:1문의</button>
                                             </div>
                                             <span class="btn_type1">
-                                                <input type="button" class="txt_type" value="장바구니 담기" onclick="shoppingBasket();">
+                                                <input type="button" class="txt_type" value="장바구니 담기" id="add-shoppingBasket">
                                             </span>
                                         </div>
 
                                     </div>
                                 </div>
-                                <form name="frmBuyNow" method="post" action="/shop/order/order.php"><input type="hidden" name="mode" value="addItem"> <input type="hidden" name="goodsno" value=""></form>
-                                <form name="frmWishlist" method="post"></form>
                             </div>
                         </div>
                     </div>
