@@ -276,7 +276,7 @@
             </div>
             <div class="container">
                 <ul class="main-menu">
-                    <li><a href="about.html" class="active">레시피</a>
+                    <li><a href="${pageContext.request.contextPath }/recipe/recipe-menu-search" class="active">레시피</a>
                         <ul class="sub-menu">
                             <li><a href="${pageContext.request.contextPath }/recipe/recipe-menu-search">메뉴</a></li>
                             <li><a href="${pageContext.request.contextPath}/recipe/ingredientsSelection">냉장고 재료</a></li>
