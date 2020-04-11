@@ -89,7 +89,7 @@ public class MallController {
 		return "장바구니에 넣었습니다!";
 	}
 	
-//	검색 결과
+//	검색 결과창
 	@GetMapping("/search")
 	public String search(@RequestParam("keyword") String keyword,
 					   Model model) {
@@ -111,26 +111,30 @@ public class MallController {
 		mav.setViewName("mall//productDetail");
 		return mav;
 	}
-	
+
+//	검색결과 Ajax 응답
 	@GetMapping(value = "/seachList/ajax", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String searchList(String subCtg){
-		log.debug("접근");
-		log.debug(subCtg);
 		List<IngredientMall> list = mallService.selectIngredientList(subCtg);
-		log.debug(list.toString());
 		return new Gson().toJson(list);
 	}
-	
-	@GetMapping("")
+//	결제창으로 전달
+	@GetMapping("/checkOut")
 	public ModelAndView CheckOut(@RequestParam("items") List<Integer> ingredientNoList,
 								 @RequestParam("stock") List<Integer> stockList) {
+		
 		ModelAndView mav = new ModelAndView();
 		
 		List<IngredientMall> ingMallList = mallService.selectCheckOutIng(ingredientNoList);
 		
+		//재고보다 많은 구매를 요청할 경우 해당 상품의 구매량을 0으로 바꿔 구매할 수 없게 유도
+		for (int i = 0; i < ingMallList.size(); i++)
+			if(stockList.get(i) > ingMallList.get(i).getStock())
+				stockList.set(i, 0);
+			
 		mav.addObject("list", ingMallList);
-		mav.setViewName("");
+		mav.setViewName("mall/paymentInfo");
 		return mav;
 	}
 	

@@ -1,9 +1,7 @@
 package com.soda.onn.recipe.model.dao;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.soda.onn.recipe.model.vo.Report;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -18,6 +16,8 @@ import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
+import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
+import com.soda.onn.recipe.model.vo.Report;
 
 @Repository
 public class RecipeDAOImpl  implements RecipeDAO{
