@@ -24,7 +24,18 @@
 		tb_scrap
 	where
 		member_id = ${memberId}
-</select>
+</delete>
+<update id="updateScrap">
+	update
+		tb_scrap
+	set
+		memo = #{meMo}
+	where
+		recipe_no = #{recipeNo}
+		AND
+		member_id = #{scrapId}
+
+</update>
 
 
 <select id="selectDingList" resultMap="dingMap">
