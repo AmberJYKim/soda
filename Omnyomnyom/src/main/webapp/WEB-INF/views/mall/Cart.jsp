@@ -16,6 +16,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .p-img{
 	border-radius: 50%;
 }
+#total_price{
+	
+}
 </style>
 <!-- Event Details Section -->
 <link rel="stylesheet" 	href="${pageContext.request.contextPath }/resources/css/mall_delivery_info.css" />
@@ -95,7 +98,7 @@ input[type="number"]::-webkit-inner-spin-button {
 										</div>
 										<div class="col-md-2 md-total-price">
 										<span class="sum-price">
-										<fmt:formatNumber value="${cart.price * sb.sbStock }" pattern="#,###" /></span>원
+										<fmt:formatNumber value="${cart.price * cart.sbStock }" pattern="#,###" /></span>원
 											 <i class="fa fa-trash" onclick="delproduct(${cart.sbIngNo},this);"></i>
 										</div>
 	

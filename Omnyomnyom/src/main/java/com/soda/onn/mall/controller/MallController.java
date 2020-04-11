@@ -133,7 +133,7 @@ public class MallController {
 			if(stockList.get(i) > ingMallList.get(i).getStock())
 				stockList.set(i, 0);
 			
-		mav.addObject("list", ingMallList);
+		mav.addObject("ingMallList", ingMallList);
 		mav.setViewName("mall/paymentInfo");
 		return mav;
 	}

@@ -109,7 +109,6 @@
 	<result column="stock" property="sbStock"/>
 	<result column="MEMBER_ID" property="sbMemberId"/>
 	<result column="INGREDIENT_NAME" property="ingMallName"/>
-	<result column="INGREDIENT_NAME" property="ingMallName"/>
 	<result column="MIN_UNIT" property="minUnit"/>
 	<result column="ENG_PR_CATEGORY" property="mallEngPrCategory"/>
 	<result column="ENG_CD_CATEGORY" property="mallEngCdCategory"/>
