@@ -116,10 +116,17 @@ public class MypageController {
 		
 	}
 	
+	//일반유저 스크랩 목록
 	@GetMapping("/scrapList")
-	public ModelAndView scrapList(HttpSession session) {
+	public ModelAndView scrapList(HttpSession session, @RequestParam(value="cPage", defaultValue="1") int cPage, HttpServletRequest request) {
+		
+		log.debug("scrapList = {}", session);
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		log.debug("scrapList memberId={}", memberId);
+		
 		ModelAndView mav = new ModelAndView();
-		String memberId = (String)session.getAttribute("memberLoggedIn");
 		
 		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
 		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
@@ -134,10 +141,11 @@ public class MypageController {
 		
 		mav.addObject("list", list);
 		mav.addObject("paging", paging);
-	  mav.addObject("scrapList", scrapList);
-    mav.setViewName("mypage/scrapList");
+		mav.setViewName("mypage/scrapList");
+		
 		return mav;
 	}
+
 	
 	@GetMapping("/onedayReservation")
 	public ModelAndView onedayReservation(HttpSession session) {
