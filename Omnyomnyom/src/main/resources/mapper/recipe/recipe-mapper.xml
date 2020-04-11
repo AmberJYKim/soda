@@ -315,5 +315,10 @@
 								LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID 
 			WHERE MENU_NAME LIKE '%'||#{searchKey}||'%' OR video_title like '%'||#{searchKey}||'%'
 	</select>
+	
+	<select id="selectMenuSubCtg" resultType="string">
+		select menu_cd_category from tb_menu_category where menu_pr_category = #{mainCtg}
+	</select>
+	
 
 </mapper>

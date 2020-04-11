@@ -1,7 +1,9 @@
 package com.soda.onn.recipe.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -171,6 +173,11 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	@Override
 	public List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey) {
 		return sqlSession.selectList("recipe.recipeSearchByMenu", searchKey);
+	}
+
+	@Override
+	public List<String> selectMenuSubCtg(String mainCtg) {
+		return sqlSession.selectList("recipe.selectMenuSubCtg", mainCtg);
 	}
 
 }
