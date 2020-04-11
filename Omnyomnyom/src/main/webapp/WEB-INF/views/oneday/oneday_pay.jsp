@@ -42,13 +42,13 @@
 	            pay_method : 'card',	// 결제 수단
 	            merchant_uid : 'merchant_' + new Date().getTime(),
 	           name : '주문명: 결제 테스트',	// order 테이블에 들어갈 주문명 혹은 주문 번호
-	            amount : '100',	// 결제 금액
-	            buyer_email : '',	// 구매자 email
-	           buyer_name :  '',	// 구매자 이름
-	            buyer_tel :  '',	// 구매자 전화번호
-	            buyer_addr :  '',	// 구매자 주소
-	            buyer_postcode :  '',	// 구매자 우편번호
-	            m_redirect_url : '/khx/payEnd.action'	// 결제 완료 후 보낼 컨트롤러의 메소드명
+	            amount : '${.totalPrice}',	// 결제 금액 
+	            buyer_email : '${memberLoggedIn.email}',	// 구매자 email
+	           buyer_name :  '${memberLoggedIn.name}',	// 구매자 이름
+	            buyer_tel :  '${memberLoggedIn.phone}',	// 구매자 전화번호
+	            buyer_addr :  '${memberLoggedIn.Addr}',	// 구매자 주소
+	            buyer_postcode :  '${memberLoggedIn.postalcode}',	// 구매자 우편번호
+	            m_redirect_url : '/oneday/payresult'	// 결제 완료 후 보낼 컨트롤러의 메소드명
 	        }, function(rsp) {
 	     	if ( rsp.success ) { // 성공시
 	     		var msg = '결제가 완료되었습니다.';
