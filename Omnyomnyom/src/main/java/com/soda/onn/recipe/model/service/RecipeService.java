@@ -60,9 +60,6 @@ public interface RecipeService {
 
 	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
 
-
-	List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList);
-
 	Report selectReport(Report rp);
 
 	int insertReport(Report rp);
