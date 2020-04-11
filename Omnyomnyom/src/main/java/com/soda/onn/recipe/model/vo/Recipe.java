@@ -40,5 +40,4 @@ public class Recipe implements Serializable,Comparable<Recipe> {
 			return -1;
 		return 0;
 	}
-//	
 }
