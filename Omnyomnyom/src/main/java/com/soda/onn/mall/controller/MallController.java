@@ -119,7 +119,7 @@ public class MallController {
 		List<IngredientMall> list = mallService.selectIngredientList(subCtg);
 		return new Gson().toJson(list);
 	}
-//	결제창으로 전달
+//	구매정보 확인
 	@GetMapping("/checkOut")
 	public ModelAndView CheckOut(@RequestParam("items") List<Integer> ingredientNoList,
 								 @RequestParam("stock") List<Integer> stockList) {
