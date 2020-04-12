@@ -25,7 +25,7 @@ import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.mypage.model.service.MypageService;
-import com.soda.onn.mypage.model.vo.DingDongList;
+import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Reservation;
@@ -195,7 +195,7 @@ public class MypageController {
 		String memberId = userId.getMemberId();
 		System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
 		
-		List<DingDongList> list = mypageService.selectDingList(memberId);
+		List<DingDong> list = mypageService.selectDingList(memberId);
 		System.out.println("여기는 알림목록  = "+list);
 		
 		mav.addObject("list", list);

@@ -23,8 +23,9 @@
 	delete from
 		tb_scrap
 	where
-		member_id = ${memberId}
+		where recipe_no	= #{recipeNo}
 </delete>
+
 <update id="updateScrap">
 	update
 		tb_scrap

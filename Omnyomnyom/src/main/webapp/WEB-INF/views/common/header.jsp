@@ -417,7 +417,7 @@
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath }/mypage/ondayList">
+									<a href="${pageContext.request.contextPath }/mypage/onedayList">
 										<p>예약확인</p>
 									</a>
 									</div>
@@ -459,7 +459,7 @@
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/mypage/onedayReservation">
+										<a href="${pageContext.request.contextPath }/mypage/onedayList">
 											<p>예약현황</p>
 										</a>
 										</div>

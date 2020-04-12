@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class DingDongList implements Serializable{
+public class DingDong implements Serializable{
 	
 	/**
 	 * 

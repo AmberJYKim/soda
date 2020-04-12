@@ -25,7 +25,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.soda.onn.common.base.PageBar;
 import com.soda.onn.member.model.service.MemberService;
-import com.soda.onn.member.model.vo.DingDong;
 import com.soda.onn.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -178,68 +177,68 @@ public class MemberController {
 	}
 	
 	//회원 알림
-	@GetMapping("dingdong/{size}")
-	@ResponseBody
-	public Map<String, Object> dingdongList(@PathVariable("size") String size,
-													@RequestParam(value="cPage", defaultValue="1") int cPage,
-													@RequestParam("memberId") String memberId,
-													HttpServletRequest request){
-		
-				System.out.println("회원 알림 메소드에 들어왔습니다");
-				
-				
-				Map<String, Object> resultMap =  new HashMap<String, Object>(); //값 가져온것, 페이징, rowbounds 넣기 위한 맵
-				Map<String, Object> pagingMap = new HashMap<String, Object>(); //페이징 처리하는 맵
-				Map<String, String> paramMap = new HashMap<String, String>();//파라미터 넣을 맵
-				List<DingDong> list = new ArrayList<DingDong>();
-
-				
-				System.out.println("dingdongList memberId = " + memberId);
-				System.out.println("dingdingList size = " + size);
-				
-				paramMap.put("memberId", memberId);
-				paramMap.put("size", size);
-				
-				
-				int NUMPERPAGE = 0;
-				int PAGEBARSIZE = 0;
-				
-					if(size.equals("small")) {
-						NUMPERPAGE = 5;
-						PAGEBARSIZE = 1;
-					}
-					else {
-						NUMPERPAGE = 15;
-						PAGEBARSIZE = 10;
-					}
-					
-				int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
-				int pageEnd = pageStart+PAGEBARSIZE-1;
-					
-				RowBounds rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);		
-				
-				int totalCount = memberService.selectDingdongListCnt();
-				System.out.println(totalCount);
-				
-				int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
-				String url = request.getRequestURL().toString()+"이 페이지에대한 링크";
-				String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
-				
-				pagingMap.put("paging",paging);
-				
-				List<Map<String, String>> mapList = memberService.dingdongListTest(paramMap);
+//	@GetMapping("dingdong/{size}")
+//	@ResponseBody
+//	public Map<String, Object> dingdongList(@PathVariable("size") String size,
+//													@RequestParam(value="cPage", defaultValue="1") int cPage,
+//													@RequestParam("memberId") String memberId,
+//													HttpServletRequest request){
+//		
+//				System.out.println("회원 알림 메소드에 들어왔습니다");
+//				
+//				
+//				Map<String, Object> resultMap =  new HashMap<String, Object>(); //값 가져온것, 페이징, rowbounds 넣기 위한 맵
+//				Map<String, Object> pagingMap = new HashMap<String, Object>(); //페이징 처리하는 맵
+//				Map<String, String> paramMap = new HashMap<String, String>();//파라미터 넣을 맵
+//				List<DingDong> list = new ArrayList<DingDong>();
+//
+//				
+//				System.out.println("dingdongList memberId = " + memberId);
+//				System.out.println("dingdingList size = " + size);
+//				
+//				paramMap.put("memberId", memberId);
+//				paramMap.put("size", size);
+//				
+//				
+//				int NUMPERPAGE = 0;
+//				int PAGEBARSIZE = 0;
+//				
+//					if(size.equals("small")) {
+//						NUMPERPAGE = 5;
+//						PAGEBARSIZE = 1;
+//					}
+//					else {
+//						NUMPERPAGE = 15;
+//						PAGEBARSIZE = 10;
+//					}
+//					
+//				int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+//				int pageEnd = pageStart+PAGEBARSIZE-1;
+//					
+//				RowBounds rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);		
+//				
+//				int totalCount = memberService.selectDingdongListCnt();
+//				System.out.println(totalCount);
+//				
+//				int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+//				String url = request.getRequestURL().toString()+"이 페이지에대한 링크";
+//				String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+//				
+//				pagingMap.put("paging",paging);
+//				
+//				List<Map<String, String>> mapList = memberService.dingdongListTest(paramMap);
 //				List<DingDong> reulstList = memberService.dingdongList(memberId, size);
-	
+//	
 //				System.out.println(reulstList);
-				System.out.println(mapList);
-
+//				System.out.println(mapList);
+//
 //				resultMap.put("list", reulstList);
-				resultMap.put("mapList", mapList);
-				resultMap.put("pagingMap", pagingMap);
-				resultMap.put("rowBounds", rowBounds);
-					
-				return resultMap;
-	}
+//				resultMap.put("mapList", mapList);
+//				resultMap.put("pagingMap", pagingMap);
+//				resultMap.put("rowBounds", rowBounds);
+//					
+//				return resultMap;
+//	}
 	
 	
 	@GetMapping("/memberInfo")

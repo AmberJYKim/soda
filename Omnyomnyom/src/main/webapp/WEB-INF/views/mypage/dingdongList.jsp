@@ -30,7 +30,6 @@
 						  <tr>
 							<th>번호 </th>
 							<th>알림 메모</th>
-							<th>알림 날짜</th>
 						  </tr>
 						</thead>
 						<tbody>
@@ -38,7 +37,6 @@
 							      <tr class="user-select-area">
 										<th scope="row">${dingdong.dingdongNo }</th>
 										<td class="user-id">${dingdong.dingdongContent}</td>
-										<td>${dingdong.dingRegDate }</td>
 								  </tr>
 							 </c:forEach>
 						</tbody>
