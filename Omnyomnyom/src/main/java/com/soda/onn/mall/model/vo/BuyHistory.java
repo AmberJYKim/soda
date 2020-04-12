@@ -19,8 +19,12 @@ public class BuyHistory implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private int buyNo;
-	private String memberId;
+	private String buyMemberId;
 	private int totalPrice;
-	private Date regDate;
+	private Date buyRegdate;
 	private String buyStatus;
+	private String shippingAddress;
+	private String receiverPhone;
+	private String buyEmail;
+	private String buyMemberName;
 }
