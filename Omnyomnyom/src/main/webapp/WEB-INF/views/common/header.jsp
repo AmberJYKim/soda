@@ -275,6 +275,29 @@
                     </div>
                 </div>
                 <!-- 로그	인/회원가입 form end-->
+                <script>
+                $("#signIn").click(function(){
+                	if($("#loginId")=''){
+                		return;
+                	}
+                	
+                	let memberId = $("#loginId").val();
+                	console.log(memberId);
+                	$.ajax({
+                		url:"${pageContext.request.contextPath}/member/dingDong",
+                		data:{"memberId":memberId},
+                		method:"POST",
+                		datatype:"json",
+                		success:data =>{
+                			
+                			$(".toast-header").empty();
+                			
+                			
+                		}
+                		
+                	});
+                });
+                </script>
                </c:if>
             </div>
             <div class="container">
@@ -494,9 +517,7 @@
 							</div>
 						</c:otherwise>
 					</c:choose>
-					
-					
-					
+	
 
 				</div>
 				<!-- 알림창 -->
@@ -504,7 +525,7 @@
 					<p>알리미</p>
 				
 						<div class="toast-header">
-						  <img src="img/onn_logo_red.png" class="rounded mr-2" alt="..." style="width: 50px; height: 50px;">
+						  <span class="material-icons">sms</span>
 						  <strong class="mr-auto">새로운 알림이 있습니다!</strong>
 						  <small>11 mins ago</small>
 						  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
