@@ -43,8 +43,23 @@ public class MallDAOImpl implements MallDAO {
 		}
 
 	@Override
-	public int insertCart(Cart sb) {
-		return sqlSession.insert("mall.insertCart", sb);
+	public int insertCart(Cart cart) {
+		return sqlSession.insert("mall.insertCart", cart);
+	}
+	
+	@Override
+	public Cart selectCart(Cart cart) {
+		return sqlSession.selectOne("mall.selectCart",cart);
+	}
+	
+	@Override
+	public int updateCart(Cart cart) {
+		return sqlSession.update("mall.updateCart",cart);
+	}
+	
+	@Override
+	public int deleteCart(Cart cart) {
+		return sqlSession.delete("mall.deleteCart", cart);
 	}
 
 	@Override
@@ -57,20 +72,6 @@ public class MallDAOImpl implements MallDAO {
 		return sqlSession.selectList("mall.selectIngMallSearch", keyword);
 	}
 
-	@Override
-	public int deleteCart(Cart sb) {
-		return sqlSession.delete("mall.deleteCart", sb);
-	}
-	
-	@Override
-	public Cart selectCart(Cart sb) {
-		return sqlSession.selectOne("mall.selectCart",sb);
-	}
-
-	@Override
-	public int updateCart(Cart sb) {
-		return sqlSession.update("mall.updateCart",sb);
-	}
 	
 	
 

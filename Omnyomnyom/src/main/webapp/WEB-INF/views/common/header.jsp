@@ -162,15 +162,18 @@
                 <img src="${pageContext.request.contextPath }/resources/images/onn_logo_red.png" alt="" class="main_logo">
             </a>
             <div class="hb-right" style="z-index: 1000;">
-                <div class="hb-switch" id="search-switch">
-                    <img src="${pageContext.request.contextPath }/resources/images/icons/search.png" class="logo" alt="">
-                </div>
+               
                 <!-- 로그인버튼 -->
-	                <div class="hb-switch" id="${memberLoggedIn != '' ?'infor-switch':'search-switch' }" >
-	                    <a href="#ex1" rel="modal:open" ><img src="${pageContext.request.contextPath }/resources/images/icons/login.png" alt=""></a>
+	                <div class="hb-switch  ${memberLoggedIn ==''?'':'infor-switch' }" >
+	                    <a href="#ex1" rel="modal:open" ><span class="material-icons"  style="color:red;">person</span></a>
 	                </div>
            		<c:if test="${not empty memberLoggedIn}">
-           		<button type="button" onclick="logout();">로그아웃</button>
+           		<div class="hb-switch">
+           		<span class="material-icons  ${memberLoggedIn ==''?'':'infor-switch' }"  style="color:red;"> local_post_office </span>
+           		</div>
+           		<div class="hb-switch">
+           			<span class="material-icons"  onclick="logout();" style="color:red;">power_settings_new</span>
+           		</div>
            		<script>
            		function logout(){
            			location.href = "${pageContext.request.contextPath}/member/logout";
@@ -182,7 +185,7 @@
            		<c:if test="${empty memberLoggedIn}">
            		
                 <!-- 로그인/회원가입 form start -->
-                <div class="hb-switch" id="infor-switch">
+                <div class="hb-switch" >
                     <div id="ex1" class="modal">
                         <div class="login_container" id="login_container">
                             <div class="form-container sign-up-container">
@@ -272,6 +275,29 @@
                     </div>
                 </div>
                 <!-- 로그	인/회원가입 form end-->
+                <script>
+                $("#signIn").click(function(){
+                	if($("#loginId")=''){
+                		return;
+                	}
+                	
+                	let memberId = $("#loginId").val();
+                	console.log(memberId);
+                	$.ajax({
+                		url:"${pageContext.request.contextPath}/member/dingDong",
+                		data:{"memberId":memberId},
+                		method:"POST",
+                		datatype:"json",
+                		success:data =>{
+                			
+                			$(".toast-header").empty();
+                			
+                			
+                		}
+                		
+                	});
+                });
+                </script>
                </c:if>
             </div>
             <div class="container">
@@ -453,7 +479,7 @@
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath }/mypage/shoppingBasket">
+									<a href="${pageContext.request.contextPath }/mall/cart">
 										<p>장바구니</p>
 									</a>
 									</div>
@@ -507,9 +533,7 @@
 							</div>
 						</c:otherwise>
 					</c:choose>
-					
-					
-					
+	
 
 				</div>
 				<!-- 알림창 -->
@@ -517,7 +541,7 @@
 					<p>알리미</p>
 				
 						<div class="toast-header">
-						  <img src="img/onn_logo_red.png" class="rounded mr-2" alt="..." style="width: 50px; height: 50px;">
+						  <span class="material-icons">sms</span>
 						  <strong class="mr-auto">새로운 알림이 있습니다!</strong>
 						  <small>11 mins ago</small>
 						  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">

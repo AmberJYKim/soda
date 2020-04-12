@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
-import org.apache.jasper.tagplugins.jstl.core.Redirect;
 
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
@@ -310,11 +309,8 @@ public class RecipeController {
 	@GetMapping("/recipe-menu-search")
 	public ModelAndView recipemenusearch(ModelAndView mav) {
 		List<RecipeWithIngCnt> popRecipe = recipeService.selectPopRecipe();
-		// 메뉴카테고리 가져오기 완성하기
-		List<MenuCategory> categoryList = recipeService.selectCategoryList();
 		
 		
-		mav.addObject("menuCategory", categoryList);
 		mav.addObject("popRecipe", popRecipe);
 		mav.setViewName("recipe/recipe-menu-search");
 		
@@ -341,9 +337,7 @@ public class RecipeController {
 		
 		List<String> subCtgList = recipeService.selectIngSubCtg(mainCtg);
 		
-		subCtgList.add(0, "인기재료");
-		//몰의 판매된 재료에서 인기재료 가져오기
-		
+		subCtgList.add(0, "인기재료"); //자동으로 이벤트 처리되어 인기재료소환함, 다른 ajax에의해서
 		
 		log.debug("controller list={}", subCtgList.toString());
 		return subCtgList;
@@ -603,14 +597,27 @@ public class RecipeController {
 		log.debug(searchKey);
 		
 		List<RecipeWithIngCnt> rList = recipeService.recipeSearchByMenu(searchKey);	
-		
+		List<RecipeWithIngCnt> popRecipe = recipeService.selectPopRecipe();
 		
 		log.debug(""+rList.toString());
+		mav.addObject("searchKey", searchKey);
 		mav.addObject("searchedList", rList);
+		mav.addObject("popRecipe", popRecipe);
 		mav.setViewName("/recipe/recipe-menu-search");
 		
 		return mav;
 	}
 	
+	//중분류카테고리 가져오기 처리용 -메뉴
+	@GetMapping("getSubMenuCtg")
+	@ResponseBody
+	public List<String> selectMenuSubCtg(String mainCtg) {
+		log.debug("mainCtg = dd{}", mainCtg);
+		
+		List<String> subCtgList = recipeService.selectMenuSubCtg(mainCtg);
 	
+		
+		log.debug("controller list={}", subCtgList.toString());
+		return subCtgList;
+	}
 }
