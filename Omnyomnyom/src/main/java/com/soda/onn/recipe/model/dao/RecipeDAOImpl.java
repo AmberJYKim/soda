@@ -111,9 +111,9 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	@Override
 	public List<Report> selectReportList() {
 		return sqlSession.selectList("recipe.selectReportList");
-  }
+ 	}
   
-  @Override
+  	@Override
 	public int increaseReadCount(int recipeNo) {
 		return sqlSession.update("recipe.increaseReadCount", recipeNo);
 	}
@@ -178,8 +178,9 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	@Override
 	public List<String> selectMenuSubCtg(String mainCtg) {
 		return sqlSession.selectList("recipe.selectMenuSubCtg", mainCtg);
+	}
 
-  @Override 
+  	@Override 
 	public List<Recipe> recipeSelectAll(String chefNickName) {
 		return sqlSession.selectList("recipe.recipeSelectAll",chefNickName);
 
