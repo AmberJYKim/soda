@@ -17,6 +17,8 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RecipeQuestion;
+import com.soda.onn.recipe.model.vo.RecipeReply;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
 import com.soda.onn.recipe.model.vo.Report;
@@ -26,7 +28,53 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+
+	@Override
+	public int recipeUpdate(Recipe recipe) {
+		return sqlSession.update("recipe.recipeUpdate", recipe);
+	}
+
+	@Override
+	public int recipeIngrDelete(int recipeNo) {
+		return sqlSession.delete("recipe.recipeIngrDelete",recipeNo);
+	}
+
+	@Override
+	public int deleteRecipe(int recipeNo) {
+		return sqlSession.delete("recipe.deleteRecipe",recipeNo);
+	}
+
+	@Override
+	public List<RecipeReply> selectReplyList(int recipeNo) {
+		return sqlSession.selectList("recipe.selectReplyList", recipeNo);
+	}
+
+	@Override
+	public int insertReply(RecipeReply reply) {
+		return sqlSession.insert("recipe.insertReply",reply);
+	}
 	
+
+
+	@Override
+	public int deleteReply(int replyNo) {
+		return sqlSession.delete("recipe.deleteReply", replyNo);
+	}
+	
+	@Override
+	public int insertQuestion(RecipeQuestion question) {
+		return sqlSession.insert("recipe.insertQuestion",question);
+	}
+
+	@Override
+	public int deleteQuestion(int questionNo) {
+		return sqlSession.delete("recipe.deleteQuestion",questionNo);
+	}
+
+	@Override
+	public List<RecipeQuestion> selectQuestionList(int recipeNo) {
+		return sqlSession.selectList("recipe.selectQuestionList", recipeNo);
+	}
 	
 	@Override
 	public List<Ingredient> ingredientAjax(String ingr) {
@@ -185,5 +233,4 @@ public class RecipeDAOImpl  implements RecipeDAO{
 		return sqlSession.selectList("recipe.recipeSelectAll",chefNickName);
 
 	}
-
 }
