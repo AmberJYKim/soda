@@ -4,153 +4,153 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="oneday">
 
-<select id="selectReservationList" resultType="reservation">
-	select
-		*
-	from
-		tb_reservation 
-	<where>
-		<if test="memberId != null AND memberId = ''">
-		member_id = #{memberId}
-		</if>
-	</where>
-	order by 
-		reservation_no desc
-</select>
-
-<select id="selectOne" resultType="Oneday">
-select * from
-tb_onedayclass
-where onedayclass_no = #{onedayclassNo}
-</select>
-
-
-<select id="selectOnedayReviewList" resultType="onedayReview">
-	select
-		*
-	from
-		tb_oneday_review 
-	order by 
-		review_no desc
-</select>
-<insert id="insertOneday">
-	insert into 
-	tb_onedayclass 
-		values (
-				seq_oneday_class.nextval,
-				#{memberId},
-				#{onedayName},
-				#{onedayPrice},
-				#{onedayContent},
-				#{latitude},
-				#{longitude},
-				#{detailedAddr},
-				#{onedayTime},
-				#{onedayMaxper},
-				#{onedayMinper},
-				#{onedayImg},
-				<!-- gson 배열로 받음 -->
-				#{menuList},
-				#{Addr}
-			)
-			<selectKey keyProperty="onedayclassNo" resultType="_int" order="AFTER">
-				select seq_oneday_class.currval from dual
-			</selectKey>			
-</insert>
-
-<insert id="insertTime">
-	insert into
-		tb_onedayclasstime
-			values(
-				seq_oneday_time.nextval,
-				#{onedayNoo},
-				to_date(#{onedayTimeDate},'YYYY/MM/DD HH24:Mi')
-			)
-</insert>
-
-<insert id="insertReservation">
-	insert into
-		tb_reservation 
-			values(
-				seq_reservation.nextval,
-				#{memberId},
-				#{onedaytimeNo},
-				#{onedayclassNo},
-				default,
-				#{personnel},
-				default,
-				#{resPrice}
-		)
-</insert>
-
-
-<select id="selectDateList"  resultType="Oneday">
-select *
-from
-TB_onedayclass oc
-<where>
-<if test="detailedAddr != null">
-and detailed_addr like '%${detailedAddr}%'
-</if>
-<if test="onedayName != null">
-and oneday_name like '%${onedayName}%'
-</if>
-<!-- 일정부분 뽑는 것  -->
-<!-- <if test="onedayTimeDate != ''">
-and onedayclass_no = (select oct.onedayclass_no from 
-						tb_onedayclasstime oct where oct.onedayclass_no = oc.onedayclass_no 
-						and 
-						TRUNC(onedaytime_date) = #{onedayTimeDate})
-</if> -->
-
-</where>
-order by onedayclass_no desc
-</select>
-
-
-
-
-<select id="selectTimeList" resultMap="timeCollection">
-	select onedaytime_no, onedayclass_no, to_char(onedaytime_date,'YYYY/MM/DD HH24:Mi') as time
-	from tb_onedayclasstime
-	where onedayclass_no = #{onedayclassNo}
-</select>
-
-
-<resultMap type="OnedayTime" id="timeCollection">
-	<result column="onedayclass_no" property="onedayNoo"/>
-	<result column="time" property="onedayTimeDate"/>
-</resultMap>
-
-
-
-<delete id="deleteOneday">
-	delete from
-	tb_onedayclass
-	where
-		onedayclass_no = #{onedayclassNo}
-</delete>
-
-
-<update id="classUpdate">
-	update
-	tb_onedayclass
-	set
-	oneday_name = #{onedayName},
-	oneday_price = #{onedayPrice},
-	oneday_content = #{onedayContent},
-	Latitude = #{latitude},
-	longitude = #{longitude},
-	Addr = #{Addr},
-	detailed_addr = #{detailedAddr},
-	oneday_time = #{onedayTime},
-	oneday_maxper = #{onedayMaxper},
-	oneday_minper = #{onedayMinper},
-	oneday_img = #{onedayImg},
-	menu_list = #{menuList}
+	<select id="selectReservationList" resultType="reservation">
+		select
+			*
+		from
+			tb_reservation 
+		<where>
+			<if test="memberId != null AND memberId = ''">
+			member_id = #{memberId}
+			</if>
+		</where>
+		order by 
+			reservation_no desc
+	</select>
 	
-	where onedayclass_No = #{onedayclassNo}
-</update>
+	<select id="selectOne" resultType="Oneday">
+	select * from
+	tb_onedayclass
+	where onedayclass_no = #{onedayclassNo}
+	</select>
+	
+	
+	<select id="selectOnedayReviewList" resultType="onedayReview">
+		select
+			*
+		from
+			tb_oneday_review 
+		order by 
+			review_no desc
+	</select>
+	<insert id="insertOneday">
+		insert into 
+		tb_onedayclass 
+			values (
+					seq_oneday_class.nextval,
+					#{memberId},
+					#{onedayName},
+					#{onedayPrice},
+					#{onedayContent},
+					#{latitude},
+					#{longitude},
+					#{detailedAddr},
+					#{onedayTime},
+					#{onedayMaxper},
+					#{onedayMinper},
+					#{onedayImg},
+					<!-- gson 배열로 받음 -->
+					#{menuList},
+					#{Addr}
+				)
+				<selectKey keyProperty="onedayclassNo" resultType="_int" order="AFTER">
+					select seq_oneday_class.currval from dual
+				</selectKey>			
+	</insert>
+	
+	<insert id="insertTime">
+		insert into
+			tb_onedayclasstime
+				values(
+					seq_oneday_time.nextval,
+					#{onedayNoo},
+					to_date(#{onedayTimeDate},'YYYY/MM/DD HH24:Mi')
+				)
+	</insert>
+	
+	<insert id="insertReservation">
+		insert into
+			tb_reservation 
+				values(
+					seq_reservation.nextval,
+					#{memberId},
+					#{onedaytimeNo},
+					#{onedayclassNo},
+					default,
+					#{personnel},
+					default,
+					#{resPrice}
+			)
+	</insert>
+	
+	
+	<select id="selectDateList"  resultType="Oneday">
+	select *
+	from
+	TB_onedayclass oc
+	<where>
+	<if test="detailedAddr != null">
+	and detailed_addr like '%${detailedAddr}%'
+	</if>
+	<if test="onedayName != null">
+	and oneday_name like '%${onedayName}%'
+	</if>
+	<!-- 일정부분 뽑는 것  -->
+	<!-- <if test="onedayTimeDate != ''">
+	and onedayclass_no = (select oct.onedayclass_no from 
+							tb_onedayclasstime oct where oct.onedayclass_no = oc.onedayclass_no 
+							and 
+							TRUNC(onedaytime_date) = #{onedayTimeDate})
+	</if> -->
+	
+	</where>
+	order by onedayclass_no desc
+	</select>
+	
+	
+	
+	
+	<select id="selectTimeList" resultMap="timeCollection">
+		select onedaytime_no, onedayclass_no, to_char(onedaytime_date,'YYYY/MM/DD HH24:Mi') as time
+		from tb_onedayclasstime
+		where onedayclass_no = #{onedayclassNo}
+	</select>
+	
+	
+	<resultMap type="OnedayTime" id="timeCollection">
+		<result column="onedayclass_no" property="onedayNoo"/>
+		<result column="time" property="onedayTimeDate"/>
+	</resultMap>
+	
+	
+	
+	<delete id="deleteOneday">
+		delete from
+		tb_onedayclass
+		where
+			onedayclass_no = #{onedayclassNo}
+	</delete>
+	
+	
+	<update id="classUpdate">
+		update
+		tb_onedayclass
+		set
+		oneday_name = #{onedayName},
+		oneday_price = #{onedayPrice},
+		oneday_content = #{onedayContent},
+		Latitude = #{latitude},
+		longitude = #{longitude},
+		Addr = #{Addr},
+		detailed_addr = #{detailedAddr},
+		oneday_time = #{onedayTime},
+		oneday_maxper = #{onedayMaxper},
+		oneday_minper = #{onedayMinper},
+		oneday_img = #{onedayImg},
+		menu_list = #{menuList}
+		
+		where onedayclass_No = #{onedayclassNo}
+	</update>
 
 
 
@@ -158,9 +158,23 @@ order by onedayclass_no desc
 
 
 
+	<!-- 결제관련 작업부 시작 -->
+	<insert id="insertReservation">
+		insert into
+			tb_reservation
+		values (
+			seq_reservation.nextval,
+			#{memberId},
+			#{onedaytimeNo},
+			#{onedayclassNo},
+			default,
+			#{personnel},
+			default
+			#{resPrice}
+			)
+	</insert>
 
-
-
+	<!-- 결제관련 작업부 종료 -->
 
 
 

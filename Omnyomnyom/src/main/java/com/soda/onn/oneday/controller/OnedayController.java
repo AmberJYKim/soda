@@ -2,10 +2,6 @@ package com.soda.onn.oneday.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,28 +15,21 @@ import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.gson.Gson;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.common.util.Utils;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.service.MypageService;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Attachment;
 import com.soda.onn.oneday.model.vo.Oneday;
@@ -59,7 +48,10 @@ public class OnedayController {
 	private OnedayService onedayService;
 	@Autowired
 	private ChefService chefservice;
-
+	@Autowired
+	private MypageService mypageService;
+	
+	
 	
 //	원데이 클래스 메인뷰로 이동 
 	@GetMapping("/oneday")
@@ -294,15 +286,24 @@ public class OnedayController {
 	public ModelAndView pay(@ModelAttribute ModelAndView mav,HttpSession session) {
 		
 		ReservationRequest reservationrequest = (ReservationRequest) session.getAttribute("reservationrequest");
+		log.debug("onedayname ===={}", reservationrequest.getOneday().getOnedayName() );
 		
 		mav.addObject("reservationrequest", reservationrequest);
-		
+		mav.addObject("oneday", reservationrequest.getOneday());
 		return mav;
 		
 	}
 //	원데이 클래스 예약완료 뷰로 이동 
 	@PostMapping("/result.do")
 	public String result() {
+		
+		//결제내역 추가
+//		onedayService.insertReservation();
+		//예약정보 
+		//알림
+//		mypageService.insertDingdong();
+		
+		
 		return "oneday/oneday_result";
 		
 	}
