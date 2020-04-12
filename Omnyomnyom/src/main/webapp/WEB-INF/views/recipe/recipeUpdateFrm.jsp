@@ -47,6 +47,17 @@
 }
 </style>	
 <script>
+var player; //유튜브 api 전역변수
+var setVideoId = "${recipe.videoLink}"; //유튜브영상 ID
+
+//유튜브 영상 준비
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('testPTag', {
+        videoId: setVideoId,
+    });
+}
+
+
 var categoryArr = new Array();
 <c:forEach items="${categoryList}" var="category" varStatus="vs">
 categoryArr.push("${category.menuPrCategory}/${category.menuCdCategory}");
@@ -147,20 +158,6 @@ $(function(){
 		}
 	});
 });
-function view_change(e) {
-    let id = $(e).attr('id');
-    console.log(id);
-    if (id == "video_btn") {
-    	$("#videoLink").val('');
-        $("#url_upload").css('display', 'none');
-        $("#video_upload").css('display', 'block');
-    } else {
-    	$("#videoInput").val('');
-    	$("#video_section").attr('src','').hide();
-        $("#url_upload").css('display', 'flex');
-        $("#video_upload").css('display', 'none');
-    }
-};
 
 function frmValidate(){
 
@@ -174,38 +171,6 @@ function frmValidate(){
 		alert('레시피 이름을 입력하세요.');
 		$("input[name=videoTitle]").val('').focus();
 		return false;
-	}
-	
-	if(!$("#videoLink").val().trim() && !$("input[name=uploadFile]").val().trim()){
-		alert('영상파일, 혹은 유튜브 링크를 입력해주세요.');
-		$("input[name=uploadFile]").val('');
-		return false;
-	}
-	
-	if($("#videoLink").val().trim()){
-		let $videoLink = $("#videoLink");
-		
-		if($videoLink.val().indexOf("youtu.be/") != -1){
-			
-			let subString = $videoLink.val().substr($videoLink.val().indexOf("youtu.be/")+9,11); 
-			
-			$videoLink.val(subString);
-			
-			console.log("videoLink="+$videoLink.val());
-		}else if($videoLink.val().indexOf("watch?v=") != -1){
-			
-			let subString = $videoLink.val().substr($videoLink.val().indexOf("watch?v=")+8,11);
-			
-			$videoLink.val(subString);
-			
-			console.log("videoLink="+$videoLink.val());
-		}else{
-			alert("알맞은 유튜브 링크를 올리세요.");
-			$videoLink.val('').focus();
-			return false;
-		} 
-		
-		
 	}
 	
 	if(!$("input[name=category]").val().trim()){
@@ -279,8 +244,7 @@ function frmValidate(){
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-7 m-auto text-white">
-					<h2>레시피 등록하기</h2>
-					<p>여러분이 자랑하고픈, 획기적인 아이디어와 손재주를 발휘해보세요.</p>
+					<h2>레시피 수정</h2>
 				</div>
 			</div>
 		</div>
@@ -291,7 +255,8 @@ function frmValidate(){
 	<!-- 레시피 영상  Section --><!--  -->
 	<section class="classes-details-section spad overflow-hidden">
 		<div class="container">
-			<form name="memberFrm" action="${pageContext.request.contextPath }/recipe/recipeUpload" method="post" onsubmit="return frmValidate();" enctype="multipart/form-data">
+			<form name="memberFrm" action="${pageContext.request.contextPath }/recipe/recipeUpdateEnd" method="post" onsubmit="return frmValidate();" enctype="multipart/form-data">
+			<input name="recipeNo" value="${recipe.recipeNo }" hidden/>
 			<input name="chefId" value="${memberLoggedIn.memberId}" hidden/>
 			<input name="chefNick" value="${memberLoggedIn.memberNick}" hidden/>
 			<div class="row">
@@ -302,44 +267,27 @@ function frmValidate(){
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="basic-addon1">제목</span>
                                 </div>
-                                <input name="videoTitle" type="text" class="form-control" placeholder="레시피제목을 입력하세요." aria-label="Username" aria-describedby="basic-addon1">
+                                <input name="videoTitle" type="text" class="form-control" placeholder="레시피제목을 입력하세요." aria-label="Username" aria-describedby="basic-addon1" 
+                                	   value="${recipe.videoTitle }">
 							  </div>
 							<hr>
-							<!-- 이미지 등록 -->
-							<span class="warning">*영상은 URL업로드 혹은 fileUpload중 한가지만 선택할 수 있습니다.</span>
-							<input type="button" id="video_btn" onclick="view_change(this);" value="영상으로 업로드하기">
-                			<input type="button" id="url_btn" onclick="view_change(this);" value="URL로 업로드하기">
-							<div class="oneday_class_img" id="video_upload" style="display: none;">
-								<div id="uploadbtn" class="uploadbtn" onclick="upload(this)">Upload Files</div>
-								<input name="uploadFile" type='file' id="videoInput" hidden/>
-								<video alt="" controls id="video_section">
-									<!-- <source class="image_section_src" src="#" type='video/webm; codecs="vp8.0, vorbis"'>
-									<source class="image_section_src" src="#" type='video/ogg; codecs="theora, vorbis"'> -->
-									<!-- <source class="image_section_src" src="#" type='video/mp4'> -->
-								</video>
-							</div>
-							
-							<div class="input-group mb-3" id="url_upload" >
-								<div class="input-group-prepend">
-								  <span class="input-group-text" id="basic-addon1">URL</span>
-								</div>
-								<!-- <input class="form-control" name='basic' value="" placeholder="해시태그를 입력하세요." aria-label="Username" aria-describedby="basic-addon1" autofocus> -->
-								<input class="form-control some_class_name" name="videoLink" id="videoLink" placeholder="해당 영상의 URL을 입력하세요."   aria-label="Username" aria-describedby="basic-addon1" >
-							</div>
+							<div id="youtubevideo">
+                                <div class="recipe-video" id="testPTag"></div>
+                            </div>
 							<hr>
 								<div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text" id="basic-addon1">음식 분류</span>
 									</div>
 									<!-- <input class="form-control" name='basic' value="" placeholder="해시태그를 입력하세요." aria-label="Username" aria-describedby="basic-addon1" autofocus> -->
-									<input class="form-control" name="category" id="input-custom-dropdown" class="some_class_name" placeholder="해시태크를 입력하세요." value="" aria-label="Username" aria-describedby="basic-addon1">
+									<input class="form-control" name="category" id="input-custom-dropdown" class="some_class_name" placeholder="해시태크를 입력하세요." value="${recipe.category }" aria-label="Username" aria-describedby="basic-addon1">
 								</div>
 									<div class="input-group mb-3">
 									<div class="input-group-prepend">
 									  <span class="input-group-text" id="basic-addon1">음식 이름</span>
 									</div>
 									<!-- <input class="form-control" name='basic' value="" placeholder="해시태그를 입력하세요." aria-label="Username" aria-describedby="basic-addon1" autofocus> -->
-									<input class="form-control" name="menuName" class="some_class_name" placeholder="음식의 이름을 입력하세요." value="" aria-label="Username" aria-describedby="basic-addon1" >
+									<input class="form-control" name="menuName" class="some_class_name" placeholder="음식의 이름을 입력하세요." value="${recipe.menuName}" aria-label="Username" aria-describedby="basic-addon1" >
 								</div>
 							<hr>
 								<!-- 재료입력 -->
@@ -361,7 +309,22 @@ function frmValidate(){
 									<i class="fa fa-lg fa-plus-circle" style="min-width: 100%;" onclick="addIngredient();" type="button"></i>
 								</div>
                                 </div>
-                                <div id="input-date-list"></div>
+	                                <div id="input-date-list">
+	                                	<c:forEach items="${recipe.ingredientList}" var="ingr" varStatus="vs">
+	                                	<div class='row m-auto'>
+	                            			<span class="input col-4 p-0">
+	                            				<input name="ingr_name" class="form-control" type="text" autocomplete="off" value="${ingr.ingredientName }" readonly/>
+											</span>
+											<span class="input col-4 p-0">
+	                            				<input name="ingr_mass" class="form-control" type="text" autocomplete="off" value="${ingr.minWeight }" readonly/>
+											</span>
+											<input name="ingr_number" type="number" hidden value="${ingr.ingredientNo }">
+	                            			<div class="col py-1 pr-0 input">
+												<i class="fa fa-lg fa-minus-circle" style="min-width: 100%;" onclick="removeClassTime(this);" type="button"></i>
+	                        				</div>	
+	                         			</div>
+	                         			</c:forEach>
+                                	</div>
 								</div>
 							</div>
 						</div>	
@@ -375,12 +338,12 @@ function frmValidate(){
 				<div class="row recipe-editor">
 					<div class="col">
 
-						<textarea name="recipeContent" style="width: 100%;"></textarea>
+						<textarea name="recipeContent" style="width: 100%;">${recipe.recipeContent }</textarea>
 
 					</div>
 				</div>
 				<div class="mt-2">
-					<input type="submit" class="" value="레시피 등록">
+					<input type="submit" class="" value="레시피 수정">
 				</div>
 			</div>
 			
@@ -392,7 +355,12 @@ function frmValidate(){
 							<div class="container">
 								<div class="row">
 									<div class="col-xs-4">
-									<div class="form-control" id="participants" name="participants"></div>
+									<div class="form-control" id="participants" name="participants">[
+										<c:forEach items="${fn:split(recipe.timeline,'⇔')}" var="timeline" varStatus="vs">
+                            				{"tn_firstname":${fn:split(timeline,'∮')[0]},"tn_lastname":"${fn:split(timeline,'∮')[1]}"}
+                            				<c:if test="${!vs.last }">,</c:if>
+                        				</c:forEach>
+									]</div>
 									</div>
 								</div>
 							</div>

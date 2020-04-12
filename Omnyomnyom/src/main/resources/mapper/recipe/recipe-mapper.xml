@@ -226,7 +226,95 @@
 		order by
 			view_count desc
 	</select>
-	
+	<!-- PJM Section -->
+	<select id="selectReplyList" resultType="recipeReply">
+		select
+			r.*,
+			m.member_nick
+		from
+			Tb_reply r
+			join tb_member m
+				on r.member_id = m.member_id
+		where
+			recipe_no = #{recipeNo}
+		order by
+			reply_no
+	</select>
+	<insert id="insertReply">
+		insert into Tb_reply
+		values (
+		    seq_reply.nextval,
+		    #{recipeNo},
+		    #{memberId},
+		    #{highRepNo},
+		    #{repContent},
+		    default
+		)
+	</insert>
+	<delete id="deleteReply">
+		delete from 
+			tb_reply
+		where 
+			reply_no = #{replyNo}
+			or
+			high_rep_no = #{replyNo}
+	</delete>
+	<select id="selectQuestionList" resultType="recipeQuestion">
+		select
+			q.*,
+			m.member_nick
+		from
+			Tb_RecipeQuestion q
+			join tb_member m
+				on q.member_id = m.member_id
+		where
+			recipe_no = #{recipeNo}
+		order by
+			question_no
+	</select>
+	<insert id="insertQuestion">
+		insert into Tb_RecipeQuestion
+		values (
+		    seq_question.nextval,
+		    #{recipeNo},
+		    #{memberId},
+		    #{highQuestionNo},
+		    #{questionContent},
+		    default
+		)
+	</insert>
+	<delete id="deleteQuestion">
+		delete from 
+			Tb_RecipeQuestion
+		where 
+			question_no = #{questionNo}
+			or
+			high_question_no = #{questionNo}
+	</delete>
+	<delete id="deleteRecipe">
+		delete from
+			tb_recipe
+		where
+			recipe_no = #{recipeNo}
+	</delete>
+	<update id="recipeUpdate">
+		update tb_recipe 
+		set
+		    video_title = #{videoTitle},
+		    timeline = #{timeline},
+    		menu_name = #{menuName},
+    		cooking_time = #{cookingTime},
+    		category = #{category},
+    		recipe_content = #{recipeContent}
+		where recipe_no = #{recipeNo}
+	</update>
+	<delete id="recipeIngrDelete">
+		delete from 
+			tb_rec_Ingredients
+		where
+			recipe_no = #{recipeNo}
+	</delete>
+	<!-- PJM section end  -->	
 	<select id="selectReport" resultMap="reportMap">
 		select
 			*
