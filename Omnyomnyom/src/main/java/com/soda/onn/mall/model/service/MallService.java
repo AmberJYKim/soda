@@ -1,6 +1,7 @@
 package com.soda.onn.mall.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
@@ -29,5 +30,7 @@ public interface MallService {
 	List<IngredientMall> selectIngMallSearch(String keyword);
 	
 	List<IngredientMall> selectCheckOutIng(List<Integer> ingredientNoList);
+
+	List<IngredientMall> selectIngMallList(List<Map<String, String>> list);
 
 }

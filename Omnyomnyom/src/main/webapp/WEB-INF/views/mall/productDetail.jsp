@@ -77,7 +77,12 @@
                                                     <li class="on"><span class="btn_position"><button type="button" class="btn_del"><span class="txt">삭제하기</span></button>
                                                         </span> <span class="name">${ingMall.ingMallName}</span> <span class="tit_item">구매수량</span>
                                                         <div class="option">
-                                                            <span class="count"><button type="button" class="btn down" id="countdown">수량내리기</button> <input type="number" class="inp" id="count" value="1" min="1"> <button type="button" class="btn up" id="countup">수량올리기</button></span>
+                                                            <span class="count">
+	                                                            <button type="button" class="btn down" id="countdown">수량내리기</button> 
+	                                                            <input type="number" class="inp" id="count" value="1" min="1" name="stock"> 
+	                                                			<input type="hidden" name="ingNo" value="${ingMall.ingMallNo }">
+	                                                            <button type="button" class="btn up" id="countup">수량올리기</button>
+                                                            </span>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -124,6 +129,7 @@
     </section>
     <!--  Section end -->
     <script>
+    var localUrl = "${pageContext.request.contextPath}";
     $(function(){
 	    $("#add-shoppingBasket").on("click",function(){
 	    	shoppingBasket();
@@ -160,7 +166,7 @@
 	    	let ingMall = {"ingMallNo":"${ingMall.ingMallNo}",
 	    			       "stock":$("#count").val()}	 
 	    	$.ajax({
-		    	url:"${pageContext.request.contextPath}/mall/cart/add",
+		    	url: localUrl+"/mall/cart/add",
 		    	data : ingMall,
 		    	dataType : 'text',
 		    	method : "POST",
@@ -174,6 +180,38 @@
 		    	}
 			});
 	    };
+	    
+	    $(".btn_save").click(function(){
+	    	
+			let buyList = new Array();
+			
+			let ingNo = $("[name='ingNo']").val();
+			let stock = $("[name='stock']").val();
+			
+			buyList[0] = {'ingNo':ingNo,
+							'stock':stock};
+				
+			
+			/* console.log(buyList); */
+			buyList = JSON.stringify(buyList);
+			$.ajax({
+				url  : localUrl+"/mall/selectedIngMallList.ajax",
+				type : "GET",
+				data : {'buyList':buyList},
+				success : function(str){
+					console.log("성공");
+					$(location).attr('href',localUrl+str);
+				},
+				error : (x,s,e)=>{
+					console.log(x);
+					console.log(s);
+					console.log(e);
+					console.log("실패");
+				}
+				
+				
+			})
+		});
     });
     </script>
 

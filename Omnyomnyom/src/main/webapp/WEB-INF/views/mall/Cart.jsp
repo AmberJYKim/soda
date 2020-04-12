@@ -79,8 +79,8 @@
 											</div>
 											<div class="inner-col">
 													<i class="fa fa-minus btns"></i> 
-													<input type="hidden" name="sbIngNo" value="${cart.sbIngNo }">
-													<input type="number" name="sbStock" class="qty count" title="구매수량" value="${cart.sbStock}"  /> 
+													<input type="hidden" name="ingNo" value="${cart.sbIngNo }">
+													<input type="number" name="stock" class="qty count" title="구매수량" value="${cart.sbStock}"  /> 
 													<i class="fa fa-plus btns"></i>
 											</div>
 										</div>
@@ -201,28 +201,27 @@
 		console.log($(this));
 		$(".chbox-obj").each(function(index,item){
 			if($(item).is(":checked")){
-				let ingNo = $(item).parents(".sb-area").find("[name='sbIngNo']").val();
-				let stock = $(item).parents(".sb-area").find("[name='sbStock']").val();
-				buyList[i++] = {'sbIngNo':ingNo,
-								'sbStock':stock};
+				let ingNo = $(item).parents(".sb-area").find("[name='ingNo']").val();
+				let stock = $(item).parents(".sb-area").find("[name='stock']").val();
+				buyList[i++] = {'ingNo':ingNo,
+								'stock':stock};
 			}
 		})
 		/* console.log(buyList); */
-		$(location)
+		buyList = JSON.stringify(buyList);
 		$.ajax({
-			url  : localUrl+"/mall/selectedIngMallList",
+			url  : localUrl+"/mall/selectedIngMallList.ajax",
 			type : "GET",
-			data : {"buyList":buyList},
-			dataType : 'json',
-			success : function(url){
+			data : {'buyList':buyList},
+			success : function(str){
 				console.log("성공");
-				$(location).attr('href',url);
-		console.log(buyList);
+				$(location).attr('href',localUrl+str);
 			},
 			error : (x,s,e)=>{
+				console.log(x);
+				console.log(s);
+				console.log(e);
 				console.log("실패");
-		console.log(buyList);
-				
 			}
 			
 			

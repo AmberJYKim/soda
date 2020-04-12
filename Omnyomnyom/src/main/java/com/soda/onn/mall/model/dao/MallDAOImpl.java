@@ -71,6 +71,7 @@ public class MallDAOImpl implements MallDAO {
 	public List<IngredientMall> selectIngMallSearch(String keyword) {
 		return sqlSession.selectList("mall.selectIngMallSearch", keyword);
 	}
+
 	
 	
 

@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -32,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("/mall")
+@SessionAttributes({"paymentList","deliveryInfo"})
 public class MallController {
 
 	@Autowired
@@ -39,12 +41,7 @@ public class MallController {
 	
 //	뇸뇸몰 Main 이동 
 	@GetMapping("/main")
-	public ModelAndView productList() {
-		ModelAndView mav = new ModelAndView();
-		
-		mav.addObject("");
-		return mav;
-	}
+	public void main() {}
 	
 	
 //	장바구니 가져오기
@@ -60,33 +57,30 @@ public class MallController {
 		return "mall/Cart";
 	}
 	
-	@GetMapping(value = "/selectedIngMallList", produces = "text/plain;charset=UTF-8")
+//	구매페이지로 이동
+	@GetMapping(value = "/selectedIngMallList.ajax", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public String selectedIngMallList(HttpServletRequest request
-									  /*@RequestParam("buyList") List<IngredientMall> buyList*/) {
-//		@RequestParam("list") List<Map<String,String>> list,
-		log.debug("진입");
-		Enumeration<String> params = request.getParameterNames();
-		while(params.hasMoreElements()) {
-		    String name = (String)params.nextElement();
-		    System.out.println(request.getParameter(name));
-		    String value = request.getParameter(name);
-		    System.out.println(value);
-		}
-		return "mall/selectedIngMallList";
+	public String selectedIngMallList(@RequestParam("buyList") String buyList,
+									  Model model) {
+		List<Map<String,String>> list = new Gson().fromJson(buyList, List.class);
+		List<IngredientMall> paymentList = mallService.selectIngMallList(list);
+		model.addAttribute("paymentList", paymentList);
+		return "/mall/selectedIngMallList";
 	}
+	
+	@GetMapping("/selectedIngMallList")
+	public void selectedIngMallList(Model model) {}
 	
 	@DeleteMapping(value = "/cart/del/{ingMallNo}", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public void cartDelete(@PathVariable("ingMallNo") int ingMallNo,
 					       HttpSession session) {
-		log.debug(""+ingMallNo);
 		String memberId = ((Member)session.getAttribute("memberLoggedIn")).getMemberId();
 		Map<String, Object> map = new HashMap<String, Object>();
-		Cart sb = new Cart();
-		sb.setSbIngNo(ingMallNo);
-		sb.setSbMemberId(memberId);
-		int result = mallService.deleteCart(sb);
+		Cart cart = new Cart();
+		cart.setSbIngNo(ingMallNo);
+		cart.setSbMemberId(memberId);
+		int result = mallService.deleteCart(cart);
 	}
 	
 //	장바구니 추가
@@ -97,8 +91,8 @@ public class MallController {
 							 HttpSession session) {
 		String memberId = ((Member)session.getAttribute("memberLoggedIn")).getMemberId();
 		
-		Cart sb = new Cart(ingMallNo, memberId, stock);
-		int result = mallService.insertCart(sb);
+		Cart cart = new Cart(ingMallNo, memberId, stock);
+		int result = mallService.insertCart(cart);
 		return "장바구니에 넣었습니다!";
 	}
 	
@@ -150,19 +144,14 @@ public class MallController {
 		mav.setViewName("mall/paymentInfo");
 		return mav;
 	}
-	
-
-// 뇸뇸몰 상품 결제정 등록 페이지 이동 
 	@GetMapping("/paymentInfo")
-	public String paymentInfo() {
-		return "mall/mallPaymentInfo";
+	public void paymentInfo() {
+		
 	}
-
-// 뇸뇸몰 상품 결제정 등록 페이지 이동 
-  	@GetMapping("/mallResult")
-  	public String mallResult() {
-		return "mall/mallResult";
-  	}		
+	
+  	@GetMapping("/delivery")
+  	public void delivery() {}
+  	
 // 뇸뇸몰 상품등록 페이지 이동 
   	@GetMapping("/productInsert")
   	public String productInsert() {

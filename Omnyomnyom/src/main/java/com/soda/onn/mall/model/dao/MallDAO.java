@@ -31,7 +31,6 @@ public interface MallDAO {
 	int updateCart(Cart cart);
 
 	int deleteCart(Cart cart);
-	
 
 
 }

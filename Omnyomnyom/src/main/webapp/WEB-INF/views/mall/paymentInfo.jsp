@@ -31,9 +31,9 @@
 		<div class="container tm-pt-5 tm-pb-4">
 			<div class="wizard">
                    	<a><span class="badge">01</span>장바구니</a> 
-                   	<a class="current badge-inverse"><span class="badge">02</span> 선택된 상품 리스트</a> 
+                   	<a ><span class="badge">02</span> 선택된 상품 리스트</a> 
 					<a><span class="badge">03</span> 배송지 정보</a> 
-					<a><span class="badge ">04</span>결제 정보</a> 
+					<a class="current badge-inverse"><span class="badge ">04</span>결제 정보</a> 
 					<a><span class="badge ">05</span>결제 완료</a>
             </div>
 
@@ -100,6 +100,40 @@
 								<button type="button" class="btn btn-primary mvToSelectedIngMall">다음</button>
 								</a>
 							</div>
+						</div>
+						<div class="row">
+						<div class="col">
+						</div>
+                            <span class="input input--yoshiko"> 
+							<!-- 클래스명 input --> 
+								<input class="input__field input__field--yoshiko" type="text" id="input-class-name" name="name" value="${memberLoggedIn.memberName }" readonly/> 
+								<!-- 클래스명 라벨 --> 
+								<label class="input__label input__label--yoshiko" for="input-class-name"> 
+									<span class="input__label-content input__label-content--yoshiko" data-content="수령자">수령자</span>
+								</label>
+							</span>
+                            <!-- 배송지 주소 -->
+                            <span class="input input--yoshiko">
+                                <input class="input__field input__field--yoshiko" type="text" id="address" name="shipping_address" value="${memberLoggedIn.address }" readonly/>
+                                <label class="input__label input__label--yoshiko" for="input-10">
+                                    <span class="input__label-content input__label-content--yoshiko" data-content="배송지 주소">배송지 주소</span>
+                                </label>
+                            </span>
+                            <!-- 연락처 -->
+                            <span class="input input--yoshiko">
+                                <input class="input__field input__field--yoshiko" type="text" id="phone" value="${memberLoggedIn.phone }" readonly/>
+                                <label class="input__label input__label--yoshiko" for="input-10">
+                                    <span class="input__label-content input__label-content--yoshiko" data-content="연락처">연락처</span>
+                                </label>
+                            </span>
+                            <!-- 배송메모 -->
+                            <span class="input input--yoshiko">
+                                <input class="input__field input__field--yoshiko" type="text" id="input-10" readonly/>
+                                <label class="input__label input__label--yoshiko" for="input-10">
+                                    <span class="input__label-content input__label-content--yoshiko" data-content="배송 메모">배송 메모</span>
+                                </label>
+                            </span>
+						 	
 						</div>
 
 					</div>

@@ -438,7 +438,7 @@
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath }/mypage/shoppingBasket">
+									<a href="${pageContext.request.contextPath }/mall/cart">
 										<p>장바구니</p>
 									</a>
 									</div>
