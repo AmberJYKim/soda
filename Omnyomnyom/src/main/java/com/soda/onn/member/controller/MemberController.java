@@ -50,7 +50,6 @@ public class MemberController {
 	    			    RedirectAttributes redirectAttributes){
 		log.debug("로그인 접근");
 		Member member = memberService.selectOne(memberId);
-		log.debug("memberId={}",memberId);
 		
 		if(member != null) {
 			log.debug("회원객체 존재");

@@ -100,7 +100,7 @@
 	function ingredient_list(e){
 		let subCtg = {'subCtg' : $(e).text()};
 		$.ajax({
-	    	url:"${pageContext.request.contextPath}/mall/seachList/ajax",
+	    	url:"${pageContext.request.contextPath}/mall/seachList.ajax",
 	    	dataType : 'json',
 	    	method : "GET",
 	    	data : subCtg,
@@ -130,7 +130,6 @@
 		});
 	}
 	function price_comma(){
-		console.log("진입");
 		$(".price-font").each(function(index,item){
 			$(item).text($(item).text().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 		})
