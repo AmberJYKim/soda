@@ -68,7 +68,7 @@ public class MypageController {
 	}
 	@GetMapping("/adminMain")
 	public void mypageadminMain() {
-		log.debug("관ㄹ지ㅏ 마이페이지 메인 첫 화면 입니다");
+		log.debug("관리자 마이페이지 메인 첫 화면 입니다");
 	}
 		
 	@GetMapping("/updateinfo")
@@ -92,13 +92,28 @@ public class MypageController {
 		return "redirect:/mypage/main";
 	}
 	
-	
+	//일반 유저의 구매목록들
 	@GetMapping("/buyList")
 	public void buyList(HttpSession session, Model model) {
-		String memberId = (String) session.getAttribute("");
+		System.out.println("buyList 메소드입니다");
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		
 		List<BuyHistory> buyList = mallService.selectBuyList(memberId);
 		log.debug("buyList={}",buyList);
 		model.addAttribute("buyList", buyList);
+	}
+	
+	//판매자의 판매목록들
+	@GetMapping("/sellList")
+	public void adminBuyList(HttpSession session, Model model) {
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		
+		List<BuyHistory> sellList = mallService.selectAdminBuyList(memberId);
+		log.debug("sellsList={}",sellList);
+		model.addAttribute("sellList", sellList);
 	}
 	
 	@GetMapping("/chefRequest")
@@ -125,6 +140,16 @@ public class MypageController {
 	
 	@GetMapping("/qnaMsg")
 	public void qnaMsg() {
+		
+	}
+
+	@GetMapping("/adminQnaMsg")
+	public void adminQnaMsg() {
+		
+	}
+	
+	@GetMapping("/chefInsertList")
+	public void chefInsertList(HttpSession session) {
 		
 	}
 	
@@ -194,6 +219,11 @@ public class MypageController {
 		redirectAttributes.addFlashAttribute("msg", result>0?"스크랩 메모 수정 성공.":"스크랩 메모 수정 실패.");
 		
 		return "redirect:/mypage/scrapList";
+	}
+	
+	@GetMapping("/sendDingdong")
+	public void sendDingdong() {
+		
 	}
 	
 	//알림 목록
