@@ -292,14 +292,13 @@ public class ChefController {
 	
 	@GetMapping("/chefPopList")
 	@ResponseBody
-	public String chefPopList(@RequestParam(value="nickname")String chefnick) {
+	public List chefPopList(@RequestParam(value="nickname")String chefnick) {
 		
 		List<Recipe> recipeList = recipeService.recipeSelectAll(chefnick);
 		log.debug("chefnick ={}",chefnick);
 		log.debug("recipeList ={}",recipeList);
-		Gson gson = new Gson();
 		
 		
-		return gson.toJson(recipeList);
+		return recipeList;
 	}
 }
