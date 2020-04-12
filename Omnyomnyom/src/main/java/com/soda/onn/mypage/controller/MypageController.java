@@ -25,7 +25,7 @@ import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.mypage.model.service.MypageService;
-import com.soda.onn.mypage.model.vo.DingDongList;
+import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Reservation;
@@ -59,7 +59,16 @@ public class MypageController {
 
 	@GetMapping("/main")
 	public void mypageMain() {
-		
+		log.debug("일반 유저 마이페이지 메인 첫 화면 입니다");
+	}
+	
+	@GetMapping("/chefMain")
+	public void mypagechefMain() {
+		log.debug("셰프 마이페이지 메인 첫 화면 입니다");
+	}
+	@GetMapping("/adminMain")
+	public void mypageadminMain() {
+		log.debug("관ㄹ지ㅏ 마이페이지 메인 첫 화면 입니다");
 	}
 		
 	@GetMapping("/updateinfo")
@@ -105,7 +114,8 @@ public class MypageController {
 						   Model model,
 						   @RequestParam(value="cPage", defaultValue="1") int cPage) {
 		int numPerPage = 15;
-		String memberId = (String) session.getAttribute("");
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
 		
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
@@ -195,7 +205,7 @@ public class MypageController {
 		String memberId = userId.getMemberId();
 		System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
 		
-		List<DingDongList> list = mypageService.selectDingList(memberId);
+		List<DingDong> list = mypageService.selectDingList(memberId);
 		System.out.println("여기는 알림목록  = "+list);
 		
 		mav.addObject("list", list);

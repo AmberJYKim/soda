@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
-
-import com.soda.onn.member.model.vo.DingDong;
 import com.soda.onn.member.model.vo.Member;
 
 public interface MemberService {
@@ -26,8 +24,6 @@ public interface MemberService {
 	
 
 	int selectDingdongListCnt();
-
-	List<DingDong> dingdongList(String memberId, String size);
 
 	List<Map<String, String>> dingdongListTest(Map<String, String> paramMap);
 

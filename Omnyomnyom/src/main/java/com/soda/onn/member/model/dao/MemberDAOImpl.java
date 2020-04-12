@@ -7,8 +7,6 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.soda.onn.member.model.vo.DingDong;
 import com.soda.onn.member.model.vo.Member;
 
 @Repository
@@ -57,11 +55,6 @@ public class MemberDAOImpl  implements MemberDAO{
 	@Override
 	public int selectDingdongListCnt() {
 		return Integer.parseInt(sqlSession.selectOne("member.selectDingdongListCnt"));
-	}
-
-	@Override
-	public List<DingDong> dingdongList(String memberId, String size) {
-		return sqlSession.selectList("member.dingdongList", memberId);
 	}
 
 	@Override
