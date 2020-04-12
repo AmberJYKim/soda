@@ -59,7 +59,16 @@ public class MypageController {
 
 	@GetMapping("/main")
 	public void mypageMain() {
-		
+		log.debug("일반 유저 마이페이지 메인 첫 화면 입니다");
+	}
+	
+	@GetMapping("/chefMain")
+	public void mypagechefMain() {
+		log.debug("셰프 마이페이지 메인 첫 화면 입니다");
+	}
+	@GetMapping("/adminMain")
+	public void mypageadminMain() {
+		log.debug("관ㄹ지ㅏ 마이페이지 메인 첫 화면 입니다");
 	}
 		
 	@GetMapping("/updateinfo")
