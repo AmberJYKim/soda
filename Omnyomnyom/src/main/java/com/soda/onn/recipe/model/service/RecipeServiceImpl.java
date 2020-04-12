@@ -8,7 +8,6 @@ import java.util.Map;
 import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.soda.onn.recipe.model.vo.Report;
 
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
@@ -223,7 +222,13 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public List<Recipe> recipeSelectAll(String chefNickName) {
+
+	public List<String> selectMenuSubCtg(String mainCtg) {
+		return recipeDAO.selectMenuSubCtg(mainCtg);
+	}
+	
+ 	@Override 
+   	public List<Recipe> recipeSelectAll(String chefNickName) {
 		return recipeDAO.recipeSelectAll(chefNickName);
 	}
 

@@ -316,6 +316,12 @@
 			WHERE MENU_NAME LIKE '%'||#{searchKey}||'%' OR video_title like '%'||#{searchKey}||'%'
 	</select>
 	
+
+	<select id="selectMenuSubCtg" resultType="string">
+		select menu_cd_category from tb_menu_category where menu_pr_category = #{mainCtg}
+	</select>
+	
+
 	<select id="recipeSelectAll" resultType="recipe">
 		select 
 			*
@@ -326,4 +332,5 @@
 		order by regdate
 	</select>
 	
+
 </mapper>
