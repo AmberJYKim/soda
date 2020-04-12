@@ -8,7 +8,7 @@
 
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="" name="pageTitle" />
+	<jsp:param value="1:1 문의" name="pageTitle" />
 </jsp:include>
 
 <link rel="stylesheet"
@@ -17,6 +17,13 @@
 	href="${pageContext.request.contextPath}/resources/css/mypage/user-list.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/mall_delivery_info.css" />
+	
+<!-- WebSocket:sock.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
+
+<!-- WebSocket: stomp.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+
 <!-- Event Details Section -
 <section class="event-details-section spad overflow-hidden">
 	<div class="tm-section-2">
@@ -63,7 +70,7 @@
 				alt="avatar" />
 
 			<div class="chat-about">
-				<div class="chat-with">Chat with Vincent Porter</div>
+				<div class="chat-with">상대방 닉네임</div>
 				<div class="chat-num-messages">already 1 902 messages</div>
 			</div>
 			<!-- <i class="fa fa-star"></i> -->
@@ -71,59 +78,44 @@
 		<!-- end chat-header -->
 
 		<div class="chat-history">
-			<ul>
+			<ul id="msg-target">
 				<li class="clearfix">
 					<div class="message-data align-right">
-						<span class="message-data-time">10:10 AM, Today</span> &nbsp;
-						&nbsp; <span class="message-data-name">Olia</span> <i
+						<span class="message-data-time">시간</span> &nbsp;
+						&nbsp; <span class="message-data-name">나</span> <i
 							class="fa fa-circle me"></i>
 
 					</div>
-					<div class="message other-message float-right">Hi Vincent,
-						how are you? How is the project coming along?</div>
+					<div class="message other-message float-right">메세지 1</div>
 				</li>
 
 				<li>
 					<div class="message-data">
 						<span class="message-data-name"><i
-							class="fa fa-circle online"></i> Vincent</span> <span
-							class="message-data-time">10:12 AM, Today</span>
+							class="fa fa-circle online"></i> 상대방</span> <span
+							class="message-data-time">시간</span>
 					</div>
-					<div class="message my-message">Are we meeting today? Project
-						has been already finished and I have results to show you.</div>
+					<div class="message my-message">내용 1</div>
 				</li>
 
 				<li class="clearfix">
 					<div class="message-data align-right">
-						<span class="message-data-time">10:14 AM, Today</span> &nbsp;
-						&nbsp; <span class="message-data-name">Olia</span> <i
+						<span class="message-data-time">시간</span> &nbsp;
+						&nbsp; <span class="message-data-name">나</span> <i
 							class="fa fa-circle me"></i>
 
 					</div>
-					<div class="message other-message float-right">Well I am not
-						sure. The rest of the team is not here yet. Maybe in an hour or
-						so? Have you faced any problems at the last phase of the project?
+					<div class="message other-message float-right">메세지 2
 					</div>
 				</li>
 
 				<li>
 					<div class="message-data">
 						<span class="message-data-name"><i
-							class="fa fa-circle online"></i> Vincent</span> <span
-							class="message-data-time">10:20 AM, Today</span>
+							class="fa fa-circle online"></i> 상대방</span> <span
+							class="message-data-time">시간</span>
 					</div>
-					<div class="message my-message">Actually everything was fine.
-						I'm very excited to show this to our team.</div>
-				</li>
-
-				<li>
-					<div class="message-data">
-						<span class="message-data-name"><i
-							class="fa fa-circle online"></i> Vincent</span> <span
-							class="message-data-time">10:31 AM, Today</span>
-					</div> <i class="fa fa-circle online"></i> <i class="fa fa-circle online"
-					style="color: #AED2A6"></i> <i class="fa fa-circle online"
-					style="color: #DAE9DA"></i>
+					<div class="message my-message">내용 2</div>
 				</li>
 
 			</ul>
@@ -132,13 +124,12 @@
 		<!-- end chat-history -->
 
 		<div class="chat-message clearfix">
-			<textarea name="message-to-send" id="message-to-send"
-				placeholder="Type your message" rows="3"></textarea>
+			<textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
 
 			<i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp; <i
 				class="fa fa-file-image-o"></i>
 
-			<button>Send</button>
+			<button id="sendBtn">Send</button>
 
 		</div>
 		<!-- end chat-message -->
@@ -148,37 +139,10 @@
 
 </div>
 <!-- end container -->
-
-<script id="message-template" type="text/x-handlebars-template">
-  <li class="clearfix">
-    <div class="message-data align-right">
-      <span class="message-data-time" >{{time}}, Today</span> &nbsp; &nbsp;
-      <span class="message-data-name" >Olia</span> <i class="fa fa-circle me"></i>
-    </div>
-    <div class="message other-message float-right">
-      {{messageOutput}}
-    </div>
-  </li>
-</script>
-
-<script id="message-response-template" type="text/x-handlebars-template">
-  <li>
-    <div class="message-data">
-      <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
-      <span class="message-data-time">{{time}}, Today</span>
-    </div>
-    <div class="message my-message">
-      {{response}}
-    </div>
-  </li>
-</script>
 <!-- partial -->
-<script
-	src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery<!-- .min.js'></script>
-<script
-	src='https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js'></script>
-<script
-	src='https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js'></scr -->ipt>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js'></script>
+
 
         
         
@@ -193,39 +157,73 @@
 <script
 	src="${pageContext.request.contextPath}/resources/js/datepicker.kr.js"></script>
 <script>
-		(function() {
-			// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
-			if (!String.prototype.trim) {
-				(function() {
-					// Make sure we trim BOM and NBSP
-					var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
-					String.prototype.trim = function() {
-						return this.replace(rtrim, '');
-					};
-				})();
+	(function() {
+		// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+		if (!String.prototype.trim) {
+			(function() {
+				// Make sure we trim BOM and NBSP
+				var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+				String.prototype.trim = function() {
+					return this.replace(rtrim, '');
+				};
+			})();
+		}
+		[].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+			// in case the input is already filled..
+			if( inputEl.value.trim() !== '' ) {
+				classie.add( inputEl.parentNode, 'input--filled' );
 			}
-			[].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
-				// in case the input is already filled..
-				if( inputEl.value.trim() !== '' ) {
-					classie.add( inputEl.parentNode, 'input--filled' );
-				}
-				// events:
-				inputEl.addEventListener( 'focus', onInputFocus );
-				inputEl.addEventListener( 'blur', onInputBlur );
-			} );
-			function onInputFocus( ev ) {
-				classie.add( ev.target.parentNode, 'input--filled' );
+			// events:
+			inputEl.addEventListener( 'focus', onInputFocus );
+			inputEl.addEventListener( 'blur', onInputBlur );
+		} );
+		function onInputFocus( ev ) {
+			classie.add( ev.target.parentNode, 'input--filled' );
+		}
+		function onInputBlur( ev ) {
+			if( ev.target.value.trim() === '' ) {
+				classie.remove( ev.target.parentNode, 'input--filled' );
 			}
-			function onInputBlur( ev ) {
-				if( ev.target.value.trim() === '' ) {
-					classie.remove( ev.target.parentNode, 'input--filled' );
-				}
-			}
-		})();
-    </script>
+		}
+	})();
+</script>
 
 <!-- 1대1 문의 채팅 js -->
-<script
-	src="${pageContext.request.contextPath}/resources/js/directMsg.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/directMsg.js"></script>
 
+<!-- 사용자 chat관련 script -->
+<script src="${pageContext.request.contextPath }/resources/js/chat.js"></script>
+
+
+<script>
+
+const chatId = '${chatId}';
+
+/**
+ * 각 페이지에서 작성하면, chat.js의 onload함수에서 호출함.
+* chat페이지에서 추가적으로 subscripe 한다.
+* 웹소켓 connection이 맺어지기 전 요청을 방지하기 위해 stompClient.connected를 체크한다.
+* connectionDone 으로 구독요청 완료를 체크해서 1초마다 반복적으로 구독요청한다.
+*/
+function chatSubscribe(){
+	//페이지별로 구독신청 처리
+	let connectionDone = false;
+	let intervalId = setInterval(()=>{
+		if(connectionDone == true)
+			clearInterval(intervalId);
+		
+		if(connectionDone==false && chatClient.connected){
+			
+			//stomp에서는 구독개념으로 세션을 관리한다. 핸들러 메소드의 @SendTo어노테이션과 상응한다.
+			chatClient.subscribe('/chat/'+chatId, function(message) {
+				console.log("receive from subscribe /chat/"+chatId+":", message);
+				let messsageBody = JSON.parse(message.body);
+				$("#data").append("<li class=\"list-group-item\">"+messsageBody.memberId+" : "+messsageBody.msg+ "</li>");
+				scrollTop();
+			});
+			connectionDone = true;
+		}	
+	},1000);
+}
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
