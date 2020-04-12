@@ -27,5 +27,7 @@ public class IngredientMall implements Serializable {
 	private String ingOrigin;
 	private int shelfLife;
 	private String ingInfo;
+	private String mallEngPrCategory;
+	private String mallEngCdCategory;
 
 }

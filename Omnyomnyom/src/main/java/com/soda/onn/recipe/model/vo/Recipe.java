@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Recipe implements Serializable {
+public class Recipe implements Serializable,Comparable<Recipe> {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -31,4 +31,13 @@ public class Recipe implements Serializable {
 	private String recipeContent;
 	private String timeline;
 	private List<RecipeIngredient> ingredientList;
+	
+	@Override
+	public int compareTo(Recipe r) {
+		if(this.viewCount < r.getViewCount())
+			return 1;
+		if(this.viewCount > r.getViewCount())
+			return -1;
+		return 0;
+	}
 }

@@ -2,8 +2,10 @@ package com.soda.onn.mall.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +77,24 @@ public class MallServiceImpl implements MallService {
 	@Override
 	public int deleteCart(Cart sb) {
 		return mallDAO.deleteCart(sb);
+	}
+
+	@Override
+	public List<IngredientMall> selectIngMallList(List<Map<String, String>> list) {
+		List<IngredientMall> ingMallList = new ArrayList<>();
+		for(Map<String,String> map : list) {
+			int ingNo = Integer.parseInt(map.get("ingNo"));
+			int stock = Integer.parseInt(map.get("stock"));
+
+			IngredientMall ingMall = mallDAO.selectIngMallOne(ingNo);
+			if(stock > ingMall.getStock())
+				ingMall.setStock(0);
+			else
+				ingMall.setStock(stock);
+			ingMallList.add(ingMall);
+		}
+			
+		return ingMallList;
 	}
 
 }

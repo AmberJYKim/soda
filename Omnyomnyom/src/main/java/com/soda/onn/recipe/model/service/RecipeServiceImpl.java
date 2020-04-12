@@ -222,8 +222,13 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
+
 	public List<String> selectMenuSubCtg(String mainCtg) {
 		return recipeDAO.selectMenuSubCtg(mainCtg);
+
+   @Override 
+   public List<Recipe> recipeSelectAll(String chefNickName) {
+		return recipeDAO.recipeSelectAll(chefNickName);
 	}
 
 }

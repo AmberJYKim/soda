@@ -23,4 +23,5 @@ public class Notice implements Serializable {
 	private String noticeTitle;
 	private String noticeContent;
 	private Date regDate;
+	
 }

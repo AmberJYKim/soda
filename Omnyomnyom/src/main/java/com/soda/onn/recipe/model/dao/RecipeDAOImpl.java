@@ -178,6 +178,11 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	@Override
 	public List<String> selectMenuSubCtg(String mainCtg) {
 		return sqlSession.selectList("recipe.selectMenuSubCtg", mainCtg);
+
+  @Override 
+	public List<Recipe> recipeSelectAll(String chefNickName) {
+		return sqlSession.selectList("recipe.recipeSelectAll",chefNickName);
+
 	}
 
 }

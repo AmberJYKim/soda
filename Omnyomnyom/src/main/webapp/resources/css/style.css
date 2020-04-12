@@ -3768,6 +3768,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
     overflow: hidden;
     margin-bottom: 30px;
     position: relative;
+    top:-250px;
 }
 
 .trainer-details .td-social {
@@ -3803,6 +3804,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 .trainer-details .trainer-info {
     position: relative;
     overflow: hidden;
+    margin:10px;
 }
 
 .trainer-details .trainer-info img {
@@ -3813,7 +3815,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .trainer-details .trainer-info h3 {
-    font-family: "Playfair Display", serif;
+ 
     margin-bottom: 15px;
 }
 

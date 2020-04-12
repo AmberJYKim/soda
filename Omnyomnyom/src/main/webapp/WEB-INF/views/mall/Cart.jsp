@@ -7,16 +7,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="장바구니" name="pageTitle" />
 </jsp:include>
-<style>
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.p-img{
-	border-radius: 50%;
-}
-</style>
+
 <!-- Event Details Section -->
 <link rel="stylesheet" 	href="${pageContext.request.contextPath }/resources/css/mall_delivery_info.css" />
 <section class="event-details-section spad overflow-hidden">
@@ -25,8 +16,7 @@ input[type="number"]::-webkit-inner-spin-button {
 			<div class="row">
 				<div class="col text-center">
 					<h2 class="tm-section-title">뇸뇸몰</h2>
-					<p class="tm-color-white tm-section-subtitle">신선한 식재료만을 추구합니다.
-					</p>
+					<p class="tm-color-white tm-section-subtitle">신선한 식재료만을 추구합니다<span class=""></span></p>
 				</div>
 			</div>
 		</div>
@@ -76,7 +66,7 @@ input[type="number"]::-webkit-inner-spin-button {
 								<c:forEach items="${cartList }" var="cart">
 									<div class="row sb-area">
 										<div class="ckbox col-md-1">
-											<input type="checkbox" name="" id="" checked>
+											<input class="chbox-obj" type="checkbox" name="" id="" checked>
 										</div>
 										<div class="col-md-2">
 											<img class="p-img"
@@ -85,20 +75,20 @@ input[type="number"]::-webkit-inner-spin-button {
 										</div>
 										<div class="col-md-7">
 											<div class="inner-col pline">
-												<span class="p-name">${cart.ingMallName }</span><span class="p-info">(${cart.minUnit }당, (<span class="price"><fmt:formatNumber value="${cart.price }" pattern="#,###" /></span>)</span>
+												<span class="p-name">${cart.ingMallName }</span> <span class="p-info">(${cart.minUnit }당, <span class="price"><fmt:formatNumber value="${cart.price }" pattern="#,###" /></span>원)</span>
 											</div>
 											<div class="inner-col">
-												<i class="fa fa-minus btns"></i> 
-												<input type="number" class="qty count" title="구매수량" value="${cart.sbStock}"  /> 
-												<i class="fa fa-plus btns"></i>
+													<i class="fa fa-minus btns"></i> 
+													<input type="hidden" name="ingNo" value="${cart.sbIngNo }">
+													<input type="number" name="stock" class="qty count" title="구매수량" value="${cart.sbStock}"  /> 
+													<i class="fa fa-plus btns"></i>
 											</div>
 										</div>
 										<div class="col-md-2 md-total-price">
 										<span class="sum-price">
-										<fmt:formatNumber value="${cart.price * sb.sbStock }" pattern="#,###" /></span>원
+										<fmt:formatNumber value="${cart.price * cart.sbStock }" pattern="#,###" /></span>원
 											 <i class="fa fa-trash" onclick="delproduct(${cart.sbIngNo},this);"></i>
 										</div>
-	
 									</div>
 								</c:forEach>
 							</div>
@@ -113,7 +103,7 @@ input[type="number"]::-webkit-inner-spin-button {
 							</div>
 							<div class="col order">
 								<button type="button"
-									class="btn btn-primary mvToSelectedProduct">선택 상품 주문하기</button>
+									class="btn btn-primary mvToSelectedIngMall">선택 상품 주문하기</button>
 							</div>
 						</div>
 
@@ -126,6 +116,7 @@ input[type="number"]::-webkit-inner-spin-button {
 <!-- Event Details Section end -->
 
 <script>
+	var localUrl = "${pageContext.request.contextPath}"; 
 	$(function () {
 	    cursors();
 	    totalPrice();
@@ -133,19 +124,24 @@ input[type="number"]::-webkit-inner-spin-button {
 	
 	//	체크박스
 	$(document).on("click",".ckbox",function(){
-    	$box = $(this).children();
-    	$box.attr('checked',!$box.prop("checked"));
-    	totalPrice();
-  		})
+			    	$box = $(this).children();
+			    	$box.attr('checked',!$box.prop("checked"));
+			    	totalPrice();
+				})
     //	수량 Input 
     		   .on("keyup",".count",function(){
-    	changePrice($(this),$(this).val());
-    })
+  					changePrice($(this),$(this).val());
+   				})
+    		   .on("click",".p-img",function(){
+    			   $(this).parents(".sb-area").find(".chbox-obj").trigger("click");
+    		    })
+    		   
+    		   
     
     // 장바구니 상품 삭제
     function delproduct(ingMallNo,target){
 		$.ajax({
-			url:"${pageContext.request.contextPath}/mall/cart/del/"+ingMallNo,
+			url: localUrl+"/mall/cart/del/"+ingMallNo,
 	    	type : "DELETE",
 	    	success : function(){
 		    	console.log('삭제성공');
@@ -190,7 +186,7 @@ input[type="number"]::-webkit-inner-spin-button {
 	}
 	function totalPrice(){
 		let totalPrice = 0;
-		$(".sb-area").find(".ckbox input").each(function(index,item){
+		$(".sb-area").find(".chbox-obj").each(function(index,item){
 			if($(item).is(":checked")){
 				let price = $(item).parents(".sb-area").find(".sum-price").text();
 		    	price = price.replace(/\,/g,"");
@@ -199,8 +195,37 @@ input[type="number"]::-webkit-inner-spin-button {
 		})
 		$("#total_price").text(String(totalPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ",")); 
 	}
-	$(".mvToSelectedProduct").click(function(){
-		
+	$(".mvToSelectedIngMall").click(function(){
+		let buyList = new Array();
+		let i = 0;
+		console.log($(this));
+		$(".chbox-obj").each(function(index,item){
+			if($(item).is(":checked")){
+				let ingNo = $(item).parents(".sb-area").find("[name='ingNo']").val();
+				let stock = $(item).parents(".sb-area").find("[name='stock']").val();
+				buyList[i++] = {'ingNo':ingNo,
+								'stock':stock};
+			}
+		})
+		/* console.log(buyList); */
+		buyList = JSON.stringify(buyList);
+		$.ajax({
+			url  : localUrl+"/mall/selectedIngMallList.ajax",
+			type : "GET",
+			data : {'buyList':buyList},
+			success : function(str){
+				console.log("성공");
+				$(location).attr('href',localUrl+str);
+			},
+			error : (x,s,e)=>{
+				console.log(x);
+				console.log(s);
+				console.log(e);
+				console.log("실패");
+			}
+			
+			
+		})
 	});
 </script>
 
