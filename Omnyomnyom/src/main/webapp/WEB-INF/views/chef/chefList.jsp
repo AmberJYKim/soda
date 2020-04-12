@@ -24,7 +24,10 @@
                     $(this).css("box-shadow", "#4949E7 0px 0px 0px 4.5px");
                     
                     let chefnick = $(this).attr("id");
-                    console.log("chefnick="+chefnick);
+                    
+                    ($($(this).parents(".chef_list")).find("h6.chefSelectOne")).addClass("chefPageGo");
+                    
+                    console.log( ($($(this).parents(".chef_list")).find("h6.chefSelectOne")).addClass("chefPageGo"));
                     
                     $.ajax({
         			url:"${pageContext.request.contextPath}/chef/chefPopList",
@@ -37,25 +40,6 @@
         				/* 검색된 영상 리스트  교체작업*/
         				$("#Ylist").empty();
         				let eachRecipe='';
-        				/* $.each(data, function(index, recipeList){
-        			    eachRecipe =
-        				  '<div class="col-xs-6 col-sm-3 placeholder chef_list">'+
-    	                  '<a href="${pageContext.request.contextPath }/recipe/recipe-details.do">'+
-    	                  ' <img src="https://img.youtube.com/vi/'+recipeList.videoLink+'/mqdefault.jpg" alt="" class="chef-Thumbnail">'+
-    	                   '<p class="chef-Thumbnail-title">'+recipeList.videoTitle+'</p></a>'+
-    	                    '<div class="row">'+
-    	                        '<div class="col-8">'+
-    	                            '<img src="${pageContext.request.contextPath }/resources/upload/profile/'+recipeList.chefId+'.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">'+
-    	                            '<span class="chef-min-name">'+recipeList.chefId +'</span>'+
-    	                        '</div>'+
-    	                        '<div class="col-4 chef-view-count">'+
-    	                           ' <span>조회수'+ recipeList.viewCount +'</span>'+
-	                       ' </div>'+
-    	                    '</div>'+
-    	               ' </div>';  
-    	               
-        			   $("#Ylist").append(eachRecipe);
-        				}); */
         				
         				for(var i=0; i<4; i++){
         					eachRecipe =
@@ -87,7 +71,7 @@
         		 }); 
         
                     $("#Ylist").show();
-                    $(this).find("h6").addClass("chefPageGo");
+                   
            
                 });
             });
@@ -182,27 +166,8 @@
 
 <!-- 셰프클릭시 해당 셰프영상 밑에 뜨기 -->
 
-            <div class="row" id="Ylist">
-	                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-	                    <a href="${pageContext.request.contextPath }/recipe/recipe-details.do">
-	                    <img src="https://img.youtube.com/vi/${item.videoLink}/mqdefault.jpg" alt="" class="chef-Thumbnail">
-	                    <p class="chef-Thumbnail-title">${item.videoTitle}</p></a>
-	                    <div class="row">
-	                        <div class="col-8">
-	                            <img src="/img/1508_008.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">
-	                            <span class="chef-min-name">${item.chefId }</span>
-	                        </div>
-	                        <div class="col-4 chef-view-count">
-	                            <span>조회수 ${item.viewCount }</span>
-	                        </div>
-	                    </div>
-	           		</div>
-
-         
-                  <!--   <p class="chef-Thumbnail-link" onclick="go_chefpage();"> &nbsp;&nbsp; 채널로 이동 &nbsp;&nbsp;</p> -->
-                <input type="button" class="chef-Thumbnail-link" onclick="go_chefpage();" value="채널로 이동">
-                
-             </div>
+         <div class="row" id="Ylist">
+	              
          </div>
             
         <!-- end-->
