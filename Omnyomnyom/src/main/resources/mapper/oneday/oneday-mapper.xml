@@ -10,7 +10,7 @@
 	from
 		tb_reservation 
 	<where>
-		<if test="rserMemberId != null">
+		<if test="value != null">
 		member_id = #{reserMemberId}
 		</if>
 	</where>

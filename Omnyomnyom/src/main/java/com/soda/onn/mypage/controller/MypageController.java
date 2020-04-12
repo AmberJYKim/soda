@@ -114,7 +114,8 @@ public class MypageController {
 						   Model model,
 						   @RequestParam(value="cPage", defaultValue="1") int cPage) {
 		int numPerPage = 15;
-		String memberId = (String) session.getAttribute("");
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
 		
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
