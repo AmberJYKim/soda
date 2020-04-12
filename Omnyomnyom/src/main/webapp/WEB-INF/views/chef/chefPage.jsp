@@ -177,12 +177,14 @@
                     <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="upvideo container" id="video-upload-video">
                             <h6>업로드한 레시피 </h6>
+                           <c:if test="${memberLoggedIn.memberRoll eq 'C'}"> 
                             <div class="row">
                                 <div class="col-lg-12">
                                     <button type="button" class="btn btn-outline-danger">레시피 관리</button>
                                     <button type="button" class="btn btn-outline-danger" onclick="recipeUpload();">레시피 업로드</button>
                                 </div>
                             </div>
+                            </c:if>
 					<script>
 					function recipeUpload(){
 						location.href ="${pageContext.request.contextPath }/recipe/recipeUpload";
