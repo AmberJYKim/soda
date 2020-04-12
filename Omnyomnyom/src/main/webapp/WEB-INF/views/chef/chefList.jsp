@@ -32,38 +32,61 @@
         			method:"GET",
         			datatype:"json",
         			success : data =>{
+        				console.log(data);
         				
-        				RList = data.recipeList;
         				/* 검색된 영상 리스트  교체작업*/
-        				$("div#Ylist").empty();
-        				$.each(RList, function(index, item){
-        				let eachRecipe =
+        				$("#Ylist").empty();
+        				let eachRecipe='';
+        				/* $.each(data, function(index, recipeList){
+        			    eachRecipe =
         				  '<div class="col-xs-6 col-sm-3 placeholder chef_list">'+
     	                  '<a href="${pageContext.request.contextPath }/recipe/recipe-details.do">'+
-    	                  ' <img src="https://img.youtube.com/vi/'+item.videoLink+'/mqdefault.jpg" alt="" class="chef-Thumbnail">'+
-    	                   '<p class="chef-Thumbnail-title">'+item.videoTitle+'</p></a>'+
+    	                  ' <img src="https://img.youtube.com/vi/'+recipeList.videoLink+'/mqdefault.jpg" alt="" class="chef-Thumbnail">'+
+    	                   '<p class="chef-Thumbnail-title">'+recipeList.videoTitle+'</p></a>'+
     	                    '<div class="row">'+
     	                        '<div class="col-8">'+
-    	                            '<img src="${pageContext.request.contextPath }/resources/upload/profile/'+item.chefId+'.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">'+
-    	                            '<span class="chef-min-name">'+item.chefId +'</span>'+
+    	                            '<img src="${pageContext.request.contextPath }/resources/upload/profile/'+recipeList.chefId+'.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">'+
+    	                            '<span class="chef-min-name">'+recipeList.chefId +'</span>'+
     	                        '</div>'+
     	                        '<div class="col-4 chef-view-count">'+
-    	                           ' <span>조회수'+ item.viewCount +'</span>'+
+    	                           ' <span>조회수'+ recipeList.viewCount +'</span>'+
 	                       ' </div>'+
     	                    '</div>'+
     	               ' </div>';  
     	               
-        					$("#Ylist").append(eachRecipe);
-
-        				});
+        			   $("#Ylist").append(eachRecipe);
+        				}); */
+        				
+        				for(var i=0; i<4; i++){
+        					eachRecipe =
+              				  '<div class="col-xs-6 col-sm-3 placeholder chef_list">'+
+          	                  '<a href="${pageContext.request.contextPath }/recipe/recipe-details.do">'+
+          	                  ' <img src="https://img.youtube.com/vi/'+data[i].videoLink+'/mqdefault.jpg" alt="" class="chef-Thumbnail">'+
+          	                   '<p class="chef-Thumbnail-title">'+data[i].videoTitle+'</p></a>'+
+          	                    '<div class="row">'+
+          	                        '<div class="col-8">'+
+          	                            '<img src="${pageContext.request.contextPath }/resources/upload/profile/'+data[i].chefId+'.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">'+
+          	                            '<span class="chef-min-name">'+data[i].chefId +'</span>'+
+          	                        '</div>'+
+          	                        '<div class="col-4 chef-view-count">'+
+          	                           ' <span>조회수'+ data[i].viewCount +'</span>'+
+      	                       ' </div>'+
+          	                    '</div>'+
+          	               ' </div>';  
+          	               
+              			   $("#Ylist").append(eachRecipe);
+        				}
+        				 $("#Ylist").append(' <input type="button" class="chef-Thumbnail-link" onclick="go_chefpage();" value="채널로 이동">');
+        				
+        				
         			},
         			error : (x,s,e) =>{
         				console.log(x,s,e);
         			}
         			
-        		 });
-         
-                    $("#SYlist").show();
+        		 }); 
+        
+                    $("#Ylist").show();
                     $(this).find("h6").addClass("chefPageGo");
            
                 });
@@ -105,7 +128,6 @@
     </div>
 
 <Script>
- $(function(){
 	 
 	function chefSearch(){
 		let chefsearchBar = $("#chefsearchBar").val();
@@ -117,10 +139,9 @@
 		
 		return true;
 		
-		
+	}
 			
- 	};
- });
+ 
 </Script>
 
     <section class="sectionArea">
@@ -181,8 +202,8 @@
                   <!--   <p class="chef-Thumbnail-link" onclick="go_chefpage();"> &nbsp;&nbsp; 채널로 이동 &nbsp;&nbsp;</p> -->
                 <input type="button" class="chef-Thumbnail-link" onclick="go_chefpage();" value="채널로 이동">
                 
-                </div>
-            </div>
+             </div>
+         </div>
             
         <!-- end-->
        
