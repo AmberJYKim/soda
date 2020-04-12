@@ -10,12 +10,27 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RecipeQuestion;
 import com.soda.onn.recipe.model.vo.Report;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 import com.soda.onn.recipe.model.vo.RecipeReply;
 
 public interface RecipeService {
 
+	int recipeUpdate(Recipe recipe, List<RecipeIngredient> ingredientList);
+
+	int deleteRecipe(int recipeNo);
+	
+	int insertQuestion(RecipeQuestion question);
+
+	int deleteQuestion(int questionNo);
+	
+	List<RecipeQuestion> selectQuestionList(int recipeNo);
+
+	int insertReply(RecipeReply reply);
+
+	int deleteReply(int replyNo);
+	
 	List<String> selectIngSubCtg(String mainCtg);
 
 	List<Ingredient> selectIngredients(String subCtg, int cPage, int nUMPERPAGE);
