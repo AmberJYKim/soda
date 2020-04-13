@@ -44,6 +44,7 @@ import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Oneday;
 import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.ReservationRequest;
 import com.soda.onn.recipe.model.service.RecipeService;
 import com.soda.onn.recipe.model.vo.Recipe;
 
@@ -96,16 +97,19 @@ public class ChefController {
 	
 	//자신의 클래스 예약현황
 	@GetMapping("/reservationStatus")
-	public void reservationStatus(HttpSession session) {
-//		Member member = (Member)session.getAttribute("memberLoggedIn");
-//		String memberId = member.getMemberId();
-//		
-//		List<Reservation> statusList = onedayService.selectAllReservationList(memberId);
-//		
-//		ModelAndView mav = new ModelAndView();
-//		mav.addObject("statusList", statusList);
-//		mav.setViewName("/chef/reservationStatus");
+	public ModelAndView reservationStatus(HttpSession session) {
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		System.out.println("셰프 아이디 = "+memberId);
 		
+		List<ReservationRequest> statusList = onedayService.selectAllReservationList(memberId);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("statusList", statusList);
+		System.out.println("셰프 원데이클래스 예약현황="+statusList);
+		mav.setViewName("chef/reservationStatus");
+		
+		return mav;
 	}
 	
 	
@@ -167,7 +171,10 @@ public class ChefController {
 		String memberId = userId.getMemberId();
 		System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
 		
-		List<DingDong> list = mypageService.selectDingList(memberId);
+		Map<String,String> map =   new HashMap<String, String>();
+		map.put("memberId", memberId);
+		
+		List<DingDong> list = mypageService.selectDingList(map);
 		System.out.println("여기는 알림목록  = "+list);
 		
 		mav.addObject("list", list);

@@ -1,6 +1,7 @@
 package com.soda.onn.mypage.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mortbay.log.Log;
@@ -36,8 +37,14 @@ public class MypageServiceImpl implements MypageService {
 	}
 
 	@Override
-	public List<DingDong> selectDingList(String memberId) {
-		return mypageDAO.selectDingList(memberId);
+	public List<DingDong> selectDingList(Map<String, String> map) {
+
+		 return mypageDAO.selectDingList(map);
+	}
+
+	@Override
+	public int dingdongUpdate(int dingdongNo) {
+		return mypageDAO.dingdongUpdate(dingdongNo);
 	}
 
 	@Override

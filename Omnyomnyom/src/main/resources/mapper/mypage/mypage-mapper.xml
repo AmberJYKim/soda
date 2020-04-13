@@ -38,14 +38,29 @@
 
 </update>
 
-
+<update id="dingdongUpdate">
+	update
+		tb_dingdong
+	set
+		dingdong_read  = 0
+	where 
+		dingdongNo = #{dingdongNo}
+</update>
 <select id="selectDingList" resultMap="dingMap">
 	select
 		*
 	from
 		tb_dingdong
-	where 
-		member_id = #{dingMemberId}
+	<where>
+		<if test="memberId != null">
+		And member_id = #{memberId}
+		</if>
+
+		<if test="Read != null">
+		And DINGDONG_READ = #{Read}
+
+		</if>
+	</where> 
 </select>
 
 <resultMap id="dingMap" type="dingdong">

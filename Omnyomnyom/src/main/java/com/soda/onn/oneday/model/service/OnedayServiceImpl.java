@@ -151,11 +151,13 @@ public class OnedayServiceImpl implements OnedayService {
 	}
 
 
+
 	@Override
-	public List<Reservation> selectAllReservationList(String memberId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ReservationRequest> selectAllReservationList(String memberId) {
+		return onedayDAO.selectAllReservationList(memberId);
 	}
+
+
 
 //	---akim
 

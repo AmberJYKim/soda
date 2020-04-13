@@ -158,4 +158,6 @@ public class MallController {
   		return "mall/productInsert";
   	}
   	
+  
+  	
 }
