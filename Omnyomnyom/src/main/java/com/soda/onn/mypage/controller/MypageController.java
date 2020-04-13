@@ -92,12 +92,14 @@ public class MypageController {
 	
 	//일반 유저의 구매목록들
 	@GetMapping("/buyList")
-	public void buyList(@RequestParam (value="dingdongNo")int dingdongNo,
+	public void buyList(@RequestParam (value="dingdongNo", defaultValue="-1")int dingdongNo,
 						HttpSession session, 
 						Model model) {
 		System.out.println("buyList 메소드입니다");
 		
-		int result = mypageService.dingdongUpdate(dingdongNo);
+		if(dingdongNo != -1) {
+			int result = mypageService.dingdongUpdate(dingdongNo);
+		}
 		Member member = (Member)session.getAttribute("memberLoggedIn");
 		String memberId = member.getMemberId();
 		
@@ -117,7 +119,7 @@ public class MypageController {
 	}
 	
 	@GetMapping("/onedayList")
-	public void onedayList(@RequestParam (value="dingdongNo")int dingdongNo,
+	public void onedayList(@RequestParam (value="dingdongNo", defaultValue="-1")int dingdongNo,
 						   HttpSession session, 
 						   Model model,
 						   @RequestParam(value="cPage", defaultValue="1") int cPage) {
@@ -128,7 +130,9 @@ public class MypageController {
 		
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
-		int result = mypageService.dingdongUpdate(dingdongNo);
+		if(dingdongNo != -1) {
+			int result = mypageService.dingdongUpdate(dingdongNo);
+		}
 		
 		log.debug("reservationList={}",reservationList);
 		model.addAttribute("reservationList", reservationList);

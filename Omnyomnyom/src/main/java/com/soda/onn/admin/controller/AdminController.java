@@ -30,6 +30,7 @@ import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.service.MypageService;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.Reservation;
@@ -49,6 +50,9 @@ public class AdminController {
 
 	@Autowired
 	private ChefService chefService;
+	
+	@Autowired
+	private MypageService mypageService;
 	
 	@Autowired
 	private OnedayService onedayService;
@@ -185,10 +189,13 @@ public class AdminController {
 
 	//신고목록
 	@GetMapping("/reportList")
-	public ModelAndView reportList() {
+	public ModelAndView reportList(@RequestParam (value="dingdongNo", defaultValue="-1") int dingdongNo) {
 		
 		List<Report> list = recipeService.selectReportList();
 		
+		if(dingdongNo != -1) {
+			int result = mypageService.dingdongUpdate(dingdongNo);
+		}
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("list", list);
 		mav.setViewName("admin/reportList");
@@ -306,4 +313,9 @@ public class AdminController {
 		
 		return mav;
 	}
+	
+	@GetMapping("/ingredientInsert")
+  	public void ingredientInsert() {
+  		
+  	}
 }

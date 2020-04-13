@@ -466,7 +466,7 @@
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath}/chef/chefscrapList">
+									<a href="${pageContext.request.contextPath}/mypage/scrapList">
 										<p>스크랩 목록</p>
 									</a>
 									</div>
@@ -478,7 +478,7 @@
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/chef/onedayList">
+										<a href="${pageContext.request.contextPath }/chef/reservationStatus">
 											<p>예약현황</p>
 										</a>
 										</div>
