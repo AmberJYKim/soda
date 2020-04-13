@@ -43,4 +43,6 @@ public interface ChefService {
 
 	List<Oneday> onedaySelectAll(String chefId);
 
+	int chefRequestUpdate(ChefRequest chefreq);
+
 }
