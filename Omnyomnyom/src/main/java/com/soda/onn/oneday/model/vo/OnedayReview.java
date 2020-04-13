@@ -19,14 +19,12 @@ public class OnedayReview implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	private int reviewNo;
-	private int reservationNo;
-	private String memberId;
-//	private Oneday oneday;
-//	private OnedayTime onedayTime;
-	private String reviewContent;
-	private String reviewImg;
-	private Date regDate;
-	private int reviewScore;
-	private List<ReviewReply> reviewReplyList;
+	private int reviewNo; // 후기 번호
+	private String memberId; // 아이디
+	private int onedayclassNo;
+	private String reviewContent; // 내용
+	private String reviewImg; // 이미지
+	private Date regDate; // 등록날짜
+	private int reviewScore; // 평점
+	private String reviewTitle; // 글 제목
 }

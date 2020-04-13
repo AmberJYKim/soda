@@ -65,7 +65,14 @@
 		$("#image_section").hide();
 
 		//CK에디터 불러오기
-		CKEDITOR.replace('onedayContent');
+		CKEDITOR.replace('reviewContent');
+		
+		CKEDITOR.replace('reviewContent',{
+			filebrowserUploadUrl:"${pageContext.request.contextPath}/imageUpload.do"
+			
+		});
+		window.parent.CKEDITOR.tool.scallFunction(1, "${url}", "전송완료");
+		
 		
 		if (!String.prototype.trim) {
 			(function() {
