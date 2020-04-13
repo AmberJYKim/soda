@@ -35,8 +35,8 @@ $(function() {
  * @returns
  */
 function sendMessage() {
-	let message = $("#message-to-send").val().trim();
-	
+	let message = $("#message-to-send").val().trim("");
+	console.log(message);
 	if(message.length < 1)
 		return;
 	let data = {

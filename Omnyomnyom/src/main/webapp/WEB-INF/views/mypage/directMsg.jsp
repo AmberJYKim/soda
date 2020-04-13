@@ -218,6 +218,7 @@ function chatSubscribe(){
 			chatClient.subscribe('/chat/'+chatId, function(message) {
 				console.log("receive from subscribe /chat/"+chatId+":", message);
 				let messsageBody = JSON.parse(message.body);
+				console.log(messsageBody.msg);
 				$("#data").append("<li class=\"list-group-item\">"+messsageBody.memberId+" : "+messsageBody.msg+ "</li>");
 				scrollTop();
 			});
