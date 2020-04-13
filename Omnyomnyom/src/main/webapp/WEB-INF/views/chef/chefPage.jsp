@@ -185,13 +185,16 @@
                            <c:if test="${memberLoggedIn.memberId eq chef.chefId}"> 
 	                            <div class="row">
 	                                <div class="col-lg-12">
-	                                    <button type="button" class="btn btn-outline-danger">레시피 관리</button>
+	                                    <button type="button" class="btn btn-outline-danger" onclick="recipeUpdate();">레시피 관리</button>
 	                                    <button type="button" class="btn btn-outline-danger" onclick="recipeUpload();">레시피 업로드</button>
 	                                </div>
 	                            </div>
 								<script>
 								function recipeUpload(){
 									location.href ="${pageContext.request.contextPath }/recipe/recipeUpload";
+								}
+								function recipeUpdate(){
+									location.href ="${pageContext.request.contextPath }/recipe/recipeUpdate?chefNickName=${chef.chefNickName}";
 								}
 								</script>
                             </c:if>

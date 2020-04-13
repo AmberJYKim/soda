@@ -168,6 +168,8 @@
 				success : function(data) {
 					if(data == 't'){
 						alert('신고가 접수되었습니다.');
+					}else{
+						alert('신고에 실패했습니다. 다시 시도해주세요.')
 					}
 				},
 				error : function(x, s, e) {
@@ -532,6 +534,8 @@
 		                        <textarea name="questionContent" placeholder="댓글 작성"></textarea>
 		                        <input name="highQuestionNo" type="number" value="${question.questionNo}" hidden/>
 		                        <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+		                        <input name="memberId" type="text" value="${question.memberId}" hidden/>
+		                        <input name="chefId" type="text" value="${recipe.chefId}" hidden/>
 		                        <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
 		                    </div>
 		                </form>
@@ -559,6 +563,8 @@
 				                        <textarea name="questionContent" placeholder="댓글 작성"></textarea>
 				                        <input name="highQuestionNo" type="number" value="${question.questionNo}" hidden/>
 				                        <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+				                        <input name="memberId" type="text" value="${question.memberId}" hidden/>
+				                        <input name="chefId" type="text" value="${recipe.chefId}" hidden/>
 				                        <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
 				                    </div>
 				                </form>
@@ -577,6 +583,7 @@
                 	<div class="mb-3">
                         <textarea name="questionContent" placeholder="댓글 작성"></textarea>
                         <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+                        <input name="chefId" type="text" value="${recipe.chefId}" hidden/>
                         <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
                     </div>
                 </form>
