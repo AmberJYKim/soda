@@ -158,4 +158,9 @@ public class MallController {
   		return "mall/productInsert";
   	}
   	
+  	@GetMapping("/ingredientInsert")
+  	public void ingredientInsert() {
+  		
+  	}
+  	
 }
