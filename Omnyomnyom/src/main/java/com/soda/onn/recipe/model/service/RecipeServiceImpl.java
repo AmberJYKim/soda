@@ -33,6 +33,11 @@ public class RecipeServiceImpl implements RecipeService {
 	private RecipeDAO recipeDAO;
 
 	@Override
+	public String selectChefProfile(String chefId) {
+		return recipeDAO.selectChefProfile(chefId);
+	}
+
+	@Override
 	public int recipeUpdate(Recipe recipe, List<RecipeIngredient> ingredientList) {
 		int result = recipeDAO.recipeUpdate(recipe);
 		

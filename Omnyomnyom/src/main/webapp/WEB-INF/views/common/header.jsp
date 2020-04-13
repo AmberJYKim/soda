@@ -171,6 +171,9 @@
 	                </div>
            		<c:if test="${not empty memberLoggedIn}">
            		<div class="hb-switch">
+           		<div style="width:20px; height:20px; background-color:gray; border-radius:50%; position: absolute; top: 28px;  text-align:center;">
+           			<p style="color:white;" id="dingdongNum">1</p>
+           		</div>
            		<span class="material-icons  ${memberLoggedIn ==''?'':'infor-switch' }"  style="color:red;"> local_post_office </span>
            		</div>
            		<div class="hb-switch">
@@ -530,7 +533,7 @@
 				// do something...
 				});
 				
-				$(".infor-switch").click(function(){
+				$(document).ready(function(){
 					
 					$(".toast-header").empty();
 	            	 $.ajax({
@@ -539,8 +542,10 @@
 							datatype:"json",
 							success: data => {
 								
-								console.log(data);
+								let dingdongNum = (data.dingList).length;
 								
+								$("#dingdongNum").empty();
+								$("#dingdongNum").text(dingdongNum);
 								$.each(data.dingList,function(index,item){
 									
 									let p ='<div class="col-lg-12" style="display: flex;"><span class="material-icons">sms</span>'+
@@ -550,7 +555,7 @@
 									  
 									 $(".toast-header").append(p);
 								});
-								
+									$()
 								    $("#toast-header").after("<p onclick='dingdongMore();'>더보기</p>");
 								
 							},
