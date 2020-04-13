@@ -48,6 +48,12 @@ public interface OnedayDAO {
 
 	List<Oneday> selectAll();
 
+	//	---akim
+	
+	OnedayTime selectOnedayTimeOne(int onedayTimeNo);
+
+	int checkVacancy(Map<String, Integer> maps);
+
 
 
 

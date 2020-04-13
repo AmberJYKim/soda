@@ -17,5 +17,7 @@ public interface MypageDAO {
 
 	List<DingDong> selectDingList(String memberId);
 
+	int insertPayDing(DingDong dd);
+
 
 }

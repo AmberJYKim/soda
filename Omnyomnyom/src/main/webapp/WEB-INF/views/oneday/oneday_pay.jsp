@@ -14,12 +14,12 @@
  <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/class_reservation.css" />
 
 <!-- 아임포트 결제 관련 스크립트-->
-<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
  <!-- 결제정보 js -->
     <script>
+        let paymentResult = false;
+        
         console.log("스크립트로딩시작부");
-    
-        let $paymentResult = false;
         
     	$(document).ready(function() {
             //현재HTML문서가 브라우저에 로딩이 끝났다면   
@@ -29,15 +29,51 @@
        	    $('#card').click(function() {
        	      var IMP = window.IMP; // 생략가능
        	      IMP.init('imp62410752');  // 가맹점 식별 코드
-
-       	      console.log("결제모듈 로딩");
+       	      	console.log("인원체크")
+       	     
+       	      	let maxSeat = ${oneday.onedayMaxper };
+       	      	let onedayNo= ${oneday.onedayclassNo};
+       	      	let onedaytimeNo = ${reservationrequest.onedaytimeNo};
+       	      	let ticketQty = ${reservationrequest.personnel};
+       	      	
+       	      	
+       	      	console.log(maxSeat);
+       	      	console.log(onedayNo);
+       	      	console.log("ajax시작전");
+       	      	let forwarding = {"onedayNo" : onedayNo, "onedaytimeNo" :onedaytimeNo};
+       	      	console.log(forwarding, "===forwarding");
+       	      	$.ajax({
+	       	      	url: "${pageContext.request.contextPath }/oneday/checkvacancy",
+					dataType: "json",
+					method : "get",
+					data : forwarding,
+					success : data =>{
+						
+						//이부분 작동안함 확인해야함.
+					 if(data.reserved <= maxSeat ){
+						 alert("잔여 좌석이 부족합니다. 다시 확인해주세요");
+						 return;
+					 }else if ( data.reserve+ticketQty > maxSeat){
+						 alert("잔여 좌석이 부족합니다. 다시 확인해주세요");
+						 return;
+					 }	
+					},
+					error : (x,s,e) =>{
+						console.log(x,s,e);
+					}
+       	      	});
        	      
-      	    	  IMP.request_pay({
+       	      
+       	      console.log("결제모듈 로딩");
+      	    
+       	      //예약마감 체크하기 ajax로 실시간검사하여 return값 주기
+       	      	IMP.request_pay({
       	        		pg : 'kakaopay', // 결제방식
       		            pay_method : 'card',	// 결제 수단
+      		            popup : true,
       		            merchant_uid : 'merchant_' + new Date().getTime(),
       		           	name : '주문명: 결제 테스트',	// order 테이블에 들어갈 주문명 혹은 주문 번호
-      		            amount : '100',	// 결제 금액 
+      		            amount : '${reservationrequest.resPrice}',	// 결제 금액 
       		            buyer_email : '${memberLoggedIn.email}',	// 구매자 email
       		           	buyer_name :  '${memberLoggedIn.memberName}',	// 구매자 이름
       		            buyer_tel :  '${memberLoggedIn.phone}',	// 구매자 전화번호
@@ -45,41 +81,43 @@
       		            buyer_postcode :  '',	// 구매자 우편번호
       		        }, function(rsp) {
       		          if ( rsp.success ) {
-      		        	jQuery.ajax({
-      		        		url: "/payments/complete", //cross-domain error가 발생하지 않도록 주의해주세요
-      		        		type: 'POST',
-      		        		dataType: 'json',
-      		        		data: {
-      		    	    		imp_uid : rsp.imp_uid
-      		        		}
-      		        	}).done(function(data) {
-      		        		if ( everythings_fine ) {
-      		        			var msg = '결제가 완료되었습니다.';
-      		        			msg += '\n고유ID : ' + rsp.imp_uid;
-      		        			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
-      		        			msg += '\결제 금액 : ' + rsp.paid_amount;
-      		        			msg += '카드 승인번호 : ' + rsp.apply_num;
-      		        			
-      		        			alert(msg);
-      		        		} else {
-      		        			var msg = '결제요청 중 에러가 발생하였습니다.';
-      		        			alert(msg);
-      		        		}
-      		        			paymentResult = true;
-      		        	});
+      		        	  
+      		        	var msg = '결제가 완료되었습니다.';
+	        			msg += ',결제 금액 : ' + rsp.paid_amount;
+	        			msg += ',확인 버튼을 눌러 예약 확인페이지로 이동해주세요';
+  		        		paymentResult = true;
+	        			alert(msg);
+	        			insertReserv();
+	        			
       		        } else {
       		            var msg = '결제에 실패하였습니다.';
       		            msg += '에러내용 : ' + rsp.error_msg;
       		            
       		            alert(msg);
-      		        			paymentResult = false;
+      		    			     paymentResult = false;
       		        }
-      	 		});
-       	    	/*                 $("#card-pay").show();
-               $("#bank-pay").hide();
-               $("#card").style.backgroundColor = "#4949e7"; */
+      		       
+      	 		}); //아임포트 끝
+	        	
            }); //click
-
+		
+           
+           function insertReserv(){
+   	    		console.log("인서트시작");
+      	      	$.ajax({
+       	      	url: "${pageContext.request.contextPath }/oneday/paycompletion",
+				method : "Post",
+				success : data =>{
+			
+        			//$(location).attr('href', "${pageContext.request.contextPath }/oneday/result");
+        			location.href = "${pageContext.request.contextPath }/oneday/result";
+				},
+				error : (x,s,e) =>{
+					console.log(x,s,e);
+				}
+      	      	});
+        	   
+           }
            $('#bank').click(function() {
                $("#bank-pay").show();
                $("#card-pay").hide();
@@ -91,21 +129,8 @@
             $("#reservationEndFrm").attr("action", "${pageContext.request.contextPath }/oneday/result.do").submit();
         }; */
         
-        function payresultvalidation(){
-        	
-        	consloe.log("결제여부 검사");
-        	
-        	if(paymentResult == false){
-        		alert('결제 진행 후 클릭해주세요');
-				return paymentReuslt;
-        	}
-        	
-        	return paymentResult;
-        	
-        	
-        }
-      
-        	console.log("스크립트로딩엔딩부");
+   
+   	console.log("스크립트로딩엔딩부");
     </script>
     
     <!-- Event Details Section -->
@@ -133,28 +158,29 @@
                 </div>
                 <form action="/onn/oneday/result.do" method="POST" onsubmit="return payresultvalidation();">
                     <div class="row text-center">
-                        <article class="col-lg-5 tm-article">
+                    <div class="col"></div>
+                        <article class="col-lg-4 tm-article">
                             <h3 class="tm-color-primary tm-article-title-1">결제 상품 </h3>
                             <table class="ticket-tbl container">
 
 		                        <tr>
                                     <td><b>${oneday.onedayName }</b></td>
-                                    <td>2020/3/27 (11:00)</td>
+                                </tr>
+                                <tr>
+                                    <td>${reservationrequest.regDate}</td>
+                                </tr>
+                                <tr>
                                     <td>${reservationrequest.personnel } 매</td>
                                 </tr>
                             </table>
                         </article>
-                        <article class=" col-lg-5 tm-article">
+                        <article class=" col-lg-4 tm-article">
                             <h3 class="tm-color-primary tm-article-title-1">결제수단</h3>
-                            <p class="box_subtitle">❖ 원하시는 결제수단을 선택해 주세요.</p>
-                            <input type="button" class="pay-btn" id="card" name="payCard" value="카카오페이 간편결제">
-                            <input type="button" class="pay-btn" id="bank" name="payBank" value="계좌이체" onclick="selectPayType();">
+                            <p class="box_subtitle">❖ 카카오페이 간편결제를 통해 결제하실 수 있습니다.</p>
+                            <input type="button" class="pay-btn" id="card" name="payCard" value="카카오페이 결제">
                         </article>
 
-                    
-                        <article class=" col-lg-1">
-                            <input type="submit" value="결제완료" class="tm-color-white tm-btn-white-bordered" />
-                        </article>
+                    <div class="col"></div>
                     </div>
                 </form>
             </div>

@@ -75,5 +75,10 @@ public class MemberServiceImpl implements MemberService{
 		return memberDAO.updateInfo(params);
 	}
 
+	@Override
+	public Member searchNick(String memberId) {
+		return memberDAO.searchNick(memberId);
+	}
+
 	
 }

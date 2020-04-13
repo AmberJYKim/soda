@@ -17,4 +17,6 @@ public interface MypageService {
 
 	List<DingDong> selectDingList(String memberId);
 
+	int insertPayDing(DingDong dd);
+
 }
