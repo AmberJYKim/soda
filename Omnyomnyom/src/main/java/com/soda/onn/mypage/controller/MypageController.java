@@ -1,30 +1,34 @@
 package com.soda.onn.mypage.controller;
 
-import java.nio.channels.SeekableByteChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
+import org.mortbay.jetty.servlet.AbstractSessionManager.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.ChefRequest;
+import com.soda.onn.common.base.PageBar;
 import com.soda.onn.mall.model.service.MallService;
 import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.mypage.model.service.MypageService;
+import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Reservation;
@@ -51,10 +55,17 @@ public class MypageController {
 	@Autowired
 	private MemberService memberService;
 	
+	final int NUMPERPAGE = 15;
+	final int PAGEBARSIZE = 10;
 	
+	final int DINGNUMPERPAGE = 5;
+	final int DINGPAGEBARSIZE = 10;
+	
+	private RowBounds rowBounds = null;
+
 	@GetMapping("/main")
 	public void mypageMain() {
-		
+		log.debug("일반 유저 마이페이지 메인 첫 화면 입니다");
 	}
 		
 	@GetMapping("/updateinfo")
@@ -78,14 +89,20 @@ public class MypageController {
 		return "redirect:/mypage/main";
 	}
 	
-	
+	//일반 유저의 구매목록들
 	@GetMapping("/buyList")
 	public void buyList(HttpSession session, Model model) {
-		String memberId = (String) session.getAttribute("");
+		System.out.println("buyList 메소드입니다");
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		
 		List<BuyHistory> buyList = mallService.selectBuyList(memberId);
 		log.debug("buyList={}",buyList);
 		model.addAttribute("buyList", buyList);
 	}
+	
+	
 	
 	@GetMapping("/chefRequest")
 	public void chefRequest(HttpSession session, Model model) {
@@ -100,7 +117,8 @@ public class MypageController {
 						   Model model,
 						   @RequestParam(value="cPage", defaultValue="1") int cPage) {
 		int numPerPage = 15;
-		String memberId = (String) session.getAttribute("");
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
 		
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
@@ -112,22 +130,115 @@ public class MypageController {
 	public void qnaMsg() {
 		
 	}
+
 	
+	
+	//일반유저 스크랩 목록
 	@GetMapping("/scrapList")
-	public ModelAndView scrapList(HttpSession session) {
-		ModelAndView mav = new ModelAndView();
-		String memberId = (String)session.getAttribute("memberLoggedIn");
+	public ModelAndView scrapList(HttpSession session, @RequestParam(value="cPage", defaultValue="1") int cPage, HttpServletRequest request) {
 		
-		List<Scrap> scrapList = mypageService.selectScrapList(memberId);
+		log.debug("scrapList = {}", session);
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		log.debug("scrapList memberId={}", memberId);
+		
+		ModelAndView mav = new ModelAndView();
+		
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
+		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+		int pageEnd = pageStart+PAGEBARSIZE-1;
+		int totalCount = chefService.selectChefRequestListCnt();
+		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		
+		List<Scrap> list = mypageService.selectScrapList(memberId, rowBounds);
+		System.out.println("여기는 스크랩목록 = " + list);
+		
+		mav.addObject("list", list);
+		mav.addObject("paging", paging);
 		mav.setViewName("mypage/scrapList");
-		mav.addObject("scrapList", scrapList);
+		
 		return mav;
 	}
+
 	
 	@GetMapping("/onedayReservation")
 	public ModelAndView onedayReservation(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		return mav;
+	}
+	
+	//스크랩 삭제
+	@GetMapping("/deleteScrap")
+	public String deleteScrap(@RequestParam("recipeNo") int recipeNo,
+							  RedirectAttributes redirectAttributes) {
+		
+		int result = mypageService.deleteScrap(recipeNo);
+		redirectAttributes.addFlashAttribute("msg", result>0?"스크랩이 삭제 됐습니다.":"삭제 할 스크랩이 없습니다.");
+		
+		return "redirect:/mypage/scrapList";
+	}
+	
+	//스크랩 메모 수정
+	@GetMapping("updateScrap")
+	public String updateScrap(Scrap scrap,
+							  HttpSession session,
+							  RedirectAttributes redirectAttributes) {
+
+		Member scrapId = (Member)session.getAttribute("memberLoggedIn");
+		log.debug("updateScrap scrapId.getMemberId()={}", scrapId.getMemberId());
+
+		scrap.setScrapId(scrapId.getMemberId());
+		log.debug("updateScrap scrap={}", scrap);
+		
+		int result = mypageService.updateScrap(scrap);
+		log.debug("updateScrap result={}", result);
+				
+		redirectAttributes.addFlashAttribute("msg", result>0?"스크랩 메모 수정 성공.":"스크랩 메모 수정 실패.");
+		
+		return "redirect:/mypage/scrapList";
+	}
+	
+	
+	
+	//알림 목록
+	@GetMapping("/dingDongList")
+	@ResponseBody
+	public Map dingdongList(@RequestParam(value="cPage", defaultValue="1") int cPage,
+							 HttpSession session,
+			 				        HttpServletRequest request) {
+	
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId=  member.getMemberId();
+		log.debug("cPage={}",cPage);
+		int pageStart = ((cPage - 1)/DINGPAGEBARSIZE) * DINGPAGEBARSIZE +1;
+		int pageEnd = pageStart+PAGEBARSIZE-1;
+		
+		rowBounds = new RowBounds((cPage-1)*DINGNUMPERPAGE, DINGNUMPERPAGE);
+		int totalCount = memberService.selectMemberListCnt();
+		int totalPage =  (int)Math.ceil((double)totalCount/DINGNUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		
+
+		List<DingDong> dingList = mypageService.selectDingList(memberId);
+		log.debug("dingList={}",dingList);
+		log.debug("paging={}",paging);
+
+		
+		Map map =new HashMap();
+		
+		map.put("dingList", dingList);
+		map.put("paging",paging);
+		return map;
+	}
+	
+	@GetMapping("/directMsg")
+	public void directMsg() {
+		
 	}
 	
 }

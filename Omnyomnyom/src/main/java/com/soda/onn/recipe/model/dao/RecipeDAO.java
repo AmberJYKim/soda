@@ -1,4 +1,4 @@
-package com.soda.onn.recipe.model.dao;
+ package com.soda.onn.recipe.model.dao;
 
 import java.util.List;
 import java.util.Map;
@@ -10,12 +10,32 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RecipeQuestion;
+import com.soda.onn.recipe.model.vo.RecipeReply;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
 import com.soda.onn.recipe.model.vo.Report;
 
 public interface RecipeDAO {
 
+	int recipeUpdate(Recipe recipe);
+
+	int recipeIngrDelete(int recipeNo);
+
+	int deleteRecipe(int recipeNo);
+
+	int insertQuestion(RecipeQuestion question);
+
+	int deleteQuestion(int questionNo);
+	
+	List<RecipeQuestion> selectQuestionList(int recipeNo);
+	
+	int insertReply(RecipeReply reply);
+
+	int deleteReply(int replyNo);
+	
+	List<RecipeReply> selectReplyList(int recipeNo);
+	
 	List<String> selectIngSubCtg(String mainCtg);
 
 	List<Ingredient> selectIngredients(String subCtg, int cPage, int numPerPage);
@@ -67,5 +87,11 @@ public interface RecipeDAO {
 
 	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
 
+	List<String> selectMenuSubCtg(String mainCtg);
 
+	Report selectReport(Report rp);
+
+	int insertReport(Report rp);
+
+	List<Recipe> recipeSelectAll(String chefNickName);
 }

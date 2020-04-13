@@ -35,7 +35,7 @@ $(function(){
 	/*---------------
 		Infor model
 	----------------*/
-	$('#infor-switch').on('click', function() {
+	$('.infor-switch').on('click', function() {
 		$('.infor-model-warp').fadeIn(400);
 		$('.infor-model-warp').addClass('active');	
 	});

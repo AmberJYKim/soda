@@ -24,4 +24,5 @@ public class RecipeQuestion implements Serializable {
 	private int highQuestionNo;
 	private String questionContent;
 	private Date regDate;
+	private String memberNick;
 }

@@ -8,7 +8,6 @@ import java.util.Map;
 import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.soda.onn.recipe.model.vo.Report;
 
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
@@ -18,6 +17,8 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.RecipeQuestion;
+import com.soda.onn.recipe.model.vo.Report;
 import com.soda.onn.recipe.model.vo.RecipeReply;
 import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
@@ -30,6 +31,52 @@ public class RecipeServiceImpl implements RecipeService {
 	
 	@Autowired
 	private RecipeDAO recipeDAO;
+
+	@Override
+	public int recipeUpdate(Recipe recipe, List<RecipeIngredient> ingredientList) {
+		int result = recipeDAO.recipeUpdate(recipe);
+		
+		if(result >0) {
+			result = recipeDAO.recipeIngrDelete(recipe.getRecipeNo());
+			
+			for(RecipeIngredient ingr : ingredientList) {
+				ingr.setRecipeNo(recipe.getRecipeNo());
+				result = recipeDAO.recipeIngrUpload(ingr);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public int deleteRecipe(int recipeNo) {
+		return recipeDAO.deleteRecipe(recipeNo);
+	}
+
+	@Override
+	public int insertQuestion(RecipeQuestion question) {
+		return recipeDAO.insertQuestion(question);
+	}
+
+	@Override
+	public int deleteQuestion(int questionNo) {
+		return recipeDAO.deleteQuestion(questionNo);
+	}
+
+	@Override
+	public List<RecipeQuestion> selectQuestionList(int recipeNo) {
+		return recipeDAO.selectQuestionList(recipeNo);
+	}
+	
+	@Override
+	public int insertReply(RecipeReply reply) {
+		return recipeDAO.insertReply(reply);
+	}
+	
+
+	@Override
+	public int deleteReply(int replyNo) {
+		return recipeDAO.deleteReply(replyNo);
+	}
 	
 	@Override
 	public List<Ingredient> ingredientAjax(String ingr) {
@@ -187,8 +234,17 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public List<RecipeReply> selectReplyList(int recipeNo) {
-		// TODO Auto-generated method stub
-		return null;
+		return recipeDAO.selectReplyList(recipeNo);
+	}
+
+	@Override
+	public Report selectReport(Report rp) {
+		return recipeDAO.selectReport(rp);
+	}
+
+	@Override
+	public int insertReport(Report rp) {
+		return recipeDAO.insertReport(rp);
 	}
 	
 	@Override
@@ -211,6 +267,14 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeDAO.recipeSearchByMenu(searchKey);
 	}
 
+	@Override
 
-
+	public List<String> selectMenuSubCtg(String mainCtg) {
+		return recipeDAO.selectMenuSubCtg(mainCtg);
+	}
+	
+ 	@Override 
+   	public List<Recipe> recipeSelectAll(String chefNickName) {
+		return recipeDAO.recipeSelectAll(chefNickName);
+	}
 }

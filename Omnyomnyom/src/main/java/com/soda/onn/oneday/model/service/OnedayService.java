@@ -48,3 +48,6 @@ public interface OnedayService {
 
 
 }
+
+	List<Reservation> selectAllReservationList(String memberId);
+

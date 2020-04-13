@@ -165,7 +165,19 @@ ol {
     filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#fdb07d", endColorstr="#f65d5d", GradientType=1);
 }
 
+.noticeWrite {
+    float: right;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color:gray !important;
+  
+}
 
+.noticeWrite:hover{ 
+	background-color: #ef8766;
+	color: white !important;
+
+}
 /*---------------------
   Commom elements
 -----------------------*/
@@ -274,8 +286,17 @@ ol {
     opacity: 0;
     filter: alpha(opacity=0);
 }
-
-
+.nav-link{
+	color:gray;
+}
+.nav-link:hover{
+	color:#ea5140;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+	background-color: white;
+    color: #ea5140;
+    border: 2px solid #ea5140;
+}
 /* Preloder */
 
 #preloder {
@@ -3910,20 +3931,22 @@ only screen and (min-width: 576px) and (max-width: 767px),
         }
         
         .notice_content {
-            font-weight: 400;
+            font-weight: 700;
             color: #007bff;
             text-decoration: none;
             /* text-align: left; */
             float: left;
-            font-size: 15px;
-            border: 0px;
+            font-size: 18px;
+            border: 1px;
             background: none;
             color: white;
         }
         
         .notice_header {
-            background: #e73828;
+            background: gray;
+            padding:5px;
         }
+       
         
         .upvideo {
             margin-bottom: 40px;

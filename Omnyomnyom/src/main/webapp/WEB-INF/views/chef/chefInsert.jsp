@@ -44,8 +44,7 @@
  <script>
         window.onload = function() {
             //비디오 불러오기 후 처리
-            console.log("가니?");
-
+       
             function video_readURL(input) {
                 if (input.files && input.files[0]) {
                     var imgFile = $(input).val();
@@ -312,7 +311,7 @@
                         <!-- url 업로드  -->
                         <span class="input input--yoshiko" style="display:none" id="url_upload">
                             <!-- 클래스명 input -->
-                            <input class="input__field input__field--yoshiko" type="text" id="input-class-name" />
+                            <input class="input__field input__field--yoshiko" type="text" id="input-class-name" name="chefApRink"/>
                             <!-- 클래스명 라벨 -->
                             <label class="input__label input__label--yoshiko" for="input-class-name">
                                 <span class="input__label-content input__label-content--yoshiko" data-content="영상 링크">영상 링크</span>
@@ -330,7 +329,41 @@
                     <input type="submit" class="site-btn sb-gradient reservation_class" value="등록하기">
                 </div>
             </form>
+           
         </div>
     </section>
-  
+   <script src="${pageContext.request.contextPath }/resources/js/classie.js"></script>
+  <script>
+        (function() {
+            // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+            if (!String.prototype.trim) {
+                (function() {
+                    // Make sure we trim BOM and NBSP
+                    var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+                    String.prototype.trim = function() {
+                        return this.replace(rtrim, '');
+                    };
+                })();
+            }
+            [].slice.call(document.querySelectorAll('input.input__field')).forEach(function(inputEl) {
+                // in case the input is already filled..
+                if (inputEl.value.trim() !== '') {
+                    classie.add(inputEl.parentNode, 'input--filled');
+                }
+                // events:
+                inputEl.addEventListener('focus', onInputFocus);
+                inputEl.addEventListener('blur', onInputBlur);
+            });
+
+            function onInputFocus(ev) {
+                classie.add(ev.target.parentNode, 'input--filled');
+            }
+
+            function onInputBlur(ev) {
+                if (ev.target.value.trim() === '') {
+                    classie.remove(ev.target.parentNode, 'input--filled');
+                }
+            }
+        })();
+    </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

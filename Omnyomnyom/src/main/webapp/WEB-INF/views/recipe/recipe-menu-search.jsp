@@ -21,9 +21,11 @@
  	$().ready(function(){
 		console.log('jquery로드 완료');
 		subCtgload();
-			
+		
 	});
 	
+    	
+    	//검색버튼 클릭 이벤트
 	function keywordValidate() {
 		let searchKey = $("#searchKey");
 		
@@ -38,36 +40,114 @@
 		true;
 	}    	
     	
-    	
 	function subCtgload(){
 		/* 메인 카테고리 선택에 따른 변경 */
-		console.log("카테고리 리스트 가져오기중");
 		$(".main-ctg-menu p").on('click', function(){
 			/* 이미 선택된 분류라면 아래의 코드 수행하지 않음 */
+			
 		 	if($(this).hasClass("active"))
 				return; 
-		 	let ctgList = '${menuCategory}';
-			console.log(ctgList);
-			console.log($(this));
-			let mainMenuCtg = {'mainMenuCtg' : $(this).html()};
 			
+			console.log($(this));
+			let mainCtg = {'mainCtg' : $(this).html()};
+			
+			console.log(mainCtg);
 			$(".main-ctg-menu p").removeClass("active");
 		 	$(this).addClass("active");
-			/*	 서브 카테고리 교체작업 
-					let subMenuCtg = ' '; 
+			
+			$.ajax({
+				url: contextPath+"/recipe/getSubMenuCtg",
+				dataType: "json",
+				method : "GET",
+				data: mainCtg,
+				success : data =>{
+					console.log(data);
+					/* 서브 카테고리 교체작업 */
+					let subCtgList = ' '; 
 					$.each(data,function(index, item){
-						if(index == 0){
-							subMenuCtg += '<li> <p class="active">'+item+'</p> </li>';
-						}else{
-							subMenuCtg += '<li> <p>'+item+'</p> </li>';
-						}
+						
+						
+						subCtgList += '<li> <p>'+item+'</p> </li>';
+						
+						
 						console.log(item);
 					});
-	
-					$(".sub-ctg-menu").html(subMenuCtg);*/
+					$(".sub-ctg-menu").html(subCtgList);
+					selectSubCt();
+				},
+				error : (x,s,e) =>{
+					console.log(x,s,e);
+				}
+			});
+			
+			
 		});
 	}; //서브 카테고리 교체 끝
+	
+	
+	function selectSubCt(){
+		$(".sub-ctg-menu p").on('click', function(){
+			if($(this).hasClass("active"))
+				return; 
+			
+			console.log($(this));
+			let subCtg = $(".sub-ctg-menu p.active").text();
+			
+			$(".sub-ctg-menu p").removeClass("active");
+		 	$(this).addClass("active");
+			
+		});
+		
+	};
     
+	
+	//선택된 재료로 검색 , 버튼 클릭에 따른 이벤트 작동.
+	function recipeSearchByIng(){
+		console.log("버튼 클릭됨");
+		let pTagList = $('.selected-ingredients').children('p');
+		let ingNoArr = new Array();
+		$.each(pTagList, function(index, item){
+			ingNoArr[index] = $(item).data('ingredientno');
+		});
+		let forwardingData = {"ingNoArr" : ingNoArr};
+		$.ajax({
+			url: contextPath+"/recipe/recipeSerachByIng",
+			dataType: "json",
+			method : "GET",
+			data: forwardingData,
+			success : data =>{
+			
+				console.log(data);
+				
+				RList = data.recipeList;
+				/* 검색된 영상 리스트  교체작업*/
+				$("div.searchList").empty();
+				$.each(RList, function(index, item){
+					let eachRecipe = '<div class="col-xs-6 col-sm-3 placeholder chef_list">' +
+									'<a href="'+contextPath+'/recipe/recipe-details?recipeNo='+item.recipeNo+'"><img src="https://img.youtube.com/vi/'+item.videoLink+'/mqdefault.jpg" alt="" class="chef-Thumbnail">'+
+									'<div class="forTitle"><p class="chef-Thumbnail-title">'+item.videoTitle+'</p></div></a>' +
+									'<div class="row"> <div class="col-8">'+
+									'<img src="'+item.chefProfile+'" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;"> <span class="chef-min-name">'+item.chefNick+'</span></div>' +						
+									'<div class="col-4 chef-view-count"> <span><small> 조회수 :'+item.viewCount+'</span> </small></div>'+
+									'</div> </div>';
+					
+					
+					$("div.searchList").append(eachRecipe);
+				});
+				
+			},
+			error : (x,s,e) =>{
+				console.log(x,s,e);
+			}
+		});
+		
+		
+	}; 
+	
+	
+	
+	
+	
     </script>
 	<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/recipe/searchbymenu.js"></script> --%>    
         <style>
@@ -118,35 +198,22 @@
         </div>
     </div>
 	<!-- 검색바 끝 -->
-    <section class="classes-details-section spad overflow-hidden">
+    <section class="classes-details-section overflow-hidden">
         <div class="container">
             <!--  셰프채널 navbar -->
             
+		 <c:if test="${not empty searchedList }">
             <div class="container">
-			<ul class="main-ctg-menu">
-				<li>
-					<p>한식</p>
-				</li>
-				<li>
-					<p>중식</p>
-				</li>
-				<li>
-					<p>일식</p>
-				</li>
-				<li>
-					<p>양식</p>
-				</li>
-				<li>
-					<p>즉석식</p>
-				</li>
-				<li>
-					<p>밀식</p>
-				</li>
-				<li>
-					<p>건강식</p>
-				</li>
-			</ul>
-		</div>
+				<ul class="main-ctg-menu">
+					<li> <p>한식</p> </li>
+					<li> <p>중식</p> </li>
+					<li> <p>일식</p> </li>
+					<li> <p>양식</p> </li>
+					<li> <p>즉석식</p> </li>
+					<li> <p>밀식</p> </li>
+					<li> <p>건강식</p> </li>
+				</ul>
+			</div>
 		
 		<div class="row">
 			<div class="container">
@@ -155,7 +222,7 @@
 				</ul>
 			</div>
 		</div>
-           
+        </c:if>
         </div>
 	</section>   
 	<section class="overflow-hidden spad">
@@ -163,8 +230,26 @@
 		<div class="container">
 			<!-- 영상리스트 섹션 -->
 			
+				<c:if test="${not empty searchedList }">
+			<div class=row>
+				<h4>"<c:if test="${not empty searchKey}"> ${searchKey }</c:if>"로 메뉴 검색  결과</h4>
+			</div>
 			<div class="row Ylist" id="Ylist">
-				<c:if test="${not empty popRecipe && empty searchedList}">
+					
+			</div>
+			<!-- 페이지 바 달기 -->
+			
+			<div class="row ing-paging text-center">
+					<ul class="pagination justify-content-center col">
+
+					</ul>
+				</div>
+			</c:if>
+			<div class=row>
+				<h5>인기영상</h5>
+			</div>
+			<div class="row Ylist" id="Ylist">
+				<c:if test="${not empty popRecipe}">
 					<c:forEach items="${popRecipe}" var="rec">
 					<div class="col-xs-6 col-sm-3 placeholder chef_list">
 						<a
@@ -184,28 +269,7 @@
 						</div>
 					</div>
 					</c:forEach>
-				</c:if> searchedList
-					<c:if test="${not empty searchedList }">
-					<c:forEach items="${searchedList}" var="rec">
-					<div class="col-xs-6 col-sm-3 placeholder chef_list">
-						<a
-							href="${pageContext.request.contextPath }/recipe/recipe-details?recipeNo=${rec.recipeNo }"><img
-							src="https://img.youtube.com/vi/${rec.videoLink }/mqdefault.jpg" alt=""
-							class="chef-Thumbnail">
-							<div class="forTitle"><p class="chef-Thumbnail-title">${rec.videoTitle }</p></div></a>
-						<div class="row">
-							<div class="col-8">
-								<img src="${pageContext.request.contextPath }/resources/upload/profile/${rec.chefProfile }" class="" alt=""
-									style="width: 40px; height: 40px; border-radius: 50%;"> <span
-									class="chef-min-name">${rec.chefNick }</span>
-							</div>
-							<div class="col- chef-view-count">
-								<span><small>조회수 : ${rec.viewCount }</small></span>
-							</div>
-						</div>
-					</div>
-					</c:forEach>
-				</c:if>
+				</c:if> 
 			</div>
 		</div>
 		<!-- end-->

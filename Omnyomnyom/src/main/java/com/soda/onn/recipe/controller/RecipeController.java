@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
-import org.apache.jasper.tagplugins.jstl.core.Redirect;
 
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
@@ -15,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +22,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,10 +38,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.soda.onn.common.base.PageBar;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -67,6 +72,7 @@ import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.RecipeIngredient;
+import com.soda.onn.recipe.model.vo.Report;
 import com.soda.onn.recipe.model.vo.RecipeWithIngCnt;
 import com.soda.onn.recipe.model.vo.RecipeQuestion;
 import com.soda.onn.recipe.model.vo.RecipeReply;
@@ -86,6 +92,148 @@ public class RecipeController {
 
 	private RowBounds rowBounds = null;
 	
+	//레시피 수정
+	@PostMapping("/recipeUpdateEnd")
+	public String recipeUpdateEnd(Recipe recipe,
+								  @RequestParam(value = "chefId") String chefId,
+								  @RequestParam(value = "chefNick") String chefNick,
+								  @RequestParam(value = "ingr_name") String[] ingrName,
+								  @RequestParam(value = "ingr_mass") String[] ingrMass,
+								  @RequestParam(value = "tn_firstname") int[] cookTime,
+								  @RequestParam(value = "tn_lastname") String[] cookery,
+								  @RequestParam(value = "ingr_number") int[] ingNo) {
+
+		recipe.setChefId(chefId);
+		recipe.setChefNick(chefNick);
+
+		log.debug("{}",recipe);
+		
+		List<RecipeIngredient> ingredientList = new ArrayList<RecipeIngredient>();
+		
+		for(int i =0;i<ingrName.length ;i++) {
+			RecipeIngredient ingr = new RecipeIngredient(ingNo[i], ingrMass[i], ingrName[i], 0);
+			ingredientList.add(ingr);
+		}
+		
+		log.debug(ingredientList.toString());
+		
+		List<Map<String,String>> list = (List<Map<String,String>>)new Gson().fromJson(recipe.getCategory(), new TypeToken<List<Map<String,String>>>(){}.getType());
+		
+		if(!list.isEmpty()) {
+			recipe.setCategory(list.get(0).get("value"));
+		}
+		
+		recipe.setTimeline("");
+		for(int i =0;i < cookTime.length ;i++) {
+			
+			if(i>0)
+				recipe.setTimeline(recipe.getTimeline()+"⇔");
+				
+			recipe.setCookingTime(recipe.getCookingTime()+cookTime[i]);
+			recipe.setTimeline(recipe.getTimeline() + cookTime[i]+"∮"+cookery[i]);
+		}
+		
+		log.debug("{}",recipe);
+		
+		int result = recipeService.recipeUpdate(recipe,ingredientList);
+		
+		log.debug("insert Result={}", result>0?true:false);
+		
+		return "redirect:/";
+	}
+	
+	//레시피 수정 폼 불러오기
+	@PostMapping("/recipeUpdateFrm")
+	public String recipeUpdateFrm(HttpSession session,
+								@RequestParam("chefId")String chefId,
+								@RequestParam("recipeNo")int recipeNo,
+								Model model,
+								RedirectAttributes reAttr) {
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		if(!member.getMemberId().equals(chefId)) {
+			reAttr.addFlashAttribute("msg","다른 셰프의 레시피를 수정하려 했습니다.");
+			return "redirect:/";
+		}
+		
+		Recipe recipe = recipeService.selectRecipeOne(recipeNo,true);
+		
+		recipe.setIngredientList(recipeService.selectRecIngList(recipeNo));
+		
+		List<MenuCategory> categoryList = recipeService.selectCategoryList();
+		
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute(recipe);
+		
+		return "recipe/recipeUpdateFrm";
+	}
+	
+	//레시피 삭제
+	@PostMapping("/recipeDelete")
+	public String recipeDelete(HttpSession session,
+							   @RequestParam("chefId")String chefId,
+							   @RequestParam("recipeNo")int recipeNo,
+							   RedirectAttributes reAttr) {
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		if(!member.getMemberId().equals(chefId)) {
+			reAttr.addFlashAttribute("msg","다른 셰프의 레시피를 삭제하려 했습니다.");
+			return "redirect:/";
+		}
+		
+		int result = recipeService.deleteRecipe(recipeNo);
+		
+		reAttr.addFlashAttribute("msg",result>0?"레시피를 삭제 했습니다.":"레시피 삭제 실패");
+		return "redirect:/";
+	}
+	
+	//댓글, 답글 지우기
+	@GetMapping("/deleteQuestion")
+	public String deleteQuestion(@RequestParam("questionNo")int questionNo,
+							  @RequestParam("recipeNo")int recipeNo) {
+		log.debug("{}",questionNo);
+		
+		int result = recipeService.deleteQuestion(questionNo);
+		
+		return "redirect:/recipe/recipe-details?recipeNo=" + recipeNo;
+	}
+	
+	//문의, 답글 작성
+	@PostMapping("/insertQuestion")
+	public String insertQuestion(HttpSession session, RecipeQuestion question) {
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		question.setMemberId(member.getMemberId());
+		
+		int result = recipeService.insertQuestion(question);
+		
+		return "redirect:/recipe/recipe-details?recipeNo=" + question.getRecipeNo(); 
+	}
+	
+	//댓글, 답글 지우기
+	@GetMapping("/deleteReply")
+	public String deleteReply(@RequestParam("replyNo")int replyNo,
+							  @RequestParam("recipeNo")int recipeNo) {
+		log.debug("{}",replyNo);
+		
+		int result = recipeService.deleteReply(replyNo);
+		
+		return "redirect:/recipe/recipe-details?recipeNo=" + recipeNo;
+	}
+	
+	//댓글, 답글 달기
+	@PostMapping("/insertReply")
+	public String insertReply(HttpSession session, RecipeReply reply) {
+		log.debug("{}",session.getAttribute("memberLoggedIn"));
+		log.debug("{}",reply);
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		reply.setMemberId(member.getMemberId());
+		
+		int result = recipeService.insertReply(reply);
+		
+		return "redirect:/recipe/recipe-details?recipeNo=" + reply.getRecipeNo();
+	}
 	
 	//레시피 뷰
 	@GetMapping("/recipe-details")
@@ -147,12 +295,14 @@ public class RecipeController {
 		
 		List<RecipeReply> replyList = recipeService.selectReplyList(recipe.getRecipeNo());
 		
-//		List<RecipeQuestion> questionList = recipeService.selectQuestionList(recipe.getRecipeNo());
+		List<RecipeQuestion> questionList = recipeService.selectQuestionList(recipe.getRecipeNo());
 		
 		log.debug("{}",ingrMallList);
 		
 		log.debug("{}",relationRecipes);
 		
+		model.addAttribute("questionList", questionList);
+		model.addAttribute("replyList",replyList);
 		model.addAttribute("relationRecipes",relationRecipes);
 		model.addAttribute("ingrMallList", ingrMallList);
 		model.addAttribute("scrap",s);
@@ -304,11 +454,8 @@ public class RecipeController {
 	@GetMapping("/recipe-menu-search")
 	public ModelAndView recipemenusearch(ModelAndView mav) {
 		List<RecipeWithIngCnt> popRecipe = recipeService.selectPopRecipe();
-		// 메뉴카테고리 가져오기 완성하기
-		List<MenuCategory> categoryList = recipeService.selectCategoryList();
 		
 		
-		mav.addObject("menuCategory", categoryList);
 		mav.addObject("popRecipe", popRecipe);
 		mav.setViewName("recipe/recipe-menu-search");
 		
@@ -335,9 +482,7 @@ public class RecipeController {
 		
 		List<String> subCtgList = recipeService.selectIngSubCtg(mainCtg);
 		
-		subCtgList.add(0, "인기재료");
-		//몰의 판매된 재료에서 인기재료 가져오기
-		
+		subCtgList.add(0, "인기재료"); //자동으로 이벤트 처리되어 인기재료소환함, 다른 ajax에의해서
 		
 		log.debug("controller list={}", subCtgList.toString());
 		return subCtgList;
@@ -509,10 +654,13 @@ public class RecipeController {
 		maps.put("subCtg", subCtg);
 		
 		if(subCtg.equals("인기재료")) {
-			if(maps.get("subCtg").equals("인기재료"));
+			if(maps.get("subCtg").equals("인기재료"))
 			maps.put("subCtg", null);
-			if(maps.get("mainCtg").equals("인기재료"));
+			if(maps.get("mainCtg").equals("인기재료"))
 			maps.put("mainCtg", null);
+			
+			log.debug(" 카테고리 설정 받아온값 mainCtg=={} subCtg== {}", mainCtg, subCtg);
+			log.debug(" 카테고리 설정 후 mainCtg=={} subCtg== {}", maps.get("mainCtg"), maps.get("subCtg"));
 			ingList = recipeService.selectPopIngredient(maps);
 		}else {
 			ingList = recipeService.selectIngredients(subCtg, cPage, NUMPERPAGE);
@@ -540,6 +688,32 @@ public class RecipeController {
 		return gList;
 	}
 	
+	
+	@GetMapping("/report")
+	@ResponseBody
+	public String report(String memberId, int replyNo, Date dateReport, String memo) {
+		
+		Report rp = new Report(memberId, replyNo, dateReport , memo);
+		
+		Report rep = recipeService.selectReport(rp);
+		
+		String result = "";
+		
+		if(rep != null) {
+			result = "신고한 내역이 있는 댓글은 신고접수를 할 수가 없습니다.";
+		}
+		else {
+			int reportInsert = recipeService.insertReport(rp);
+			
+			if(reportInsert == 1) {
+				result = "신고가 접수 되었습니다.";	
+			}
+		}
+		
+		String gsonresult = new Gson().toJson(result);
+		 
+		return gsonresult;
+  }
 	//선택한 재료로 레시피 검색하기
 	@GetMapping(value="recipeSerachByIng", produces="text/plain;charset=UTF-8")
 	@ResponseBody
@@ -568,14 +742,27 @@ public class RecipeController {
 		log.debug(searchKey);
 		
 		List<RecipeWithIngCnt> rList = recipeService.recipeSearchByMenu(searchKey);	
-		
+		List<RecipeWithIngCnt> popRecipe = recipeService.selectPopRecipe();
 		
 		log.debug(""+rList.toString());
+		mav.addObject("searchKey", searchKey);
 		mav.addObject("searchedList", rList);
+		mav.addObject("popRecipe", popRecipe);
 		mav.setViewName("/recipe/recipe-menu-search");
 		
 		return mav;
 	}
 	
+	//중분류카테고리 가져오기 처리용 -메뉴
+	@GetMapping("getSubMenuCtg")
+	@ResponseBody
+	public List<String> selectMenuSubCtg(String mainCtg) {
+		log.debug("mainCtg = dd{}", mainCtg);
+		
+		List<String> subCtgList = recipeService.selectMenuSubCtg(mainCtg);
 	
+		
+		log.debug("controller list={}", subCtgList.toString());
+		return subCtgList;
+	}
 }

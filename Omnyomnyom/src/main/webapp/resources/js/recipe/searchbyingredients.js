@@ -60,6 +60,8 @@ $().ready(function(){
 			$(".main-ctg-menu p").removeClass("active");
 		 	$(this).addClass("active");
 			
+		 	console.log(mainCtg);
+		 	
 			$.ajax({
 				url: contextPath+"/recipe/getSubCtg",
 				dataType: "json",
@@ -69,20 +71,12 @@ $().ready(function(){
 					/* 서브 카테고리 교체작업 */
 					let subCtgList = ' '; 
 					$.each(data,function(index, item){
-						
-						if(index == 0){
-							subCtgList += '<li> <p class="active">'+item+'</p> </li>';
-						}else{
 						subCtgList += '<li> <p>'+item+'</p> </li>';
-						}
-						
 						console.log(item);
 					});
-	
 					$(".sub-ctg-menu").html(subCtgList);
-					 
 					IngsLoad();
-					$(".sub-ctg-menu p.active").trigger('click');
+					$(".sub-ctg-menu>li").children("p:first").trigger('click');
 				},
 				error : (x,s,e) =>{
 					console.log(x,s,e);
@@ -119,7 +113,6 @@ $().ready(function(){
 			//전달할객체셋에 넣기
 			//페이징에서도 동일하게 사용하기
 			$(".firstline").empty();
-			console.log("데이터비우기")
 			$(".secondline").empty();	
 			
 			$.ajax({
@@ -130,9 +123,7 @@ $().ready(function(){
 				async:false,
 				success : data =>{
 					console.log(data,"success");
-					//$(".firstline").empty();
-					//console.log("데이터비우기")
-					//$(".secondline").empty();
+		
 					ingList = data.ingList;
 					let ingCnt = data.ingCnt;
 					cPage = data.cPage
@@ -154,7 +145,6 @@ $().ready(function(){
 							
 							$(".secondline").append(ingredients);
 						} 
-						$(".pagination").empty()
 					});
 					
 					//페이징 처리
@@ -163,7 +153,7 @@ $().ready(function(){
 					let pagingPrevbtn = '<li class="page-item"><a class="page-link" tabindex="-1"> &lt 이전</a></li>';
 					let pagingNextbtn = '<li class="page-item"><a class="page-link" tabindex="1"> 다음 &gt</a> </li>';
 					let curPagebtn = '<li class="page-item disabled"><a class="page-link curPage">'+cPage+'</a></li>'
-					$(".pagination").empty()
+					$(".pagination").empty();
 					//페이지바 추가
 					if(ingCnt == 1 && cPage == 1){
 					//1페이지가 전제일 경우

@@ -134,6 +134,8 @@
 					}
 			});
 		}
+			
+		
 	});				
 	</script>
 	
@@ -162,15 +164,18 @@
                 <img src="${pageContext.request.contextPath }/resources/images/onn_logo_red.png" alt="" class="main_logo">
             </a>
             <div class="hb-right" style="z-index: 1000;">
-                <div class="hb-switch" id="search-switch">
-                    <img src="${pageContext.request.contextPath }/resources/images/icons/search.png" class="logo" alt="">
-                </div>
+               
                 <!-- 로그인버튼 -->
-	                <div class="hb-switch" id="${memberLoggedIn != '' ?'infor-switch':'search-switch' }" >
-	                    <a href="#ex1" rel="modal:open" ><img src="${pageContext.request.contextPath }/resources/images/icons/login.png" alt=""></a>
+	                <div class="hb-switch  ${memberLoggedIn ==''?'':'infor-switch' }" >
+	                    <a href="#ex1" rel="modal:open" ><span class="material-icons"  style="color:red;">person</span></a>
 	                </div>
            		<c:if test="${not empty memberLoggedIn}">
-           		<button type="button" onclick="logout();">로그아웃</button>
+           		<div class="hb-switch">
+           		<span class="material-icons  ${memberLoggedIn ==''?'':'infor-switch' }"  style="color:red;"> local_post_office </span>
+           		</div>
+           		<div class="hb-switch">
+           			<span class="material-icons"  onclick="logout();" style="color:red;">power_settings_new</span>
+           		</div>
            		<script>
            		function logout(){
            			location.href = "${pageContext.request.contextPath}/member/logout";
@@ -182,7 +187,7 @@
            		<c:if test="${empty memberLoggedIn}">
            		
                 <!-- 로그인/회원가입 form start -->
-                <div class="hb-switch" id="infor-switch">
+                <div class="hb-switch" >
                     <div id="ex1" class="modal">
                         <div class="login_container" id="login_container">
                             <div class="form-container sign-up-container">
@@ -272,11 +277,12 @@
                     </div>
                 </div>
                 <!-- 로그	인/회원가입 form end-->
+              
                </c:if>
             </div>
             <div class="container">
                 <ul class="main-menu">
-                    <li><a href="about.html" class="active">레시피</a>
+                    <li><a href="${pageContext.request.contextPath }/recipe/recipe-menu-search" class="active">레시피</a>
                         <ul class="sub-menu">
                             <li><a href="${pageContext.request.contextPath }/recipe/recipe-menu-search">메뉴</a></li>
                             <li><a href="${pageContext.request.contextPath}/recipe/ingredientsSelection">냉장고 재료</a></li>
@@ -309,13 +315,30 @@
 			</div>
 			<div class="infor-middle">
 				<!-- 로그인 후 간단한 회원정보 출력해줌 -->
-				<a href="#" class="infor-logo">
-					<img src="img/user.png" alt="">
-				</a>
-				<p><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+				<c:choose>
+					<c:when test="${memberLoggedIn.memberRoll eq 'A' }">
+						<a href="#" class="infor-logo">
+							<img src="img/user.png" alt="">
+						</a>
+						<p><a href="${pageContext.request.contextPath }/admin/adminMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+					</c:when>
+					<c:when test="${memberLoggedIn.memberRoll eq 'C' }">
+						<a href="#" class="infor-logo">
+							<img src="img/user.png" alt="">
+						</a>
+						<p><a href="${pageContext.request.contextPath }/chef/chefMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+					</c:when>
+					<c:otherwise>
+						<a href="#" class="infor-logo">
+							<img src="img/user.png" alt="">
+						</a>
+						<p><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>	
+					</c:otherwise>
+				</c:choose>
 
 				<!-- 바로가기기능 -->
 				<div class="insta-imgs">
+				<input type="hidden" value="${memberLoggedIn.memberId }" id="loggedMemberId">
 							<!-- 유저 등급에 따른 리모컨 분기처리 -->
 					<c:choose>
 						<c:when test="${memberLoggedIn.memberRoll eq 'A' }">
@@ -382,7 +405,6 @@
 						</c:when>
 						<c:otherwise>
 							<c:if test="${memberLoggedIn.memberRoll eq 'C' }">
-									
 								<div class="insta-item">
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
@@ -407,7 +429,7 @@
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/oneday/insert">
+										<a href="${pageContext.request.contextPath }/oneday/class_insert">
 											<p>원데이 등록</p>
 										</a>
 										</div>
@@ -418,7 +440,7 @@
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath }/mypage/ondayList">
+									<a href="${pageContext.request.contextPath }/mypage/onedayList">
 										<p>예약확인</p>
 									</a>
 									</div>
@@ -438,7 +460,7 @@
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath }/mypage/shoppingBasket">
+									<a href="${pageContext.request.contextPath }/mall/cart">
 										<p>장바구니</p>
 									</a>
 									</div>
@@ -448,7 +470,7 @@
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath }/mypage/scarpList">
+									<a href="${pageContext.request.contextPath}/chef/chefscrapList">
 										<p>스크랩 목록</p>
 									</a>
 									</div>
@@ -460,7 +482,7 @@
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/mypage/onedayReservation">
+										<a href="${pageContext.request.contextPath }/chef/onedayList">
 											<p>예약현황</p>
 										</a>
 										</div>
@@ -473,7 +495,7 @@
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/mypage/chefRequest">
+										<a href="${pageContext.request.contextPath }/chef/chefInsert">
 											<p>셰프신청</p>
 										</a>
 										</div>
@@ -492,39 +514,66 @@
 							</div>
 						</c:otherwise>
 					</c:choose>
-					
-					
-					
+	
 
 				</div>
 				<!-- 알림창 -->
 				
 					<p>알리미</p>
-				
+				 
 						<div class="toast-header">
-						  <img src="img/onn_logo_red.png" class="rounded mr-2" alt="..." style="width: 50px; height: 50px;">
+						  <span class="material-icons">sms</span>
 						  <strong class="mr-auto">새로운 알림이 있습니다!</strong>
 						  <small>11 mins ago</small>
 						  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						  </button>
 						</div>
-						<div class="toast-body">
-						  Hello, world! This is a toast message.
-						</div>
-				
+						<c:if test="${paging != null }">
+							${paging}
+						</c:if>
+						
+				 
 				<script>
 				$('#myToast').on('hidden.bs.toast', function () {
 				// do something...
-				})
+				});
+				
+				$(".infor-switch").click(function(){
+					
+					$(".toast-header").empty();
+	            	 $.ajax({
+							url:"${pageContext.request.contextPath}/mypage/dingDongList?cPage=1",
+							method:"GET",
+							datatype:"json",
+							success: data => {
+								
+								console.log(data);
+								
+								$.each(data.dingList,function(index,item){
+									
+									let p ='<span class="material-icons">sms</span>'+
+									'<strong class="mr-auto">'+item.dingdongContent+'</strong>'+
+									 '<small>'+item.dingRegDate+'</small>'+
+									 '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">'+
+									  '<span aria-hidden="true">&times;</span>';
+									  
+									 $(".toast-header").append(p);
+								});
+								
+								    $(".tost-header").after(data.paging);
+								
+							},
+							error : (x,s,e) =>{
+								console.log(x,s,e);
+							}
+							
+						 });
+				 });
+
 				</script>  
 
-				<div class="insta-social">
-					<a href="#"><i class="fa fa-linkedin"></i></a>
-					<a href="#"><i class="fa fa-twitter"></i></a>
-					<a href="#"><i class="fa fa-instagram"></i></a>
-					<a href="#"><i class="fa fa-facebook"></i></a>
-				</div>
+			
 			</div>
 		</div>
 	</div>

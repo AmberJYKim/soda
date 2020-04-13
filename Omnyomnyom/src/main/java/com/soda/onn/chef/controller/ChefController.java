@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,9 +32,19 @@ import com.google.gson.Gson;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
+import com.soda.onn.common.base.PageBar;
 import com.soda.onn.common.util.ChefRequestUtils;
+import com.soda.onn.mall.model.service.MallService;
+import com.soda.onn.mall.model.vo.BuyHistory;
+import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.member.model.vo.Notice;
+import com.soda.onn.mypage.model.service.MypageService;
+import com.soda.onn.mypage.model.vo.DingDong;
+import com.soda.onn.mypage.model.vo.Scrap;
+import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Oneday;
+import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.recipe.model.service.RecipeService;
 import com.soda.onn.recipe.model.vo.Recipe;
 
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +57,129 @@ public class ChefController {
 	@Autowired
 	private ChefService chefservice;
 	
+	@Autowired
+	private RecipeService recipeService;
+	
+	@Autowired
+	private OnedayService onedayService;
+	
+	@Autowired
+	private MallService mallService;
+	
+	@Autowired
+	private MypageService mypageService;
+	
+	final int NUMPERPAGE = 15;
+	final int PAGEBARSIZE = 10;
+	
+	private RowBounds rowBounds = null;
+	
+	@GetMapping("/chefMain")
+	public void mypagechefMain() {
+		log.debug("셰프 마이페이지 메인 첫 화면 입니다");
+	}
+	
+	//셰프도 원데이클래스 예약하고 목록들을 보는 뷰
+	@GetMapping("/onedayList")
+	public void onedayList(HttpSession session, 
+						   Model model,
+						   @RequestParam(value="cPage", defaultValue="1") int cPage) {
+		int numPerPage = 15;
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		
+		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
+		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
+		log.debug("reservationList={}",reservationList);
+		model.addAttribute("reservationList", reservationList);
+	}
+	
+	//자신의 클래스 예약현황
+	@GetMapping("/reservationStatus")
+	public void reservationStatus(HttpSession session) {
+//		Member member = (Member)session.getAttribute("memberLoggedIn");
+//		String memberId = member.getMemberId();
+//		
+//		List<Reservation> statusList = onedayService.selectAllReservationList(memberId);
+//		
+//		ModelAndView mav = new ModelAndView();
+//		mav.addObject("statusList", statusList);
+//		mav.setViewName("/chef/reservationStatus");
+		
+	}
+	
+	
+	//셰프가 구매한 목록
+	@GetMapping("/chefbuyList")
+	public void buyList(HttpSession session, Model model) {
+		System.out.println("buyList 메소드입니다");
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		
+		List<BuyHistory> buyList = mallService.selectBuyList(memberId);
+		log.debug("buyList={}",buyList);
+		model.addAttribute("buyList", buyList);
+	}
+	
+	//1:1문의사항
+	@GetMapping("/qnaMsg")
+	public void qnaMsg() {
+		
+	}
+	
+	//셰프가 스크랩한 목록들
+	@GetMapping("/chefscrapList")
+	public ModelAndView scrapList(HttpSession session, @RequestParam(value="cPage", defaultValue="1") int cPage, HttpServletRequest request) {
+		
+		log.debug("scrapList = {}", session);
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		log.debug("scrapList memberId={}", memberId);
+		
+		ModelAndView mav = new ModelAndView();
+		
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
+		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+		int pageEnd = pageStart+PAGEBARSIZE-1;
+		int totalCount = chefservice.selectChefRequestListCnt();
+		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		
+		List<Scrap> list = mypageService.selectScrapList(memberId, rowBounds);
+		System.out.println("여기는 스크랩목록 = " + list);
+		
+		mav.addObject("list", list);
+		mav.addObject("paging", paging);
+		mav.setViewName("chef/chefscrapList");
+		
+		return mav;
+	}
+	
+	//셰프 알림목록
+	@GetMapping("/chefDingdongList")
+	public ModelAndView dingdongList(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		Member userId = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = userId.getMemberId();
+		System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
+		
+		List<DingDong> list = mypageService.selectDingList(memberId);
+		System.out.println("여기는 알림목록  = "+list);
+		
+		mav.addObject("list", list);
+		mav.setViewName("/mypage/dingdongList");
+		
+		return mav;
+	}
+	
+	@GetMapping("/sendDingdongList")
+	public void sendDingdongList() {
+		
+	}
 	
 // 셰프채널 메인 이동 
 	@GetMapping("/chefList")
@@ -113,17 +248,22 @@ public class ChefController {
 		
 		Chef chef = chefservice.chefSelectOne(chefNickName);
 		String chefId = chef.getChefId();
-		log.debug("chefId={}",chefId);
-		List<Recipe> recipeList = chefservice.recipeSelectAll(chefNickName);
+		
+		List<Recipe> recipeList = recipeService.recipeSelectAll(chefNickName);
 		List<Notice> noticeList = chefservice.noticeSelectAll(chefId);
 		List<Oneday> onedayList = chefservice.onedaySelectAll(chefId);
-		log.debug("RecipeList = {}",recipeList);
-		log.debug("onedayList = {}",onedayList);
+//		List<Recipe> popRecipeList = recipeList
+		List<Recipe> popList = new ArrayList<Recipe>();
+		popList.addAll(recipeList);
 		
+		log.debug("RecipeList = {}",recipeList);
+		
+		Collections.sort(popList);
 		mav.addObject("onedayList",onedayList);
 		mav.addObject("noticeList",noticeList);
 		mav.addObject("recipeList", recipeList);
 		mav.addObject("chef", chef);
+	    mav.addObject("popList", popList);
 		mav.setViewName("chef/chefPage");
 		return mav;
 	}
@@ -179,6 +319,7 @@ public class ChefController {
 							@RequestParam(value ="insta") String insta,
 							@RequestParam(value="chefProfileimg",required=true) MultipartFile chefProfile,
 							@RequestParam(value="chefApVideoimg", required=true) MultipartFile chefApVideo,
+							@RequestParam(value="chefApRink", required=true) String chefApRink,
 							RedirectAttributes redirectAttribute) {
 		
 //		System.out.println(chefRequest);
@@ -196,37 +337,49 @@ public class ChefController {
 		
 		chefRequest.setSns(snsGson);
 		
-		
-		//프로필 사진 닉네임으로 파일명 저장하기; 
+//		프로필 사진 리네임 정책 
 		String profileOriginalFileName = chefProfile.getOriginalFilename();
-		String chefAPVideoOriginalFileName = chefApVideo.getOriginalFilename();
-
 		String profileRenamedFileName = ChefRequestUtils.getRenamedFileName(profileOriginalFileName, chefRequest.getChefNickName());
-		String videoRenamedFileName = ChefRequestUtils.getRenamedFileName(chefAPVideoOriginalFileName , chefRequest.getChefNickName());
-		
-		//파일 이동
 		String profileSaveDirectory = request.getServletContext().getRealPath("/resources/upload/profile");
-		String chefApVideoSaveDirectory = request.getServletContext().getRealPath("/resources/upload/chefApVideo");
 		try {
 			chefProfile.transferTo(new File(profileSaveDirectory,profileRenamedFileName));
-			chefApVideo.transferTo(new File(chefApVideoSaveDirectory,videoRenamedFileName));
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IllegalStateException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		//실제 파일데이터 originalFileName, renamedFileName을 db에 저장
 		chefRequest.setChefProfile(profileRenamedFileName);
-		chefRequest.setChefApVideo(videoRenamedFileName);
-//		
-//		List<Map<String,String>> list = (List<Map<String,String>>)new Gson().fromJson(chefRequest.getMenuPrCategory(), 
-//																   					  new TypeToken<List<Map<String,String>>>(){}.getType());
-//        
-//        if(!list.isEmpty()) {
-//            log.debug(list.get(0).get("value"));
-//        }
-//		
 		
+		log.debug("chefApVideo={}",chefApVideo);
+		
+//		비디오 영상을 받을 경우 
+		if(chefApVideo.isEmpty()) {
+			chefRequest.setChefApVideo(chefApRink);
+		
+		}else {
+
+			//프로필 사진 닉네임으로 파일명 저장하기; 
+			String chefAPVideoOriginalFileName = chefApVideo.getOriginalFilename();
+	
+			String videoRenamedFileName = ChefRequestUtils.getRenamedFileName(chefAPVideoOriginalFileName , chefRequest.getChefNickName());
+			
+			//파일 이동
+			String chefApVideoSaveDirectory = request.getServletContext().getRealPath("/resources/upload/chefApVideo");
+			try {
+				chefApVideo.transferTo(new File(chefApVideoSaveDirectory,videoRenamedFileName));
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			chefRequest.setChefApVideo(videoRenamedFileName);
+	
+		}
+	
+			log.debug("chefApRink={}",chefApRink);
+	
 
 		int result = chefservice.chefRequest(chefRequest);
 		String msg=result > 0 ? "셰프신청이 완료되었습니다.":"셰프신청에 실패하셨습니다.";
@@ -266,5 +419,17 @@ public class ChefController {
 		log.debug("notice@Update={}",notice);
 		int result = chefservice.chefnoticeUpdate(notice);
 		return "redirect:/chef/noticeView?noticeNo="+notice.getNoticeNo();
+	}
+	
+	@GetMapping("/chefPopList")
+	@ResponseBody
+	public List chefPopList(@RequestParam(value="nickname")String chefnick) {
+		
+		List<Recipe> recipeList = recipeService.recipeSelectAll(chefnick);
+		log.debug("chefnick ={}",chefnick);
+		log.debug("recipeList ={}",recipeList);
+		
+		
+		return recipeList;
 	}
 }

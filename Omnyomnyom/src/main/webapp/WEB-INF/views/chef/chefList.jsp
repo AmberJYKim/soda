@@ -12,26 +12,68 @@
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
 
  <script>
-            $(() => {
-                $("#Ylist").hide();
+            $(document).ready(function(){
+                
+            	$("#Ylist").empty();
                 
                 
-                $("section .row .chef_list").on("click", function(e) {
-                	
-                
+                $(".image_overflow_hidden").on("click", function(e) {
                 	
                 	$("h6.chefSelectOne").removeClass("chefPageGo");
                     $(".image_overflow_hidden").css("box-shadow", "none");
-                    $(this).find(".image_overflow_hidden").css("box-shadow", "#4949E7 0px 0px 0px 4.5px");
-                    console.log($(this));
+                    $(this).css("box-shadow", "#4949E7 0px 0px 0px 4.5px");
+                    
+                    let chefnick = $(this).attr("id");
+                    
+                    ($($(this).parents(".chef_list")).find("h6.chefSelectOne")).addClass("chefPageGo");
+                    
+                    console.log( ($($(this).parents(".chef_list")).find("h6.chefSelectOne")).addClass("chefPageGo"));
+                    
+                    $.ajax({
+        			url:"${pageContext.request.contextPath}/chef/chefPopList",
+        			data:{"nickname" : chefnick},
+        			method:"GET",
+        			datatype:"json",
+        			success : data =>{
+        				console.log(data);
+        				
+        				/* 검색된 영상 리스트  교체작업*/
+        				$("#Ylist").empty();
+        				let eachRecipe='';
+        				
+        				for(var i=0; i<4; i++){
+        					eachRecipe =
+              				  '<div class="col-xs-6 col-sm-3 placeholder chef_list">'+
+          	                  '<a href="${pageContext.request.contextPath }/recipe/recipe-details.do">'+
+          	                  ' <img src="https://img.youtube.com/vi/'+data[i].videoLink+'/mqdefault.jpg" alt="" class="chef-Thumbnail">'+
+          	                   '<p class="chef-Thumbnail-title">'+data[i].videoTitle+'</p></a>'+
+          	                    '<div class="row">'+
+          	                        '<div class="col-8">'+
+          	                            '<img src="${pageContext.request.contextPath }/resources/upload/profile/'+data[i].chefId+'.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">'+
+          	                            '<span class="chef-min-name">'+data[i].chefId +'</span>'+
+          	                        '</div>'+
+          	                        '<div class="col-4 chef-view-count">'+
+          	                           ' <span>조회수'+ data[i].viewCount +'</span>'+
+      	                       ' </div>'+
+          	                    '</div>'+
+          	               ' </div>';  
+          	               
+              			   $("#Ylist").append(eachRecipe);
+        				}
+        				 $("#Ylist").append(' <input type="button" class="chef-Thumbnail-link" onclick="go_chefpage();" value="채널로 이동">');
+        				
+        				
+        			},
+        			error : (x,s,e) =>{
+        				console.log(x,s,e);
+        			}
+        			
+        		 }); 
+        
                     $("#Ylist").show();
-                    $(this).find("h6").addClass("chefPageGo");
-                    
-                    
+                   
+           
                 });
-                
-     
-
             });
  </script>
 
@@ -70,7 +112,6 @@
     </div>
 
 <Script>
- $(function(){
 	 
 	function chefSearch(){
 		let chefsearchBar = $("#chefsearchBar").val();
@@ -82,28 +123,9 @@
 		
 		return true;
 		
-		
-		/*  $.ajax({
-			url:"${pageContext.request.contextPath}/chef/"+chefsearchBar+"/chefsearch",
-			success: data => {
-				
-				console.log(data);
-				
-				if(data == null){
-					alert("해당 결과가 없습니다."); 
-				}else{
-					$("#")	
-				}
-				
-			},
-			error : (x,s,e) =>{
-				console.log(x,s,e);
-			}
+	}
 			
-		 });
- */	
- 	};
- });
+ 
 </Script>
 
     <section class="sectionArea">
@@ -121,8 +143,9 @@
             <div class="row">
             <c:forEach items="${chefList}" var="chef" >
                 <div class="col-xs-6 col-sm-3 plsaceholder chef_list" style="margin-top:50px;">
-                    <div class="image_overflow_hidden">
-                       <img id="profile" src="${pageContext.request.contextPath}/resources/upload/profile/${chef.chefProfile}" class="" alt="">
+                    <div class="image_overflow_hidden" id="${chef.chefNickName}">
+                       <img id="profile"  src="${pageContext.request.contextPath}/resources/upload/profile/${chef.chefProfile}" 
+                        alt="">
                     </div>
                     <br>
                     <div class="row">
@@ -134,75 +157,20 @@
                             </c:forEach>
                         </div>
                         <div class="col-4 align-self-center">
-                            <button type="button">채널</button>
+                            <button type="button" onclick=" go_chefpage();">채널</button>
                         </div>
                     </div>
                 </div>
                </c:forEach>      
             </div>
+            
 
 <!-- 셰프클릭시 해당 셰프영상 밑에 뜨기 -->
 
-            <div class="row" id="Ylist">
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <a href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
-                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
-                    <div class="row">
-                        <div class="col-8">
-                            <img src="/img/1508_008.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <span class="chef-min-name">1종원</span>
-                        </div>
-                        <div class="col-4 chef-view-count">
-                            <span>조회수 250</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <a href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
-                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
-                    <div class="row">
-                        <div class="col-8">
-                            <img src="/img/1508_008.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <span class="chef-min-name">1종원</span>
-                        </div>
-                        <div class="col-4 chef-view-count">
-                            <span>조회수 250</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <a href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
-                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
-                    <div class="row">
-                        <div class="col-8">
-                            <img src="/img/1508_008.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <span class="chef-min-name">1종원</span>
-                        </div>
-                        <div class="col-4 chef-view-count">
-                            <span>조회수 250</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder chef_list">
-                    <a href="${pageContext.request.contextPath }/recipe/recipe-details.do"><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" class="chef-Thumbnail">
-                    <p class="chef-Thumbnail-title">불맛나는 고기 짬뽕라면</p></a>
-                    <div class="row">
-                        <div class="col-8">
-                            <img src="/img/1508_008.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">
-                            <span class="chef-min-name">1종원</span>
-                        </div>
-                        <div class="col-4 chef-view-count">
-                            <span>조회수 250</span>
-                        </div>
-                    </div>
-                  <!--   <p class="chef-Thumbnail-link" onclick="go_chefpage();"> &nbsp;&nbsp; 채널로 이동 &nbsp;&nbsp;</p> -->
-                  	
-                	<input type="button" class="chef-Thumbnail-link" onclick="go_chefpage();" value="채널로 이동">
-                
-                </div>
-            </div>
-            
+         <div class="row" id="Ylist">
+	              
          </div>
+            
         <!-- end-->
        
     </section>
@@ -210,7 +178,6 @@
 	<script>
 	function go_chefpage(){
     	let chefNickName = $("h6.chefPageGo").attr('id');
-    	alert( $("h6.chefPageGo").attr('id'));
     	location.href = "${pageContext.request.contextPath}/chef/"+chefNickName+"/chefPage";
     }
 	</script>
