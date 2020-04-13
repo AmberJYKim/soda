@@ -94,6 +94,25 @@ public class OnedayDAOImpl implements OnedayDAO{
 	}
 
 
+	@Override
+	public int insertReview(OnedayReview onedayReview) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("oneday.insertReview", onedayReview);
+	}
+
+	@Override
+	public List<OnedayReview> selectReviewList(int onedayclassNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("oneday.selectReviewList", onedayclassNo);
+	}
+
+	@Override
+	public List<Oneday> selectAll() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("oneday.selectAll");
+	}
+
+
 
 
 

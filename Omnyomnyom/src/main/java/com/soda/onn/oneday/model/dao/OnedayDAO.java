@@ -40,6 +40,13 @@ public interface OnedayDAO {
 	int classUpdate(Oneday oneday);
 
 
+	int insertReview(OnedayReview onedayReview);
+
+	List<OnedayReview> selectReviewList(int onedayclassNo);
+
+	List<Oneday> selectAll();
+
+
 
 
 
