@@ -38,7 +38,14 @@
 
 </update>
 
-
+<update id="dingdongUpdate">
+	update
+		tb_dingdong
+	set
+		dingdong_read  = 0
+	where 
+		dingdongNo = #{dingdongNo}
+</update>
 <select id="selectDingList" resultMap="dingMap">
 	select
 		*

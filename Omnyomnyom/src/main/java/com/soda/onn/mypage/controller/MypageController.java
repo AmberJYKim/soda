@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -91,9 +92,12 @@ public class MypageController {
 	
 	//일반 유저의 구매목록들
 	@GetMapping("/buyList")
-	public void buyList(HttpSession session, Model model) {
+	public void buyList(@RequestParam (value="dingdongNo")int dingdongNo,
+						HttpSession session, 
+						Model model) {
 		System.out.println("buyList 메소드입니다");
 		
+		int result = mypageService.dingdongUpdate(dingdongNo);
 		Member member = (Member)session.getAttribute("memberLoggedIn");
 		String memberId = member.getMemberId();
 		
@@ -113,15 +117,19 @@ public class MypageController {
 	}
 	
 	@GetMapping("/onedayList")
-	public void onedayList(HttpSession session, 
+	public void onedayList(@RequestParam (value="dingdongNo")int dingdongNo,
+						   HttpSession session, 
 						   Model model,
 						   @RequestParam(value="cPage", defaultValue="1") int cPage) {
 		int numPerPage = 15;
+		
 		Member member = (Member)session.getAttribute("memberLoggedIn");
 		String memberId = member.getMemberId();
 		
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
+		int result = mypageService.dingdongUpdate(dingdongNo);
+		
 		log.debug("reservationList={}",reservationList);
 		model.addAttribute("reservationList", reservationList);
 	}
@@ -264,6 +272,13 @@ public class MypageController {
 	@GetMapping("/directMsg")
 	public void directMsg() {
 		
+	}
+	
+	@PostMapping("/dingdongReadUpdate")
+	public int dingdongReadUpdate(@RequestParam(value="dingdongNo")int dingdongNo) {
+		log.debug("dingdongNo={}",dingdongNo);
+		return 1;
+
 	}
 	
 }

@@ -18,4 +18,6 @@ public interface MypageService {
 
 	List<DingDong> selectDingList(Map<String, String> map);
 
+	int dingdongUpdate(int dingdongNo);
+
 }
