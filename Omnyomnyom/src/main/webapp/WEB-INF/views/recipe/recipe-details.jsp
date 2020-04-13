@@ -17,6 +17,7 @@
    	 <script src="${pageContext.request.contextPath }/resources/js/autoslider.js"></script>
     <script>
     	$(function(){
+    		//회원의 좋아요 유무에 따른 좋아요 버튼 처리 
     		<c:choose>
     			<c:when test="${isLiked != null}">
     				$('#recipe_like').children().html('favorite');
@@ -27,6 +28,8 @@
     				$('#recipe_like').one('click',recipeLike);
     			</c:otherwise>
     		</c:choose>
+    		
+    		//회원의 스크랩 여부에 따른 스크랩 버튼 처리
     		<c:choose>
 				<c:when test="${scrap != null}">
 					$('#recipe_scrap').children().html('스크랩 해제');
@@ -37,14 +40,41 @@
 					$('#recipe_scrap').on('click',recipeScrap);
 				</c:otherwise>
 			</c:choose>
+			
+			//레시피 수정, 삭제 버튼 처리 recipe_update,recipe_delete
+			<c:if test="${recipe.chefId == memberLoggedIn.memberId }">
+				$('#recipe_update').on('click', function(){
+					$('#recipe_update_frm').submit();
+				});
+				$('#recipe_delete').on('click', function(){
+					$('#recipe_delete_frm').submit();
+				});
+			</c:if>
+			
+			//답글 버튼 일괄 처리
+			$('.reply').one('click',showSubReply);
+
+			//문의 보기 버튼 처리
+			$('#show_question').on('click',function(){
+				$('#question').show();
+				$('#comment').hide();
+			});
+			
+			//댓글 보기 버튼 처리
+			$('#show_reply').on('click',function(){
+				$('#comment').show();
+				$('#question').hide();
+			});
     	});
-    
+    	
         var tag = document.createElement('script'); //이거 뭔지 모름
         tag.src = "https://www.youtube.com/iframe_api"; //api 주소
         var firstScriptTag = document.getElementsByTagName('script')[0]; //이거 뭔지 모름
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); //이거 뭔지 모름
         var player; //유튜브 api 전역변수
         var setVideoId = "${recipe.videoLink}"; //유튜브영상 ID
+        
+        //유튜브 영상 준비
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('testPTag', {
                 videoId: setVideoId,
@@ -56,6 +86,7 @@
             player.loadVideoById(setVideoId, s);
         }
         
+        //좋아요
         function recipeLike(){
         	$.ajax({
 				url:"${pageContext.request.contextPath}/recipe/${memberLoggedIn.memberId}/like/${recipe.recipeNo}",
@@ -74,6 +105,7 @@
         	
         }
         
+        //좋아요 해제
         function recipeUnlike(){
         	$.ajax({
 				url:"${pageContext.request.contextPath}/recipe/${memberLoggedIn.memberId}/unlike/${recipe.recipeNo}",
@@ -91,6 +123,7 @@
         	
         }
         
+        //스크랩
         function recipeScrap(){
 			let val = prompt("스크랩 내용을 입력하세요.","");
         	
@@ -119,6 +152,7 @@
 			});
         }
         
+        //스크랩 해제
         function recipeUnscrap(){
         	let bool = confirm('스크랩을 해제하시겠습니까?');
         	
@@ -142,6 +176,70 @@
 					console.log(x, s, e);
 				}
 			});
+        }
+        
+        //답글 form 보이기
+        function showSubReply(e){
+        	$('.reply').off('click').one('click',showSubReply).next().hide();
+        	$(e.target).next().show();
+        	$(e.target).one('click',hideSubReply);
+        }
+        
+        //답글 form 숨기기
+        function hideSubReply(e){
+        	let $target = $(e.target);
+        	$target.next().find('[name=repContent]').val('');
+        	$target.next().hide();
+        	$target.one('click',showSubReply);
+        }
+        
+        //댓글, 문의, 답글 추가
+		function insertReply(e){
+			console.log("댓글 등록");
+        	$(e).parent().parent().submit();
+        }
+		
+        //댓글, 답글의 내용물 확인
+		function replyValidate(e){
+			if(!$(e).find('[name=repContent]').val().trim()){
+				alert("내용을 작성해 주세요.");
+				return false;
+			}
+		}
+		
+        //댓글 삭제
+		function deleteReply(rNo){
+			let bool = confirm('정말 삭제 하시겠습니까?');
+			if(bool){
+				console.log('삭제번호'+rNo)
+				location.href = "${pageContext.request.contextPath}/recipe/deleteReply?replyNo="+rNo+"&recipeNo="+${recipe.recipeNo}; 
+			}
+		}
+		
+		//문의, 답글의 내용물 확인
+		function questionValidate(e){
+			if(!$(e).find('[name=questionContent]').val().trim()){
+				alert("내용을 작성해 주세요.");
+				return false;
+			}
+		}
+        
+        //문의 삭제
+		function deleteQuestion(rNo){
+			let bool = confirm('정말 삭제 하시겠습니까?');
+			if(bool){
+				console.log('삭제번호'+rNo)
+				location.href = "${pageContext.request.contextPath}/recipe/deleteQuestion?questionNo="+rNo+"&recipeNo="+${recipe.recipeNo}; 
+			}
+		}
+        
+        //레시피 삭제 확인
+		function recDelValidate(){
+        	if(!${recipe.chefId eq memberLoggedIn.memberId}){
+        		alert('어떻게 누른거죠?');
+        		return false;
+        	}
+        	return confirm('정말 삭제 하시겠습니까?');
         }
     </script><!-- 레시피 영상  Section -->
     <section class="classes-details-section spad overflow-hidden">
@@ -210,671 +308,31 @@
                         <!-- 셰프 설명글 -->
 
                         <pre style="font-size: 15px; color: #666666; line-height: 1.8; font-family: 'Noto Sans KR', sans-serif;">${recipe.recipeContent }</pre>
-                    </div>
-               
-                    <!-- 재료 판매 -->
-                    <div class="row">
-                        <div class="goods-add-product">
-                            <div class="goods-add-product-wrapper __slide-wrapper" data-slide-item="5">
-                                <h3 class="goods-add-product-title">뇸뇸몰</h3>
-                                <button class="goods-add-product-move goods-add-product-move-left __slide-go-left">왼쪽으로 슬라이드 이동</button>
-                                <button class="goods-add-product-move goods-add-product-move-right __slide-go-right">오른쪽으로 슬라이드 이동</button>
-                                <div class="goods-add-product-list-wrapper" style="height:320px">
-                                    <ul class="goods-add-product-list __slide-mover" style="left: 0px;">
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=30117" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1540459754800m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[그리너스] 동물복지 닭 윗날개 300g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">5,200원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=42277" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/157076953059m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[델리치오] 매콤한 닭꼬치 구이</p>
-                                                    <p class="goods-add-product-item-price">8,500원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=44534" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1579063624552m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[그리너스] 닭가슴살 큐브 스테이크 500g</p>
-                                                    <p class="goods-add-product-item-price">7,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=42385" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1570776356708m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[델리치오] 파닭 꼬치구이</p>
-                                                    <p class="goods-add-product-item-price">8,500원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=42327" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1571291159325m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[육심당] 목살 파 꼬치</p>
-                                                    <p class="goods-add-product-item-price">9,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=25542" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/152835430372m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[우리땅오리] 무항생제 오리 다리살 슬라이스</p>
-                                                    <p class="goods-add-product-item-price">6,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=30112" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1541645413323m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[그리너스] 동물복지 생 닭 800g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">7,100원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=45242" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1576586026700m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[올계] 유기농 치킨 커틀렛 300g</p>
-                                                    <p class="goods-add-product-item-price">14,500원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=30113" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1541645010176m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[그리너스] 동물복지 닭 볶음용 800g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">6,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=3341" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1470807165569m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[올계] 유기농 닭고기 부분육 4종 (냉동)</p>
-                                                    <p class="goods-add-product-item-price">8,200원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=4217" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1472721702859m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[백년백계] 닭 아랫날개 300g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">3,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=30119" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1540446689360m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[그리너스] 동물복지 닭 다리살 300g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">5,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=36869" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1558331449996m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[다향] 우리땅 토종닭 백숙용 1.05kg(냉장)</p>
-                                                    <p class="goods-add-product-item-price">9,000원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=30116" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1541645278484m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[그리너스] 동물복지 닭 아랫날개 300g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">5,200원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=4957" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1480590552835m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[백년백계] 닭 가슴살 300g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">4,200원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=36870" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/155833226034m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[다향] 우리땅 토종닭 볶음탕용 1kg(냉장)</p>
-                                                    <p class="goods-add-product-item-price">8,300원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=4218" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1472726096574m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[백년백계] 닭 다리 300g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">3,600원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=48565" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1581310719658m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[체리부로] 골든치킨 텐더스틱</p>
-                                                    <p class="goods-add-product-item-price">7,400원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=4704" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1478079784170m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[자연누리] 훈제 오리</p>
-                                                    <p class="goods-add-product-item-price">13,500원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=30118" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1540433763409m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[그리너스] 동물복지 닭 다리 400g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">5,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=30114" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1541647184791m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[그리너스] 동물복지 닭 가슴살 400g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">6,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=42329" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1571294440689m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[육심당] 닭다리파 꼬치</p>
-                                                    <p class="goods-add-product-item-price">6,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=26847" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1530769558900m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[Better me] 냉동 닭가슴살 4종</p>
-                                                    <p class="goods-add-product-item-price">1,700원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=5279" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1482384471867m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[우리땅오리] 무항생제 오리 가슴살 슬라이스</p>
-                                                    <p class="goods-add-product-item-price">6,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=38114" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1569822327107m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[수지스] 그릴드 닭가슴살 550g</p>
-                                                    <p class="goods-add-product-item-price">8,800원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=4216" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1472725065604m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[백년백계] 닭 윗날개 300g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">3,800원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=6971" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1498700267578m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[백년백계] 생닭 800g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">5,500원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=6940" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1498628103118m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[올계] 유기농 생닭 2종 (냉동)</p>
-                                                    <p class="goods-add-product-item-price">12,500원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=48564" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1581304258574m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[체리부로] 골든치킨 봉</p>
-                                                    <p class="goods-add-product-item-price">7,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=48563" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/158131001286m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[체리부로] 골든치킨 윙</p>
-                                                    <p class="goods-add-product-item-price">7,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=10134" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/151116121751m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[올계] 유기농 닭꼬치 2종 (냉동)</p>
-                                                    <p class="goods-add-product-item-price">8,500원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=38120" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1569822981465m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[수지스] 허브 닭가슴살 550g</p>
-                                                    <p class="goods-add-product-item-price">9,600원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=38117" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1569822709182m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[수지스] 페퍼콘 닭가슴살 550g</p>
-                                                    <p class="goods-add-product-item-price">9,600원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=43156" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1575865392127m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[자연실록] 옛날 통닭 통다리</p>
-                                                    <p class="goods-add-product-item-price">4,800원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=4956" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1480590914250m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[백년백계] 닭 다리살(정육) 300g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">5,200원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=36430" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1557711152475m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[그리너스] 동물복지 IFF 닭고기 2종 (냉동)</p>
-                                                    <p class="goods-add-product-item-price">8,900원</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=26170" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1529998526237m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[코켄] 무항생제 닭고기 다짐육 2종 (냉동)</p>
-                                                    <p class="goods-add-product-item-price">7,000원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=34584" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1550214814989m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[코켄] 무항생제 IQF 닭고기 3종 (냉동)</p>
-                                                    <p class="goods-add-product-item-price">10,800원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=4215" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1472778568872m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[백년백계] 닭 볶음용 800g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">5,500원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=43155" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1575860376800m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[자연실록] 옛날 통닭</p>
-                                                    <p class="goods-add-product-item-price">9,800원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=3364" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1470807151142m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[올계] 유기농 다짐 계육 (냉동)</p>
-                                                    <p class="goods-add-product-item-price">11,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=47887" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1579066694298m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[하림] 버팔로 치킨 봉 스파이시</p>
-                                                    <p class="goods-add-product-item-price">11,000원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=41911" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1569824181600m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[수지스] 닭가슴살 3종 (냉장)</p>
-                                                    <p class="goods-add-product-item-price">1,800원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=30115" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1541647222536m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[그리너스] 동물복지 닭 안심살 300g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">6,200원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=1224" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1492750867470m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[파워닭] 닭가슴살 5종 (냉동)</p>
-                                                    <p class="goods-add-product-item-price">1,700원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=4214" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1472727892379m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[백년백계] 닭 안심살 300g(냉장)</p>
-                                                    <p class="goods-add-product-item-price">4,100원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=6227" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1494922817267m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[Better me] 오리지널 닭가슴살 (냉장)</p>
-                                                    <p class="goods-add-product-item-price">9,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                        <li class="goods-add-product-item __slide-item">
-                                            <div class="goods-add-product-item-figure">
-                                                <a href="/shop/goods/goods_view.php?&amp;goodsno=48566" target="_blank"><img src="//img-cf.kurly.com/shop/data/goods/1583839295610m0.jpg" class="goods-add-product-item-image" onerror="this.src='/shop/data/skin/designgj/img/common/noimg_100.gif'"></a>
-                                            </div>
-                                            <div class="goods-add-product-item-content">
-                                                <div class="goods-add-product-item-content-wrapper">
-                                                    <p class="goods-add-product-item-name">[우리땅오리] 무항생제 훈제오리 500g(냉동)</p>
-                                                    <p class="goods-add-product-item-price">12,900원</p>
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 댓글 -->
-                    <div  id="comment">
-                    <h3 class="comment-title mt-3">댓글</h3>
-                    <ul class="comment-list">
-                        <li>
-                            <div class="comment-text">
-                                <h3>Beverly Price </h3>
-                                <div class="comment-date"><i class="material-icons">alarm_on</i>June 28, 2019 at 3:18 pm</div>
-                                <p>Just practicing yoga for more than 3 months, I dropped from 64 kg to 58 kg. I have used many weight loss measures such as medication, diet, but the effects are slow and low. </p>
-                                <a href="#" class="reply"><i class="material-icons">reply</i>Reply</a>
-                            </div>
-                            <ul class="comment-sub-list">
-                                <li>
-                                    <div class="comment-text">
-                                        <h3>Jacqueline Watkins</h3>
-                                        <div class="comment-date"><i class="material-icons">alarm_on</i>June 28, 2019 at 3:18 pm</div>
-                                        <p>Just practicing yoga for more than 3 months, I dropped from 64 kg to 58 kg. I have used many weight loss measures such as medication, diet, but the effects are slow and low. </p>
-                                        <a href="#" class="reply"><i class="material-icons">reply</i>Reply</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div class="comment-text">
-                                <h3>Lori Gonzales</h3>
-                                <div class="comment-date"><i class="material-icons">alarm_on</i>June 28, 2019 at 3:18 pm</div>
-                                <p>Just practicing yoga for more than 3 months, I dropped from 64 kg to 58 kg. I have used many weight loss measures such as medication, diet, but the effects are slow and low. </p>
-                                <a href="#" class="reply"><i class="material-icons">reply</i>Reply</a>
-                            </div>
-                        </li>
-                        <c:if test="${memberLoggedIn != null}">
-                        <li>
-                        <form class="singup-form">
-                        	<div>
-                                <textarea name="content" placeholder="댓글 작성"></textarea>
-                                <a href="#" class="site-btn sb-gradient">댓글 달기</a>
-                            </div>
-                        </form>
-                        </li>
+                        
+                        <%-- 레시피 수정, 삭제 버튼 --%>
+                        <c:if test="${recipe.chefId == memberLoggedIn.memberId }">
+	                        <div class="d-flex">
+	                        	<a id="recipe_update" style="cursor:pointer;"><div class="cd-price mr-2">레시피 수정</div></a><!-- favorite -->
+	                            <a id="recipe_delete" style="cursor:pointer;"><div class="cd-price">레시피 삭제</div></a>
+	                        </div>
+	                        <form id="recipe_update_frm" action="${pageContext.request.contextPath }/recipe/recipeUpdateFrm" method="post" hidden>
+	                       		<input type="text" name="chefId" value="${recipe.chefId }">
+	                        	<input type="text" name="recipeNo" value="${recipe.recipeNo }">
+	                        </form>
+	                        <form id="recipe_delete_frm" action="${pageContext.request.contextPath }/recipe/recipeDelete" method="post" onsubmit="return recDelValidate()" hidden>
+	                        	<input type="text" name="chefId" value="${recipe.chefId }">
+	                        	<input type="text" name="recipeNo" value="${recipe.recipeNo }">
+	                        </form>
                         </c:if>
-                    </ul>
-                    </div>
-                   	<div id="question">
-                    <h3 class="comment-title">문의하기</h3>
-                    <form class="singup-form">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" placeholder="First Name">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" placeholder="Last Name">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" placeholder="Your Email">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" placeholder="Phone Number">
-                            </div>
-                            <div class="col-md-12">
-                                <textarea placeholder="Message"></textarea>
-                                <a href="#" class="site-btn sb-gradient">Send message</a>
-                            </div>
-                        </div>
-                    </form>
                     </div>
                 </div>
-
                 <div class="col-lg-5 col-md-6 col-sm-9 sidebar">
                     <!-- 타임 스탬프 start -->
                     <div class="sb-widget">
                         <h2 class="sb-title">요리방법 </h2>
                         <div class="classes-info">
-                        <c:forEach items="${fn:split(recipe.timeline,',')}" var="timeline" varStatus="vs">
-                            <p class="yt_time_stamp" onclick="hreflink(${fn:split(timeline,':')[0]});"><span>${vs.count }.</span>&nbsp;${fn:split(timeline,':')[1] }</p>
+                        <c:forEach items="${fn:split(recipe.timeline,'⇔')}" var="timeline" varStatus="vs">
+                            <p class="yt_time_stamp" onclick="hreflink(${fn:split(timeline,'∮')[0]});"><span>${vs.count }.</span>&nbsp;${fn:split(timeline,'∮')[1] }</p>
                         </c:forEach>
                         </div>
                     </div>
@@ -884,45 +342,226 @@
                         <h2 class="sb-title">연관영상</h2>
                         <div class="another-video-widget">
                             <table>
+                            	<c:forEach items="${relationRecipes }" var="recipe" varStatus="vs">
                                 <tr>
                                     <!-- 유튜브 썸네일 추출 방식-->
-                                    <th><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt="" width="200" height="100"></th>
+                                    <th>
+                                    	<a href="${pageContext.request.contextPath }/recipe/recipe-details?recipeNo=${recipe.recipeNo}">
+                                    		<img src="https://img.youtube.com/vi/${recipe.videoLink }/mqdefault.jpg" alt="" width="200" height="100">
+                                    	</a>
+                                    </th>
                                     <td>
                                     	<ul>
-                                        <li>불맛나는 고기짬뽕라면</li>
-                                        <li>백종원</li>
-                                        <li>추천수 500</li>
+                                        <li>${recipe.videoTitle }</li>
+                                        <li>${recipe.chefNick }</li>
+                                        <li>조회수 ${recipe.viewCount }</li>
                                         </ul>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt=""></th>
-                                    <td>
-                                        <li>불맛나는 고기짬뽕라면</li>
-                                        <li>백종원</li>
-                                        <li>추천수 500</li>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt=""></th>
-                                    <td>
-                                        <li>불맛나는 고기짬뽕라면</li>
-                                        <li>백종원</li>
-                                        <li>추천수 500</li>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><img src="https://img.youtube.com/vi/2sUjx8PE_vg/mqdefault.jpg" alt=""></th>
-                                    <td>
-                                        <li>불맛나는 고기짬뽕라면</li>
-                                        <li>백종원</li>
-                                        <li>추천수 500</li>
-                                    </td>
-                                </tr>
+                                </c:forEach>
                             </table>
                         </div>
                     </div>
+				</div>
+            </div>
+            <!-- 재료 판매 -->
+            <div class="row">
+                <div class="goods-add-product">
+                    <div class="goods-add-product-wrapper __slide-wrapper" data-slide-item="5">
+                        <h3 class="goods-add-product-title">뇸뇸몰</h3>
+                        <button type="button" class="goods-add-product-move goods-add-product-move-left __slide-go-left">왼쪽으로 슬라이드 이동</button>
+                        <button type="button" class="goods-add-product-move goods-add-product-move-right __slide-go-right">오른쪽으로 슬라이드 이동</button>
+                        <div class="goods-add-product-list-wrapper" style="height:320px">
+                            <ul class="goods-add-product-list __slide-mover" style="left: 0px;">
+								<c:forEach items="${ingrMallList}" var="ingrMall" varStatus="vs">
+	                                <li class="goods-add-product-item __slide-item">
+	                                    <div class="goods-add-product-item-figure">
+	                                        <a href="${pageContext.request.contextPath }/mall/productDetail?ingMallNo=${ingMall.ingMallNo}" target="_blank">
+	                                        	<img src="${pageContext.request.contextPath }/resources/images/ingredient/${ingrMall.prevImg}" class="goods-add-product-item-image" 
+	                                        		 onerror="this.src='${pageContext.request.contextPath }/resources/images/mall/ing_info_default.png'">
+	                                        </a>
+	                                    </div>
+	                                    <div class="goods-add-product-item-content">
+	                                        <div class="goods-add-product-item-content-wrapper">
+	                                            <p class="goods-add-product-item-name">${ingrMall.ingMallName} </p>
+	                                            <p class="goods-add-product-item-price">${ingrMall.price}원</p>
+	                                        </div>
+	
+	                                    </div>
+	                                </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <!-- 댓글 -->
+            <div  id="comment">
+            <div class="d-flex mt-4">
+            	<h3 class="comment-title mr-3">댓글</h3>
+            	<a id="show_question" class="recipe-details" style="cursor:pointer;"><div class="cd-price">문의 보기</div></a>
+            </div>
+            <ul class="comment-list">
+                
+                <c:forEach items="${replyList }" var="reply" varStatus="vs">
+                <c:if test="${reply.highRepNo == 0}">
+                <li>
+                    <div class="comment-text">
+                    	<div class="d-flex">
+	                        <h3>${reply.memberNick}</h3>
+	                        <div class="comment-date mr-auto"><i class="material-icons">alarm_on</i><fmt:formatDate value="${reply.regDate }" pattern="yyyy-MM-dd a hh:mm:ss"/></div>
+	                        <c:if test="${memberLoggedIn != null}">
+	                        	<c:if test="${memberLoggedIn.memberId eq reply.memberId || memberLoggedIn.memberRoll eq 'A'}">
+	                        		<a onclick="deleteReply(${reply.replyNo});" class="recipe-details" style="cursor:pointer; margin-bottom: 20px;"><div class="cd-price">삭제</div></a>
+	                        	</c:if>
+	                        	<a id="" class="recipe-details" style="cursor:pointer; padding: 0; margin-bottom: 20px;"><div class="cd-price">신고</div></a>
+	                        </c:if>
+                        </div>
+                        <p>${reply.repContent }</p>
+                        <c:if test="${memberLoggedIn != null}">
+                        <a class="reply" style="cursor:pointer;"><i class="material-icons">reply</i>답글</a>
+                        <form class="singup-form" action="${pageContext.request.contextPath }/recipe/insertReply" method="post" onsubmit="return replyValidate(this);" style="display: none;">
+		                	<div class="mb-3">
+		                        <textarea name="repContent" placeholder="댓글 작성"></textarea>
+		                        <input name="highRepNo" type="number" value="${reply.replyNo}" hidden/>
+		                        <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+		                        <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
+		                    </div>
+		                </form>
+                        </c:if>
+                    </div>
+                    <ul class="comment-sub-list">
+                    	<c:forEach items="${replyList }" var="subReply" varStatus="subVs">
+                    	<c:if test="${reply.replyNo == subReply.highRepNo }">
+                        <li style="margin-bottom: 0">
+                            <div class="comment-text">
+                            	<div class="d-flex">
+	                                <h3>${subReply.memberNick }</h3>
+	                                <div class="comment-date mr-auto"><i class="material-icons">alarm_on</i><fmt:formatDate value="${subReply.regDate }" pattern="yyyy-MM-dd a hh:mm:ss"/></div>
+	                                <c:if test="${memberLoggedIn != null}">
+	                                	<c:if test="${memberLoggedIn.memberId eq subReply.memberId || memberLoggedIn.memberRoll eq 'A'}">
+			                        		<a onclick="deleteReply(${subReply.replyNo});" class="recipe-details" style="cursor:pointer; margin-bottom: 20px;"><div class="cd-price">삭제</div></a>
+			                        	</c:if>
+			                        	<a id="" class="recipe-details" style="cursor:pointer; padding: 0; margin-bottom: 20px;"><div class="cd-price">신고</div></a>
+			                        </c:if>
+		                        </div>
+                                <p>${subReply.repContent }</p>
+                                <c:if test="${memberLoggedIn != null}">
+                                <a class="reply" style="cursor:pointer;"><i class="material-icons">reply</i>답글</a>
+                                <form class="singup-form" action="${pageContext.request.contextPath }/recipe/insertReply" method="post" onsubmit="return replyValidate(this);" style="display: none;">
+				                	<div class="mb-3">
+				                        <textarea name="repContent" placeholder="댓글 작성"></textarea>
+				                        <input name="highRepNo" type="number" value="${reply.replyNo}" hidden/>
+				                        <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+				                        <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
+				                    </div>
+				                </form>
+                                </c:if>
+                            </div>
+                        </li>
+                        </c:if>
+                        </c:forEach>
+                    </ul>
+                </li>
+                </c:if>
+                </c:forEach>
+                <c:if test="${memberLoggedIn != null}">
+                <li>
+                <form class="singup-form" action="${pageContext.request.contextPath }/recipe/insertReply" method="post" onsubmit="return replyValidate(this);">
+                	<div class="mb-3">
+                        <textarea name="repContent" placeholder="댓글 작성"></textarea>
+                        <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+                        <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
+                    </div>
+                </form>
+                </li>
+                </c:if>
+            </ul>
+            </div>
+            
+            <!-- 문의하기 -->
+            <div id="question" style="display: none;">
+            <div class="d-flex mt-4">
+            	<h3 class="comment-title mr-3">문의하기</h3>
+            	<a id="show_reply" class="recipe-details" style="cursor:pointer;"><div class="cd-price">댓글 보기</div></a>
+            </div>
+            <ul class="comment-list">
+                
+                <c:forEach items="${questionList }" var="question" varStatus="vs">
+                <c:if test="${question.highQuestionNo == 0}">
+                <li>
+                    <div class="comment-text">
+                    	<div class="d-flex">
+	                        <h3>${question.memberNick}</h3>
+	                        <div class="comment-date mr-auto"><i class="material-icons">alarm_on</i><fmt:formatDate value="${question.regDate }" pattern="yyyy-MM-dd a hh:mm:ss"/></div>
+	                        <c:if test="${memberLoggedIn != null}">
+	                        	<c:if test="${memberLoggedIn.memberId eq question.memberId || memberLoggedIn.memberRoll eq 'A'}">
+	                        		<a onclick="deleteQuestion(${question.questionNo});" class="recipe-details" style="cursor:pointer; margin-bottom: 20px;"><div class="cd-price">삭제</div></a>
+	                        	</c:if>
+	                        	<a id="" class="recipe-details" style="cursor:pointer; padding: 0; margin-bottom: 20px;"><div class="cd-price">신고</div></a>
+	                        </c:if>
+                        </div>
+                        <p>${question.questionContent }</p>
+                        <c:if test="${memberLoggedIn != null && (recipe.chefId eq memberLoggedIn.memberId || question.memberId eq memberLoggedIn.memberId)}">
+                        <a class="reply" style="cursor:pointer;"><i class="material-icons">reply</i>답글</a>
+                        <form class="singup-form" action="${pageContext.request.contextPath }/recipe/insertQuestion" method="post" onsubmit="return questionValidate(this);" style="display: none;">
+		                	<div class="mb-3">
+		                        <textarea name="questionContent" placeholder="댓글 작성"></textarea>
+		                        <input name="highQuestionNo" type="number" value="${question.questionNo}" hidden/>
+		                        <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+		                        <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
+		                    </div>
+		                </form>
+                        </c:if>
+                    </div>
+                    <ul class="comment-sub-list">
+                    	<c:forEach items="${questionList }" var="answer" varStatus="subVs">
+                    	<c:if test="${question.questionNo == answer.highQuestionNo }">
+                        <li style="margin-bottom: 0">
+                            <div class="comment-text">
+                            	<div class="d-flex">
+	                                <h3>${answer.memberNick }</h3>
+	                                <div class="comment-date mr-auto"><i class="material-icons">alarm_on</i><fmt:formatDate value="${answer.regDate }" pattern="yyyy-MM-dd a hh:mm:ss"/></div>
+	                                <c:if test="${memberLoggedIn != null}">
+	                                	<c:if test="${memberLoggedIn.memberId eq answer.memberId || memberLoggedIn.memberRoll eq 'A'}">
+			                        		<a onclick="deleteQuestion(${answer.questionNo});" class="recipe-details" style="cursor:pointer; margin-bottom: 20px;"><div class="cd-price">삭제</div></a>
+			                        	</c:if>
+			                        	<a id="" class="recipe-details" style="cursor:pointer; padding: 0; margin-bottom: 20px;"><div class="cd-price">신고</div></a>
+			                        </c:if>
+		                        </div>
+                                <p>${answer.questionContent }</p>
+                                <c:if test="${memberLoggedIn != null && (recipe.chefId eq memberLoggedIn.memberId || question.memberId eq memberLoggedIn.memberId)}">
+                                <a class="reply" style="cursor:pointer;"><i class="material-icons">reply</i>답글</a>
+                                <form class="singup-form" action="${pageContext.request.contextPath }/recipe/insertQuestion" method="post" onsubmit="return questionValidate(this);" style="display: none;">
+				                	<div class="mb-3">
+				                        <textarea name="questionContent" placeholder="댓글 작성"></textarea>
+				                        <input name="highQuestionNo" type="number" value="${question.questionNo}" hidden/>
+				                        <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+				                        <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
+				                    </div>
+				                </form>
+                                </c:if>
+                            </div>
+                        </li>
+                        </c:if>
+                        </c:forEach>
+                    </ul>
+                </li>
+                </c:if>
+                </c:forEach>
+                <c:if test="${memberLoggedIn != null && recipe.chefId != memberLoggedIn.memberId}">
+                <li>
+                <form class="singup-form" action="${pageContext.request.contextPath }/recipe/insertQuestion" method="post" onsubmit="return questionValidate(this);">
+                	<div class="mb-3">
+                        <textarea name="questionContent" placeholder="댓글 작성"></textarea>
+                        <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+                        <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
+                    </div>
+                </form>
+                </li>
+                </c:if>
+            </ul>
+
             </div>
         </div>
     </section>
