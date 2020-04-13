@@ -67,15 +67,6 @@ public class MypageController {
 	public void mypageMain() {
 		log.debug("일반 유저 마이페이지 메인 첫 화면 입니다");
 	}
-	
-	@GetMapping("/chefMain")
-	public void mypagechefMain() {
-		log.debug("셰프 마이페이지 메인 첫 화면 입니다");
-	}
-	@GetMapping("/adminMain")
-	public void mypageadminMain() {
-		log.debug("관ㄹ지ㅏ 마이페이지 메인 첫 화면 입니다");
-	}
 		
 	@GetMapping("/updateinfo")
 	public String updateInfo(HttpSession session,
@@ -98,14 +89,20 @@ public class MypageController {
 		return "redirect:/mypage/main";
 	}
 	
-	
+	//일반 유저의 구매목록들
 	@GetMapping("/buyList")
 	public void buyList(HttpSession session, Model model) {
-		String memberId = (String) session.getAttribute("");
+		System.out.println("buyList 메소드입니다");
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		
 		List<BuyHistory> buyList = mallService.selectBuyList(memberId);
 		log.debug("buyList={}",buyList);
 		model.addAttribute("buyList", buyList);
 	}
+	
+	
 	
 	@GetMapping("/chefRequest")
 	public void chefRequest(HttpSession session, Model model) {
@@ -133,6 +130,8 @@ public class MypageController {
 	public void qnaMsg() {
 		
 	}
+
+	
 	
 	//일반유저 스크랩 목록
 	@GetMapping("/scrapList")
@@ -201,6 +200,8 @@ public class MypageController {
 		
 		return "redirect:/mypage/scrapList";
 	}
+	
+	
 	
 	//알림 목록
 	@GetMapping("/dingDongList")
