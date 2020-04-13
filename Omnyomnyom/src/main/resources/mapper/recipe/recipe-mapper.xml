@@ -226,7 +226,15 @@
 		order by
 			view_count desc
 	</select>
+	
 	<!-- PJM Section -->
+	<select id="selectChefProfile" resultType="string">
+		select 
+			chef_profile
+		from
+	 		tb_chef 	
+		where member_id = #{chefId}
+	</select>
 	<select id="selectReplyList" resultType="recipeReply">
 		select
 			r.*,
@@ -322,13 +330,13 @@
 			tb_report;
 	</select>
 	
-	<insert id="reportMap">
+	<insert id="insertReport">
 		insert into
 			tb_report
 		values(
 			#{repMemberId},
 			#{replyNo},
-			#{reportDate},
+			default,
 			#{reportReason}
 		)
 	</insert>

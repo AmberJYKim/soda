@@ -152,6 +152,30 @@
 			});
         }
         
+      //스크랩
+        function replyReport(replyNo){
+			let val = prompt("신고 내용을 입력하세요.","");
+        	
+        	console.log(val);
+        	if(!$.trim(val)){
+        		if(val != null)
+        			alert("신고할 내용을 입력하셔야 합니다..");
+        		return;
+        	}
+        	
+        	$.ajax({
+				url:"${pageContext.request.contextPath}/recipe/replyReport/"+replyNo+"?memo="+val,
+				success : function(data) {
+					if(data == 't'){
+						alert('신고가 접수되었습니다.');
+					}
+				},
+				error : function(x, s, e) {
+					console.log(x, s, e);
+				}
+			});
+        }
+        
         //스크랩 해제
         function recipeUnscrap(){
         	let bool = confirm('스크랩을 해제하시겠습니까?');
@@ -264,10 +288,10 @@
                                 <table>
                                 	<tr>
                                     <th>
-                                        <img src="/img/classes/author/3.jpg" class="chef-img" alt=""><!-- 후에 셰프 이미지 경로 정하고... -->
+                                        <img src="${pageContext.request.contextPath }/resources/upload/profile/${chefProfile}" class="chef-img" alt=""><!-- 후에 셰프 이미지 경로 정하고... -->
                                     </th>
                                     <td>
-                                        <h3 class="chef-name"><a href="">${recipe.chefNick}</a></h3>
+                                        <h3 class="chef-name"><a href="${pageContext.request.contextPath }/chef/${recipe.chefNick}/chefPage">${recipe.chefNick}</a></h3>
                                         <div class="cd-meta">
                                             <p><i class="material-icons">people_outline</i>조회수 | ${recipe.viewCount }</p>
                                         </div>
@@ -414,7 +438,7 @@
 	                        	<c:if test="${memberLoggedIn.memberId eq reply.memberId || memberLoggedIn.memberRoll eq 'A'}">
 	                        		<a onclick="deleteReply(${reply.replyNo});" class="recipe-details" style="cursor:pointer; margin-bottom: 20px;"><div class="cd-price">삭제</div></a>
 	                        	</c:if>
-	                        	<a id="" class="recipe-details" style="cursor:pointer; padding: 0; margin-bottom: 20px;"><div class="cd-price">신고</div></a>
+	                        	<a onclick="replyReport(${reply.replyNo})" class="recipe-details" style="cursor:pointer; padding: 0; margin-bottom: 20px;"><div class="cd-price">신고</div></a>
 	                        </c:if>
                         </div>
                         <p>${reply.repContent }</p>
@@ -442,7 +466,7 @@
 	                                	<c:if test="${memberLoggedIn.memberId eq subReply.memberId || memberLoggedIn.memberRoll eq 'A'}">
 			                        		<a onclick="deleteReply(${subReply.replyNo});" class="recipe-details" style="cursor:pointer; margin-bottom: 20px;"><div class="cd-price">삭제</div></a>
 			                        	</c:if>
-			                        	<a id="" class="recipe-details" style="cursor:pointer; padding: 0; margin-bottom: 20px;"><div class="cd-price">신고</div></a>
+			                        	<a onclick="replyReport(${subReply.replyNo})" class="recipe-details" style="cursor:pointer; padding: 0; margin-bottom: 20px;"><div class="cd-price">신고</div></a>
 			                        </c:if>
 		                        </div>
                                 <p>${subReply.repContent }</p>
@@ -498,7 +522,6 @@
 	                        	<c:if test="${memberLoggedIn.memberId eq question.memberId || memberLoggedIn.memberRoll eq 'A'}">
 	                        		<a onclick="deleteQuestion(${question.questionNo});" class="recipe-details" style="cursor:pointer; margin-bottom: 20px;"><div class="cd-price">삭제</div></a>
 	                        	</c:if>
-	                        	<a id="" class="recipe-details" style="cursor:pointer; padding: 0; margin-bottom: 20px;"><div class="cd-price">신고</div></a>
 	                        </c:if>
                         </div>
                         <p>${question.questionContent }</p>
@@ -526,7 +549,6 @@
 	                                	<c:if test="${memberLoggedIn.memberId eq answer.memberId || memberLoggedIn.memberRoll eq 'A'}">
 			                        		<a onclick="deleteQuestion(${answer.questionNo});" class="recipe-details" style="cursor:pointer; margin-bottom: 20px;"><div class="cd-price">삭제</div></a>
 			                        	</c:if>
-			                        	<a id="" class="recipe-details" style="cursor:pointer; padding: 0; margin-bottom: 20px;"><div class="cd-price">신고</div></a>
 			                        </c:if>
 		                        </div>
                                 <p>${answer.questionContent }</p>
