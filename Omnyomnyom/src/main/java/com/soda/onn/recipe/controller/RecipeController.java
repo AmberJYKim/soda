@@ -106,16 +106,12 @@ public class RecipeController {
 		recipe.setChefId(chefId);
 		recipe.setChefNick(chefNick);
 
-		log.debug("{}",recipe);
-		
 		List<RecipeIngredient> ingredientList = new ArrayList<RecipeIngredient>();
 		
 		for(int i =0;i<ingrName.length ;i++) {
 			RecipeIngredient ingr = new RecipeIngredient(ingNo[i], ingrMass[i], ingrName[i], 0);
 			ingredientList.add(ingr);
 		}
-		
-		log.debug(ingredientList.toString());
 		
 		List<Map<String,String>> list = (List<Map<String,String>>)new Gson().fromJson(recipe.getCategory(), new TypeToken<List<Map<String,String>>>(){}.getType());
 		
@@ -133,11 +129,7 @@ public class RecipeController {
 			recipe.setTimeline(recipe.getTimeline() + cookTime[i]+"∮"+cookery[i]);
 		}
 		
-		log.debug("{}",recipe);
-		
 		int result = recipeService.recipeUpdate(recipe,ingredientList);
-		
-		log.debug("insert Result={}", result>0?true:false);
 		
 		return "redirect:/";
 	}
@@ -191,7 +183,6 @@ public class RecipeController {
 	@GetMapping("/deleteQuestion")
 	public String deleteQuestion(@RequestParam("questionNo")int questionNo,
 							  @RequestParam("recipeNo")int recipeNo) {
-		log.debug("{}",questionNo);
 		
 		int result = recipeService.deleteQuestion(questionNo);
 		
@@ -214,7 +205,6 @@ public class RecipeController {
 	@GetMapping("/deleteReply")
 	public String deleteReply(@RequestParam("replyNo")int replyNo,
 							  @RequestParam("recipeNo")int recipeNo) {
-		log.debug("{}",replyNo);
 		
 		int result = recipeService.deleteReply(replyNo);
 		
@@ -224,8 +214,6 @@ public class RecipeController {
 	//댓글, 답글 달기
 	@PostMapping("/insertReply")
 	public String insertReply(HttpSession session, RecipeReply reply) {
-		log.debug("{}",session.getAttribute("memberLoggedIn"));
-		log.debug("{}",reply);
 		
 		Member member = (Member)session.getAttribute("memberLoggedIn");
 		reply.setMemberId(member.getMemberId());
@@ -242,6 +230,7 @@ public class RecipeController {
 							  HttpServletResponse response,
 							  Model model) {
 		
+		//뷰 카운터를 위한 쿠키
 		Cookie[] cookies = request.getCookies();
 		String recipeCookieVal = "";
 		boolean hasRead = false;
@@ -267,7 +256,7 @@ public class RecipeController {
 			recipeCookie.setMaxAge(7*24*60*60);
 			recipeCookie.setPath(request.getContextPath()+"/recipe");
 			response.addCookie(recipeCookie);
-		}
+		}//쿠키 끝
 		
 		Member member = (Member)request.getSession().getAttribute("memberLoggedIn");
 		Like l =null;
@@ -287,6 +276,8 @@ public class RecipeController {
 		
 		Recipe recipe = recipeService.selectRecipeOne(recipeNo,hasRead);
 		
+		String chefProfile = recipeService.selectChefProfile(recipe.getChefId());
+		
 		recipe.setIngredientList(recipeService.selectRecIngList(recipeNo));
 		
 		List<IngredientMall> ingrMallList = recipeService.selectingrMallList(recipe.getIngredientList());
@@ -301,6 +292,7 @@ public class RecipeController {
 		
 		log.debug("{}",relationRecipes);
 		
+		model.addAttribute("chefProfile",chefProfile);
 		model.addAttribute("questionList", questionList);
 		model.addAttribute("replyList",replyList);
 		model.addAttribute("relationRecipes",relationRecipes);

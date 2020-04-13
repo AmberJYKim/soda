@@ -264,10 +264,10 @@
                                 <table>
                                 	<tr>
                                     <th>
-                                        <img src="/img/classes/author/3.jpg" class="chef-img" alt=""><!-- 후에 셰프 이미지 경로 정하고... -->
+                                        <img src="${pageContext.request.contextPath }/resources/upload/profile/${chefProfile}" class="chef-img" alt=""><!-- 후에 셰프 이미지 경로 정하고... -->
                                     </th>
                                     <td>
-                                        <h3 class="chef-name"><a href="">${recipe.chefNick}</a></h3>
+                                        <h3 class="chef-name"><a href="${pageContext.request.contextPath }/chef/${recipe.chefNick}/chefPage">${recipe.chefNick}</a></h3>
                                         <div class="cd-meta">
                                             <p><i class="material-icons">people_outline</i>조회수 | ${recipe.viewCount }</p>
                                         </div>

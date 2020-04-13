@@ -18,6 +18,8 @@ import com.soda.onn.recipe.model.vo.Report;
 
 public interface RecipeDAO {
 
+	String selectChefProfile(String chefId);
+
 	int recipeUpdate(Recipe recipe);
 
 	int recipeIngrDelete(int recipeNo);
