@@ -44,6 +44,7 @@ import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Oneday;
 import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.ReservationRequest;
 import com.soda.onn.recipe.model.service.RecipeService;
 import com.soda.onn.recipe.model.vo.Recipe;
 
@@ -96,16 +97,19 @@ public class ChefController {
 	
 	//자신의 클래스 예약현황
 	@GetMapping("/reservationStatus")
-	public void reservationStatus(HttpSession session) {
-//		Member member = (Member)session.getAttribute("memberLoggedIn");
-//		String memberId = member.getMemberId();
-//		
-//		List<Reservation> statusList = onedayService.selectAllReservationList(memberId);
-//		
-//		ModelAndView mav = new ModelAndView();
-//		mav.addObject("statusList", statusList);
-//		mav.setViewName("/chef/reservationStatus");
+	public ModelAndView reservationStatus(HttpSession session) {
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		System.out.println("셰프 아이디 = "+memberId);
 		
+		List<ReservationRequest> statusList = onedayService.selectAllReservationList(memberId);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("statusList", statusList);
+		System.out.println("셰프 원데이클래스 예약현황="+statusList);
+		mav.setViewName("chef/reservationStatus");
+		
+		return mav;
 	}
 	
 	

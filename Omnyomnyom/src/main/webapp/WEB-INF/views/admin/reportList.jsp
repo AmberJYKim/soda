@@ -29,11 +29,13 @@
 						  </tr>
 						</thead>
 						<tbody>
+						<c:forEach var="Report" items="${list }">
 						  <tr>
-							<td>100종원</td>
+							<td>${Report.repMemberId }</td>
 							<td>이거 너무 맛있어요</td>
 							<td>2020.20.20 15:34</td>
 						  </tr>
+						</c:forEach>
 						 
 						</tbody>
 					  </table>

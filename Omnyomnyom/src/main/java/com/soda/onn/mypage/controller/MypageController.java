@@ -204,58 +204,62 @@ public class MypageController {
 	
 	
 	//알림 목록
-			@GetMapping("/dingdongList")
-			public ModelAndView dingdongList(HttpSession session) {
-				ModelAndView mav = new ModelAndView();
-				
-				Member userId = (Member)session.getAttribute("memberLoggedIn");
-				String memberId = userId.getMemberId();
-				System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
-				
-				Map<String,String> map =   new HashMap<String, String>();
-				map.put("memberId", memberId);
-				
-				List<DingDong> list = mypageService.selectDingList(map);
-				System.out.println("여기는 알림목록  = "+list);
-				
-				mav.addObject("list", list);
-				mav.setViewName("/mypage/dingdongList");
-				
-				return mav;
-			}
-		
-		
-	///////////// 헤더 알림 - 김소현 영역 ///////////////////
-		//알림 목록
-		@GetMapping("/dingDongList")
-		@ResponseBody
-		public Map dingdong(@RequestParam(value="cPage", defaultValue="1") int cPage,
-								 HttpSession session,
-				 				    HttpServletRequest request) {
-		
+		@GetMapping("/dingdongList")
+		public ModelAndView dingdongList(HttpSession session) {
+			ModelAndView mav = new ModelAndView();
 			
-			Member member = (Member)session.getAttribute("memberLoggedIn");
-			String memberId= member.getMemberId();
-			log.debug("cPage={}",cPage);
-			int pageStart = ((cPage - 1)/DINGPAGEBARSIZE) * DINGPAGEBARSIZE +1;
-			int pageEnd = pageStart+PAGEBARSIZE-1;
+			Member userId = (Member)session.getAttribute("memberLoggedIn");
+			String memberId = userId.getMemberId();
+			System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
 			
-			rowBounds = new RowBounds((cPage-1)*DINGNUMPERPAGE, DINGNUMPERPAGE);
-			int totalCount = memberService.selectMemberListCnt();
-			int totalPage = (int)Math.ceil((double)totalCount/DINGNUMPERPAGE);
-			String url = request.getRequestURL().toString();
-			String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+			Map<String,String> map =   new HashMap<String, String>();
+			map.put("memberId", memberId);
 			
-			List<DingDong> dingList = mypageService.selectDingList(memberId);
-			log.debug("dingList={}",dingList);
-			log.debug("paging={}",paging);
+			List<DingDong> list = mypageService.selectDingList(map);
+			System.out.println("여기는 알림목록  = "+list);
 			
-			Map map =new HashMap();
+			mav.addObject("list", list);
+			mav.setViewName("/mypage/dingdongList");
 			
-			map.put("dingList", dingList);
-			map.put("paging",paging);
-			return map;
+			return mav;
 		}
+	
+		
+		
+///////////// 헤더 알림 -  김소현 영역 ///////////////////		
+	//헤더 알림 목록
+	@GetMapping("/dingDongList")
+	@ResponseBody
+	public Map dingdong(@RequestParam(value="cPage", defaultValue="1") int cPage,
+					     HttpSession session,
+			 			 HttpServletRequest request) {
+	
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId=  member.getMemberId();
+		log.debug("cPage={}",cPage);
+		int pageStart = ((cPage - 1)/DINGPAGEBARSIZE) * DINGPAGEBARSIZE +1;
+		int pageEnd = pageStart+PAGEBARSIZE-1;
+		
+		rowBounds = new RowBounds((cPage-1)*DINGNUMPERPAGE, DINGNUMPERPAGE);
+		int totalCount = memberService.selectMemberListCnt();
+		int totalPage =  (int)Math.ceil((double)totalCount/DINGNUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		Map<String,String> map =   new HashMap<String, String>();
+		map.put("memberId", memberId);
+		map.put("Read", "1");
+
+		List<DingDong> dingList = mypageService.selectDingList(map);
+		log.debug("dingList={}",dingList);
+
+		
+		Map mapp =new HashMap();
+		
+		mapp.put("dingList", dingList);
+		return mapp;
+	}
+	
 	
 	@GetMapping("/directMsg")
 	public void directMsg() {
