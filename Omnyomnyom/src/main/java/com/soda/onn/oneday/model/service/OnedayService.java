@@ -40,14 +40,9 @@ public interface OnedayService {
 	List<OnedayReview> selectReviewList(int onedayclassNo);
 
 	List<Oneday> selectAll();
-
 	
-
-	
-
-
+	List<Reservation> selectAllReservationList(String memberId);
 
 }
 
-	List<Reservation> selectAllReservationList(String memberId);
 
