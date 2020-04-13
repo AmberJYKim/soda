@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,6 +67,39 @@ public class AdminController {
 
 	
 	private RowBounds rowBounds = null;
+	
+	
+	@GetMapping("/adminMain")
+	public void mypageadminMain() {
+		log.debug("관리자 마이페이지 메인 첫 화면 입니다");
+	}
+	
+	@GetMapping("/adminQnaMsg")
+	public void adminQnaMsg() {
+		
+	}
+	
+	@GetMapping("/chefInsertList")
+	public void chefInsertList(HttpSession session) {
+		
+	}
+	
+	//판매자의 판매목록들
+			@GetMapping("/sellList")
+			public void adminBuyList(HttpSession session, Model model) {
+				Member member = (Member)session.getAttribute("memberLoggedIn");
+				String memberId = member.getMemberId();
+				
+				List<BuyHistory> sellList = mallService.selectAdminBuyList(memberId);
+				log.debug("sellsList={}",sellList);
+				model.addAttribute("sellList", sellList);
+			}
+		
+			
+		@GetMapping("/sendDingdong")
+		public void sendDingdong() {
+			
+		}
 	
 	//셰프목록
 	@GetMapping("/chefList")

@@ -340,13 +340,13 @@
 						<a href="#" class="infor-logo">
 							<img src="img/user.png" alt="">
 						</a>
-						<p><a href="${pageContext.request.contextPath }/mypage/adminMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+						<p><a href="${pageContext.request.contextPath }/admin/adminMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
 					</c:when>
 					<c:when test="${memberLoggedIn.memberRoll eq 'C' }">
 						<a href="#" class="infor-logo">
 							<img src="img/user.png" alt="">
 						</a>
-						<p><a href="${pageContext.request.contextPath }/mypage/chefMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+						<p><a href="${pageContext.request.contextPath }/chef/chefMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
 					</c:when>
 					<c:otherwise>
 						<a href="#" class="infor-logo">
@@ -489,7 +489,7 @@
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath}/mypage/scrapList">
+									<a href="${pageContext.request.contextPath}/chef/chefscrapList">
 										<p>스크랩 목록</p>
 									</a>
 									</div>
@@ -501,7 +501,7 @@
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/mypage/onedayList">
+										<a href="${pageContext.request.contextPath }/chef/onedayList">
 											<p>예약현황</p>
 										</a>
 										</div>

@@ -61,15 +61,6 @@ public class MypageController {
 	public void mypageMain() {
 		log.debug("일반 유저 마이페이지 메인 첫 화면 입니다");
 	}
-	
-	@GetMapping("/chefMain")
-	public void mypagechefMain() {
-		log.debug("셰프 마이페이지 메인 첫 화면 입니다");
-	}
-	@GetMapping("/adminMain")
-	public void mypageadminMain() {
-		log.debug("관리자 마이페이지 메인 첫 화면 입니다");
-	}
 		
 	@GetMapping("/updateinfo")
 	public String updateInfo(HttpSession session,
@@ -105,16 +96,7 @@ public class MypageController {
 		model.addAttribute("buyList", buyList);
 	}
 	
-	//판매자의 판매목록들
-	@GetMapping("/sellList")
-	public void adminBuyList(HttpSession session, Model model) {
-		Member member = (Member)session.getAttribute("memberLoggedIn");
-		String memberId = member.getMemberId();
-		
-		List<BuyHistory> sellList = mallService.selectAdminBuyList(memberId);
-		log.debug("sellsList={}",sellList);
-		model.addAttribute("sellList", sellList);
-	}
+	
 	
 	@GetMapping("/chefRequest")
 	public void chefRequest(HttpSession session, Model model) {
@@ -143,15 +125,7 @@ public class MypageController {
 		
 	}
 
-	@GetMapping("/adminQnaMsg")
-	public void adminQnaMsg() {
-		
-	}
 	
-	@GetMapping("/chefInsertList")
-	public void chefInsertList(HttpSession session) {
-		
-	}
 	
 	//일반유저 스크랩 목록
 	@GetMapping("/scrapList")
@@ -221,10 +195,7 @@ public class MypageController {
 		return "redirect:/mypage/scrapList";
 	}
 	
-	@GetMapping("/sendDingdong")
-	public void sendDingdong() {
-		
-	}
+	
 	
 	//알림 목록
 	@GetMapping("/dingdongList")

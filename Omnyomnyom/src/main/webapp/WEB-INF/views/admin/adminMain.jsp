@@ -14,11 +14,11 @@
 		<div class="section">
 			<div class="row">
 				<div class="col side_nav">
-					<a href="${pageContext.request.contextPath}/mypage/adminMain"><p class="nav_text selected_nav">내 정보보기</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/sellList"><p class="nav_text ">판매목록</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/adminQnaMsg"><p class="nav_text ">1:1 문의</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/chefInsertList"><p class="nav_text">셰프신청목록</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/sendDingdong"><p class="nav_text">알림보내기</p></a>
+					<a href="${pageContext.request.contextPath}/admin/adminMain"><p class="nav_text selected_nav">내 정보보기</p></a>
+					<a href="${pageContext.request.contextPath}/admin/sellList"><p class="nav_text ">판매목록</p></a>
+					<a href="${pageContext.request.contextPath}/admin/adminQnaMsg"><p class="nav_text ">1:1 문의</p></a>
+					<a href="${pageContext.request.contextPath}/admin/chefInsertList"><p class="nav_text">셰프신청목록</p></a>
+					<a href="${pageContext.request.contextPath}/admin/sendDingdong"><p class="nav_text">알림보내기</p></a>
 				</div>
 				
 				

@@ -35,6 +35,8 @@ public interface OnedayService {
 
 	int classUpdate(Oneday oneday, List<String> otiList);
 
+	List<Reservation> selectAllReservationList(String memberId);
+
 	
 
 

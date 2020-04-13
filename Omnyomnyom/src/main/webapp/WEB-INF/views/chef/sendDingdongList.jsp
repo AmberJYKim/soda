@@ -14,14 +14,17 @@
 		<div class="section">
 			<div class="row">
 				<div class="col side_nav">
-					<a href="${pageContext.request.contextPath}/mypage/adminMain"><p class="nav_text ">내 정보보기</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/sellList"><p class="nav_text ">판매목록</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/adminQnaMsg"><p class="nav_text ">1:1 문의</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/chefInsertList"><p class="nav_text">셰프신청목록</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/sendDingdong"><p class="selected_nav">알림보내기</p></a>
+					<a href="${pageContext.request.contextPath}/chef/main"><p class="nav_text ">내 정보보기</p></a>
+					<a href="${pageContext.request.contextPath}/chef/onedayList"><p class="nav_text ">예약 목록</p></a>
+					<a href="${pageContext.request.contextPath}/chef/reservationStatus"><p class="nav_text ">예약 현황</p></a>
+					<a href="${pageContext.request.contextPath}/chef/chefbuyList"><p class="nav_text ">구매목록</p></a>
+					<a href="${pageContext.request.contextPath}/chef/qnaMsg"><p class="nav_text ">1:1 문의</p></a>
+					<a href="${pageContext.request.contextPath}/chef/chefscrapList"><p class="nav_text">스크랩 목록</p></a>
+					<a href="${pageContext.request.contextPath}/chef/chefDingdongList"><p class="nav_text ">알림목록</p></a>
+					<a href="${pageContext.request.contextPath}/chef/sendDingdongList"><p class="nav_text selected_nav">알림 보내기</p></a>
 				</div>
 				<div class="col-10">
-					<h4 class="border_bottom">알림 목록</h4>
+					<h4 class="border_bottom">셰프 알림 보내기</h4>
 					<br>
 					<table class="table">
 						<thead>

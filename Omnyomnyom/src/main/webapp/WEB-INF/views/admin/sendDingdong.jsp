@@ -14,13 +14,11 @@
 		<div class="section">
 			<div class="row">
 				<div class="col side_nav">
-					<a href="${pageContext.request.contextPath}/mypage/main"><p class="nav_text">내 정보보기</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/onedayList"><p class="nav_text ">예약목록</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/buyList"><p class="nav_text ">구매목록</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/qnaMsg"><p class="nav_text ">1:1 문의</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/scrapList"><p class="nav_text">스크랩 목록</p></a>
-					<a href="${pageContext.request.contextPath}/chef/chefInsert"><p class="nav_text">셰프신청</p></a>
-					<a href="${pageContext.request.contextPath}/mypage/dingdongList"><p class="nav_text selected_nav">알림목록</p></a>
+					<a href="${pageContext.request.contextPath}/admin/adminMain"><p class="nav_text ">내 정보보기</p></a>
+					<a href="${pageContext.request.contextPath}/admin/sellList"><p class="nav_text ">판매목록</p></a>
+					<a href="${pageContext.request.contextPath}/admin/adminQnaMsg"><p class="nav_text ">1:1 문의</p></a>
+					<a href="${pageContext.request.contextPath}/admin/chefInsertList"><p class="nav_text">셰프신청목록</p></a>
+					<a href="${pageContext.request.contextPath}/admin/sendDingdong"><p class="selected_nav">알림보내기</p></a>
 				</div>
 				<div class="col-10">
 					<h4 class="border_bottom">알림 목록</h4>
@@ -29,23 +27,14 @@
 						<thead>
 						  <tr>
 							<th>번호 </th>
-							<th>아이디</th>
 							<th>알림 메모</th>
-							<th>읽음 여부</th>
 						  </tr>
 						</thead>
 						<tbody>
 							<c:forEach var="dingdong" items="${list }">
 							      <tr class="user-select-area">
 										<th scope="row">${dingdong.dingdongNo }</th>
-										<td class="user-id">${dingdong.dingMemberId}</td>
 										<td class="user-id">${dingdong.dingdongContent}</td>
-										<c:if test="${dingdong.dingdongRead == 1 }">
-											<td>안 읽음</td>
-										</c:if>
-										<c:if test="${dingdong.dingdongRead == 0} ">
-											<td>읽음</td>
-										</c:if>
 								  </tr>
 							 </c:forEach>
 						</tbody>
