@@ -151,31 +151,7 @@
                             <input type="button" class="pay-btn" id="bank" name="payBank" value="계좌이체" onclick="selectPayType();">
                         </article>
 
-                        <!-- <article class="col-lg-3  tm-article">
-
-                            <h3 class="tm-color-primary tm-article-title-1">결제수단 세부항목</h3>
-                            <div class="select-pay" id="card-pay">
-                                <p class="box_subtitle">❖ 결제하실 카드사를 선택해 주세요.</p>
-                                <select name="pay-card-val" class="card-val" size="1">
-                                                <option value="">카드사선택</option>
-                                                <option value="C">군산카드</option>
-                                                <option value="C">국민카드</option>
-                                                <option value="C">하나카드</option>
-                                                <option value="C">신한카드</option>
-                                            </select>
-                            </div>
-                            <div class="select-pay" id="bank-pay">
-                                <p class="box_subtitle">❖ 결제하실 은행를 선택해 주세요.</p>
-                                <select name="pay-bank-val" class="card-val" size="1">
-                                                <option value="">은행선택</option>
-                                                <option value="W">군산은행</option>
-                                                <option value="W">국민은행</option>
-                                                <option value="W">하나은행</option>
-                                                <option value="W">신한은행</option>
-                                  </select>
-                            </div>
-
-                        </article> -->
+                    
                         <article class=" col-lg-1">
                             <input type="submit" value="결제완료" class="tm-color-white tm-btn-white-bordered" />
                         </article>

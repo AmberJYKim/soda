@@ -260,12 +260,14 @@ public class OnedayController {
 		reservationrequest.setReserMemberId(memberId);
 		reservationrequest.setOnedayclassNo(onedayclassNo);
 		reservationrequest.setOnedaytimeNo(onedayTimeNo);
+		reservationrequest.setOneday(oneday);
+		
+		
 		
 		System.out.println(reservationrequest);
 		System.out.println(reservation);
 		session.setAttribute("reservationrequest", reservationrequest);
 		
-//		int result = onedayService.insertReservation(reservationrequest);
 		mav.addObject("Oneday", oneday);
 		mav.addObject("reservationrequest", reservationrequest);
 		
@@ -286,7 +288,8 @@ public class OnedayController {
 	public ModelAndView pay(@ModelAttribute ModelAndView mav,HttpSession session) {
 		
 		ReservationRequest reservationrequest = (ReservationRequest) session.getAttribute("reservationrequest");
-		log.debug("onedayname ===={}", reservationrequest.getOneday().getOnedayName() );
+		log.debug("onedayname ===={}", reservationrequest.getOneday());
+//		log.debug("onedayname ===={}", reservationrequest.getOneday().getOnedayName() );
 		
 		mav.addObject("reservationrequest", reservationrequest);
 		mav.addObject("oneday", reservationrequest.getOneday());
@@ -295,19 +298,25 @@ public class OnedayController {
 	}
 //	원데이 클래스 예약완료 뷰로 이동 
 	@PostMapping("/result.do")
-	public String result() {
+	public String result(@ModelAttribute ModelAndView mav, HttpSession session) {
+		
+		//결제 관련 정보 꺼내기
+		ReservationRequest reservRequest = (ReservationRequest)session.getAttribute("reservationrequest");
+		log.debug("reservationRequest===={}", reservRequest.toString());
+//		onedayService.insertReservation(reservRequest);
+		
+		
+		
 		
 		//결제내역 추가
-//		onedayService.insertReservation();
 		//예약정보 
-		//알림
+		//결제정보 알림 insert
 //		mypageService.insertDingdong();
 		
 		
 		return "oneday/oneday_result";
 		
 	}
-	
 	
 	//원데이클래스 Insert 하기
 	@PostMapping("/insert.do")

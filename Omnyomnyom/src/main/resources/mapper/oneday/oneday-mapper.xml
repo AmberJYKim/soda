@@ -163,7 +163,7 @@ order by onedayclass_no desc
 
 
 	<!-- 결제관련 작업부 시작 -->
-	<insert id="insertReservation">
+	<!-- <insert id="insertReservation">
 		insert into
 			tb_reservation
 		values (
@@ -173,11 +173,11 @@ order by onedayclass_no desc
 			#{onedayclassNo},
 			default,
 			#{personnel},
-			default
+			default,
 			#{resPrice}
 			)
 	</insert>
-
+ -->
 	<!-- 결제관련 작업부 종료 -->
 
 
