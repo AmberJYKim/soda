@@ -88,7 +88,7 @@ public class OnedayDAOImpl implements OnedayDAO{
 	}
 
 	@Override
-	public List<Reservation> selectAllReservationList(String memberId) {
+	public List<ReservationRequest> selectAllReservationList(String memberId) {
 		return sqlSession.selectList("oneday.selectAllReservationList", memberId);
 	}
 

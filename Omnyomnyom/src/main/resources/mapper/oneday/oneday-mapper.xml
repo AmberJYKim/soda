@@ -184,9 +184,33 @@ values(
 </select>
 
 
+<select id="selectAllReservationList" resultMap="ReservationListMap">
+	select
+		od.oneday_name,
+		odct.ONEDAYTIME_DATE, 
+		res.PERSONNEL, 
+		res.cancel_check, 
+		res.regdate,
+		od.oneday_price*res.personnel,
+		od.oneday_price
+	from
+		tb_onedayclass od left join tb_onedayclasstime odct on od.onedayclass_no = odct.onedayclass_no
+                          left join tb_reservation res on odct.onedayclass_no = res.onedayclass_no
+	where
+		od.member_id = #{memberId}
 
 
+</select>
 
+<resultMap id="ReservationListMap" type="ReservationRequest">
+	<result column="member_id" property="reserMemberId"/>
+	<result column="oneday_name" property="onedayClassName"/>
+	<result column="onedaytime_date" property="regDate"/>
+	<result column="PERSONNEL" property="personnel"/>
+	<result column="cancel_check" property="cancel"/>
+	<result column="od.oneday_price*res.personnel" property="totalPrice"/>
+	<result column="oneday_price" property="price"/>
+</resultMap>
 
 
 

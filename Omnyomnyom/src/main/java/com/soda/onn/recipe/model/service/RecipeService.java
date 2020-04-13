@@ -17,6 +17,8 @@ import com.soda.onn.recipe.model.vo.RecipeReply;
 
 public interface RecipeService {
 
+	String selectChefProfile(String chefId);
+
 	int recipeUpdate(Recipe recipe, List<RecipeIngredient> ingredientList);
 
 	int deleteRecipe(int recipeNo);

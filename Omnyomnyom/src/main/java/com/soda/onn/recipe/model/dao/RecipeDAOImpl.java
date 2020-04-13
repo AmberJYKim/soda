@@ -29,6 +29,11 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	private SqlSessionTemplate sqlSession;
 
 	@Override
+	public String selectChefProfile(String chefId) {
+		return sqlSession.selectOne("recipe.selectChefProfile",chefId);
+	}
+
+	@Override
 	public int recipeUpdate(Recipe recipe) {
 		return sqlSession.update("recipe.recipeUpdate", recipe);
 	}
