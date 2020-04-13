@@ -79,40 +79,74 @@ public class AdminController {
 	}
 	
 	//셰프신청목록
-	@GetMapping("/chefRequestList")
-	public ModelAndView chefRequestList(@RequestParam(value="cPage", defaultValue="1") int cPage, 
-										HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView();
-		
-		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
-		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
-		int pageEnd = pageStart+PAGEBARSIZE-1;
-		int totalCount = chefService.selectChefRequestListCnt();
-		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
-		String url = request.getRequestURL().toString();
-		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		@GetMapping("/chefRequestList")
+		public ModelAndView chefRequestList(@RequestParam(value="cPage", defaultValue="1") int cPage, 
+											HttpServletRequest request) {
+			ModelAndView mav = new ModelAndView();
+			
+			rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
+			int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+			int pageEnd = pageStart+PAGEBARSIZE-1;
+			int totalCount = chefService.selectChefRequestListCnt();
+			int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+			String url = request.getRequestURL().toString();
+			String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
 
+			
+			List<ChefRequest> chefRequestList = chefService.selectChefRequestList(rowBounds); 
+			
+			log.debug("chefRequestList={}",chefRequestList);
+			mav.addObject("paging", paging);
+			mav.addObject("chefRequestList", chefRequestList);
+			mav.setViewName("admin/chefRequestList");
+			
+			return mav;
+		}
 		
-		List<ChefRequest> chefRequestList = chefService.selectChefRequestList(rowBounds); 
-		mav.addObject("paging", paging);
-		mav.addObject("chefRequestList", chefRequestList);
-		mav.setViewName("admin/chefRequestList");
+		@GetMapping("/{memberId}/chefRequestView")
+		public ModelAndView chefRequestView(@PathVariable(value="memberId")String memberId,
+											ModelAndView mav) {
+			
+			ChefRequest chefRequest = chefService.selectChefRequest(memberId);
+			log.debug("chefRequest@goView={}",chefRequest);
+			
+		    Gson gson = new Gson();
+		    Map<String,String> snsMap = gson.fromJson(chefRequest.getSns(),  new TypeToken<Map<String,String>>(){}.getType());
+		    List<Map<String,String>> categoryList = gson.fromJson(chefRequest.getMenuPrCategory(),  new TypeToken<List<Map<String,String>>>(){}.getType());
+		    log.debug("snsMap={}",snsMap);
+		    log.debug("categoryListMap={}",categoryList);
+		    
+		    
+		    String categoryStr = "";
+		    for(int i=0; i<categoryList.size(); i++) {
+		    	String category = (categoryList.get(i)).get("value");
+		    	categoryStr += ","+category;
+		    }
+		    mav.addObject("chefRequest", chefRequest);
+		    mav.addObject("snsMap", snsMap);
+		    mav.addObject("categoryStr", categoryStr);
+			mav.setViewName("/admin/chefRequestView");
+			return mav;
+		}
 		
-		return mav;
-	}
-	@PostMapping("/chefRequest")
-	public String chefRequest(@RequestParam("variable") String variable,
-							  @RequestParam("chefId") String chefId) {
-		log.debug("셰프신청 수락여부 결정 진행중");
-		log.debug("chefId={}",chefId);
-		log.debug("variable={}",variable);
-		Map<String, String> chefReq = new HashMap<>();
-		chefReq.put("chefId",chefId);
-		chefReq.put("variable",variable);
-		int result = chefService.chefRequestUpdate(chefReq);
-		log.debug("result={}",result);
-		return "redirect:/admin/chefRequestList";
-	}
+		@PostMapping("/chefRequest")
+		public String chefRequest(@RequestParam("variable") String variable,
+								  @RequestParam("chefId") String chefId) {
+			log.debug("셰프신청 수락여부 결정 진행중");
+			log.debug("chefId={}",chefId);
+			log.debug("variable={}",variable);
+			Map<String, String> chefReq = new HashMap<>();
+			chefReq.put("chefId",chefId);
+			chefReq.put("variable",variable);
+			
+			
+			ChefRequest chefreq = chefService.selectChefRequest(chefId);
+			chefreq.setChefReqOk(variable);
+			
+			int result1 = chefService.chefRequestUpdate(chefreq);
+			log.debug("result1={}",result1);
+			return "redirect:/admin/chefRequestList";
+		}
 
 	//신고목록
 	@GetMapping("/reportList")
