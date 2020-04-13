@@ -193,7 +193,7 @@ public class AdminController {
 		
 		List<Report> list = recipeService.selectReportList();
 		
-		if(dingdongNo == -1) {
+		if(dingdongNo != -1) {
 			int result = mypageService.dingdongUpdate(dingdongNo);
 		}
 		ModelAndView mav = new ModelAndView();

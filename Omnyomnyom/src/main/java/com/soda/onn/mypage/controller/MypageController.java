@@ -97,7 +97,7 @@ public class MypageController {
 						Model model) {
 		System.out.println("buyList 메소드입니다");
 		
-		if(dingdongNo == -1) {
+		if(dingdongNo != -1) {
 			int result = mypageService.dingdongUpdate(dingdongNo);
 		}
 		Member member = (Member)session.getAttribute("memberLoggedIn");
@@ -130,7 +130,7 @@ public class MypageController {
 		
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
-		if(dingdongNo == -1) {
+		if(dingdongNo != -1) {
 			int result = mypageService.dingdongUpdate(dingdongNo);
 		}
 		
