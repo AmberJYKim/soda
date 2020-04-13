@@ -21,40 +21,42 @@
 <!-----------------------------------------출력 구간---------------------------------------------------------------->
 					<c:if test="${chefRequestList != null}" >
 					<c:forEach items="${chefRequestList}" var="chefRequest">
-						<div class="col-12 row" id="${chefRequest.chefId}">
+						<div class="col-12 row " id="${chefRequest.chefId}">
 							<div class="col-2">
 								<!-- <img src="1508_008.jpg" alt="" class="chef_list_img"> -->
- 								<img src="${pageContext.request.contextPath}/resources/images/upload/profile/${chefRequest.chefProfile}" alt="${chefRequest.chefId}" class="chef_list_img">
+ 								<img src="${pageContext.request.contextPath}/resources/upload/profile/${chefRequest.chefProfile}" alt="${chefRequest.chefId}" class="chefRstView chef_list_img">
 							</div>
 							<div class="col-4">
 								<p>닉네임 : ${chefRequest.chefNickName}</p>
 								<p>아이디 : ${chefRequest.chefId}</p> 
-								<%-- <p>이메일 : ${chefRequest.email }</p> --%>
 							</div>
 	
 							<div class="col-4">
-								<%-- <p>연락처 : ${chefRequest.email }</p> --%>
 								<p>대표 장르 : <jstr>${chefRequest.menuPrCategory}</jstr></p>
-								<p>대표 채널/영상 : <a href="${chefRequest.chefApVideo }">링크</a> </p>
+								<p>대표 채널/영상 : <a href="${chefRequest.chefApVideo}">링크</a> </p>
 							</div>
 							<c:choose>
 								<c:when test="${chefRequest.chefReqOk eq 'W'}">
 									<div class="col chef_list_chek_btn ">
-										<img src="${pageContext.request.contextPath }/resources/images/icons/chek.png" alt="" class="ac_ok_btn">
+									<span class="material-icons ac_ok_btn" style="color:#4949e7">check_circle</span>
+										<%-- <img src="${pageContext.request.contextPath }/resources/images/icons/chek.png" alt="" class="ac_ok_btn"> --%>
 									</div>
 									<div class="col chef_list_chek_btn ">
 										<!-- &nbsp;&nbsp;&nbsp;&nbsp; -->
-										<img src="${pageContext.request.contextPath }/resources/images/icons/cc.png" alt="" class="ac_no_btn">
+										<span class="material-icons ac_no_btn" style="color:#e73822">check_circle_outline</span>
+										<%-- <img src="${pageContext.request.contextPath }/resources/images/icons/cc.png" alt="" class="ac_no_btn"> --%>
 									</div>
 								</c:when>
 								<c:when test="${chefRequest.chefReqOk eq 'Y'}">
 									<div class="col chef_list_chek_btn ">
-										<img src="${pageContext.request.contextPath }/resources/images/icons/chek.png" alt="" class="ac_btn">
+										<span class="material-icons" style="color:#4949e7">check_circle</span>
+										<%-- <img src="${pageContext.request.contextPath }/resources/images/icons/chek.png" alt="" class="ac_btn"> --%>
 									</div>
 								</c:when>
 								<c:otherwise>
 									<div class="col-1 chef_list_chek_btn ">
-										<img src="${pageContext.request.contextPath }/resources/images/icons/cc.png" alt="" class="ac_btn">
+									<span class="material-icons" style="color:#e73822">check_circle_outline</span>
+										<%-- <img src="${pageContext.request.contextPath }/resources/images/icons/cc.png" alt="" class="ac_btn"> --%>
 									</div>
 								</c:otherwise>
 							</c:choose>
@@ -79,6 +81,12 @@
 							$("#variable").val("N");
 							$("#chefId").val($(this).parent().parent().attr('id'));
 							$("#request_put").submit();
+						});
+						
+						$(".chefRstView").on("click",function(){
+							let memberId = $(this).attr("id");
+							console.log(memberId);
+							location.href = "${pageContext.request.contextPath }/admin/"+memberId+"/chefRequestView";
 						});
 					});
 					</script>

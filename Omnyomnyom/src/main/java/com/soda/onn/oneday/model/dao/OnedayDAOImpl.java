@@ -38,7 +38,6 @@ public class OnedayDAOImpl implements OnedayDAO{
 	}
 	@Override
 	public int insertTime(OnedayTime onedayTime) {
-		// TODO Auto-generated method stub
 		return sqlSession.insert("oneday.insertTime", onedayTime);
 	}
 	
@@ -65,32 +64,51 @@ public class OnedayDAOImpl implements OnedayDAO{
 
 	@Override
 	public List<OnedayTime> selectTimeList(int onedayclassNo) {
-		// TODO Auto-generated method stub
 		return sqlSession.selectList("oneday.selectTimeList", onedayclassNo);
 	}
 
 	@Override
 	public List<Oneday> selectDateList(Map<String, String> sec) {
-		// TODO Auto-generated method stub
 		return sqlSession.selectList("oneday.selectDateList", sec);
 	}
 
 	@Override
 	public List<OnedayTime> detailTime(int onedayclassNo) {
-		// TODO Auto-generated method stub
 		return sqlSession.selectList("oneday.detailTime", onedayclassNo);
 	}
 
 	@Override
 	public int insertReservation(ReservationRequest reservationrequest) {
-		// TODO Auto-generated method stub
 		return sqlSession.insert("oneday.insertReservation", reservationrequest);
 	}
 
 	@Override
 	public int classUpdate(Oneday oneday) {
-		// TODO Auto-generated method stub
 		return sqlSession.update("oneday.classUpdate", oneday);
+	}
+
+	@Override
+	public List<Reservation> selectAllReservationList(String memberId) {
+		return sqlSession.selectList("oneday.selectAllReservationList", memberId);
+	}
+
+
+	@Override
+	public int insertReview(OnedayReview onedayReview) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("oneday.insertReview", onedayReview);
+	}
+
+	@Override
+	public List<OnedayReview> selectReviewList(int onedayclassNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("oneday.selectReviewList", onedayclassNo);
+	}
+
+	@Override
+	public List<Oneday> selectAll() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("oneday.selectAll");
 	}
 
 

@@ -30,6 +30,13 @@ tb_onedayclass
 where onedayclass_no = #{onedayclassNo}
 </select>
 
+<select id="selectAll" resultType="Oneday">
+select*from
+tb_onedayclass
+order by onedayclass_no desc
+</select>
+
+
 
 <select id="selectOnedayReviewList" resultType="onedayReview">
 	select
@@ -102,11 +109,8 @@ and detailed_addr like '%${detailedAddr}%'
 and oneday_name like '%${onedayName}%'
 </if>
 <!-- 일정부분 뽑는 것  -->
-<!-- <if test="onedayTimeDate != ''">
-and onedayclass_no = (select oct.onedayclass_no from 
-						tb_onedayclasstime oct where oct.onedayclass_no = oc.onedayclass_no 
-						and 
-						TRUNC(onedaytime_date) = #{onedayTimeDate})
+<!-- <if test="onedayTimeDate != null">
+
 </if> -->
 
 </where>
@@ -158,8 +162,26 @@ order by onedayclass_no desc
 	where onedayclass_No = #{onedayclassNo}
 </update>
 
+<insert id="insertReview">
+insert into 
+tb_oneday_review
+values(
+	seq_review.nextval,
+	#{memberId},
+	#{onedayclassNo},
+	#{reviewContent},
+	#{reviewImg},
+	sysdate,
+	#{reviewScore},
+	#{reviewTitle}
+)
+</insert>
 
-
+<select id="selectReviewList" resultType="OnedayReview">
+	select*from 
+		tb_oneday_review
+		where onedayclass_No = #{onedayclassNo}
+</select>
 
 
 	<!-- 결제관련 작업부 시작 -->

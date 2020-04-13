@@ -134,6 +134,8 @@
 					}
 			});
 		}
+			
+		
 	});				
 	</script>
 	
@@ -275,29 +277,7 @@
                     </div>
                 </div>
                 <!-- 로그	인/회원가입 form end-->
-                <script>
-                $("#signIn").click(function(){
-                	if($("#loginId")=''){
-                		return;
-                	}
-                	
-                	let memberId = $("#loginId").val();
-                	console.log(memberId);
-                	$.ajax({
-                		url:"${pageContext.request.contextPath}/member/dingDong",
-                		data:{"memberId":memberId},
-                		method:"POST",
-                		datatype:"json",
-                		success:data =>{
-                			
-                			$(".toast-header").empty();
-                			
-                			
-                		}
-                		
-                	});
-                });
-                </script>
+              
                </c:if>
             </div>
             <div class="container">
@@ -340,13 +320,13 @@
 						<a href="#" class="infor-logo">
 							<img src="img/user.png" alt="">
 						</a>
-						<p><a href="${pageContext.request.contextPath }/mypage/adminMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+						<p><a href="${pageContext.request.contextPath }/admin/adminMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
 					</c:when>
 					<c:when test="${memberLoggedIn.memberRoll eq 'C' }">
 						<a href="#" class="infor-logo">
 							<img src="img/user.png" alt="">
 						</a>
-						<p><a href="${pageContext.request.contextPath }/mypage/chefMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+						<p><a href="${pageContext.request.contextPath }/chef/chefMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
 					</c:when>
 					<c:otherwise>
 						<a href="#" class="infor-logo">
@@ -358,6 +338,7 @@
 
 				<!-- 바로가기기능 -->
 				<div class="insta-imgs">
+				<input type="hidden" value="${memberLoggedIn.memberId }" id="loggedMemberId">
 							<!-- 유저 등급에 따른 리모컨 분기처리 -->
 					<c:choose>
 						<c:when test="${memberLoggedIn.memberRoll eq 'A' }">
@@ -489,7 +470,7 @@
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath}/mypage/scrapList">
+									<a href="${pageContext.request.contextPath}/chef/chefscrapList">
 										<p>스크랩 목록</p>
 									</a>
 									</div>
@@ -501,7 +482,7 @@
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/mypage/onedayList">
+										<a href="${pageContext.request.contextPath }/chef/onedayList">
 											<p>예약현황</p>
 										</a>
 										</div>
@@ -539,7 +520,7 @@
 				<!-- 알림창 -->
 				
 					<p>알리미</p>
-				
+				 
 						<div class="toast-header">
 						  <span class="material-icons">sms</span>
 						  <strong class="mr-auto">새로운 알림이 있습니다!</strong>
@@ -548,22 +529,51 @@
 							<span aria-hidden="true">&times;</span>
 						  </button>
 						</div>
-						<div class="toast-body">
-						  Hello, world! This is a toast message.
-						</div>
-				
+						<c:if test="${paging != null }">
+							${paging}
+						</c:if>
+						
+				 
 				<script>
 				$('#myToast').on('hidden.bs.toast', function () {
 				// do something...
-				})
+				});
+				
+				$(".infor-switch").click(function(){
+					
+					$(".toast-header").empty();
+	            	 $.ajax({
+							url:"${pageContext.request.contextPath}/mypage/dingDongList?cPage=1",
+							method:"GET",
+							datatype:"json",
+							success: data => {
+								
+								console.log(data);
+								
+								$.each(data.dingList,function(index,item){
+									
+									let p ='<span class="material-icons">sms</span>'+
+									'<strong class="mr-auto">'+item.dingdongContent+'</strong>'+
+									 '<small>'+item.dingRegDate+'</small>'+
+									 '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">'+
+									  '<span aria-hidden="true">&times;</span>';
+									  
+									 $(".toast-header").append(p);
+								});
+								
+								    $(".tost-header").after(data.paging);
+								
+							},
+							error : (x,s,e) =>{
+								console.log(x,s,e);
+							}
+							
+						 });
+				 });
+
 				</script>  
 
-				<div class="insta-social">
-					<a href="#"><i class="fa fa-linkedin"></i></a>
-					<a href="#"><i class="fa fa-twitter"></i></a>
-					<a href="#"><i class="fa fa-instagram"></i></a>
-					<a href="#"><i class="fa fa-facebook"></i></a>
-				</div>
+			
 			</div>
 		</div>
 	</div>

@@ -9,51 +9,8 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
 <jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
 </jsp:include>
-<style>
-.classes-info{
- margin-top : 53px;
-}
-h2{
- margin-top : 20px;
- margin-bottom : 20px;
-}
-.class-map, .class-map p{
- margin-top : 30px;
- color: #f65d5d;
-}
-.site-btn{
-	margin-top : 20px;
-}
-.mapser{
-	margin-bottom: 25px;
-}
-.circle-select{
-	display: block;
-}
-.onedayprice{
-	font-weight: bold;
-	font-size: 28px;
-	line-height: 30px;
-	letter-spacing: -0.5px;
-	word-break: break-all;
-	color: #4949E7;
 
-}
-.onedayprice{
-	margin-bottom : 20px;
-}
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
--webkit-appearance: none;
-margin: 0;
-}
-
-
-</style>
-<%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/datepicker.min.css" />
-    <script src="${pageContext.request.contextPath}/resources/js/datepicker.kr.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/datepicker.min.js"></script> --%>
-<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/oneday_detail.css" />
 <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxef268e11d2dc431a8ad959b54870e233"></script>
 <script type="text/javascript">
 
@@ -163,60 +120,63 @@ function initTmap(){
                     <div class="event-details">
                       ${oneday.onedayContent}
                     </div>
- 
-                    <h3 class="comment-title">Comments</h3>
-                    <ul class="comment-list">
-                        <li>
-                            <img src="img/classes/author/3.jpg" class="comment-pic" alt="">
-                            <div class="comment-text">
-                                <h3>Beverly Price </h3>
-                                <div class="comment-date"><i class="material-icons">alarm_on</i>June 28, 2019 at 3:18 pm</div>
-                                <p>Just practicing yoga for more than 3 months, I dropped from 64 kg to 58 kg. I have used many weight loss measures such as medication, diet, but the effects are slow and low. </p>
-                                <a href="#" class="reply"><i class="material-icons">reply</i>Reply</a>
-                            </div>
-                            <ul class="comment-sub-list">
-                                <li>
-                                    <img src="img/classes/author/2.jpg" class="comment-pic" alt="">
-                                    <div class="comment-text">
-                                        <h3>Jacqueline Watkins</h3>
-                                        <div class="comment-date"><i class="material-icons">alarm_on</i>June 28, 2019 at 3:18 pm</div>
-                                        <p>Just practicing yoga for more than 3 months, I dropped from 64 kg to 58 kg. I have used many weight loss measures such as medication, diet, but the effects are slow and low. </p>
-                                        <a href="#" class="reply"><i class="material-icons">reply</i>Reply</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <img src="img/classes/author/1.jpg" class="comment-pic" alt="">
-                            <div class="comment-text">
-                                <h3>Lori Gonzales</h3>
-                                <div class="comment-date"><i class="material-icons">alarm_on</i>June 28, 2019 at 3:18 pm</div>
-                                <p>Just practicing yoga for more than 3 months, I dropped from 64 kg to 58 kg. I have used many weight loss measures such as medication, diet, but the effects are slow and low. </p>
-                                <a href="#" class="reply"><i class="material-icons">reply</i>Reply</a>
-                            </div>
-                        </li>
-                    </ul>
-                    
-                    <form class="singup-form">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" placeholder="First Name">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" placeholder="Last Name">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" placeholder="Your Email">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" placeholder="Phone Number">
-                            </div>
-                            <div class="col-md-12">
-                                <textarea placeholder="Message"></textarea>
-                                <a href="#" class="site-btn sb-gradient">Send message</a>
-                            </div>
-                        </div>
-                    </form>
+                    <hr />
+                   
+                    <input type="button" id="btn_review" class="site-btn sb-gradient reservation_class classReview" value="Review Write">
+                   <script>
+                   $(document).ready(function(){
+                	  
+                	   $("#btn_review").on('click', function(){
+                		   
+                		  
+                		   location.replace('${pageContext.request.contextPath}/oneday/class_reviewWrite_go?onedayclassNo=${oneday.onedayclassNo}');
+                		   
+                	   });
+                	   
+                   });
+					
+                   </script>
+                   
+                   
+                   <div class="col-lg-12">
+                   <table class="fold-table table table-hover">
+					  <thead>
+					    <tr>
+					      <th scope="col">No.</th>
+					      <th scope="col">작성자</th>
+					      <th scope="col">제목</th>
+					      <th scope="col">평점</th>
+					      <th scope="col">등록일</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+                   <c:forEach items="${ReviewList }" var="review">
+					    <tr class="view">
+					      <th scope="row">${review.reviewNo }</th>
+					      <td>${review.memberId }</td>
+					      <td>${review.reviewTitle }</td>
+					      <td>${review.reviewScore }</td>
+					      <td>${review.regDate }</td>
+					    </tr>
+					    <tr class="fold">
+					    	<td colspan="4">
+					    		<div class="fold-content">
+					    			${review.reviewContent}
+					    		</div>
+					    	</td>
+					    </tr>
+					</c:forEach>
+					  </tbody>
+					</table>
+					<script>
+					$(function(){
+						  $(".fold-table tr.view").on("click", function(){
+						    $(this).toggleClass("open").next(".fold").toggleClass("open");
+						  });
+						});
+					</script>
+                   </div>
+                   
                 </div>
                 <!-- 사이드부분 -->
                 <div class="col-lg-5 col-md-5 col-sm-8 sidebar">
@@ -225,7 +185,7 @@ function initTmap(){
                             <h2>${oneday.onedayName }</h2>
                             <p>${oneday.memberId }</p>
                             <!-- 예약할 시 필요한 no -->
-                            <input type="number" name="onedayclassNo" style="display: none" value="${oneday.onedayclassNo}"/>
+                            <input type="number" id="onedayclassNo" name="onedayclassNo" style="display: none" value="${oneday.onedayclassNo}"/>
                             <h4 id="price" class="onedayprice"><fmt:formatNumber value="${oneday.onedayPrice }" pattern="#,###"/></h4>
                             <ul>
                                 <li><i class="material-icons">alarm_on</i>클래스 소요시간 : ${oneday.onedayTime}시간</li>

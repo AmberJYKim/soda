@@ -8,15 +8,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
+import org.mortbay.jetty.servlet.AbstractSessionManager.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.common.base.PageBar;
@@ -55,20 +58,14 @@ public class MypageController {
 	final int NUMPERPAGE = 15;
 	final int PAGEBARSIZE = 10;
 	
+	final int DINGNUMPERPAGE = 5;
+	final int DINGPAGEBARSIZE = 10;
+	
 	private RowBounds rowBounds = null;
 
 	@GetMapping("/main")
 	public void mypageMain() {
 		log.debug("일반 유저 마이페이지 메인 첫 화면 입니다");
-	}
-	
-	@GetMapping("/chefMain")
-	public void mypagechefMain() {
-		log.debug("셰프 마이페이지 메인 첫 화면 입니다");
-	}
-	@GetMapping("/adminMain")
-	public void mypageadminMain() {
-		log.debug("관ㄹ지ㅏ 마이페이지 메인 첫 화면 입니다");
 	}
 		
 	@GetMapping("/updateinfo")
@@ -92,14 +89,20 @@ public class MypageController {
 		return "redirect:/mypage/main";
 	}
 	
-	
+	//일반 유저의 구매목록들
 	@GetMapping("/buyList")
 	public void buyList(HttpSession session, Model model) {
-		String memberId = (String) session.getAttribute("");
+		System.out.println("buyList 메소드입니다");
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		
 		List<BuyHistory> buyList = mallService.selectBuyList(memberId);
 		log.debug("buyList={}",buyList);
 		model.addAttribute("buyList", buyList);
 	}
+	
+	
 	
 	@GetMapping("/chefRequest")
 	public void chefRequest(HttpSession session, Model model) {
@@ -127,6 +130,8 @@ public class MypageController {
 	public void qnaMsg() {
 		
 	}
+
+	
 	
 	//일반유저 스크랩 목록
 	@GetMapping("/scrapList")
@@ -196,22 +201,39 @@ public class MypageController {
 		return "redirect:/mypage/scrapList";
 	}
 	
+	
+	
 	//알림 목록
-	@GetMapping("/dingdongList")
-	public ModelAndView dingdongList(HttpSession session) {
-		ModelAndView mav = new ModelAndView();
+	@GetMapping("/dingDongList")
+	@ResponseBody
+	public Map dingdongList(@RequestParam(value="cPage", defaultValue="1") int cPage,
+							 HttpSession session,
+			 				        HttpServletRequest request) {
+	
 		
-		Member userId = (Member)session.getAttribute("memberLoggedIn");
-		String memberId = userId.getMemberId();
-		System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId=  member.getMemberId();
+		log.debug("cPage={}",cPage);
+		int pageStart = ((cPage - 1)/DINGPAGEBARSIZE) * DINGPAGEBARSIZE +1;
+		int pageEnd = pageStart+PAGEBARSIZE-1;
 		
-		List<DingDong> list = mypageService.selectDingList(memberId);
-		System.out.println("여기는 알림목록  = "+list);
+		rowBounds = new RowBounds((cPage-1)*DINGNUMPERPAGE, DINGNUMPERPAGE);
+		int totalCount = memberService.selectMemberListCnt();
+		int totalPage =  (int)Math.ceil((double)totalCount/DINGNUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
 		
-		mav.addObject("list", list);
-		mav.setViewName("/mypage/dingdongList");
+
+		List<DingDong> dingList = mypageService.selectDingList(memberId);
+		log.debug("dingList={}",dingList);
+		log.debug("paging={}",paging);
+
 		
-		return mav;
+		Map map =new HashMap();
+		
+		map.put("dingList", dingList);
+		map.put("paging",paging);
+		return map;
 	}
 	
 	@GetMapping("/directMsg")
