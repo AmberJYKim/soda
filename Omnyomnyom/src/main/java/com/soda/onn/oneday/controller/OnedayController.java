@@ -2,10 +2,6 @@ package com.soda.onn.oneday.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,27 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.mortbay.log.Log;
+import org.omg.CORBA.OMGVMCID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.gson.Gson;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.common.util.Utils;
@@ -44,6 +33,7 @@ import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Attachment;
 import com.soda.onn.oneday.model.vo.Oneday;
+import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.OnedayTime;
 import com.soda.onn.oneday.model.vo.Reservation;
 import com.soda.onn.oneday.model.vo.ReservationRequest;
@@ -196,9 +186,17 @@ public class OnedayController {
 	}
 	
 //	클래스 검색 결과뷰 로 이동 
-	@GetMapping("/oneday_search")
-	public void search() {
+	@GetMapping("/oneday_All")
+	public ModelAndView search(ModelAndView mav) {
 		log.debug("oneday_search @ ondayController = 원데이클래스 검색!");
+		log.debug("oneday_search @ ondayController = 전체목록 조회!");
+		
+		List<Oneday> selectAllList = onedayService.selectAll();
+		
+		log.debug("selectAllList={}", selectAllList);
+		
+		
+		return mav.addObject("selectAllList", selectAllList);
 	}
 	
 //	클래스 검색
@@ -239,10 +237,11 @@ public class OnedayController {
 		
 		List<OnedayTime> list = onedayService.selectTimeList(onedayclassNo);
 		
+		List<OnedayReview> ReviewList = onedayService.selectReviewList(onedayclassNo);
 		
 		log.debug("list={}", list);
 
-		
+		model.addAttribute("ReviewList", ReviewList);
 		model.addAttribute("oneday", oneday);
 		model.addAttribute("list", list);
 	}
@@ -381,34 +380,57 @@ public class OnedayController {
 		mav.addObject("memberNickName", memberNickName);
 		mav.addObject("memberId", memberId);
 		mav.addObject("onedayTimeM", onedayTimeM);
-		mav.setViewName("redirect:/");
+		mav.setViewName("redirect:/oneday/oneday_detail?onedayclassNo="+oneday.getOnedayclassNo());
 		
 		return mav;
 	}
 	
-
+	@GetMapping("class_reviewWrite_go")
+	public ModelAndView ReiveWrite( @ModelAttribute ModelAndView mav,
+													HttpSession session,
+									@RequestParam(value="onedayclassNo") int onedayclassNo) {
+		String memberId = ((Member) session.getAttribute("memberLoggedIn")).getMemberId();
+		log.debug("reviewWrite@ Controller= 리뷰작성페이지로 이동합니다.");
+		log.debug("reivewWrite@onedayclassNo ="+ onedayclassNo);
+		log.debug("reivewWrite@memberId ="+ memberId);
+		
+		
+		
+		mav.addObject("onedayclassNo", onedayclassNo);
+		return mav;
+	}
+	
+	
+	
+	@PostMapping("reviewWrite")
+	public ModelAndView ReviewWrite(@ModelAttribute OnedayReview onedayReview, 
+									@ModelAttribute ReservationRequest reservationRequest,
+									ModelAndView mav, 
+									HttpSession session,
+									RedirectAttributes redirectAttributes,
+									@RequestParam(value="onedayclassNo") int onedayclassNo
+									
+									) {
+		String memberId = ((Member) session.getAttribute("memberLoggedIn")).getMemberId();
+		
+		log.debug("reviewWrite @ memberId = "+memberId);
+		log.debug("reviewWrite @ onedayclassNo = " + onedayclassNo);
+		
+		
+		
+		int result = onedayService.insertReview(onedayReview);
+		
+		log.debug("controller@onedayReview={}", onedayReview);
+		
+		String msg="";
+		redirectAttributes.addFlashAttribute("msg",result>0?"후기 등록완료!":"후기 등록실패!");
+		
+		mav.addObject("memberId", memberId);
+		mav.setViewName("redirect:/oneday/oneday_detail?onedayclassNo="+onedayclassNo);
+		return mav;
+	}
 	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

@@ -44,8 +44,14 @@
 		*
 	from
 		tb_dingdong
-	where 
-		member_id = #{dingMemberId}
+	<where>
+		<if test="memberId != null">
+		And member_id = #{memberId}
+		</if>
+		<if test="read != null">
+		And read = #{read}
+		</if>
+	</where> 
 </select>
 
 <resultMap id="dingMap" type="dingdong">

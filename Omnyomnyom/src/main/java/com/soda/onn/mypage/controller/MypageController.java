@@ -212,14 +212,18 @@ public class MypageController {
 				String memberId = userId.getMemberId();
 				System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
 				
-				List<DingDong> list = mypageService.selectDingList(memberId);
-				System.out.println("여기는 알림목록 = "+list);
+				Map<String,String> map =   new HashMap<String, String>();
+				map.put("memberId", memberId);
+				
+				List<DingDong> list = mypageService.selectDingList(map);
+				System.out.println("여기는 알림목록  = "+list);
 				
 				mav.addObject("list", list);
 				mav.setViewName("/mypage/dingdongList");
 				
 				return mav;
 			}
+		
 		
 	///////////// 헤더 알림 - 김소현 영역 ///////////////////
 		//알림 목록

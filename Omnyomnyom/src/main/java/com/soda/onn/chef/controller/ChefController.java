@@ -167,7 +167,10 @@ public class ChefController {
 		String memberId = userId.getMemberId();
 		System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
 		
-		List<DingDong> list = mypageService.selectDingList(memberId);
+		Map<String,String> map =   new HashMap<String, String>();
+		map.put("memberId", memberId);
+		
+		List<DingDong> list = mypageService.selectDingList(map);
 		System.out.println("여기는 알림목록  = "+list);
 		
 		mav.addObject("list", list);
