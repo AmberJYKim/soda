@@ -151,6 +151,7 @@ public class OnedayServiceImpl implements OnedayService {
 	}
 
 
+
 	@Override
 	public List<ReservationRequest> selectAllReservationList(String memberId) {
 		return onedayDAO.selectAllReservationList(memberId);
@@ -158,15 +159,20 @@ public class OnedayServiceImpl implements OnedayService {
 
 
 
+//	---akim
+
+	@Override
+	public OnedayTime selectOnedayTimeOne(int onedayTimeNo) {
+		return onedayDAO.selectOnedayTimeOne(onedayTimeNo);
+	}
 
 
+	@Override
+	public int checkVacancy(Map<String, Integer> maps) {
+		return onedayDAO.checkVacancy(maps);
+	}
 
 
-
-
-
-
-
-	
-	
 }
+
+

@@ -67,4 +67,15 @@
 	<result column="member_id" property="dingMemberId"/>
 </resultMap>
 
+
+	<insert id="insertPayDing">
+		insert into tb_dingdong 
+			values(seq_dingdong.nextval, #{dingMemberId}, #{dingdongContent}, #{dingdongLink},
+					default, default)
+					
+			<selectKey keyProperty="dingdongNo" resultType="_int" order="AFTER">
+				select seq_dingdong.currval from dual
+			</selectKey>		
+	</insert>
+
 </mapper>

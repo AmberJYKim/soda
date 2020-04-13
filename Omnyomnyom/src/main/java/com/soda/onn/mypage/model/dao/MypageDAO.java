@@ -20,5 +20,7 @@ public interface MypageDAO {
 
 	int dingdongUpdate(int dingdongNo);
 
+	int insertPayDing(DingDong dd);
+
 
 }

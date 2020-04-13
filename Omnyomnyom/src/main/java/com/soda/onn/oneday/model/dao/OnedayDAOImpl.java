@@ -111,6 +111,18 @@ public class OnedayDAOImpl implements OnedayDAO{
 		return sqlSession.selectList("oneday.selectAll");
 	}
 
+//	---akim
+	
+	@Override
+	public OnedayTime selectOnedayTimeOne(int onedayTimeNo) {
+		return sqlSession.selectOne("oneday.selectOnedayOne", onedayTimeNo);
+	}
+
+	@Override
+	public int checkVacancy(Map<String, Integer> maps) {
+		return sqlSession.selectOne("oneday.checkVacancy", maps);
+	}
+
 
 
 

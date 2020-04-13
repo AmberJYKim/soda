@@ -42,6 +42,12 @@ public interface OnedayService {
 	List<Oneday> selectAll();
 	
 	List<ReservationRequest> selectAllReservationList(String memberId);
+	
+//	---akim
+	
+	OnedayTime selectOnedayTimeOne(int onedayTimeNo);
+
+	int checkVacancy(Map<String, Integer> maps);
 
 }
 

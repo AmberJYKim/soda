@@ -32,6 +32,14 @@ public class ReservationRequest extends Reservation implements Serializable {
 	}
 
 
+	
+
+	@Override
+	public Oneday getOneday() {
+		return super.getOneday();
+	}
+
+
 
 
 	private static final long serialVersionUID = 1L;

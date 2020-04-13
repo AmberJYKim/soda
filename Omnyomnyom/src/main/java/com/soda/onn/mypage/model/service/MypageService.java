@@ -20,4 +20,6 @@ public interface MypageService {
 
 	int dingdongUpdate(int dingdongNo);
 
+	int insertPayDing(DingDong dd);
+
 }
