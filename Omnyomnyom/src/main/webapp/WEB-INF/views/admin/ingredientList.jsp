@@ -85,6 +85,7 @@
                     <div class="col-12 float-right">
                         <button type="button" class="btn btn-outline-danger">초기화</button>
                         <button type="button" class="btn btn-outline-success" id="mall-update">변경하기</button>
+                        <button type="button" class="btn btn-outline-success" id="mall-insert">추가하기</button>
                     </div>
                     <br>
 
@@ -275,7 +276,10 @@
                 $(this).addClass("active");
                 $(this).parent().siblings().find("p").removeClass("active");
             });
-        </script>
+            $("#mall-insert").click(function(){
+            	location.href="${pageContext.request.contextPath }/admin/ingredientInsert";
+            });
+          </script>
 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
