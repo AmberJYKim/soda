@@ -223,7 +223,7 @@ public class MypageController {
 		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
 		
 
-		List<DingDongList> dingList = mypageService.selectDingList(memberId);
+		List<DingDong> dingList = mypageService.selectDingList(memberId);
 		log.debug("dingList={}",dingList);
 		log.debug("paging={}",paging);
 
