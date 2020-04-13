@@ -1,5 +1,6 @@
 package com.soda.onn.chat.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +19,14 @@ public class ChatDAOImpl implements ChatDAO {
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public String findChatIdByMemberId(String memberId) {
-		return sqlSession.selectOne("chat.findChatIdByMemberId", memberId);
+	public String findChatIdByMemberId(Map<String, String> map) {
+		return sqlSession.selectOne("chat.findChatIdByMemberId", map);
+	}
+	
+	@Override
+	public List<String> findChatIdByMemberId(String memberId) {
+//		return sqlSession.selectOne("chat.findChatIdByMemberId", memberId);
+		return null;
 	}
 
 	@Override
@@ -61,6 +68,7 @@ public class ChatDAOImpl implements ChatDAO {
 	public List<Msg> findChatListByChatId(String chatId) {
 		return sqlSession.selectList("chat.findChatListByChatId", chatId);
 	}
+
 	
 
 }

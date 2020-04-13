@@ -11,12 +11,9 @@
 	<jsp:param value="1:1 문의" name="pageTitle" />
 </jsp:include>
 
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/1on1_chat.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/mypage/user-list.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/mall_delivery_info.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/1on1_chat.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/chef-list.css"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mall_delivery_info.css" />
 	
 <!-- WebSocket:sock.js CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
@@ -48,96 +45,103 @@
 	</div>
 </section>
 <!-- Event Details Section end -->
+<div class="container">
+	<div class="section">
+		<div class="row">
 
-<div class="col side_nav">
-					<p class="nav_text ">내 정보보기</p>
-					<p class="nav_text selected_nav	">스크랩목록</p>
-					<p class="nav_text ">예약목록</p>
-					<p class="nav_text ">구매목록</p>
-					<p class="nav_text">셰프 문의</p>
-					<p class="nav_text">1:1 문의</p>		
-		</div>
-
-<!-- 1:1문의 채팅 start -->
-<!-- partial:index.partial.html -->
-<div class="chat_container clearfix">
-
-
-	<div class="chat">
-		<div class="chat-header clearfix">
-			<img
-				src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg"
-				alt="avatar" />
-
-			<div class="chat-about">
-				<div class="chat-with">상대방 닉네임</div>
-				<div class="chat-num-messages">already 1 902 messages</div>
+			<div class="col-2 side_nav">
+				<a href="${pageContext.request.contextPath}/mypage/main"><p class="nav_text selected_nav">내 정보보기</p></a>
+				<a href="${pageContext.request.contextPath}/mypage/onedayList"><p class="nav_text ">예약목록</p></a>
+				<a href="${pageContext.request.contextPath}/mypage/buyList"><p class="nav_text ">구매목록</p></a>
+				<a href="${pageContext.request.contextPath}/mypage/qnaMsg"><p class="nav_text ">1:1 문의</p></a>
+				<a href="${pageContext.request.contextPath}/mypage/scrapList"><p class="nav_text">스크랩 목록</p></a>
+				<a href="${pageContext.request.contextPath}/chef/chefInsert"><p class="nav_text">셰프신청</p></a>
+				<a href="${pageContext.request.contextPath}/mypage/dingdongList"><p class="nav_text">알림목록</p></a>
 			</div>
-			<!-- <i class="fa fa-star"></i> -->
+			<div class="col-2 side_nav">
+				<p>관리자</p>
+				<c:forEach items="${chatIdList }" var="chatId">
+				<p id="${chatId }"> </p>
+				</c:forEach>				
+			</div>
+				
+
+		<!-- 1:1문의 채팅 start -->
+		<!-- partial:index.partial.html -->
+		<div class="chat_container clearfix">
+		
+		
+			<div class="chat">
+				<div class="chat-header clearfix">
+					<img
+						src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg"
+						alt="avatar" />
+		
+					<div class="chat-about">
+						<div class="chat-with">상대방 닉네임</div>
+						<div class="chat-num-messages">already 1 902 messages</div>
+					</div>
+					<!-- <i class="fa fa-star"></i> -->
+				</div>
+				<!-- end chat-header -->
+		
+				<div class="chat-history">
+					<ul id="msg-target">
+						<c:forEach items="${chatList }" var="chat" >
+							<c:if test="${chat.memberId eq memberLoggedIn.memberId }">
+								<li class="clearfix">
+									<div class="message-data align-right">
+										<span class="message-data-name"></span>
+										<i 	class="fa fa-circle me"></i>
+										&nbsp;
+										&nbsp;  
+										<span class="message-data-time">${chat.time }</span> 
+				
+									</div>
+									<div class="message other-message float-right">${chat.msg }</div>
+								</li>
+							
+							</c:if>				
+							<c:if test="${chat.memberId ne memberLoggedIn.memberId }">
+								<li>
+									<div class="message-data">
+										<span class="message-data-name"><i
+											class="fa fa-circle online"></i> ${chat.memberId }</span> <span
+											class="message-data-time">${chat.time }</span>
+									</div>
+									<div class="message my-message">${chat.msg }</div>
+								</li>
+							
+							</c:if>				
+						
+						</c:forEach>
+		
+		
+		
+					</ul>
+		
+				</div>
+				<!-- end chat-history -->
+		
+				<div class="chat-message clearfix">
+					<textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
+		
+					<i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp; <i
+						class="fa fa-file-image-o"></i>
+		
+					<button id="sendBtn">Send</button>
+		
+				</div>
+				<!-- end chat-message -->
+		
+			</div>
+			<!-- end chat -->
+		
 		</div>
-		<!-- end chat-header -->
-
-		<div class="chat-history">
-			<ul id="msg-target">
-				<li class="clearfix">
-					<div class="message-data align-right">
-						<span class="message-data-time">시간</span> &nbsp;
-						&nbsp; <span class="message-data-name">나</span> <i
-							class="fa fa-circle me"></i>
-
-					</div>
-					<div class="message other-message float-right">메세지 1</div>
-				</li>
-
-				<li>
-					<div class="message-data">
-						<span class="message-data-name"><i
-							class="fa fa-circle online"></i> 상대방</span> <span
-							class="message-data-time">시간</span>
-					</div>
-					<div class="message my-message">내용 1</div>
-				</li>
-
-				<li class="clearfix">
-					<div class="message-data align-right">
-						<span class="message-data-time">시간</span> &nbsp;
-						&nbsp; <span class="message-data-name">나</span> <i
-							class="fa fa-circle me"></i>
-
-					</div>
-					<div class="message other-message float-right">메세지 2
-					</div>
-				</li>
-
-				<li>
-					<div class="message-data">
-						<span class="message-data-name"><i
-							class="fa fa-circle online"></i> 상대방</span> <span
-							class="message-data-time">시간</span>
-					</div>
-					<div class="message my-message">내용 2</div>
-				</li>
-
-			</ul>
-
-		</div>
-		<!-- end chat-history -->
-
-		<div class="chat-message clearfix">
-			<textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
-
-			<i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp; <i
-				class="fa fa-file-image-o"></i>
-
-			<button id="sendBtn">Send</button>
-
-		</div>
-		<!-- end chat-message -->
-
 	</div>
-	<!-- end chat -->
+	</div>
 
-</div>
+</div>		
 <!-- end container -->
 <!-- partial -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js'></script>
@@ -186,10 +190,9 @@
 			}
 		}
 	})();
+
 </script>
 
-<!-- 1대1 문의 채팅 js -->
-<script src="${pageContext.request.contextPath}/resources/js/directMsg.js"></script>
 
 <!-- 사용자 chat관련 script -->
 <script src="${pageContext.request.contextPath }/resources/js/chat.js"></script>
@@ -207,7 +210,9 @@ const chatId = '${chatId}';
 */
 function chatSubscribe(){
 	//페이지별로 구독신청 처리
+	let iii = 1;
 	let connectionDone = false;
+	console.log(iii%2);
 	let intervalId = setInterval(()=>{
 		if(connectionDone == true)
 			clearInterval(intervalId);
@@ -216,15 +221,49 @@ function chatSubscribe(){
 			
 			//stomp에서는 구독개념으로 세션을 관리한다. 핸들러 메소드의 @SendTo어노테이션과 상응한다.
 			chatClient.subscribe('/chat/'+chatId, function(message) {
+
 				console.log("receive from subscribe /chat/"+chatId+":", message);
 				let messsageBody = JSON.parse(message.body);
-				console.log(messsageBody.msg);
-				$("#data").append("<li class=\"list-group-item\">"+messsageBody.memberId+" : "+messsageBody.msg+ "</li>");
+				
+				console.log('--------------------');
+				console.log(messsageBody);
+				console.log('--------------------');
+				if(iii%2 != 0){
+				if(memberId == messsageBody.memberId){
+				    $("#msg-target").append(''
+						+'<li class="clearfix">'
+						+'<div class="message-data align-right">'
+						+'<span class="message-data-time">'+dateTransform(messsageBody.time)+'</span>'
+						+'</div> <div class="message other-message float-right">'+messsageBody.msg+'</div>'
+						+'</li>'); 
+				}else{
+				    $("#msg-target").append(''
+						+'<li>'
+						+'<div class="message-data">'
+						+'<span class="message-data-name"><i class="fa fa-circle online"></i>'+messsageBody.memberId+'</span>'
+						+'<span class="message-data-time">'+dateTransform(messsageBody.time)+'</span>'
+						+'</div> <div class="message my-message">'+messsageBody.msg+'</div>'
+						+'</li>'); 
+					
+				}
 				scrollTop();
+				}
+				iii++;
 			});
 			connectionDone = true;
+			
 		}	
+		
+		
 	},1000);
+	
+}
+function dateTransform(time){
+	
+	var now = new Date(Number(time));
+	var hour = now.getHours();
+	
+	return now.getMonth() + 1 + "월 "+ now.getDate()+"일("+['일','월','화','수','목','금','토','일'][now.getDay()]+") " + (hour>=12?"오후 ":"오전 ") + hour%12+"시 "+now.getMinutes()+"분";
 }
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

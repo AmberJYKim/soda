@@ -1,8 +1,9 @@
 package com.soda.onn.chat.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpSession;
@@ -14,11 +15,9 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.soda.onn.chat.model.service.ChatService;
 import com.soda.onn.chat.model.vo.ChatMember;
@@ -42,14 +41,18 @@ public class ChatController {
 			 		   HttpSession session,
 			 		   @RequestParam(value = "getter", defaultValue = "sdmin", required = false) String getter){
 		String memberId = ((Member)session.getAttribute("memberLoggedIn")).getMemberId();
-		String chatId = chatService.findChatIdByMemberId(memberId);
+		Map<String,String> map = new HashMap<>();
+		map.put("memberId", memberId);
+		map.put("getter", getter);
+		String chatId = chatService.findChatIdByMemberId(map);
+		log.debug(chatId);
 		if(chatId == null) {
 			chatId = createChatId(20);
 			
 			ChatRoom chatRoom = new ChatRoom(chatId);
 			List<ChatMember> list = new ArrayList<>();
 			list.add(new ChatMember(memberId, chatRoom));
-			list.add(new ChatMember("sdmin", chatRoom));
+			list.add(new ChatMember("sims2", chatRoom));
 			
 			//chat_room, chat_member테이블에 데이터 생성
 			chatService.createChatRoom(list);
@@ -61,8 +64,19 @@ public class ChatController {
 		}
 		
 		log.debug("memberId=[{}], chatId=[{}]",memberId, chatId);
-		
 		model.addAttribute("chatId", chatId);
+		return "mypage/directMsg";
+
+	}
+	@GetMapping("/fff")
+	public String chatMain(Model model,
+						   HttpSession session) {
+		String memberId = ((Member)session.getAttribute("memberLoggedIn")).getMemberId();
+		
+		
+		List<String> chatIdList = chatService.findChatIdByMemberId(memberId);
+		model.addAttribute("chatIdList", chatIdList);
+		
 		
 		return "mypage/directMsg";
 	}

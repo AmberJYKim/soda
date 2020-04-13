@@ -9,7 +9,9 @@ import com.soda.onn.chat.model.vo.Msg;
 
 public interface ChatDAO {
 
-	String findChatIdByMemberId(String memberId);
+	String findChatIdByMemberId(Map<String, String> map);
+	
+	List<String> findChatIdByMemberId(String memberId);
 
 	String selectOneChatId(String chatId);
 
@@ -27,6 +29,7 @@ public interface ChatDAO {
 	List<Map<String, String>> findRecentList();
 
 	List<Msg> findChatListByChatId(String chatId);
+
 
 
 

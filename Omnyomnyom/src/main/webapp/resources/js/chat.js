@@ -2,6 +2,9 @@
 
 ///////////////////////////// ONLOAD START///////////////////////////// 
 $(function() {
+	$(".message-data-time").each(function(){
+		$(this).text(dateTransform($(this).text()));
+	});
 	//chat관련 구독신청 : /chat/chatId
 	chatSubscribe();
 	
@@ -61,8 +64,7 @@ function sendMessage() {
  */
 function scrollTop(){
 	//스크롤처리
-	console.log("스크롤 펑션")
-// 	$('#msg-container').scrollTop($("#msg-container").prop('scrollHeight'));
+    $('.chat-history').scrollTop($(".chat-history").prop('scrollHeight'));
 }
 
 
@@ -82,7 +84,7 @@ function lastCheck() {
 	}
 	
 	//전역변수 stompClient를 통해 lastCheck 메세지 전송
-	chatClient.send('/onn/chat/lastCheck', {}, JSON.stringify(data));
+	chatClient.send('/onn/lastCheck', {}, JSON.stringify(data));
 }
 
 ///////////////////////////// FUNCTION END/////////////////////////////

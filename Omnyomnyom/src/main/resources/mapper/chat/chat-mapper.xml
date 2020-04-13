@@ -16,6 +16,7 @@
 	    cm_enabled = 'Y'
 	  and
 	    member_id = #{memberId}
+	  
 </select>
 
 <select id="selectOneChatId" resultType="string">

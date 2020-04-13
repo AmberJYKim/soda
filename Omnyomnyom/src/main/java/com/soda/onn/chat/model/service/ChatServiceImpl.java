@@ -20,7 +20,12 @@ public class ChatServiceImpl implements ChatService {
 	private ChatDAO chatDAO;
 
 	@Override
-	public String findChatIdByMemberId(String memberId) {
+	public String findChatIdByMemberId(Map<String, String> map) {
+		return chatDAO.findChatIdByMemberId(map);
+	}
+	
+	@Override
+	public List<String> findChatIdByMemberId(String memberId) {
 		return chatDAO.findChatIdByMemberId(memberId);
 	}
 
@@ -70,6 +75,8 @@ public class ChatServiceImpl implements ChatService {
 	public List<Msg> findChatListByChatId(String chatId) {
 		return chatDAO.findChatListByChatId(chatId);
 	}
+
+
 
 	
 	

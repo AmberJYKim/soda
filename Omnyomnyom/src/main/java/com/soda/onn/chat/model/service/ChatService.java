@@ -8,7 +8,7 @@ import com.soda.onn.chat.model.vo.Msg;
 
 public interface ChatService {
 
-	String findChatIdByMemberId(String memberId);
+	String findChatIdByMemberId(Map<String, String> map);
 
 	String selectOneChatId(String string);
 	
@@ -20,11 +20,13 @@ public interface ChatService {
 
 	int updateLastCheck(Msg fromMessage);
 
+	List<String> findChatIdByMemberId(String memberId);
 	
 	//관리자용
 	List<Map<String, String>> findRecentList();
 
 	List<Msg> findChatListByChatId(String chatId);
+
 
 
 }
