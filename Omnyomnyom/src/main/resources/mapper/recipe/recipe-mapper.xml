@@ -428,5 +428,15 @@
 		order by regdate
 	</select>
 	
+	<select id="selectReportList" resultMap="ReportMap">
+		select
+			*
+		from tb_report
+	</select>
+	
+	<resultMap id="ReportMap" type="Report">
+		<result column="member_id" property="repMemberId"/>
+	</resultMap>
+	
 
 </mapper>

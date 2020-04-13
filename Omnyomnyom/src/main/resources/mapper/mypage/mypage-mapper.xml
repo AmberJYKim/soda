@@ -48,8 +48,10 @@
 		<if test="memberId != null">
 		And member_id = #{memberId}
 		</if>
-		<if test="read != null">
-		And dingdong_read = #{Read}
+
+		<if test="Read != null">
+		And DINGDONG_READ = #{Read}
+
 		</if>
 	</where> 
 </select>

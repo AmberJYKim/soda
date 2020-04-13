@@ -39,7 +39,7 @@ public interface OnedayDAO {
 
 	int classUpdate(Oneday oneday);
 
-	List<Reservation> selectAllReservationList(String memberId);
+	List<ReservationRequest> selectAllReservationList(String memberId);
 
 
 	int insertReview(OnedayReview onedayReview);

@@ -405,7 +405,7 @@
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/chef/chefpage">
+										<a href="${pageContext.request.contextPath }/chef/${memberLoggedIn.memberNick }/chefPage">
 											<p>채널가기</p>
 										</a>
 										</div>
