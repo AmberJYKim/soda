@@ -131,8 +131,23 @@ public class OnedayServiceImpl implements OnedayService {
 
 
 	@Override
-	public List<Reservation> selectAllReservationList(String memberId) {
-		return onedayDAO.selectAllReservationList(memberId);
+	public int insertReview(OnedayReview onedayReview) {
+		// TODO Auto-generated method stub
+		return onedayDAO.insertReview(onedayReview);
+	}
+
+
+	@Override
+	public List<OnedayReview> selectReviewList(int onedayclassNo) {
+		// TODO Auto-generated method stub
+		return onedayDAO.selectReviewList(onedayclassNo);
+	}
+
+
+	@Override
+	public List<Oneday> selectAll() {
+		// TODO Auto-generated method stub
+		return onedayDAO.selectAll();
 	}
 
 
