@@ -92,6 +92,21 @@ public class RecipeController {
 
 	private RowBounds rowBounds = null;
 	
+	//댓글 신고
+	@GetMapping(value="/replyReport/{replyNo}",produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String replyReport(HttpSession session,
+						 	  @PathVariable("replyNo")int replyNo,
+						 	  @RequestParam("memo")String memo) {
+		
+		Member m = (Member)session.getAttribute("memberLoggedIn");
+		
+		Report report = new Report(m.getMemberId(), replyNo, null, memo);
+		
+		int result = recipeService.insertReport(report);
+		
+		return result>0?"t":"f";
+	}
 	//레시피 수정
 	@PostMapping("/recipeUpdateEnd")
 	public String recipeUpdateEnd(Recipe recipe,

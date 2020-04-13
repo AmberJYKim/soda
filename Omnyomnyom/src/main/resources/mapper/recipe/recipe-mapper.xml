@@ -330,13 +330,13 @@
 			tb_report;
 	</select>
 	
-	<insert id="reportMap">
+	<insert id="insertReport">
 		insert into
 			tb_report
 		values(
 			#{repMemberId},
 			#{replyNo},
-			#{reportDate},
+			default,
 			#{reportReason}
 		)
 	</insert>
