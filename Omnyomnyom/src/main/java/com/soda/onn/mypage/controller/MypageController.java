@@ -204,37 +204,54 @@ public class MypageController {
 	
 	
 	//알림 목록
-	@GetMapping("/dingDongList")
-	@ResponseBody
-	public Map dingdongList(@RequestParam(value="cPage", defaultValue="1") int cPage,
-							 HttpSession session,
-			 				        HttpServletRequest request) {
-	
+			@GetMapping("/dingdongList")
+			public ModelAndView dingdongList(HttpSession session) {
+				ModelAndView mav = new ModelAndView();
+				
+				Member userId = (Member)session.getAttribute("memberLoggedIn");
+				String memberId = userId.getMemberId();
+				System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
+				
+				List<DingDong> list = mypageService.selectDingList(memberId);
+				System.out.println("여기는 알림목록 = "+list);
+				
+				mav.addObject("list", list);
+				mav.setViewName("/mypage/dingdongList");
+				
+				return mav;
+			}
 		
-		Member member = (Member)session.getAttribute("memberLoggedIn");
-		String memberId=  member.getMemberId();
-		log.debug("cPage={}",cPage);
-		int pageStart = ((cPage - 1)/DINGPAGEBARSIZE) * DINGPAGEBARSIZE +1;
-		int pageEnd = pageStart+PAGEBARSIZE-1;
+	///////////// 헤더 알림 - 김소현 영역 ///////////////////
+		//알림 목록
+		@GetMapping("/dingDongList")
+		@ResponseBody
+		public Map dingdong(@RequestParam(value="cPage", defaultValue="1") int cPage,
+								 HttpSession session,
+				 				    HttpServletRequest request) {
 		
-		rowBounds = new RowBounds((cPage-1)*DINGNUMPERPAGE, DINGNUMPERPAGE);
-		int totalCount = memberService.selectMemberListCnt();
-		int totalPage =  (int)Math.ceil((double)totalCount/DINGNUMPERPAGE);
-		String url = request.getRequestURL().toString();
-		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
-		
-
-		List<DingDong> dingList = mypageService.selectDingList(memberId);
-		log.debug("dingList={}",dingList);
-		log.debug("paging={}",paging);
-
-		
-		Map map =new HashMap();
-		
-		map.put("dingList", dingList);
-		map.put("paging",paging);
-		return map;
-	}
+			
+			Member member = (Member)session.getAttribute("memberLoggedIn");
+			String memberId= member.getMemberId();
+			log.debug("cPage={}",cPage);
+			int pageStart = ((cPage - 1)/DINGPAGEBARSIZE) * DINGPAGEBARSIZE +1;
+			int pageEnd = pageStart+PAGEBARSIZE-1;
+			
+			rowBounds = new RowBounds((cPage-1)*DINGNUMPERPAGE, DINGNUMPERPAGE);
+			int totalCount = memberService.selectMemberListCnt();
+			int totalPage = (int)Math.ceil((double)totalCount/DINGNUMPERPAGE);
+			String url = request.getRequestURL().toString();
+			String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+			
+			List<DingDong> dingList = mypageService.selectDingList(memberId);
+			log.debug("dingList={}",dingList);
+			log.debug("paging={}",paging);
+			
+			Map map =new HashMap();
+			
+			map.put("dingList", dingList);
+			map.put("paging",paging);
+			return map;
+		}
 	
 	@GetMapping("/directMsg")
 	public void directMsg() {
