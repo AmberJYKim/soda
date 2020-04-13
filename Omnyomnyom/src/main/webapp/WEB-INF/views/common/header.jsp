@@ -317,22 +317,15 @@
 				<!-- 로그인 후 간단한 회원정보 출력해줌 -->
 				<c:choose>
 					<c:when test="${memberLoggedIn.memberRoll eq 'A' }">
-						<a href="#" class="infor-logo">
-							<img src="img/user.png" alt="">
-						</a>
-						<p><a href="${pageContext.request.contextPath }/admin/adminMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+						<p style="position : relative; margin-top:-50px;"><a href="${pageContext.request.contextPath }/admin/adminMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. <br/> 행복한 하루 되세요!</p>
 					</c:when>
 					<c:when test="${memberLoggedIn.memberRoll eq 'C' }">
-						<a href="#" class="infor-logo">
-							<img src="img/user.png" alt="">
-						</a>
-						<p><a href="${pageContext.request.contextPath }/chef/chefMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+						
+						<p style="position : relative; margin-top:-50px;"><a href="${pageContext.request.contextPath }/chef/chefMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. <br/> 행복한 하루 되세요!</p>
 					</c:when>
 					<c:otherwise>
-						<a href="#" class="infor-logo">
-							<img src="img/user.png" alt="">
-						</a>
-						<p><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>	
+						
+						<p style="position : relative; margin-top:-50px;"><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. <br/> 행복한 하루 되세요!</p>	
 					</c:otherwise>
 				</c:choose>
 
@@ -519,15 +512,13 @@
 				</div>
 				<!-- 알림창 -->
 				
-					<p>알리미</p>
+					<p style="margin-top:-50px; font-size: 16px; font-weight: 600; ">알리미</p>
 				 
-						<div class="toast-header">
+						<div class="toast-header row" id="toast-header">
 						  <span class="material-icons">sms</span>
 						  <strong class="mr-auto">새로운 알림이 있습니다!</strong>
 						  <small>11 mins ago</small>
-						  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
-						  </button>
 						</div>
 						<c:if test="${paging != null }">
 							${paging}
@@ -552,16 +543,15 @@
 								
 								$.each(data.dingList,function(index,item){
 									
-									let p ='<span class="material-icons">sms</span>'+
+									let p ='<div class="col-lg-12" style="display: flex;"><span class="material-icons">sms</span>'+
 									'<strong class="mr-auto">'+item.dingdongContent+'</strong>'+
 									 '<small>'+item.dingRegDate+'</small>'+
-									 '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">'+
-									  '<span aria-hidden="true">&times;</span>';
+									  '</div>';
 									  
 									 $(".toast-header").append(p);
 								});
 								
-								    $(".tost-header").after(data.paging);
+								    $("#toast-header").after("<p onclick='dingdongMore();'>더보기</p>");
 								
 							},
 							error : (x,s,e) =>{
@@ -570,10 +560,11 @@
 							
 						 });
 				 });
-
+				
+				function dingdongMore(){
+					location.href ="${pageContext.request.contextPath}/mypage/dingdongList"
+				};
 				</script>  
-
-			
 			</div>
 		</div>
 	</div>
