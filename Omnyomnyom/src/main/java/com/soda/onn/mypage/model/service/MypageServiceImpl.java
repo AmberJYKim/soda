@@ -1,6 +1,7 @@
 package com.soda.onn.mypage.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,8 @@ public class MypageServiceImpl implements MypageService {
 	}
 
 	@Override
-	public List<DingDong> selectDingList(String memberId) {
-		return mypageDAO.selectDingList(memberId);
+	public List<DingDong> selectDingList(Map<String, String> map) {
+
+		 return mypageDAO.selectDingList(map);
 	}
 }
