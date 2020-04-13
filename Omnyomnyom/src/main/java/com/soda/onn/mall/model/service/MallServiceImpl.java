@@ -97,4 +97,9 @@ public class MallServiceImpl implements MallService {
 		return ingMallList;
 	}
 
+	@Override
+	public List<BuyHistory> selectAdminBuyList(String memberId) {
+		return mallDAO.selectAdminBuyList(memberId);
+	}
+
 }

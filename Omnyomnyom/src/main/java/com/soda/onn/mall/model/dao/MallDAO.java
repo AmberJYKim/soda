@@ -32,5 +32,7 @@ public interface MallDAO {
 
 	int deleteCart(Cart cart);
 
+	List<BuyHistory> selectAdminBuyList(String memberId);
+
 
 }

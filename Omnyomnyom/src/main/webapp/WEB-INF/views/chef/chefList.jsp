@@ -157,12 +157,13 @@
                             </c:forEach>
                         </div>
                         <div class="col-4 align-self-center">
-                            <button type="button">채널</button>
+                            <button type="button" onclick=" go_chefpage();">채널</button>
                         </div>
                     </div>
                 </div>
                </c:forEach>      
             </div>
+            
 
 <!-- 셰프클릭시 해당 셰프영상 밑에 뜨기 -->
 

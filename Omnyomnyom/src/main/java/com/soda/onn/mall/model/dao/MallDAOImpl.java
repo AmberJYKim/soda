@@ -72,6 +72,11 @@ public class MallDAOImpl implements MallDAO {
 		return sqlSession.selectList("mall.selectIngMallSearch", keyword);
 	}
 
+	@Override
+	public List<BuyHistory> selectAdminBuyList(String memberId) {
+		return sqlSession.selectList("mall.selectAdminBuyList", memberId);
+	}
+
 	
 	
 

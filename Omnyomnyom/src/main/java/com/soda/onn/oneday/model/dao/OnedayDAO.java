@@ -39,6 +39,15 @@ public interface OnedayDAO {
 
 	int classUpdate(Oneday oneday);
 
+	List<Reservation> selectAllReservationList(String memberId);
+
+
+	int insertReview(OnedayReview onedayReview);
+
+	List<OnedayReview> selectReviewList(int onedayclassNo);
+
+	List<Oneday> selectAll();
+
 
 
 
