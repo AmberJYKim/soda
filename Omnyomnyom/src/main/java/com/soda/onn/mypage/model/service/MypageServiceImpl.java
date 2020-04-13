@@ -37,4 +37,9 @@ public class MypageServiceImpl implements MypageService {
 
 		 return mypageDAO.selectDingList(map);
 	}
+
+	@Override
+	public int dingdongUpdate(int dingdongNo) {
+		return mypageDAO.dingdongUpdate(dingdongNo);
+	}
 }

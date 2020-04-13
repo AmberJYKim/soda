@@ -548,23 +548,42 @@
 								$("#dingdongNum").text(dingdongNum);
 								$.each(data.dingList,function(index,item){
 									
-									let p ='<div class="col-lg-12" style="display: flex;"><span class="material-icons">sms</span>'+
+									let p ='<div class="col-lg-12" style="display: flex;"><a href="${pageContext.request.contextPath }/'+item.dingdongLink+'?dingdongNO='+item.dingdongNo+'"><span class="material-icons">sms</span>'+
 									'<strong class="mr-auto">'+item.dingdongContent+'</strong>'+
 									 '<small>'+item.dingRegDate+'</small>'+
-									  '</div>';
+									  '</a></div>';
 									  
 									 $(".toast-header").append(p);
 								});
 									$()
 								    $("#toast-header").after("<p onclick='dingdongMore();'>더보기</p>");
-								
+									
 							},
 							error : (x,s,e) =>{
 								console.log(x,s,e);
 							}
 							
 						 });
+	            	 
+	            	
 				 });
+				
+			/* 	function readed(dingdongNo){
+           		 
+					alert(dingdongNo);
+					
+					$.ajax({
+						url :"${pageContext.request.contextPath }/mypage/dingdongReadUpdate",
+						data: {"dingdongNo":dingdongNO},
+						method:"POST",
+						success :data =>{
+							console.log()
+						},
+						error : (x,s,e) =>{
+							console.log(x,s,e);
+						}
+					});
+        	 	} */
 				
 				function dingdongMore(){
 					location.href ="${pageContext.request.contextPath}/mypage/dingdongList"

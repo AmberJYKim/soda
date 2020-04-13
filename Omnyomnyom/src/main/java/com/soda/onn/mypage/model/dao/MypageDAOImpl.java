@@ -36,4 +36,10 @@ public class MypageDAOImpl implements MypageDAO {
 	public List<DingDong> selectDingList(Map<String, String > map) {
 		return sqlSession.selectList("mypage.selectDingList", map);
 	}
+
+	@Override
+	public int dingdongUpdate(int dingdongNo) {
+		
+		return sqlSession.update("mypage.dingdongUpdate",dingdongNo);
+	}
 }
