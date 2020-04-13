@@ -171,6 +171,9 @@
 	                </div>
            		<c:if test="${not empty memberLoggedIn}">
            		<div class="hb-switch">
+           		<div style="width:20px; height:20px; background-color:gray; border-radius:50%; position: absolute; top: 28px;  text-align:center;">
+           			<p style="color:white;">1</p>
+           		</div>
            		<span class="material-icons  ${memberLoggedIn ==''?'':'infor-switch' }"  style="color:red;"> local_post_office </span>
            		</div>
            		<div class="hb-switch">
