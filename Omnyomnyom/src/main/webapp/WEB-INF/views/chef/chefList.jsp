@@ -157,7 +157,7 @@
                             </c:forEach>
                         </div>
                         <div class="col-4 align-self-center">
-                            <button type="button" onclick=" go_chefpage();">채널</button>
+                            <button type="button" onclick="Go_chefpage(this);">채널</button>
                         </div>
                     </div>
                 </div>
@@ -180,5 +180,10 @@
     	let chefNickName = $("h6.chefPageGo").attr('id');
     	location.href = "${pageContext.request.contextPath}/chef/"+chefNickName+"/chefPage";
     }
+	function Go_chefpage(e){
+		let chefNickName = $(e).parent().parent().find("h6.chefSelectOne").attr("id");
+		console.log(chefNickName);
+		location.href = "${pageContext.request.contextPath}/chef/"+chefNickName+"/chefPage";
+	}
 	</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

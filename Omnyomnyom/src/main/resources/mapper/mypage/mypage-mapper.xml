@@ -49,7 +49,7 @@
 		And member_id = #{memberId}
 		</if>
 		<if test="read != null">
-		And read = #{read}
+		And dingdong_read = #{Read}
 		</if>
 	</where> 
 </select>
