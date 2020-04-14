@@ -149,8 +149,10 @@
                             <div class="row">
                                <c:forEach items="${ popList}" var="recipe" end="3">
 	                                <div class="col-lg-3 upload-video">
+	                                <a href="${pageContext.request.contextPath }/recipe/recipe-details?recipeNo=${recipe.recipeNo}">
 	                                    <img src="https://img.youtube.com/vi/${recipe.videoLink }/mqdefault.jpg" alt="" width="300" height="150">
 	                                    <h6 style="margin-top:10px;">${recipe.videoTitle}</h6>
+	                                    </a>
 	                                    <li style="font-size: 13px; color:gray; margin-top:2px;">조회수 : ${recipe.viewCount}회</li>
 	                                </div>
                               </c:forEach>
@@ -161,11 +163,14 @@
                         <div class="container" id="upload-video">
 
                             <h6>업로드한 레시피 </h6>
+                            
                             <div class="row">
                                  <c:forEach items="${recipeList}" var="recipe" end="3">
 	                                <div class="col-lg-3 upload-video">
+	                                <a href="${pageContext.request.contextPath }/recipe/recipe-details?recipeNo=${recipe.recipeNo}">
 	                                    <img src="https://img.youtube.com/vi/${recipe.videoLink }/mqdefault.jpg" alt="" width="300" height="150">
 	                                    <h6 style="margin-top:10px;">${recipe.videoTitle}</h6>
+	                                    </a>
 	                                    <li style="font-size: 13px; color:gray; margin-top:2px;">조회수 : ${recipe.viewCount}회</li>
 	                                </div>
                               </c:forEach>
@@ -176,41 +181,45 @@
  <!-- 레시피 탭 클릭시 나오는 모든 영상 (업로드 순) -->
                     <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="upvideo container" id="video-upload-video">
-                            <h6>업로드한 레시피 </h6>
-                           <c:if test="${memberLoggedIn.memberRoll eq 'C'}"> 
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <button type="button" class="btn btn-outline-danger">레시피 관리</button>
-                                    <button type="button" class="btn btn-outline-danger" onclick="recipeUpload();">레시피 업로드</button>
-                                </div>
-                            </div>
+                           <h6>업로드한 레시피 </h6>
+                           <c:if test="${memberLoggedIn.memberId eq chef.chefId}"> 
+	                            <div class="row">
+	                                <div class="col-lg-12">
+	                                    <button type="button" class="btn btn-outline-danger" onclick="recipeUpdate();">레시피 관리</button>
+	                                    <button type="button" class="btn btn-outline-danger" onclick="recipeUpload();">레시피 업로드</button>
+	                                </div>
+	                            </div>
+								<script>
+								function recipeUpload(){
+									location.href ="${pageContext.request.contextPath }/recipe/recipeUpload";
+								}
+								function recipeUpdate(){
+									location.href ="${pageContext.request.contextPath }/recipe/recipeUpdate?chefNickName=${chef.chefNickName}";
+								}
+								</script>
                             </c:if>
-					<script>
-					function recipeUpload(){
-						location.href ="${pageContext.request.contextPath }/recipe/recipeUpload";
-					}
-					</script>
-                     <div class="row">
-                            <c:forEach items="${recipeList}" var="recipe">
-                          
-                                <div class="col-lg-3 upload-video">
-                                    <img src="https://img.youtube.com/vi/${recipe.videoLink }/mqdefault.jpg" alt="" width="300" height="150">
-                                    <h6 style="margin-top:10px;">${recipe.videoTitle}</h6>
-                                    <li style="font-size: 13px; color:gray; margin-top:2px;">조회수 : ${recipe.viewCount}회</li>
-                                </div>
-                              </c:forEach>
-                            </div>
+	                     	<div class="row">
+	                            <c:forEach items="${recipeList}" var="recipe">
+	                                <div class="col-lg-3 upload-video">
+	                          			<a href="${pageContext.request.contextPath }/recipe/recipe-details?recipeNo=${recipe.recipeNo}">
+	                                    <img src="https://img.youtube.com/vi/${recipe.videoLink }/mqdefault.jpg" alt="" width="300" height="150">
+	                                    <h6 style="margin-top:10px;">${recipe.videoTitle}</h6>
+	                                	</a>
+	                                    <li style="font-size: 13px; color:gray; margin-top:2px;">조회수 : ${recipe.viewCount}회</li>
+	                                </div>
+	                              </c:forEach>
+	                        </div>
                         </div>
                         
-                        <div class="site-pagination pt-3.5">
+                        <!-- <div class="site-pagination pt-3.5">
                             <a href="#"><i class="material-icons">keyboard_arrow_left</i></a>
                             <div class="site-pagination pt-3.5">
                                 <a href="#" class="active">1</a>
                                 <a href="#">2</a>
                                 <a href="#">3</a>
-                                <a href="#"><i class="material-icons">keyboard_arrow_right</i></a>
+                            	<a href="#"><i class="material-icons">keyboard_arrow_right</i></a>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
 

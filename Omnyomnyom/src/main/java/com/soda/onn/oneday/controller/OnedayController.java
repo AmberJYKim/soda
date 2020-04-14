@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mortbay.log.Log;
-import org.omg.CORBA.OMGVMCID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,11 +26,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.common.base.PageBar;
 import com.soda.onn.common.util.Utils;
+import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.service.MypageService;
+import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Attachment;
 import com.soda.onn.oneday.model.vo.Oneday;
@@ -51,11 +54,20 @@ public class OnedayController {
 	private OnedayService onedayService;
 	@Autowired
 	private ChefService chefservice;
+	@Autowired
+	private MypageService mypageService;
+	@Autowired 
+	private MemberService memberService;
+
 	
 	final int NUMPERPAGE = 20;
 	final int PAGEBARSIZE = 10;
 	
 	private RowBounds rowBounds = null;
+
+	
+	
+
 	
 //	원데이 클래스 메인뷰로 이동 
 	@GetMapping("/oneday")
@@ -292,22 +304,23 @@ public class OnedayController {
 									HttpSession session
 									) {
 		log.debug("클래스 넘버={}", onedayclassNo);
-		log.debug("타임 넘버={}", onedayclassNo);
-		
+		log.debug("타임 넘버={}", onedayTimeNo);
 		String memberId = ((Member) session.getAttribute("memberLoggedIn")).getMemberId();
 			
 //		reservation.setReserMemberId(memberId);
-		
+		Oneday oday= onedayService.selectOne(onedayclassNo);
+				
 		reservationrequest.setReserMemberId(memberId);
 		reservationrequest.setOnedayclassNo(onedayclassNo);
 		reservationrequest.setOnedaytimeNo(onedayTimeNo);
-		
+		reservationrequest.setOneday(oday);
+
 		System.out.println(reservationrequest);
 		System.out.println(reservation);
 		session.setAttribute("reservationrequest", reservationrequest);
 		
-//		int result = onedayService.insertReservation(reservationrequest);
-		mav.addObject("Oneday", oneday);
+		session.setAttribute("oneday", oday);
+		
 		mav.addObject("reservationrequest", reservationrequest);
 		
 		return mav;
@@ -327,19 +340,71 @@ public class OnedayController {
 	public ModelAndView pay(@ModelAttribute ModelAndView mav,HttpSession session) {
 		
 		ReservationRequest reservationrequest = (ReservationRequest) session.getAttribute("reservationrequest");
-		
+		log.debug("onedayname ===={}", reservationrequest.getOneday());
+
 		mav.addObject("reservationrequest", reservationrequest);
+		mav.addObject("oneday", reservationrequest.getOneday());
+		return mav;
+		
+	}
+	
+	
+	//결제 요청 전 예약가능여부 확인 ajax요청
+	@GetMapping("/checkvacancy")
+	@ResponseBody
+	public String checkVacancy(@RequestParam int onedayNo, @RequestParam int onedaytimeNo) {
+		Map<String, Integer> maps =  new HashMap<>();
+		maps.put("onedayNo", onedayNo);
+		maps.put("onedaytimeNo", onedaytimeNo);
+		int reserved = onedayService.checkVacancy(maps);
+		maps.put("reserved", reserved);
+		return new Gson().toJson(maps);
+	}
+	
+	//결제 성공 시 자동으로 insert처리하기. ajax요청
+	@PostMapping("/paycompletion")
+	@ResponseBody
+	public void insertReserv(@ModelAttribute ModelAndView mav, HttpSession session) {
+		
+		
+		//결제 관련 정보 꺼내기
+		ReservationRequest reservRequest = (ReservationRequest)session.getAttribute("reservationrequest");
+		log.debug("reservationRequest===={}", reservRequest.toString());
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		
+		reservRequest.setMemberId(member.getMemberId());
+		//예약정보 insert
+		int result = onedayService.insertReservation(reservRequest);
+		session.setAttribute("reservationRequest", reservRequest);
+		session.setAttribute("reservationInsertResult", result);
+		String content =  "원데이 클래스 예약 알림: (예약번호 :"+reservRequest.getReservationNo()+")";
+		//결제정보 알림 insert
+		DingDong dd = new DingDong(-1, member.getMemberId(), content, "/mypage/onedayList" , 1, null);
+		int ddResult = mypageService.insertPayDing(dd);
+		log.debug("dingdongInsertResult======================", ddResult);
+		
+	}
+	
+	
+//	원데이 클래스 예약완료 뷰로 이동 
+	@GetMapping("/result")
+	public ModelAndView result(@ModelAttribute ModelAndView mav, HttpSession session) {
+		Oneday oneday = (Oneday)session.getAttribute("oneday");
+		
+		Member chefInfo = memberService.searchNick(oneday.getMemberId());
+		//세션에서 예약정보와 원데이정보 삭제 및 mav에담기.
+		mav.addObject("reservationrequest", (ReservationRequest)session.getAttribute("reservationrequest"));
+		mav.addObject("oneday", oneday);
+		mav.addObject("chefNick", chefInfo);
+		
+		mav.setViewName("/oneday/oneday_result");
+		session.removeAttribute("reservationrequest");
+		session.removeAttribute("oneday");
+		
 		
 		return mav;
 		
 	}
-//	원데이 클래스 예약완료 뷰로 이동 
-	@PostMapping("/result.do")
-	public String result() {
-		return "oneday/oneday_result";
-		
-	}
-	
 	
 	//원데이클래스 Insert 하기
 	@PostMapping("/insert.do")

@@ -72,6 +72,11 @@ public class MemberDAOImpl  implements MemberDAO{
 		return sqlSession.update("member.updateInfo", params);
 	}
 
+	@Override
+	public Member searchNick(String memberId) {
+		return sqlSession.selectOne("member.searchNick", memberId);
+	}
+
 
 	
 }

@@ -20,10 +20,13 @@
 </resultMap>
 
 <delete id="deleteScrap">
-	delete from
+	delete
+	 from
 		tb_scrap
 	where
-		where recipe_no	= #{recipeNo}
+		recipe_no = #{recipeNo}
+			AND
+		member_id = #{memberId}
 </delete>
 
 <update id="updateScrap">
@@ -38,18 +41,44 @@
 
 </update>
 
-
+<update id="dingdongUpdate">
+	update
+		tb_dingdong
+	set
+		dingdong_read  = 0
+	where 
+		dingdongNo = #{dingdongNo}
+</update>
 <select id="selectDingList" resultMap="dingMap">
 	select
 		*
 	from
 		tb_dingdong
-	where 
-		member_id = #{dingMemberId}
+	<where>
+		<if test="memberId != null">
+		And member_id = #{memberId}
+		</if>
+
+		<if test="Read != null">
+		And DINGDONG_READ = #{Read}
+
+		</if>
+	</where> 
 </select>
 
 <resultMap id="dingMap" type="dingdong">
 	<result column="member_id" property="dingMemberId"/>
 </resultMap>
+
+
+	<insert id="insertPayDing">
+		insert into tb_dingdong 
+			values(seq_dingdong.nextval, #{dingMemberId}, #{dingdongContent}, #{dingdongLink},
+					default, default)
+					
+			<selectKey keyProperty="dingdongNo" resultType="_int" order="AFTER">
+				select seq_dingdong.currval from dual
+			</selectKey>		
+	</insert>
 
 </mapper>

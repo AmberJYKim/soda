@@ -65,7 +65,7 @@ public class OnedayServiceImpl implements OnedayService {
 
 
 	@Override
-	public List<Reservation> selectReservationList(String memberId, RowBounds rowBounds) {
+	public List<ReservationRequest> selectReservationList(String memberId, RowBounds rowBounds) {
 		return onedayDAO.selectReservationList(memberId, rowBounds);
 	}
 
@@ -151,10 +151,10 @@ public class OnedayServiceImpl implements OnedayService {
 	}
 
 
+
 	@Override
-	public List<Reservation> selectAllReservationList(String memberId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ReservationRequest> selectAllReservationList(String memberId) {
+		return onedayDAO.selectAllReservationList(memberId);
 	}
 
 
@@ -180,15 +180,20 @@ public class OnedayServiceImpl implements OnedayService {
 
 
 
+//	---akim
+
+	@Override
+	public OnedayTime selectOnedayTimeOne(int onedayTimeNo) {
+		return onedayDAO.selectOnedayTimeOne(onedayTimeNo);
+	}
 
 
+	@Override
+	public int checkVacancy(Map<String, Integer> maps) {
+		return onedayDAO.checkVacancy(maps);
+	}
 
 
-
-
-
-
-
-	
-	
 }
+
+

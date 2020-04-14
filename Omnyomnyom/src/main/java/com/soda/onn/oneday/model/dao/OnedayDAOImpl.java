@@ -47,7 +47,7 @@ public class OnedayDAOImpl implements OnedayDAO{
 	}
 
 	@Override
-	public List<Reservation> selectReservationList(String memberId, RowBounds rowBounds) {
+	public List<ReservationRequest> selectReservationList(String memberId, RowBounds rowBounds) {
 		return sqlSession.selectList("oneday.selectReservationList", memberId, rowBounds);
 	}
 
@@ -88,7 +88,7 @@ public class OnedayDAOImpl implements OnedayDAO{
 	}
 
 	@Override
-	public List<Reservation> selectAllReservationList(String memberId) {
+	public List<ReservationRequest> selectAllReservationList(String memberId) {
 		return sqlSession.selectList("oneday.selectAllReservationList", memberId);
 	}
 
@@ -127,6 +127,18 @@ public class OnedayDAOImpl implements OnedayDAO{
 	public List<OnedayReview> reviewAll() {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("oneday.reviewAll");
+	}
+
+//	---akim
+	
+	@Override
+	public OnedayTime selectOnedayTimeOne(int onedayTimeNo) {
+		return sqlSession.selectOne("oneday.selectOnedayOne", onedayTimeNo);
+	}
+
+	@Override
+	public int checkVacancy(Map<String, Integer> maps) {
+		return sqlSession.selectOne("oneday.checkVacancy", maps);
 	}
 
 

@@ -18,7 +18,9 @@ public class ReservationRequest extends Reservation implements Serializable {
 	private String memberId;
 	private int onedayclassNo;
 	private int onedaytimeNo;
-	
+	private String onedayClassName;
+	private int totalPrice;
+	private int price;
 	
 	
 	public ReservationRequest(int reservationNo, String reserMemberId, Oneday oneday, String regDate, int personnel,
@@ -27,6 +29,14 @@ public class ReservationRequest extends Reservation implements Serializable {
 		this.memberId = memberId;
 		this.onedayclassNo = onedayclassNo;
 		this.onedaytimeNo = onedaytimeNo;
+	}
+
+
+	
+
+	@Override
+	public Oneday getOneday() {
+		return super.getOneday();
 	}
 
 

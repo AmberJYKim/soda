@@ -41,6 +41,10 @@
         </div>
     </section>
 
+</style>
+
+
+
 <form action="reviewWrite" method="post" enctype="multipart/form-data">
 <div class="container">
 	<div class="row">

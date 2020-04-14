@@ -19,127 +19,184 @@
 <html lang="utf-8">
 
 <head>
-    <title>${param.pageTitle}</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="Ahana Yoga HTML Template">
-    <meta name="keywords" content="yoga, html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 로그인 모달창 라이브러리 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/nice-select.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/magnific-popup.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/slicknav.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/animate.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/util.css" />
+<title>${param.pageTitle}</title>
+<meta charset="UTF-8">
+<meta name="description" content="Ahana Yoga HTML Template">
+<meta name="keywords" content="yoga, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 로그인 모달창 라이브러리 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<!-- Stylesheets -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/nice-select.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/magnific-popup.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/slicknav.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/animate.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/util.css" />
 
-    <!-- Main Stylesheets -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
-    <!-- login.css -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/login.css" />
+<!-- Main Stylesheets -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
+<!-- login.css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/login.css" />
 
-    <!-- [if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif] -->
-	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.2.1.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/jquery.slicknav.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/owl.carousel.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/jquery.nice-select.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/jquery-ui.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/jquery.magnific-popup.min.js"></script>
-    
-    <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
-    <!-- 회원가입 js -->
-    <c:if test="${empty memberLoggedIn}">
-    <script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
-	
-	<script>
-		//사용 가능한 아이디, 닉네임인지 확인 하는 스크립트
-		$(document).ready(function(){
+<!-- [if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif] -->
+<script src="${pageContext.request.contextPath }/resources/js/jquery-3.2.1.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/jquery.slicknav.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/owl.carousel.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/jquery.nice-select.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/jquery-ui.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/jquery.magnific-popup.min.js"></script>
 
-			//memberId input창에서 아이디를 입력 할 경우
-			$("#memberId").on("keyup", function(){
-				console.log("memberId keyup");  /* 여기는 값 들어옴 */
-				memberId = $(this).val().trim();
+<script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
+<!-- 회원가입 js -->
+<c:if test="${not empty memberLoggedIn}">
 
-				console.log($(this).val());  /* 실시간으로 아이디 값 들어오는거 확인 */
+<!-- WebSocket:sock.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
 
-				//회원가입 아이디 input창에 값이 없으면 문구 숨김
-				if($("#memberId").val()==''){
-					$(".guide.error").hide();
-					$(".guide.ok").hide();
-				} 	
-				signupFun(this);
-			});
+<!-- WebSocket: stomp.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
 
-			//memberNick input창에서 닉네임을 입력 할 경우
-			$("#memberNick").on("keyup", function(){
-				console.log("memberNick keyup");
-				memberNick = $(this).val().trim();
+<script>
+const memberId = '${memberLoggedIn.memberId}';
+   
+//웹소켓 선언 및 연결
+//1.최초 웹소켓 생성 url: /onn
+let socket = new SockJS('<c:url value="/chat" />');
+/* let socket = new SockJS('/onn/chat'); */
+let chatClient = Stomp.over(socket);
 
-				console.log($(this).val());
+let sessionId;
+chatClient.connect({}, function(frame) {
+	console.log('connected stomp over sockjs');
+	console.log(frame);
 
-				//회원가입 닉네임 input창에 값이 없으면 문구 숨김
-				if($("#memberNick").val()==''){
-					$(".nickGuide.error").hide();
-					$(".nickGuide.ok").hide();
+	//(미사용)websocket sessionId 값 추출하기
+	let url = chatClient.ws._transport.url;
+	url = url.replace("ws://"+location.host+"/${pageContext.request.contextPath}/chat/","");
+	url = url.replace(/^\d+\//,"");
+	url = url.replace("/websocket","");
+	sessionId = url;
+
+	//2. stomp에서는 구독개념으로 세션을 관리한다. 핸들러 메소드의 @SendTo어노테이션과 상응한다.
+	//전체공지
+	chatClient.subscribe('/notice', function(message) {
+		console.log("receive from subscribe /notice :", message);
+
+		//notice 뱃지 보임 처리
+		$("#noticeLink").fadeIn(500);
+		//전역변수 notice에 보관
+		notice = JSON.parse(message.body);
+	});
+
+
+	//3. 개인공지 구독신청
+	chatClient.subscribe('/notice/'+memberId, function(message) {
+		console.log("receive from subscribe /notice/"+memberId+" :", message);
+
+		//notice 뱃지 보임 처리
+		$("#noticeLink").fadeIn(500);
+		//전역변수 notice에 보관
+		notice = JSON.parse(message.body);
+	});
+
+});
+</script>
+</c:if>
+<c:if test="${empty memberLoggedIn}">
+<script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
+
+<script>
+
+//사용 가능한 아이디, 닉네임인지 확인 하는 스크립트
+$(document).ready(function(){
+
+	//memberId input창에서 아이디를 입력 할 경우
+	$("#memberId").on("keyup", function(){
+		console.log("memberId keyup");  /* 여기는 값 들어옴 */
+		memberId = $(this).val().trim();
+
+		console.log($(this).val());  /* 실시간으로 아이디 값 들어오는거 확인 */
+
+		//회원가입 아이디 input창에 값이 없으면 문구 숨김
+		if($("#memberId").val()==''){
+			$(".guide.error").hide();
+			$(".guide.ok").hide();
+		} 	
+		signupFun(this);
+	});
+
+	//memberNick input창에서 닉네임을 입력 할 경우
+	$("#memberNick").on("keyup", function(){
+		console.log("memberNick keyup");
+		memberNick = $(this).val().trim();
+
+		console.log($(this).val());
+
+		//회원가입 닉네임 input창에 값이 없으면 문구 숨김
+		if($("#memberNick").val()==''){
+			$(".nickGuide.error").hide();
+			$(".nickGuide.ok").hide();
+		}
+
+		signupFun(this);
+	});
+
+
+	//ajax 실행 메소드
+	function signupFun(e){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/member/checkMember/"+$(e).attr('id')+"/"+$(e).val(),
+			type: "GET",
+			success: data => {
+				console.log(data);			
+				if($(e).attr('id') == "memberId"){	
+					if(data.isUsable != "ok"){
+						$(".guide.error").hide();
+						$(".guide.ok").show();
+						$("#idDuplicateCheck").val(1);
+					}
+					else{
+						$(".guide.error").show();
+						$(".guide.ok").hide();
+						$("#idDuplicateCheck").val(0);
+					}
 				}
 
-				signupFun(this);
-			});
-
-
-			//ajax 실행 메소드
-			function signupFun(e){
-				$.ajax({
-					url:"${pageContext.request.contextPath}/member/checkMember/"+$(e).attr('id')+"/"+$(e).val(),
-					type: "GET",
-					success: data => {
-						console.log(data);			
-						if($(e).attr('id') == "memberId"){	
-							if(data.isUsable != "ok"){
-								$(".guide.error").hide();
-								$(".guide.ok").show();
-								$("#idDuplicateCheck").val(1);
-							}
-							else{
-								$(".guide.error").show();
-								$(".guide.ok").hide();
-								$("#idDuplicateCheck").val(0);
-							}
-						}
-
-						if($(e).attr('id') == "memberNick"){
-							if(data.isUsable != "ok"){
-								$(".nickGuide.error").hide();
-								$(".nickGuide.ok").show();
-								$("#idDuplicateCheck").val(1);
-							}
-							else{
-								$(".nickGuide.error").show();
-								$(".nickGuide.ok").hide();
-								$("#idDuplicateCheck").val(0);
-							}
-						}
-					},
-					error: (x,s,e) => {
-						console.log(x,s,e);
+				if($(e).attr('id') == "memberNick"){
+					if(data.isUsable != "ok"){
+						$(".nickGuide.error").hide();
+						$(".nickGuide.ok").show();
+						$("#idDuplicateCheck").val(1);
 					}
-			});
-		}
-			
-		
-	});				
-	</script>
-	
-    </c:if>
+					else{
+						$(".nickGuide.error").show();
+						$(".nickGuide.ok").hide();
+						$("#idDuplicateCheck").val(0);
+					}
+				}
+			},
+			error: (x,s,e) => {
+				console.log(x,s,e);
+			}
+		});
+	}
+});				
+
+
+
+</script>
+
+</c:if>
+
   
 </head>
 <body>
@@ -171,6 +228,9 @@
 	                </div>
            		<c:if test="${not empty memberLoggedIn}">
            		<div class="hb-switch">
+           		<div style="width:20px; height:20px; background-color:gray; border-radius:50%; position: absolute; top: 28px;  text-align:center;">
+           			<p style="color:white;" id="dingdongNum">1</p>
+           		</div>
            		<span class="material-icons  ${memberLoggedIn ==''?'':'infor-switch' }"  style="color:red;"> local_post_office </span>
            		</div>
            		<div class="hb-switch">
@@ -317,22 +377,15 @@
 				<!-- 로그인 후 간단한 회원정보 출력해줌 -->
 				<c:choose>
 					<c:when test="${memberLoggedIn.memberRoll eq 'A' }">
-						<a href="#" class="infor-logo">
-							<img src="img/user.png" alt="">
-						</a>
-						<p><a href="${pageContext.request.contextPath }/admin/adminMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+						<p style="position : relative; margin-top:-50px;"><a href="${pageContext.request.contextPath }/admin/adminMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. <br/> 행복한 하루 되세요!</p>
 					</c:when>
 					<c:when test="${memberLoggedIn.memberRoll eq 'C' }">
-						<a href="#" class="infor-logo">
-							<img src="img/user.png" alt="">
-						</a>
-						<p><a href="${pageContext.request.contextPath }/chef/chefMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+						
+						<p style="position : relative; margin-top:-50px;"><a href="${pageContext.request.contextPath }/chef/chefMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. <br/> 행복한 하루 되세요!</p>
 					</c:when>
 					<c:otherwise>
-						<a href="#" class="infor-logo">
-							<img src="img/user.png" alt="">
-						</a>
-						<p><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>	
+						
+						<p style="position : relative; margin-top:-50px;"><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. <br/> 행복한 하루 되세요!</p>	
 					</c:otherwise>
 				</c:choose>
 
@@ -409,7 +462,7 @@
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/chef/chefpage">
+										<a href="${pageContext.request.contextPath }/chef/${memberLoggedIn.memberNick }/chefPage">
 											<p>채널가기</p>
 										</a>
 										</div>
@@ -470,7 +523,7 @@
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath}/chef/chefscrapList">
+									<a href="${pageContext.request.contextPath}/mypage/scrapList">
 										<p>스크랩 목록</p>
 									</a>
 									</div>
@@ -482,7 +535,7 @@
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/chef/onedayList">
+										<a href="${pageContext.request.contextPath }/chef/reservationStatus">
 											<p>예약현황</p>
 										</a>
 										</div>
@@ -519,15 +572,13 @@
 				</div>
 				<!-- 알림창 -->
 				
-					<p>알리미</p>
+					<p style="margin-top:-50px; font-size: 16px; font-weight: 600; ">알리미</p>
 				 
-						<div class="toast-header">
+						<div class="toast-header row" id="toast-header">
 						  <span class="material-icons">sms</span>
 						  <strong class="mr-auto">새로운 알림이 있습니다!</strong>
 						  <small>11 mins ago</small>
-						  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
-						  </button>
 						</div>
 						<c:if test="${paging != null }">
 							${paging}
@@ -539,7 +590,7 @@
 				// do something...
 				});
 				
-				$(".infor-switch").click(function(){
+				$(document).ready(function(){
 					
 					$(".toast-header").empty();
 	            	 $.ajax({
@@ -548,32 +599,53 @@
 							datatype:"json",
 							success: data => {
 								
-								console.log(data);
+								let dingdongNum = (data.dingList).length;
 								
+								$("#dingdongNum").empty();
+								$("#dingdongNum").text(dingdongNum);
 								$.each(data.dingList,function(index,item){
 									
-									let p ='<span class="material-icons">sms</span>'+
+									let p ='<div class="col-lg-12" style="display: flex;"><a href="${pageContext.request.contextPath }/'+item.dingdongLink+'?dingdongNO='+item.dingdongNo+'"><span class="material-icons">sms</span>'+
 									'<strong class="mr-auto">'+item.dingdongContent+'</strong>'+
 									 '<small>'+item.dingRegDate+'</small>'+
-									 '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">'+
-									  '<span aria-hidden="true">&times;</span>';
+									  '</a></div>';
 									  
 									 $(".toast-header").append(p);
 								});
-								
-								    $(".tost-header").after(data.paging);
-								
+									$()
+								    $("#toast-header").after("<p onclick='dingdongMore();'>더보기</p>");
+									
 							},
 							error : (x,s,e) =>{
 								console.log(x,s,e);
 							}
 							
 						 });
+	            	 
+	            	
 				 });
-
+				
+			/* 	function readed(dingdongNo){
+           		 
+					alert(dingdongNo);
+					
+					$.ajax({
+						url :"${pageContext.request.contextPath }/mypage/dingdongReadUpdate",
+						data: {"dingdongNo":dingdongNO},
+						method:"POST",
+						success :data =>{
+							console.log()
+						},
+						error : (x,s,e) =>{
+							console.log(x,s,e);
+						}
+					});
+        	 	} */
+				
+				function dingdongMore(){
+					location.href ="${pageContext.request.contextPath}/mypage/dingdongList"
+				};
 				</script>  
-
-			
 			</div>
 		</div>
 	</div>

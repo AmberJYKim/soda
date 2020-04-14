@@ -13,6 +13,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,6 +69,7 @@ import com.google.gson.JsonObject;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.service.RecipeService;
 import com.soda.onn.recipe.model.vo.Like;
@@ -92,6 +96,50 @@ public class RecipeController {
 
 	private RowBounds rowBounds = null;
 	
+	//레시피 리스트 삭제
+	@PostMapping("/deleteRecipeList")
+	public String deleteRecipeList(HttpSession session,
+								   @RequestParam("chefId")String chefId,
+								   @RequestParam("deleteList")int[] deleteList,
+								   RedirectAttributes reAttr) {
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		if(!member.getMemberNick().equals(chefId)) {
+			reAttr.addFlashAttribute("msg","다른 셰프의 레시피를 수정하려 했습니다.");
+			return "redirect:/";
+		}
+		
+		int result = recipeService.deleteRecipeList(deleteList);
+		
+		try {
+			chefId = URLEncoder.encode(chefId, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/recipe/recipeUpdate?chefNickName="+chefId;
+	}
+	
+	//댓글 신고
+	@GetMapping(value="/replyReport/{replyNo}",produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String replyReport(HttpSession session,
+						 	  @PathVariable("replyNo")int replyNo,
+						 	  @RequestParam("memo")String memo) {
+		
+		Member m = (Member)session.getAttribute("memberLoggedIn");
+		
+		Report report = new Report(m.getMemberId(), replyNo, null, memo);
+		
+		int result = recipeService.insertReport(report);
+		
+		if(result>0) {
+			DingDong dd = new DingDong(0, "sdmin", m.getMemberId()+"가 신고하였습니다.", "/admin/reportList", 1, null);
+			
+			result = recipeService.insertDingDong(dd);
+		}
+		
+		return result>0?"t":"f";
+	}
 	//레시피 수정
 	@PostMapping("/recipeUpdateEnd")
 	public String recipeUpdateEnd(Recipe recipe,
@@ -106,16 +154,12 @@ public class RecipeController {
 		recipe.setChefId(chefId);
 		recipe.setChefNick(chefNick);
 
-		log.debug("{}",recipe);
-		
 		List<RecipeIngredient> ingredientList = new ArrayList<RecipeIngredient>();
 		
 		for(int i =0;i<ingrName.length ;i++) {
 			RecipeIngredient ingr = new RecipeIngredient(ingNo[i], ingrMass[i], ingrName[i], 0);
 			ingredientList.add(ingr);
 		}
-		
-		log.debug(ingredientList.toString());
 		
 		List<Map<String,String>> list = (List<Map<String,String>>)new Gson().fromJson(recipe.getCategory(), new TypeToken<List<Map<String,String>>>(){}.getType());
 		
@@ -133,11 +177,7 @@ public class RecipeController {
 			recipe.setTimeline(recipe.getTimeline() + cookTime[i]+"∮"+cookery[i]);
 		}
 		
-		log.debug("{}",recipe);
-		
 		int result = recipeService.recipeUpdate(recipe,ingredientList);
-		
-		log.debug("insert Result={}", result>0?true:false);
 		
 		return "redirect:/";
 	}
@@ -191,7 +231,6 @@ public class RecipeController {
 	@GetMapping("/deleteQuestion")
 	public String deleteQuestion(@RequestParam("questionNo")int questionNo,
 							  @RequestParam("recipeNo")int recipeNo) {
-		log.debug("{}",questionNo);
 		
 		int result = recipeService.deleteQuestion(questionNo);
 		
@@ -200,12 +239,29 @@ public class RecipeController {
 	
 	//문의, 답글 작성
 	@PostMapping("/insertQuestion")
-	public String insertQuestion(HttpSession session, RecipeQuestion question) {
+	public String insertQuestion(HttpSession session, 
+								 RecipeQuestion question,
+								 @RequestParam(value = "memberId", required = false)String memberId,
+								 @RequestParam("chefId")String chefId) {
 		
 		Member member = (Member)session.getAttribute("memberLoggedIn");
 		question.setMemberId(member.getMemberId());
 		
 		int result = recipeService.insertQuestion(question);
+		
+		if(result>0) {
+			DingDong dd;
+			
+			if(null == memberId || memberId.equals(member.getMemberId())) {
+				dd = new DingDong(0, chefId, member.getMemberNick()+"님께서 문의 하셨습니다.", "/recipe/recipe-details?recipeNo=" + question.getRecipeNo(), 1, null);
+			}else if(chefId.equals(member.getMemberId())){
+				dd = new DingDong(0, memberId, member.getMemberNick()+"님께서 답변 하셨습니다.", "/recipe/recipe-details?recipeNo=" + question.getRecipeNo(), 1, null);
+			}else {
+				dd = new DingDong(0, "sdmin", member.getMemberId()+"의 비정상적 문의 이용 감지.", "/recipe/recipe-details?recipeNo=" + question.getRecipeNo(), 1, null);
+			}
+			
+			result = recipeService.insertDingDong(dd);
+		}
 		
 		return "redirect:/recipe/recipe-details?recipeNo=" + question.getRecipeNo(); 
 	}
@@ -214,7 +270,6 @@ public class RecipeController {
 	@GetMapping("/deleteReply")
 	public String deleteReply(@RequestParam("replyNo")int replyNo,
 							  @RequestParam("recipeNo")int recipeNo) {
-		log.debug("{}",replyNo);
 		
 		int result = recipeService.deleteReply(replyNo);
 		
@@ -224,8 +279,6 @@ public class RecipeController {
 	//댓글, 답글 달기
 	@PostMapping("/insertReply")
 	public String insertReply(HttpSession session, RecipeReply reply) {
-		log.debug("{}",session.getAttribute("memberLoggedIn"));
-		log.debug("{}",reply);
 		
 		Member member = (Member)session.getAttribute("memberLoggedIn");
 		reply.setMemberId(member.getMemberId());
@@ -242,6 +295,7 @@ public class RecipeController {
 							  HttpServletResponse response,
 							  Model model) {
 		
+		//뷰 카운터를 위한 쿠키
 		Cookie[] cookies = request.getCookies();
 		String recipeCookieVal = "";
 		boolean hasRead = false;
@@ -267,7 +321,7 @@ public class RecipeController {
 			recipeCookie.setMaxAge(7*24*60*60);
 			recipeCookie.setPath(request.getContextPath()+"/recipe");
 			response.addCookie(recipeCookie);
-		}
+		}//쿠키 끝
 		
 		Member member = (Member)request.getSession().getAttribute("memberLoggedIn");
 		Like l =null;
@@ -287,6 +341,8 @@ public class RecipeController {
 		
 		Recipe recipe = recipeService.selectRecipeOne(recipeNo,hasRead);
 		
+		String chefProfile = recipeService.selectChefProfile(recipe.getChefId());
+		
 		recipe.setIngredientList(recipeService.selectRecIngList(recipeNo));
 		
 		List<IngredientMall> ingrMallList = recipeService.selectingrMallList(recipe.getIngredientList());
@@ -301,6 +357,7 @@ public class RecipeController {
 		
 		log.debug("{}",relationRecipes);
 		
+		model.addAttribute("chefProfile",chefProfile);
 		model.addAttribute("questionList", questionList);
 		model.addAttribute("replyList",replyList);
 		model.addAttribute("relationRecipes",relationRecipes);
@@ -446,8 +503,11 @@ public class RecipeController {
 	}
 
 	@GetMapping("/recipeUpdate")
-	public void recipeUpdate() {
+	public void recipeUpdate(@RequestParam("chefNickName")String chefNickName,
+							 Model model) {
+		List<Recipe> recipeList = recipeService.recipeSelectAll(chefNickName);
 		
+		model.addAttribute("recipeList", recipeList);
 	}
 	
 	//메뉴검색 페이지 요청 시 인기영상과 메뉴 카테고리 가져가기

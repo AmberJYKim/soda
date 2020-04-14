@@ -69,7 +69,7 @@
 		dingdong_no = #{dingdongNo}
 </update>
 
-<insert id="insertDingdong">
+ <insert id="insertDingdong">
 	insert into
 		tb_dingdong
 	values{
@@ -131,5 +131,10 @@
 	where
 		member_id = #{member.memberId}
 </update>
+
+<select id="searchNick" resultType="member">
+	select member_nick, phone from tb_member where member_Id = #{memberId}
+
+</select>
 
 </mapper>

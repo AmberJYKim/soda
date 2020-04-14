@@ -1,6 +1,7 @@
 package com.soda.onn.mypage.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
@@ -11,11 +12,16 @@ public interface MypageDAO {
 
 	List<Scrap> selectScrapList(String memberId, RowBounds rowBounds);
 
-	int deleteScrap(int recipeNo);
+	int deleteScrap(Map mmap);
 
 	int updateScrap(Scrap scrap);
 
-	List<DingDong> selectDingList(String memberId);
+	List<DingDong> selectDingList(Map<String, String> map);
+
+	int dingdongUpdate(int dingdongNo);
+
+	int insertPayDing(DingDong dd);
+
 
 
 }
