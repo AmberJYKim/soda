@@ -156,4 +156,52 @@
 		i.INGREDIENT_NAME like '%'||#{keyword}||'%'
 </select>
 
+<select id="prCategory" resultType="String">
+	select 
+	eng_pr_category 
+	from 
+	(select 
+		eng_pr_category 
+	 from 
+	 	tb_ingredient 
+	 where 
+	 ing_pr_category =#{pr})
+	 group by eng_pr_category
+
+</select>
+
+<insert id="ingredientInsert">
+{call
+	declare
+		begin
+		
+			insert into 
+				tb_ingredieont
+			values(
+				seq_Ingredient.nextval(),
+				#{ingPrCategory},
+				#{ingPrCategory},
+				#{ingredientName},
+				#{ingfileName},
+				#{engPrCategory},
+				#{engPrCategory}
+			);
+			
+			insert	into
+				tb_ingredient_mall
+			values(
+				seq_ingredient.currval(),
+				#{price},
+				#{stock},
+				#{minUnit},
+				#{ingOrigin},
+				#{shelfLife},
+				#{ingInfo}
+			);
+			
+			commit;
+	end
+}
+
+</insert>
 </mapper>

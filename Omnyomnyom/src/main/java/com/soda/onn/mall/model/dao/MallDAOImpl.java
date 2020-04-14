@@ -1,6 +1,7 @@
 package com.soda.onn.mall.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -77,9 +78,15 @@ public class MallDAOImpl implements MallDAO {
 		return sqlSession.selectList("mall.selectAdminBuyList", memberId);
 	}
 
-	
-	
+	@Override
+	public int ingredientInsert(Map map) {
+		
+		return sqlSession.insert("mall.ingredientInsert",map);
+	}
 
-	
+	@Override
+	public String prCategory(String pr) {
+		return sqlSession.selectOne("mall.prCategory", pr);
+	}
 
 }

@@ -141,6 +141,11 @@ public class OnedayDAOImpl implements OnedayDAO{
 		return sqlSession.selectOne("oneday.checkVacancy", maps);
 	}
 
+	@Override
+	public List<ReservationRequest> selectReservationListUser(String memberId, RowBounds rowBounds) {
+		return sqlSession.selectList("oneday.selectReservationListUser", memberId);
+	}
+
 
 
 
