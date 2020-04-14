@@ -175,18 +175,18 @@ public class AdminController {
 		
 		@PostMapping("/chefRequest")
 		public String chefRequest(@RequestParam("variable") String variable,
-								  @RequestParam("chefId") String chefId) {
+								  @RequestParam("chefId") String memberId) {
 			log.debug("셰프신청 수락여부 결정 진행중");
-			log.debug("chefId={}",chefId);
+			log.debug("chefId={}",memberId);
 			log.debug("variable={}",variable);
 			Map<String, String> chefReq = new HashMap<>();
-			chefReq.put("chefId",chefId);
+			chefReq.put("chefId",memberId);
 			chefReq.put("variable",variable);
 			
 			
-			ChefRequest chefreq = chefService.selectChefRequest(chefId);
+			ChefRequest chefreq = chefService.selectChefRequest(memberId);
 			chefreq.setChefReqOk(variable);
-			
+			log.debug("chefreq chefid={}",chefreq);
 			int result1 = chefService.chefRequestUpdate(chefreq);
 			log.debug("result1={}",result1);
 			return "redirect:/admin/chefRequestList";
@@ -337,11 +337,18 @@ public class AdminController {
 	
 	@GetMapping("prCategory")
 	@ResponseBody
-	public String prCategory(@RequestParam(value="prCategory")String pr) {
+	public Map prCategory(@RequestParam(value="prCategory")String pr) {
 		log.debug("pr={}",pr);
 		String engPrcategory = mallService.prCategory(pr);
+		List<String> subCtgList = recipeService.selectIngSubCtg(pr);
 		log.debug(engPrcategory);
-		return engPrcategory;
+		log.debug("subCtgList={}",subCtgList);
+		
+		Map map = new HashMap();
+		map.put("engPrcategory",engPrcategory);
+		map.put("subCtgList",subCtgList);
+		
+		return map;
 	}
 		
 	@PostMapping("/ingredientInsert")
@@ -355,6 +362,11 @@ public class AdminController {
 		ingredient.setIngredientName(httpServletRequest.getParameter("ingredientName"));
 		ingredient.setIngPrCategory(httpServletRequest.getParameter("ingPrCategory"));
 		ingredient.setIngCdCategory(httpServletRequest.getParameter("ingcdCategory"));
+		
+//		재료 이미지 
+		String ingFileName = ingFilename.getOriginalFilename();
+		String ingFileNameSaveDirectory = httpServletRequest.getServletContext().getRealPath("/resources/images/ingredient");
+		ingredient.setIngFilename(httpServletRequest.getParameter(ingFileName));
 		
 		ingredientMall.setIngMallName(httpServletRequest.getParameter("ingredientName"));
 		ingredientMall.setPrice(Integer.parseInt((httpServletRequest.getParameter("price"))));

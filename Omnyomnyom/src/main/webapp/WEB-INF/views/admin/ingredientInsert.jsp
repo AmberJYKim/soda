@@ -64,8 +64,22 @@
                     		data :{"prCategory":pr},
                     		success : data =>{
                     			
-                    			$("#enPrcategory").val(data);
+                    			$("#enPrcategory").val(data.engPrcategory);
+                    			
                     			console.log($("#enPrcategory").val());
+                    			
+                    			$("#subCt").remove();
+                    			
+                    			let p =  ' <option data-display="중분류">중분류</option>';
+                                   
+                    			$.each(data.subCtgList ,function(idx,item){
+
+                                      p = +'<option value="'+item[idx]+'">'+item[idx]+'</option>'
+                                      	
+                    			});
+
+                    			$("#subCt").append(p);
+                    				
                     		},error : (x,s,e) =>{
 								console.log(x,s,e);
 							}
@@ -75,14 +89,14 @@
 
                     </div>
                     <div class="col-lg-3">
-                        <select class="circle-select" name ="ingcdCategory">
+                        <select class="circle-select" id="subCt"name ="ingcdCategory">
                             <option data-display="중분류">중분류</option>
                             <option value="잎채소">잎채소</option>
                             <option value="열매채소">열매채소</option>
                             <option value="뿌리채소">뿌리채소</option>
                             <option value="버섯">버섯</option>
                             <option value="나물/허브류">나물/허브류</option>
-                         s</select>
+                         </select>
                     </div>
                 </div>
                 <div class="row">
@@ -91,8 +105,8 @@
                         <h3 class="mall_isnert_title">상품 이미지 등록</h3>
                         <hr>
                         <div class="oneday_class_img">
-                            <div id="uploadbtn" onclick="upload(this)">Upload Files</div>
-                            <input type='file' id="imgInput" name ="ingFilename" hidden/>
+                            <div id="uploadbtn" onclick="upload(this);">Upload Files</div>
+                            <input type='file' class="imgInput" name ="ingFilename" hidden/>
                             <img src="#" alt="" id="image_section">
                         </div>
 
@@ -164,11 +178,11 @@
                     <div class="col-lg-5">
 
                         <!-- 상품 상세 이미지 등록 -->
-                        <!-- <div class="mall_img">
-                            <div id="uploadbtnn" onclick="uplodd(this)">Upload Files</div>
-                            <input type='file' id="imgInputt" name="ingInfo" hidden/>
-                            <img src="#" alt="" id="image_sectionn">
-                        </div> -->
+                         <div class="mall_img">
+                            <div id="uploadbtn" onclick="upload(this);">Upload Files</div>
+                            <input type='file' class="imgInput" name="ingInfo" hidden/>
+                            <img src="#" alt="" id="image_section">
+                        </div> 
                     </div>
                 </div>
                 <div class="sb-widget">
@@ -240,8 +254,8 @@
                         var reader = new FileReader();
 
                         reader.onload = function(e) {
-                            $('#image_section').attr('src', e.target.result).show();
-                            let $uploadbtn = $("#uploadbtn");
+                            $(input).next().attr('src', e.target.result).show();
+                            let $uploadbtn = $(input).prev();
                             $uploadbtn.html("");
                             $uploadbtn.addClass("uploading");
                             setTimeout(function() {
@@ -252,39 +266,28 @@
 
                         reader.readAsDataURL(input.files[0]);
                     } else {
-                        $('#image_section').hide();
+                        $(input).next().hide();
                     }
                 }
 
-                //이미지 불러오기
-                $("#imgInput").change(function() {
-
-                    readURL(this);
-                });
-
-                //시작시 이미지
-                $("#image_section").hide();
-
-
-            function upload(ref) {
-                $("#imgInput").click();
-            };
+ 
             
             
-          /*   //이미지 불러오기
-            $("#imgInput").change(function() {
+            //이미지 불러오기
+            $(".imgInput").change(function() {
 
                 readURL(this);
             });
 
             //시작시 이미지
-            $("#image_section").hide();
+            //$("#image_section").hide();
 
 
-	        function upload(ref) {
-	            $("#imgInput").click();
-	        }; */
+	         
         });
+        function upload(ref) {
+            $(ref).next().click();
+        };
     </script>
     
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

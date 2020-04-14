@@ -604,7 +604,7 @@ $(document).ready(function(){
 								$("#dingdongNum").empty();
 								$("#dingdongNum").text(dingdongNum);
 								$.each(data.dingList,function(index,item){
-									
+							
 									let p ='<div class="col-lg-12" style="display: flex;"><a href="${pageContext.request.contextPath }/'+item.dingdongLink+'?dingdongNO='+item.dingdongNo+'"><span class="material-icons">sms</span>'+
 									'<strong class="mr-auto">'+item.dingdongContent+'</strong>'+
 									 '<small>'+item.dingRegDate+'</small>'+

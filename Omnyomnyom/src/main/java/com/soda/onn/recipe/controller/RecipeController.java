@@ -290,7 +290,8 @@ public class RecipeController {
 	
 	//레시피 뷰
 	@GetMapping("/recipe-details")
-	public String recipedetails(@RequestParam("recipeNo")int recipeNo,
+	public String recipedetails(
+							@RequestParam("recipeNo")int recipeNo,
 							  HttpServletRequest request,
 							  HttpServletResponse response,
 							  Model model) {
