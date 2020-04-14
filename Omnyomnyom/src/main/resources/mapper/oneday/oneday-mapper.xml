@@ -4,8 +4,33 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="oneday">
 
-<select id="selectReservationList" resultMap="reservationMap">
+<select id="selectReservationList" resultMap="ReservationListMap">
+	
 	select
+		res.reservation_no,
+		od.oneday_name,
+		odct.onedaytime_date,
+		res.personnel,
+		od.oneday_price*res.personnel,
+		res.CANCEL_CHECK,
+		od.oneday_price
+	from
+		tb_onedayclass od left join tb_onedayclasstime odct on od.onedayclass_no = odct.onedayclass_no
+                          left join tb_reservation res on odct.onedayclass_no = res.onedayclass_no
+   
+   <where>
+		<if test="value != null">
+			od.member_id = #{reserMemberId}
+		</if>
+			<!-- AND
+			res.res.reservation_no = #{reservationNo} -->
+	</where>
+	<!-- order by 
+		reservation_no desc -->
+
+	
+	
+<!-- 	select
 		*
 	from
 		tb_reservation 
@@ -15,13 +40,9 @@
 		</if>
 	</where>
 	order by 
-		reservation_no desc
+		reservation_no desc -->
 </select>
 
-<resultMap id="reservationMap" type="reservation">
-<result column="member_id" property="reserMemberId"></result>
-
-</resultMap>
 
 
 <select id="selectOne" resultType="Oneday">
@@ -94,6 +115,9 @@ order by onedayclass_no desc
 				default,
 				#{resPrice}
 		)
+		<selectKey keyProperty="reservationNo" resultType="_int" order="AFTER">
+				select seq_reservation.currval from dual
+		</selectKey>
 </insert>
 
 
@@ -183,7 +207,6 @@ values(
 		where onedayclass_No = #{onedayclassNo}
 </select>
 
-
 <select id="selectAllReservationList" resultMap="ReservationListMap">
 	select
 		od.oneday_name,
@@ -212,7 +235,19 @@ values(
 	<result column="oneday_price" property="price"/>
 </resultMap>
 
-
+	<!-- 결제관련 작업부 시작 -->
+	
+	<select id="selectOnedayOne" resultType="OnedayTime">
+		select * from tb_onedayclasstime where onedaytime_no = #{onedayTimeNo}
+	</select>
+	
+	
+	<select id="checkVacancy" parameterType="_int" resultType="_int">
+		select nvl(sum(personnel), 0) from tb_reservation where onedayclass_no = #{onedayNo} and onedaytime_no = #{onedaytimeNo}
+	
+	</select>
+	
+	<!-- 결제관련 작업부 종료 -->
 
 
 

@@ -13,6 +13,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,6 +69,7 @@ import com.google.gson.JsonObject;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.service.RecipeService;
 import com.soda.onn.recipe.model.vo.Like;
@@ -92,6 +96,29 @@ public class RecipeController {
 
 	private RowBounds rowBounds = null;
 	
+	//레시피 리스트 삭제
+	@PostMapping("/deleteRecipeList")
+	public String deleteRecipeList(HttpSession session,
+								   @RequestParam("chefId")String chefId,
+								   @RequestParam("deleteList")int[] deleteList,
+								   RedirectAttributes reAttr) {
+		
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		if(!member.getMemberNick().equals(chefId)) {
+			reAttr.addFlashAttribute("msg","다른 셰프의 레시피를 수정하려 했습니다.");
+			return "redirect:/";
+		}
+		
+		int result = recipeService.deleteRecipeList(deleteList);
+		
+		try {
+			chefId = URLEncoder.encode(chefId, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/recipe/recipeUpdate?chefNickName="+chefId;
+	}
+	
 	//댓글 신고
 	@GetMapping(value="/replyReport/{replyNo}",produces = "text/plain;charset=UTF-8")
 	@ResponseBody
@@ -104,6 +131,12 @@ public class RecipeController {
 		Report report = new Report(m.getMemberId(), replyNo, null, memo);
 		
 		int result = recipeService.insertReport(report);
+		
+		if(result>0) {
+			DingDong dd = new DingDong(0, "sdmin", m.getMemberId()+"가 신고하였습니다.", "/admin/reportList", 1, null);
+			
+			result = recipeService.insertDingDong(dd);
+		}
 		
 		return result>0?"t":"f";
 	}
@@ -206,12 +239,29 @@ public class RecipeController {
 	
 	//문의, 답글 작성
 	@PostMapping("/insertQuestion")
-	public String insertQuestion(HttpSession session, RecipeQuestion question) {
+	public String insertQuestion(HttpSession session, 
+								 RecipeQuestion question,
+								 @RequestParam(value = "memberId", required = false)String memberId,
+								 @RequestParam("chefId")String chefId) {
 		
 		Member member = (Member)session.getAttribute("memberLoggedIn");
 		question.setMemberId(member.getMemberId());
 		
 		int result = recipeService.insertQuestion(question);
+		
+		if(result>0) {
+			DingDong dd;
+			
+			if(null == memberId || memberId.equals(member.getMemberId())) {
+				dd = new DingDong(0, chefId, member.getMemberNick()+"님께서 문의 하셨습니다.", "/recipe/recipe-details?recipeNo=" + question.getRecipeNo(), 1, null);
+			}else if(chefId.equals(member.getMemberId())){
+				dd = new DingDong(0, memberId, member.getMemberNick()+"님께서 답변 하셨습니다.", "/recipe/recipe-details?recipeNo=" + question.getRecipeNo(), 1, null);
+			}else {
+				dd = new DingDong(0, "sdmin", member.getMemberId()+"의 비정상적 문의 이용 감지.", "/recipe/recipe-details?recipeNo=" + question.getRecipeNo(), 1, null);
+			}
+			
+			result = recipeService.insertDingDong(dd);
+		}
 		
 		return "redirect:/recipe/recipe-details?recipeNo=" + question.getRecipeNo(); 
 	}
@@ -453,8 +503,11 @@ public class RecipeController {
 	}
 
 	@GetMapping("/recipeUpdate")
-	public void recipeUpdate() {
+	public void recipeUpdate(@RequestParam("chefNickName")String chefNickName,
+							 Model model) {
+		List<Recipe> recipeList = recipeService.recipeSelectAll(chefNickName);
 		
+		model.addAttribute("recipeList", recipeList);
 	}
 	
 	//메뉴검색 페이지 요청 시 인기영상과 메뉴 카테고리 가져가기

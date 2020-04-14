@@ -5,12 +5,24 @@
 <mapper namespace="mall">
 
 <select id="selectBuyList" resultMap="BuyHistoryMap">
-	select
+	<!-- select
 		*
 	from
 		tb_buy_list
 	where
-		member_id = #{buyMemberId}
+		member_id = #{buyMemberId} -->
+	select
+		i.INGREDIENT_NAME,
+		bn.stock,
+		bn.price,
+		bn.stock*bn.price,
+		bl.regdate
+	from
+		TB_Ingredient i left join tb_Ingredient_mall im on i.Ingredient_no = im.Ingredient_no
+	                    left join tb_buy_no bn on im.Ingredient_no = bn.Ingredient_no
+	                    left join tb_buy_list bl on bn.buy_no = bl.buy_no
+	
+	where bl.member_id = #{buyMemberId}
 </select>
 
 
@@ -22,9 +34,11 @@
 </select>
 
 <resultMap id="BuyHistoryMap" type="BuyHistory">
-<!-- 	<result column="member_id" property="buyMemberId"/> -->
+    <result column="member_id" property="buyMemberId"/>
+    <result column="INGREDIENT_NAME" property="buyIngredIentName"/>
 	<result column="REGDATE" property="buyRegdate"/>
-<!-- 	<result column="email" property="buyEmail"/> -->
+	<result column="email" property="buyEmail"/>
+	<result column="bn.stock*bn.price" property="totalPrice"/>
 </resultMap>
 
 

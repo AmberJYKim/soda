@@ -30,27 +30,27 @@
 							<div class="row font-17 th_border">
 								
 								<div class="col-1">예약 번호</div>
-								<div class="col-3">클래스 이름</div>
-								<div class="col-3">시간</div>
-								<div class="col-1">인원</div>
-								<div class="col-2">금액</div>
+								<div class="col-2">클래스 이름</div>
+								<div class="col-2">시간</div>
+								<div class="col-2">인원</div>
+								<div class="col-3">금액</div>
 								<div class="col-2">예약 상태</div>
 							</div>
 							<br>
-							<c:forEach var="reservation" items="${reservationList }">
+							<c:forEach var="ReservationRequest" items="${reservationList }">
 								<div class="row">
- 									<div class="col-1">${reservation.reservationNo }</div>
- 									<div class="col-3">클래스 이름</div>
- 									<div class="col-3">2020.4.27<br>18:00 ~ 19:00</div>
-									<div class="col-1">${reservation.personnel }</div>
-									<div class="col-2">${reservation.resPrice}<br>(인당 6000원)</div>
+ 									<div class="col-1">${ReservationRequest.reservationNo }</div>
+ 									<div class="col-2">${ReservationRequest.onedayClassName }</div>
+ 									<div class="col-2">${ReservationRequest.regDate }
+									<div class="col-2">${ReservationRequest.personnel }</div>
+									<div class="col-3">${ReservationRequest.totalPrice}원<br>(인당 6000원)</div>
 									
-								<c:if test="${reservation.cancel == 'N' }">
-									<div class="col-2"><p>진행중</p></div>
+								<c:if test="${ReservationRequest.cancel == 'N' }">
+									<div class="col-3"><p>진행중</p></div>
 								</c:if>
 									
-								<c:if test="${reservation.cancel == 'Y' }">
-									<div class="col-2"><p>취소중</p></div>
+								<c:if test="${ReservationRequest.cancel == 'Y' }">
+									<div class="col-3"><p>취소중</p></div>
 								</c:if>
 									
 								</div>

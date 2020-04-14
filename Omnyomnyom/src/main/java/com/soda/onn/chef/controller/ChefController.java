@@ -90,7 +90,7 @@ public class ChefController {
 		String memberId = member.getMemberId();
 		
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
-		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
+		List<ReservationRequest> reservationList = onedayService.selectReservationList(memberId,rowBounds);
 		log.debug("reservationList={}",reservationList);
 		model.addAttribute("reservationList", reservationList);
 	}
