@@ -57,60 +57,7 @@
 
 <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
 <!-- 회원가입 js -->
-<c:if test="${not empty memberLoggedIn}">
 
-<!-- WebSocket:sock.js CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
-
-<!-- WebSocket: stomp.js CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
-
-<script>
-const memberId = '${memberLoggedIn.memberId}';
-   
-//웹소켓 선언 및 연결
-//1.최초 웹소켓 생성 url: /onn
-let socket = new SockJS('<c:url value="/chat" />');
-/* let socket = new SockJS('/onn/chat'); */
-let chatClient = Stomp.over(socket);
-
-let sessionId;
-chatClient.connect({}, function(frame) {
-	console.log('connected stomp over sockjs');
-	console.log(frame);
-
-	//(미사용)websocket sessionId 값 추출하기
-	let url = chatClient.ws._transport.url;
-	url = url.replace("ws://"+location.host+"/${pageContext.request.contextPath}/chat/","");
-	url = url.replace(/^\d+\//,"");
-	url = url.replace("/websocket","");
-	sessionId = url;
-
-	//2. stomp에서는 구독개념으로 세션을 관리한다. 핸들러 메소드의 @SendTo어노테이션과 상응한다.
-	//전체공지
-	chatClient.subscribe('/notice', function(message) {
-		console.log("receive from subscribe /notice :", message);
-
-		//notice 뱃지 보임 처리
-		$("#noticeLink").fadeIn(500);
-		//전역변수 notice에 보관
-		notice = JSON.parse(message.body);
-	});
-
-
-	//3. 개인공지 구독신청
-	chatClient.subscribe('/notice/'+memberId, function(message) {
-		console.log("receive from subscribe /notice/"+memberId+" :", message);
-
-		//notice 뱃지 보임 처리
-		$("#noticeLink").fadeIn(500);
-		//전역변수 notice에 보관
-		notice = JSON.parse(message.body);
-	});
-
-});
-</script>
-</c:if>
 <c:if test="${empty memberLoggedIn}">
 <script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
 
@@ -203,7 +150,7 @@ $(document).ready(function(){
 
     <c:if test="${not empty msg}">
 	<script>
-		$(()=>{
+		$(function(){
 			alert("${msg}");
 		});
 	</script>
@@ -559,8 +506,8 @@ $(document).ready(function(){
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath }/mypage/qnaMsg">
-										<p>문의내역</p>
+									<a href="${pageContext.request.contextPath }/chat/main">
+										<p>1:1 문의</p>
 									</a>
 									</div>
 								</div>
