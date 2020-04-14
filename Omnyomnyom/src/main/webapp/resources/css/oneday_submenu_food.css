@@ -1652,10 +1652,15 @@ only screen and (min-width: 768px) and (max-width: 991px) {
     margin-bottom: 55px;
 }
 
+.serach{
+	text-align: right;
+	
+}
+
 .circle-select {
     height: 49px;
     line-height: 47px;
-    min-width: 234px;
+    min-width: 120px;
     padding-left: 29px;
     border-radius: 41px;
     border: 1px solid #e6e6e6;

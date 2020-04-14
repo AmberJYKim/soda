@@ -39,7 +39,7 @@ public interface OnedayService {
 
 	List<OnedayReview> selectReviewList(int onedayclassNo);
 
-	List<Oneday> selectAll();
+	List<Oneday> selectAll(RowBounds rowBounds);
 	
 	List<ReservationRequest> selectAllReservationList(String memberId);
 	
@@ -48,6 +48,12 @@ public interface OnedayService {
 	OnedayTime selectOnedayTimeOne(int onedayTimeNo);
 
 	int checkVacancy(Map<String, Integer> maps);
+
+	int selectOnedayclassListCnt();
+
+	List<Oneday> onedayselect();
+
+	List<OnedayReview> reviewAll();
 
 }
 
