@@ -118,7 +118,7 @@ public class ChatController {
 	}	
 	
 	@MessageMapping("/chat/{chatId}")
-	@SendTo(value={"/chat/{chatId}", "/chat/admin/push"})
+	@SendTo(value={"/chat/{chatId}"})
 	public Msg sendEcho(Msg fromMessage, 
 						@DestinationVariable String chatId){
 		log.debug("fromMessage={}",fromMessage);
@@ -130,7 +130,6 @@ public class ChatController {
 	}
 
 	@MessageMapping("/lastCheck")
-	@SendTo(value={"/chat/admin/push"})
 	public Msg lastCheck(@RequestBody Msg fromMessage){
 		log.debug("lastCheck={}",fromMessage);
 		
@@ -139,5 +138,7 @@ public class ChatController {
 		
 		return fromMessage; 
 	}
+	
+	
 	
 }
