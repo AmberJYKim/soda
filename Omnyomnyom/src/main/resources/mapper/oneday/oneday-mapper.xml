@@ -143,20 +143,20 @@ select *
 from
 TB_onedayclass
 <where>
-<if test="menuList != null">
+<if test="menuList != ''">
 and menu_list like '%${menuList}%'
 </if>
 
-<if test="detailedAddr != null">
-and detailed_addr like '%${detailedAddr}%'
+<if test="detailedAddr != ''">
+and detailed_Addr like '%'||#{detailedAddr}||'%'
 </if>
-<if test="onedayName != null">
-and oneday_name like '%${onedayName}%'
+<if test="onedayName != ''">
+and oneday_name like '%'||#{onedayName}||'%'
 </if>
-<if test="onedayTimeDate != null">
-
+<if test="onedayTimeDate != ''">
+and onedayclass_no in (select onedayclass_no from tb_onedayclasstime where onedaytime_date = to_date(#{onedayTimeDate},'yyyy/mm/dd'))
 </if>
-
+ 
 </where>
 order by onedayclass_no desc
 </select>
