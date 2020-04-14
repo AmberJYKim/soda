@@ -45,6 +45,12 @@
 	</div>
 </section>
 <!-- Event Details Section end -->
+<style>
+.chat_thumbnail{
+	border-radius: 50%;
+    max-width: 45%;
+}
+</style>
 <div class="container">
 	<div class="section">
 		<div class="row">
@@ -59,9 +65,21 @@
 				<a href="${pageContext.request.contextPath}/mypage/dingdongList"><p class="nav_text">알림목록</p></a>
 			</div>
 			<div class="col-2 side_nav">
-				<p>관리자</p>
-				<c:forEach items="${chatIdList }" var="chatId">
-				<p id="${chatId }"> </p>
+				<c:forEach items="${recentList }" var="msg">
+				<div class="chat_thumbnail_box">
+					<a href="${pageContext.request.contextPath}/chat/msg/${msg.memberId}"><p>
+					<c:choose>
+						<c:when test='${msg.memberId eq "sdmin" }'>
+							<img src="${pageContext.request.contextPath}/resources/upload/profile/sdmin.jpg" alt="" class="chat_thumbnail" />
+						</c:when>
+						<c:otherwise>
+							<img src="${pageContext.request.contextPath}/resources/upload/profile/${msg.prevImg}" alt="" class="chat_thumbnail"/>
+						</c:otherwise>
+					</c:choose>
+					<br />	
+					${msg.memberNick }
+					</p></a>
+				</div>
 				</c:forEach>				
 			</div>
 				
@@ -79,7 +97,7 @@
 		
 					<div class="chat-about">
 						<div class="chat-with">상대방 닉네임</div>
-						<div class="chat-num-messages">already 1 902 messages</div>
+						<div class="chat-num-messages" ><span id="msg-count">${fn:length(chatList)}</span> Message</div>
 					</div>
 					<!-- <i class="fa fa-star"></i> -->
 				</div>
@@ -247,6 +265,7 @@ function chatSubscribe(){
 					
 				}
 				scrollTop();
+				$("#msg-count").text(Number($("#msg-count").text())+1);
 				}
 				iii++;
 			});

@@ -22,8 +22,7 @@ public interface ChatService {
 
 	List<String> findChatIdByMemberId(String memberId);
 	
-	//관리자용
-	List<Map<String, String>> findRecentList();
+	List<Map<String, String>> findRecentList(String memberId);
 
 	List<Msg> findChatListByChatId(String chatId);
 

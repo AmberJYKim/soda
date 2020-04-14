@@ -20,6 +20,8 @@ public class Msg implements Serializable{
 	private long chatNo;
 	private String chatId;
 	private String memberId;
+	private String memberNick;
+	private String prevImg;
 	private String msg;
 	private long time;
 	private MsgType type;

@@ -15,10 +15,14 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.soda.onn.chat.model.service.ChatService;
 import com.soda.onn.chat.model.vo.ChatMember;
 import com.soda.onn.chat.model.vo.ChatRoom;
@@ -35,50 +39,51 @@ public class ChatController {
 	@Autowired
 	private ChatService chatService;
 	
-	
-	@GetMapping("/main")
-	public String chat(Model model, 
-			 		   HttpSession session,
-			 		   @RequestParam(value = "getter", defaultValue = "sdmin", required = false) String getter){
+	//메세지 
+	@GetMapping("/msg/{getter}")
+	public String msg(Model model, 
+			 		  HttpSession session,
+			 		  @PathVariable(value = "getter") String getter){
 		String memberId = ((Member)session.getAttribute("memberLoggedIn")).getMemberId();
 		Map<String,String> map = new HashMap<>();
 		map.put("memberId", memberId);
 		map.put("getter", getter);
+		
 		String chatId = chatService.findChatIdByMemberId(map);
 		log.debug(chatId);
+	
 		if(chatId == null) {
 			chatId = createChatId(20);
 			
 			ChatRoom chatRoom = new ChatRoom(chatId);
 			List<ChatMember> list = new ArrayList<>();
 			list.add(new ChatMember(memberId, chatRoom));
-			list.add(new ChatMember("sims2", chatRoom));
+			list.add(new ChatMember(getter, chatRoom));
 			
 			//chat_room, chat_member테이블에 데이터 생성
 			chatService.createChatRoom(list);
 		}
 		//chatId가 존재하는 경우, 채팅내역 조회
 		else{
+			//채팅내역
 			List<Msg> chatList = chatService.findChatListByChatId(chatId);
-			model.addAttribute("chatList", chatList);
+			
+			model.addAttribute("chatList",chatList);
 		}
+
+		//최근 사용자 채팅메세지 목록
+		List<Map<String, String>> recentList = chatService.findRecentList(memberId);
+		model.addAttribute("recentList", recentList);
 		
 		log.debug("memberId=[{}], chatId=[{}]",memberId, chatId);
 		model.addAttribute("chatId", chatId);
+		
 		return "mypage/directMsg";
-
 	}
-	@GetMapping("/fff")
-	public String chatMain(Model model,
-						   HttpSession session) {
-		String memberId = ((Member)session.getAttribute("memberLoggedIn")).getMemberId();
-		
-		
-		List<String> chatIdList = chatService.findChatIdByMemberId(memberId);
-		model.addAttribute("chatIdList", chatIdList);
-		
-		
-		return "mypage/directMsg";
+	
+	@GetMapping("/main")
+	public String list(){
+		return "redirect:/chat/msg/sdmin";
 	}
 	
 	
@@ -111,9 +116,6 @@ public class ChatController {
 		
 		return buf.toString();
 	}	
-	
-	
-	
 	
 	@MessageMapping("/chat/{chatId}")
 	@SendTo(value={"/chat/{chatId}", "/chat/admin/push"})

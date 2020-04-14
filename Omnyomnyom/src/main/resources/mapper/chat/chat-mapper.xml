@@ -7,15 +7,26 @@
 
 <select id="findChatIdByMemberId" resultType="string">
 	select 
-	    chat_id
+        chat_id 
 	from 
 	    chat_view
 	where
 	    cr_enabled = 'Y'
 	  and 
 	    cm_enabled = 'Y'
-	  and
-	    member_id = #{memberId}
+      and
+        member_id = #{memberId}
+      and
+        chat_id in (select 
+				        chat_id 
+				    from 
+					    chat_view
+				    where
+					    cr_enabled = 'Y'
+					  and 
+					    cm_enabled = 'Y'
+				      and
+				        member_id = #{getter})
 	  
 </select>
 
@@ -69,56 +80,22 @@
 	)
 </insert>
 
-<select id="findRecentList" resultType="map">
+<select id="findRecentList" resultType="msg">
 	select 
-	    *
-	from (
-	    select 
-	        id,
-	        cv.cr_id,
-	        cv.chat_id,
-	        (select member_id from chat_view where cr_id = cl.chat_room_id and member_id != 'admin') member_id,
-	        cl.msg,
-	        cl.time,
-	        count(*) over(partition by cl.chat_room_id,cl.member_id) cnt,
-	        rank() over(partition by cl.chat_room_id order by time desc) rank 
-	    from 
-	        chat_log cl
-	      left join
-	        chat_view cv
-	          on cl.chat_room_id = cv.cr_id and cl.member_id = cv.member_id
-	    where 
-	        time > (select last_check from chat_view where cr_id = cl.chat_room_id and member_id = 'admin')
-	    order by
-	        time desc
-	    )
-	where 
-	    rank = 1
-	union all 
-	select 
-	    *
-	from (
-	    select 
-	        id,
-	        cv.cr_id,
-	        cv.chat_id,
-	        (select member_id from chat_view where cr_id = cl.chat_room_id and member_id != 'admin') member_id,
-	        cl.msg,
-	        cl.time,
-	        0 cnt,
-	        rank() over(partition by cl.chat_room_id order by time desc) rank 
-	    from 
-	        chat_log cl
-	      left join
-	        chat_view cv
-	          on cl.chat_room_id = cv.cr_id and cl.member_id = cv.member_id
-	    order by 
-	        time desc
-	    ) A
-	where 
-	    rank = 1 
-	  and 
-	    time <![CDATA[ <= ]]> (select last_check from chat_view where cr_id = A.cr_id and member_id = 'admin')
+		chat_id, 
+		member_id, 
+		(select member_nick from tb_member where member_id = cv.member_id) member_nick,
+		(select CHEF_PROFILE from tb_chef where member_id = cv.member_id) prev_img, 
+		last_check time
+    from 
+    	chat_view cv
+    where 
+    	member_id != #{memberId} 
+    	and 
+    	chat_id in (select chat_id from chat_view where member_id = #{memberId})
+    order by
+        cr_id desc
+    
 </select>
 
 <select id="findChatListByChatId" resultType="msg">

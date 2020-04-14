@@ -122,10 +122,10 @@ public class AdminController {
 	public String admin(Model model){
 		
 		//최근 사용자 채팅메세지 목록
-		List<Map<String, String>> recentList = chatService.findRecentList();
-		log.debug("recentList={}",recentList);
-		
-		model.addAttribute("recentList", recentList);
+//		List<Map<String, String>> recentList = chatService.findRecentList();
+//		log.debug("recentList={}",recentList);
+//		
+//		model.addAttribute("recentList", recentList);
 		
 		return "admin/chatList";
 	}

@@ -26,7 +26,7 @@ public interface ChatDAO {
 	int updateLastCheck(Msg fromMessage);
 
 	//관리자용
-	List<Map<String, String>> findRecentList();
+	List<Map<String, String>> findRecentList(String memberId);
 
 	List<Msg> findChatListByChatId(String chatId);
 

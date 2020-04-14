@@ -60,8 +60,8 @@ public class ChatDAOImpl implements ChatDAO {
 	}
 
 	@Override
-	public List<Map<String, String>> findRecentList() {
-		return sqlSession.selectList("chat.findRecentList");
+	public List<Map<String, String>> findRecentList(String memberId) {
+		return sqlSession.selectList("chat.findRecentList",memberId);
 	}
 
 	@Override
