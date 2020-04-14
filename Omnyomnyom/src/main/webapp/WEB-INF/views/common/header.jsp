@@ -658,7 +658,7 @@ $(document).ready(function(){
 											ddingddongLink += "&";
 										ddingddongLink += linkArr[i];
 										if(i == 0)
-											ddingddongLink+='?dingdongNO='+item.dingdongNo;
+											ddingddongLink+='?dingdongNo='+item.dingdongNo;
 									}
 									console.log('ddingddongLink'+ddingddongLink);
 									let p ='<div class="col-lg-12" style="display: flex;"><a href="${pageContext.request.contextPath }/'+ddingddongLink+'"><span class="material-icons">sms</span>'+
@@ -682,22 +682,7 @@ $(document).ready(function(){
 	            	
 				 });
 				
-			/* 	function readed(dingdongNo){
-           		 
-					alert(dingdongNo);
-					
-					$.ajax({
-						url :"${pageContext.request.contextPath }/mypage/dingdongReadUpdate",
-						data: {"dingdongNo":dingdongNO},
-						method:"POST",
-						success :data =>{
-							console.log()
-						},
-						error : (x,s,e) =>{
-							console.log(x,s,e);
-						}
-					});
-        	 	} */
+			
 				
 				function dingdongMore(){
 					location.href ="${pageContext.request.contextPath}/mypage/dingdongList"

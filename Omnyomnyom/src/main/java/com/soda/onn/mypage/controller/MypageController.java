@@ -137,6 +137,7 @@ public class MypageController {
 		List<ReservationRequest> reservationList = onedayService.selectReservationListUser(memberId,rowBounds);
 		if(dingdongNo != -1) {
 			int result = mypageService.dingdongUpdate(dingdongNo);
+			log.debug("dingResult={}",result);
 		}
 		
 		log.debug("reservationList={}",reservationList);
@@ -290,11 +291,11 @@ public class MypageController {
 		
 	}
 	
-	@PostMapping("/dingdongReadUpdate")
-	public int dingdongReadUpdate(@RequestParam(value="dingdongNo")int dingdongNo) {
-		log.debug("dingdongNo={}",dingdongNo);
-		return 1;
-
-	}
+//	@PostMapping("/dingdongReadUpdate")
+//	public int dingdongReadUpdate(@RequestParam(value="dingdongNo")int dingdongNo) {
+//		log.debug("dingdongNo={}",dingdongNo);
+//		return 1;
+//
+//	}
 	
 }
