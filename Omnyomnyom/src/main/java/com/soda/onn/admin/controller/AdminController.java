@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -27,6 +28,7 @@ import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.common.base.PageBar;
 import com.soda.onn.mall.model.service.MallService;
 import com.soda.onn.mall.model.vo.BuyHistory;
+import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
@@ -317,5 +319,42 @@ public class AdminController {
 	@GetMapping("/ingredientInsert")
   	public void ingredientInsert() {
   		
+  	}
+	
+	@GetMapping("prCategory")
+	@ResponseBody
+	public String prCategory(@RequestParam(value="prCategory")String pr) {
+		log.debug("pr={}",pr);
+		String engPrcategory = mallService.prCategory(pr);
+		log.debug(engPrcategory);
+		return engPrcategory;
+	}
+		
+	@PostMapping("/ingredientInsert")
+  	public ModelAndView ingredientInsert(Ingredient ingredient , 
+  								         IngredientMall ingredientMall,
+  								         HttpServletRequest httpServletRequest,
+  								         @RequestParam(value="ingFilename",required=false) MultipartFile ingFilename,
+  								         @RequestParam(value="ingInfo", required=false) MultipartFile ingInfo,
+  								         ModelAndView mav) {
+  		
+		ingredient.setIngredientName(httpServletRequest.getParameter("ingredientName"));
+		ingredient.setIngPrCategory(httpServletRequest.getParameter("ingPrCategory"));
+		ingredient.setIngCdCategory(httpServletRequest.getParameter("ingcdCategory"));
+		
+		ingredientMall.setIngMallName(httpServletRequest.getParameter("ingredientName"));
+		ingredientMall.setPrice(Integer.parseInt((httpServletRequest.getParameter("price"))));
+		ingredientMall.setMinUnit(httpServletRequest.getParameter("minUnit"));
+		ingredientMall.setIngOrigin(httpServletRequest.getParameter("ingOrigin"));
+		ingredientMall.setShelfLife(Integer.parseInt((httpServletRequest.getParameter("shelfLife"))));
+		
+		Map map = new HashMap();
+		map.put("ingredient",ingredient);
+		map.put("ingredientMall",ingredientMall);
+		
+		int result = mallService.ingredientInsert(map);
+		
+		mav.setViewName("/admin/ingredientList");
+		return mav;
   	}
 }

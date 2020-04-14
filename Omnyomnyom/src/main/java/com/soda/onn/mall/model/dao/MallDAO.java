@@ -1,6 +1,7 @@
 package com.soda.onn.mall.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
@@ -33,6 +34,10 @@ public interface MallDAO {
 	int deleteCart(Cart cart);
 
 	List<BuyHistory> selectAdminBuyList(String memberId);
+
+	int ingredientInsert(Map map);
+
+	String prCategory(String pr);
 
 
 }
