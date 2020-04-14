@@ -20,10 +20,13 @@
 </resultMap>
 
 <delete id="deleteScrap">
-	delete from
+	delete
+	 from
 		tb_scrap
 	where
-		where recipe_no	= #{recipeNo}
+		recipe_no = #{recipeNo}
+			AND
+		member_id = #{memberId}
 </delete>
 
 <update id="updateScrap">

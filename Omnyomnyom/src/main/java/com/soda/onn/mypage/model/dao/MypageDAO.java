@@ -12,7 +12,7 @@ public interface MypageDAO {
 
 	List<Scrap> selectScrapList(String memberId, RowBounds rowBounds);
 
-	int deleteScrap(int recipeNo);
+	int deleteScrap(Map mmap);
 
 	int updateScrap(Scrap scrap);
 
@@ -21,6 +21,7 @@ public interface MypageDAO {
 	int dingdongUpdate(int dingdongNo);
 
 	int insertPayDing(DingDong dd);
+
 
 
 }
