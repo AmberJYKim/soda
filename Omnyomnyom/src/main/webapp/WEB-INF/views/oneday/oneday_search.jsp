@@ -31,7 +31,7 @@
                     <form class="event-filter-form" method="post" action="${pageContext.request.contextPath }/oneday/oneday_search">
                        
                        <select class="ef-item circle-select" id="menuList" name="menuList">
-                            <option data-display="분류">분류</option>
+                            <option value="">분류</option>
                             <option value="한식">한식</option>
                             <option value="양식">양식</option>
                             <option value="일식">일식</option>

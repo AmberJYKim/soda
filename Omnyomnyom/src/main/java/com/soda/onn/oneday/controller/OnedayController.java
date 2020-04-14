@@ -216,7 +216,7 @@ public class OnedayController {
 	}
 	
 //	클래스 검색 결과뷰 로 이동 
-	@GetMapping("/oneday_All")
+	@RequestMapping("/oneday_All")
 	public ModelAndView search(ModelAndView mav,
 							   @RequestParam(value="cPage", defaultValue="1") int cPage,
 							   HttpServletRequest request) {
@@ -246,16 +246,16 @@ public class OnedayController {
 //	클래스 검색
 	@PostMapping("/oneday_search")
 	public ModelAndView search(@ModelAttribute ModelAndView mav,
-						@RequestParam(value = "menuList") String menuList,
-						@RequestParam(value = "detailedAddr")String detailedAddr,
-						@RequestParam(value = "onedayName")String onedayName,
-						@RequestParam(value = "onedayTimeDate") String onedayTimeDate,
+						@RequestParam(value = "menuList" , defaultValue="") String menuList,
+						@RequestParam(value = "detailedAddr", defaultValue="")String detailedAddr,
+						@RequestParam(value = "onedayName",defaultValue="")String onedayName,
+						@RequestParam(value = "onedayTimeDate",defaultValue="") String onedayTimeDate,
 						@RequestParam(value="cPage", defaultValue="1") int cPage,
 						HttpServletRequest request) {
 		
 		System.out.println("메뉴=" + menuList);
 		System.out.println("일정 =" + onedayTimeDate);
-		System.out.println("상세주소 = "+ detailedAddr);
+		System.out.println("주소 = "+ detailedAddr);
 		System.out.println("클래스 이름 = " + onedayName);
 		
 		Map<String, String> sec = new HashMap<>();
@@ -267,7 +267,7 @@ public class OnedayController {
 		List<Oneday> list = onedayService.selectDateList(sec);
 		
 		mav.addObject("list", list);
-		
+		mav.setViewName("oneday/oneday_search");
 		return mav;
 	}
 	
