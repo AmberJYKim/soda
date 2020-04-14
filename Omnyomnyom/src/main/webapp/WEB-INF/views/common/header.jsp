@@ -648,6 +648,7 @@ $(document).ready(function(){
 								$("#dingdongNum").empty();
 								$("#dingdongNum").text(dingdongNum);
 								$.each(data.dingList,function(index,item){
+
 									console.log('dingdong='+index);
 									let linkArr = item.dingdongLink.split('?');
 									let ddingddongLink = '';
@@ -661,6 +662,7 @@ $(document).ready(function(){
 									}
 									console.log('ddingddongLink'+ddingddongLink);
 									let p ='<div class="col-lg-12" style="display: flex;"><a href="${pageContext.request.contextPath }/'+ddingddongLink+'"><span class="material-icons">sms</span>'+
+
 									'<strong class="mr-auto">'+item.dingdongContent+'</strong>'+
 									 '<small>'+item.dingRegDate+'</small>'+
 									  '</a></div>';

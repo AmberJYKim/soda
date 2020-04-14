@@ -102,4 +102,17 @@ public class MallServiceImpl implements MallService {
 		return mallDAO.selectAdminBuyList(memberId);
 	}
 
+	@Override
+	public int ingredientInsert(Map map) {
+		
+		
+		return mallDAO.ingredientInsert(map);
+	}
+
+	@Override
+	public String prCategory(String pr) {
+		
+		return mallDAO.prCategory(pr);
+	}
+
 }
