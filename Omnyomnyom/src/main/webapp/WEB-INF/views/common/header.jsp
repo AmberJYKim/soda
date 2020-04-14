@@ -435,7 +435,51 @@ $(document).ready(function(){
 										</div>
 									</div>
 								</div>
+								<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath }/chef/onedayList">
+										<p>예약확인</p>
+									</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath }/chef/chefbuyList">
+										<p>구매목록</p>
+									</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath }/mall/cart">
+										<p>장바구니</p>
+									</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath}/chef/chefscrapList">
+										<p>스크랩 목록</p>
+									</a>
+									</div>
+								</div>
+							</div>
+								
+								
+								<!-- dsflkjasdfljdsklfjsdflk -->
 							</c:if>
+							<c:if test="${memberLoggedIn.memberRoll eq 'M' }">
 							<div class="insta-item">
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
@@ -476,7 +520,7 @@ $(document).ready(function(){
 									</div>
 								</div>
 							</div>
-							
+							</c:if>
 							<c:if test="${memberLoggedIn.memberRoll eq 'C' }">
 								<div class="insta-item">
 									<div class="insta-img">
@@ -551,8 +595,19 @@ $(document).ready(function(){
 								$("#dingdongNum").empty();
 								$("#dingdongNum").text(dingdongNum);
 								$.each(data.dingList,function(index,item){
+									console.log('dingdong='+index);
+									let linkArr = item.dingdongLink.split('?');
+									let ddingddongLink = '';
 									
-									let p ='<div class="col-lg-12" style="display: flex;"><a href="${pageContext.request.contextPath }/'+item.dingdongLink+'?dingdongNO='+item.dingdongNo+'"><span class="material-icons">sms</span>'+
+									for(var i = 0 ; linkArr.length>i  ; i++ ){
+										if(i>0)
+											ddingddongLink += "&";
+										ddingddongLink += linkArr[i];
+										if(i == 0)
+											ddingddongLink+='?dingdongNO='+item.dingdongNo;
+									}
+									console.log('ddingddongLink'+ddingddongLink);
+									let p ='<div class="col-lg-12" style="display: flex;"><a href="${pageContext.request.contextPath }/'+ddingddongLink+'"><span class="material-icons">sms</span>'+
 									'<strong class="mr-auto">'+item.dingdongContent+'</strong>'+
 									 '<small>'+item.dingRegDate+'</small>'+
 									  '</a></div>';

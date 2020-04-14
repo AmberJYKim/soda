@@ -14,12 +14,14 @@
 
 <link href="${pageContext.request.contextPath }/resources/css/datepicker.min.css" rel="stylesheet" type="text/css">
 <!-- 스크립트 -->
-<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+
 <script src="${pageContext.request.contextPath }/resources/js/datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/datepicker.kr.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/class_insert.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/classie.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
+
 <!-- Event Details Section -->
 
 <section class="event-details-section spad overflow-hidden">
@@ -38,8 +40,9 @@
 
 					<!-- ck에디터 -->
 					<div class="event-details w-100">
-						<textarea name="onedayContent"></textarea>
+						<textarea id="onedayContent" name="onedayContent"></textarea>
 					</div>
+
 				</div>
 
 				<!-- 사이드부분 -->
@@ -133,12 +136,10 @@
 							<input type="text" id="sample6_postcode" placeholder="우편번호" hidden/>
 							<input type="text" id="sample6_extraAddress" placeholder="참고항목" hidden/>
 							<span class="input input--yoshiko"> <!-- 클래스 주소 input -->
-								<input class="input__field input__field--yoshiko" type="text"
-								id="sample6_detailAddress" name="detailedAddr" required="required"/> <!-- 클래스 주소 라벨 --> <label
-								class="input__label input__label--yoshiko"
-								for="input-class-adress"> <span
-									class="input__label-content input__label-content--yoshiko"
-									data-content="상세 주소">상세주소</span>
+								<input class="input__field input__field--yoshiko" type="text" id="sample6_detailAddress" name="detailedAddr" required="required"/> 
+								<!-- 클래스 주소 라벨 --> 
+								<label class="input__label input__label--yoshiko" for="input-class-adress"> 
+								<span class="input__label-content input__label-content--yoshiko" data-content="상세 주소">상세주소</span>
 									
 							</label>
 							</span>

@@ -46,13 +46,21 @@ public interface OnedayDAO {
 
 	List<OnedayReview> selectReviewList(int onedayclassNo);
 
-	List<Oneday> selectAll();
+	List<Oneday> selectAll(RowBounds rowBounds);
+
+	int selectOnedayclassListCnt();
+
+	List<Oneday> onedayselect();
+
+	List<OnedayReview> reviewAll();
 
 	//	---akim
 	
 	OnedayTime selectOnedayTimeOne(int onedayTimeNo);
 
 	int checkVacancy(Map<String, Integer> maps);
+
+	List<ReservationRequest> selectReservationListUser(String memberId, RowBounds rowBounds);
 
 
 
