@@ -69,6 +69,7 @@ import com.google.gson.JsonObject;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.service.MypageService;
 import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.service.RecipeService;
@@ -90,7 +91,9 @@ public class RecipeController {
 
 	@Autowired
 	private RecipeService recipeService;
-
+	
+	@Autowired
+	private MypageService mypageService;
 	final int NUMPERPAGE = 12;
 	final int PAGEBARSIZE = 10;
 
@@ -291,10 +294,16 @@ public class RecipeController {
 	//레시피 뷰
 	@GetMapping("/recipe-details")
 	public String recipedetails(
+							@RequestParam (value="dingdongNo", defaultValue="-1")int dingdongNo,
 							@RequestParam("recipeNo")int recipeNo,
 							  HttpServletRequest request,
 							  HttpServletResponse response,
 							  Model model) {
+		
+		if(dingdongNo != -1) {
+			int result = mypageService.dingdongUpdate(dingdongNo);
+			log.debug("dingResult={}",result);
+		}
 		
 		//뷰 카운터를 위한 쿠키
 		Cookie[] cookies = request.getCookies();
