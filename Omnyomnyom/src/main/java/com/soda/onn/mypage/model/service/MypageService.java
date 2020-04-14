@@ -12,7 +12,7 @@ public interface MypageService {
 
 	List<Scrap> selectScrapList(String memberId, RowBounds rowBounds);
 
-	int deleteScrap(int recipeNo);
+	int deleteScrap(Map mmap);
 
 	int updateScrap(Scrap scrap);
 

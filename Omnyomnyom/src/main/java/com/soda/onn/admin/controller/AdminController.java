@@ -34,6 +34,7 @@ import com.soda.onn.mypage.model.service.MypageService;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.ReservationRequest;
 import com.soda.onn.recipe.model.service.RecipeService;
 import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.Report;
@@ -220,7 +221,7 @@ public class AdminController {
 		String url = request.getRequestURL().toString();
 		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
 
-		List<Reservation> reservationList = onedayService.selectReservationList(null, rowBounds);
+		List<ReservationRequest> reservationList = onedayService.selectReservationList(null, rowBounds);
 		
 		mav.addObject("paging", paging);
 		mav.addObject("reservationList", reservationList);

@@ -23,8 +23,8 @@ public class MypageDAOImpl implements MypageDAO {
 	}
 
 	@Override
-	public int deleteScrap(int recipeNo) {
-		return sqlSession.delete("mypage.deleteScrap", recipeNo);
+	public int deleteScrap(Map mmap) {
+		return sqlSession.delete("mypage.deleteScrap", mmap);
 	}
 
 	@Override

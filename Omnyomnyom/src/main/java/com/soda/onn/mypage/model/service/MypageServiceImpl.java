@@ -23,8 +23,8 @@ public class MypageServiceImpl implements MypageService {
 	}
 
 	@Override
-	public int deleteScrap(int recipeNo) {
-		return mypageDAO.deleteScrap(recipeNo);
+	public int deleteScrap(Map mmap) {
+		return mypageDAO.deleteScrap(mmap);
 	}
 
 	@Override
