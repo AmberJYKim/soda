@@ -226,7 +226,15 @@
 		order by
 			view_count desc
 	</select>
+	
 	<!-- PJM Section -->
+	<select id="selectChefProfile" resultType="string">
+		select 
+			chef_profile
+		from
+	 		tb_chef 	
+		where member_id = #{chefId}
+	</select>
 	<select id="selectReplyList" resultType="recipeReply">
 		select
 			r.*,
@@ -314,6 +322,26 @@
 		where
 			recipe_no = #{recipeNo}
 	</delete>
+	<insert id="insertDingDong">
+		insert into TB_dingdong
+		values(
+			seq_dingdong.nextval,
+			#{dingMemberId},
+			#{dingdongContent},
+			#{dingdongLink},
+			1,
+			default
+		)
+	</insert>
+	<delete id="deleteRecipeList">
+		delete from
+			tb_recipe
+		where
+			recipe_no in
+			<foreach collection="deleteList" item="recipeNo" open="(" separator="," close=")">
+				#{recipeNo}
+			</foreach>
+	</delete>
 	<!-- PJM section end  -->	
 	<select id="selectReport" resultMap="reportMap">
 		select
@@ -322,13 +350,13 @@
 			tb_report;
 	</select>
 	
-	<insert id="reportMap">
+	<insert id="insertReport">
 		insert into
 			tb_report
 		values(
 			#{repMemberId},
 			#{replyNo},
-			#{reportDate},
+			default,
 			#{reportReason}
 		)
 	</insert>
@@ -419,6 +447,16 @@
 			chef_nick = #{chefNickName}
 		order by regdate
 	</select>
+	
+	<select id="selectReportList" resultMap="ReportMap">
+		select
+			*
+		from tb_report
+	</select>
+	
+	<resultMap id="ReportMap" type="Report">
+		<result column="member_id" property="repMemberId"/>
+	</resultMap>
 	
 
 </mapper>

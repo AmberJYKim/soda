@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
+import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
@@ -17,6 +18,12 @@ import com.soda.onn.recipe.model.vo.RelRecipeSelecter;
 import com.soda.onn.recipe.model.vo.Report;
 
 public interface RecipeDAO {
+
+	int deleteRecipeList(int[] deleteList);
+
+	int insertDingDong(DingDong dd);
+
+	String selectChefProfile(String chefId);
 
 	int recipeUpdate(Recipe recipe);
 

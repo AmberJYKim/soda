@@ -33,4 +33,6 @@ public interface MallService {
 
 	List<IngredientMall> selectIngMallList(List<Map<String, String>> list);
 
+	List<BuyHistory> selectAdminBuyList(String memberId);
+
 }

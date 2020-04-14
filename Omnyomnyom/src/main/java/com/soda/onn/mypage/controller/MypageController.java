@@ -8,15 +8,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
+import org.mortbay.jetty.servlet.AbstractSessionManager.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.common.base.PageBar;
@@ -55,20 +59,14 @@ public class MypageController {
 	final int NUMPERPAGE = 15;
 	final int PAGEBARSIZE = 10;
 	
+	final int DINGNUMPERPAGE = 5;
+	final int DINGPAGEBARSIZE = 10;
+	
 	private RowBounds rowBounds = null;
 
 	@GetMapping("/main")
 	public void mypageMain() {
 		log.debug("일반 유저 마이페이지 메인 첫 화면 입니다");
-	}
-	
-	@GetMapping("/chefMain")
-	public void mypagechefMain() {
-		log.debug("셰프 마이페이지 메인 첫 화면 입니다");
-	}
-	@GetMapping("/adminMain")
-	public void mypageadminMain() {
-		log.debug("관ㄹ지ㅏ 마이페이지 메인 첫 화면 입니다");
 	}
 		
 	@GetMapping("/updateinfo")
@@ -92,14 +90,25 @@ public class MypageController {
 		return "redirect:/mypage/main";
 	}
 	
-	
+	//일반 유저의 구매목록들
 	@GetMapping("/buyList")
-	public void buyList(HttpSession session, Model model) {
-		String memberId = (String) session.getAttribute("");
+	public void buyList(@RequestParam (value="dingdongNo", defaultValue="-1")int dingdongNo,
+						HttpSession session, 
+						Model model) {
+		System.out.println("buyList 메소드입니다");
+		
+		if(dingdongNo != -1) {
+			int result = mypageService.dingdongUpdate(dingdongNo);
+		}
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
+		
 		List<BuyHistory> buyList = mallService.selectBuyList(memberId);
 		log.debug("buyList={}",buyList);
 		model.addAttribute("buyList", buyList);
 	}
+	
+	
 	
 	@GetMapping("/chefRequest")
 	public void chefRequest(HttpSession session, Model model) {
@@ -110,15 +119,21 @@ public class MypageController {
 	}
 	
 	@GetMapping("/onedayList")
-	public void onedayList(HttpSession session, 
+	public void onedayList(@RequestParam (value="dingdongNo", defaultValue="-1")int dingdongNo,
+						   HttpSession session, 
 						   Model model,
 						   @RequestParam(value="cPage", defaultValue="1") int cPage) {
 		int numPerPage = 15;
+		
 		Member member = (Member)session.getAttribute("memberLoggedIn");
 		String memberId = member.getMemberId();
 		
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
+		if(dingdongNo != -1) {
+			int result = mypageService.dingdongUpdate(dingdongNo);
+		}
+		
 		log.debug("reservationList={}",reservationList);
 		model.addAttribute("reservationList", reservationList);
 	}
@@ -127,6 +142,8 @@ public class MypageController {
 	public void qnaMsg() {
 		
 	}
+
+	
 	
 	//일반유저 스크랩 목록
 	@GetMapping("/scrapList")
@@ -196,27 +213,76 @@ public class MypageController {
 		return "redirect:/mypage/scrapList";
 	}
 	
+	
+	
 	//알림 목록
-	@GetMapping("/dingdongList")
-	public ModelAndView dingdongList(HttpSession session) {
-		ModelAndView mav = new ModelAndView();
+		@GetMapping("/dingdongList")
+		public ModelAndView dingdongList(HttpSession session) {
+			ModelAndView mav = new ModelAndView();
+			
+			Member userId = (Member)session.getAttribute("memberLoggedIn");
+			String memberId = userId.getMemberId();
+			System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
+			
+			Map<String,String> map =   new HashMap<String, String>();
+			map.put("memberId", memberId);
+			
+			List<DingDong> list = mypageService.selectDingList(map);
+			System.out.println("여기는 알림목록  = "+list);
+			
+			mav.addObject("list", list);
+			mav.setViewName("/mypage/dingdongList");
+			
+			return mav;
+		}
+	
 		
-		Member userId = (Member)session.getAttribute("memberLoggedIn");
-		String memberId = userId.getMemberId();
-		System.out.println("이곳은 알림목록 유저아이디 = "+memberId);
 		
-		List<DingDong> list = mypageService.selectDingList(memberId);
-		System.out.println("여기는 알림목록  = "+list);
+///////////// 헤더 알림 -  김소현 영역 ///////////////////		
+	//헤더 알림 목록
+	@GetMapping("/dingDongList")
+	@ResponseBody
+	public Map dingdong(@RequestParam(value="cPage", defaultValue="1") int cPage,
+					     HttpSession session,
+			 			 HttpServletRequest request) {
+	
 		
-		mav.addObject("list", list);
-		mav.setViewName("/mypage/dingdongList");
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId=  member.getMemberId();
+		log.debug("cPage={}",cPage);
+		int pageStart = ((cPage - 1)/DINGPAGEBARSIZE) * DINGPAGEBARSIZE +1;
+		int pageEnd = pageStart+PAGEBARSIZE-1;
 		
-		return mav;
+		rowBounds = new RowBounds((cPage-1)*DINGNUMPERPAGE, DINGNUMPERPAGE);
+		int totalCount = memberService.selectMemberListCnt();
+		int totalPage =  (int)Math.ceil((double)totalCount/DINGNUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		Map<String,String> map =   new HashMap<String, String>();
+		map.put("memberId", memberId);
+		map.put("Read", "1");
+
+		List<DingDong> dingList = mypageService.selectDingList(map);
+		log.debug("dingList={}",dingList);
+
+		
+		Map mapp =new HashMap();
+		
+		mapp.put("dingList", dingList);
+		return mapp;
 	}
+	
 	
 	@GetMapping("/directMsg")
 	public void directMsg() {
 		
+	}
+	
+	@PostMapping("/dingdongReadUpdate")
+	public int dingdongReadUpdate(@RequestParam(value="dingdongNo")int dingdongNo) {
+		log.debug("dingdongNo={}",dingdongNo);
+		return 1;
+
 	}
 	
 }

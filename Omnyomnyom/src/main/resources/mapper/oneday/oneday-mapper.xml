@@ -30,6 +30,13 @@ tb_onedayclass
 where onedayclass_no = #{onedayclassNo}
 </select>
 
+<select id="selectAll" resultType="Oneday">
+select*from
+tb_onedayclass
+order by onedayclass_no desc
+</select>
+
+
 
 <select id="selectOnedayReviewList" resultType="onedayReview">
 	select
@@ -87,6 +94,9 @@ where onedayclass_no = #{onedayclassNo}
 				default,
 				#{resPrice}
 		)
+		<selectKey keyProperty="reservationNo" resultType="_int" order="AFTER">
+				select seq_reservation.currval from dual
+		</selectKey>
 </insert>
 
 
@@ -102,11 +112,8 @@ and detailed_addr like '%${detailedAddr}%'
 and oneday_name like '%${onedayName}%'
 </if>
 <!-- 일정부분 뽑는 것  -->
-<!-- <if test="onedayTimeDate != ''">
-and onedayclass_no = (select oct.onedayclass_no from 
-						tb_onedayclasstime oct where oct.onedayclass_no = oc.onedayclass_no 
-						and 
-						TRUNC(onedaytime_date) = #{onedayTimeDate})
+<!-- <if test="onedayTimeDate != null">
+
 </if> -->
 
 </where>
@@ -158,15 +165,68 @@ order by onedayclass_no desc
 	where onedayclass_No = #{onedayclassNo}
 </update>
 
+<insert id="insertReview">
+insert into 
+tb_oneday_review
+values(
+	seq_review.nextval,
+	#{memberId},
+	#{onedayclassNo},
+	#{reviewContent},
+	#{reviewImg},
+	sysdate,
+	#{reviewScore},
+	#{reviewTitle}
+)
+</insert>
+
+<select id="selectReviewList" resultType="OnedayReview">
+	select*from 
+		tb_oneday_review
+		where onedayclass_No = #{onedayclassNo}
+</select>
+
+<select id="selectAllReservationList" resultMap="ReservationListMap">
+	select
+		od.oneday_name,
+		odct.ONEDAYTIME_DATE, 
+		res.PERSONNEL, 
+		res.cancel_check, 
+		res.regdate,
+		od.oneday_price*res.personnel,
+		od.oneday_price
+	from
+		tb_onedayclass od left join tb_onedayclasstime odct on od.onedayclass_no = odct.onedayclass_no
+                          left join tb_reservation res on odct.onedayclass_no = res.onedayclass_no
+	where
+		od.member_id = #{memberId}
 
 
+</select>
 
+<resultMap id="ReservationListMap" type="ReservationRequest">
+	<result column="member_id" property="reserMemberId"/>
+	<result column="oneday_name" property="onedayClassName"/>
+	<result column="onedaytime_date" property="regDate"/>
+	<result column="PERSONNEL" property="personnel"/>
+	<result column="cancel_check" property="cancel"/>
+	<result column="od.oneday_price*res.personnel" property="totalPrice"/>
+	<result column="oneday_price" property="price"/>
+</resultMap>
 
-
-
-
-
-
+	<!-- 결제관련 작업부 시작 -->
+	
+	<select id="selectOnedayOne" resultType="OnedayTime">
+		select * from tb_onedayclasstime where onedaytime_no = #{onedayTimeNo}
+	</select>
+	
+	
+	<select id="checkVacancy" parameterType="_int" resultType="_int">
+		select nvl(sum(personnel), 0) from tb_reservation where onedayclass_no = #{onedayNo} and onedaytime_no = #{onedaytimeNo}
+	
+	</select>
+	
+	<!-- 결제관련 작업부 종료 -->
 
 
 

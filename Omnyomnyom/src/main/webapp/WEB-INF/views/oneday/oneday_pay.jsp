@@ -1,3 +1,6 @@
+<%@page import="com.soda.onn.oneday.model.vo.Oneday"%>
+<%@page import="com.soda.onn.oneday.model.vo.Reservation"%>
+<%@page import="com.soda.onn.oneday.model.vo.ReservationRequest"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -10,58 +13,124 @@
 <!--  원데이 pay  css -->
  <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/class_reservation.css" />
 
-<!-- 아임포트 결제 -->
-<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
+<!-- 아임포트 결제 관련 스크립트-->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
  <!-- 결제정보 js -->
     <script>
-        $(document).ready(function() {
+        let paymentResult = false;
+        
+        console.log("스크립트로딩시작부");
+        
+    	$(document).ready(function() {
             //현재HTML문서가 브라우저에 로딩이 끝났다면   
             $("div.select-pay").hide();
-            $('#card').click(function() {
-                $("#card-pay").show();
-                $("#bank-pay").hide();
-                $("#card").style.backgroundColor = "#4949e7";
-            }); //click
-
-            $('#bank').click(function() {
-                $("#bank-pay").show();
-                $("#card-pay").hide();
-                $("#bank").style.backgroundColor = "#4949e7";
-            });
-        }); //ready  
-        function reservationEnd() {
+            
+            //카카오페이 클릭 시 
+       	    $('#card').click(function() {
+       	      var IMP = window.IMP; // 생략가능
+       	      IMP.init('imp62410752');  // 가맹점 식별 코드
+       	      	console.log("인원체크")
+       	     
+       	      	let maxSeat = ${oneday.onedayMaxper };
+       	      	let onedayNo= ${oneday.onedayclassNo};
+       	      	let onedaytimeNo = ${reservationrequest.onedaytimeNo};
+       	      	let ticketQty = ${reservationrequest.personnel};
+       	      	
+       	      	
+       	      	console.log(maxSeat);
+       	      	console.log(onedayNo);
+       	      	console.log("ajax시작전");
+       	      	let forwarding = {"onedayNo" : onedayNo, "onedaytimeNo" :onedaytimeNo};
+       	      	console.log(forwarding, "===forwarding");
+       	      	$.ajax({
+	       	      	url: "${pageContext.request.contextPath }/oneday/checkvacancy",
+					dataType: "json",
+					method : "get",
+					data : forwarding,
+					success : data =>{
+						
+						//이부분 작동안함 확인해야함.
+					 if(data.reserved <= maxSeat ){
+						 alert("잔여 좌석이 부족합니다. 다시 확인해주세요");
+						 return;
+					 }else if ( data.reserve+ticketQty > maxSeat){
+						 alert("잔여 좌석이 부족합니다. 다시 확인해주세요");
+						 return;
+					 }	
+					},
+					error : (x,s,e) =>{
+						console.log(x,s,e);
+					}
+       	      	});
+       	      
+       	      
+       	      console.log("결제모듈 로딩");
+      	    
+       	      //예약마감 체크하기 ajax로 실시간검사하여 return값 주기
+       	      	IMP.request_pay({
+      	        		pg : 'kakaopay', // 결제방식
+      		            pay_method : 'card',	// 결제 수단
+      		            popup : true,
+      		            merchant_uid : 'merchant_' + new Date().getTime(),
+      		           	name : '주문명: 결제 테스트',	// order 테이블에 들어갈 주문명 혹은 주문 번호
+      		            amount : '${reservationrequest.resPrice}',	// 결제 금액 
+      		            buyer_email : '${memberLoggedIn.email}',	// 구매자 email
+      		           	buyer_name :  '${memberLoggedIn.memberName}',	// 구매자 이름
+      		            buyer_tel :  '${memberLoggedIn.phone}',	// 구매자 전화번호
+      		            buyer_addr :  '${memberLoggedIn.address}',	// 구매자 주소
+      		            buyer_postcode :  '',	// 구매자 우편번호
+      		        }, function(rsp) {
+      		          if ( rsp.success ) {
+      		        	  
+      		        	var msg = '결제가 완료되었습니다.';
+	        			msg += ',결제 금액 : ' + rsp.paid_amount;
+	        			msg += ',확인 버튼을 눌러 예약 확인페이지로 이동해주세요';
+  		        		paymentResult = true;
+	        			alert(msg);
+	        			insertReserv();
+	        			
+      		        } else {
+      		            var msg = '결제에 실패하였습니다.';
+      		            msg += '에러내용 : ' + rsp.error_msg;
+      		            
+      		            alert(msg);
+      		    			     paymentResult = false;
+      		        }
+      		       
+      	 		}); //아임포트 끝
+	        	
+           }); //click
+		
+           
+           function insertReserv(){
+   	    		console.log("인서트시작");
+      	      	$.ajax({
+       	      	url: "${pageContext.request.contextPath }/oneday/paycompletion",
+				method : "Post",
+				success : data =>{
+			
+        			//$(location).attr('href', "${pageContext.request.contextPath }/oneday/result");
+        			location.href = "${pageContext.request.contextPath }/oneday/result";
+				},
+				error : (x,s,e) =>{
+					console.log(x,s,e);
+				}
+      	      	});
+        	   
+           }
+           $('#bank').click(function() {
+               $("#bank-pay").show();
+               $("#card-pay").hide();
+               $("#bank").style.backgroundColor = "#4949e7";
+           }); 
+        }); //ready
+        
+   /*      function reservationEnd() {
             $("#reservationEndFrm").attr("action", "${pageContext.request.contextPath }/oneday/result.do").submit();
-        };
+        }; */
         
-        
-        var IMP = window.IMP; // 생략가능
-        IMP.init('imp50043848');  // 가맹점 식별 코드
-
-        IMP.request_pay({
-           pg : 'kakao', // 결제방식
-	            pay_method : 'card',	// 결제 수단
-	            merchant_uid : 'merchant_' + new Date().getTime(),
-	           name : '주문명: 결제 테스트',	// order 테이블에 들어갈 주문명 혹은 주문 번호
-	            amount : '${.totalPrice}',	// 결제 금액 
-	            buyer_email : '${memberLoggedIn.email}',	// 구매자 email
-	           buyer_name :  '${memberLoggedIn.name}',	// 구매자 이름
-	            buyer_tel :  '${memberLoggedIn.phone}',	// 구매자 전화번호
-	            buyer_addr :  '${memberLoggedIn.Addr}',	// 구매자 주소
-	            buyer_postcode :  '${memberLoggedIn.postalcode}',	// 구매자 우편번호
-	            m_redirect_url : '/oneday/payresult'	// 결제 완료 후 보낼 컨트롤러의 메소드명
-	        }, function(rsp) {
-	     	if ( rsp.success ) { // 성공시
-	     		var msg = '결제가 완료되었습니다.';
-	     		msg += '고유ID : ' + rsp.imp_uid;
-	     		msg += '상점 거래ID : ' + rsp.merchant_uid;
-	     		msg += '결제 금액 : ' + rsp.paid_amount;
-	     		msg += '카드 승인번호 : ' + rsp.apply_num;
-	     	} else { // 실패시
-	     		var msg = '결제에 실패하였습니다.';
-	     		msg += '에러내용 : ' + rsp.error_msg;
-	     	}
-    	});
-        
+   
+   	console.log("스크립트로딩엔딩부");
     </script>
     
     <!-- Event Details Section -->
@@ -87,54 +156,31 @@
                         예약 정보동의</a> <a  class="current badge-inverse"><span class="badge ">03</span>
                         예약 결제</a> <a><span class="badge">04</span>결제 완료</a>
                 </div>
-                <form action="/onn/oneday/result.do" method="POST">
+                <form action="/onn/oneday/result.do" method="POST" onsubmit="return payresultvalidation();">
                     <div class="row text-center">
-                        <article class="col-lg-5 tm-article">
+                    <div class="col"></div>
+                        <article class="col-lg-4 tm-article">
                             <h3 class="tm-color-primary tm-article-title-1">결제 상품 </h3>
                             <table class="ticket-tbl container">
 
+		                        <tr>
+                                    <td><b>${oneday.onedayName }</b></td>
+                                </tr>
                                 <tr>
-                                    <td><b>재미있는 양식클래스</b></td>
-                                    <td>2020/3/27 (11:00)</td>
-                                    <td>2매</td>
+                                    <td>${reservationrequest.regDate}</td>
+                                </tr>
+                                <tr>
+                                    <td>${reservationrequest.personnel } 매</td>
                                 </tr>
                             </table>
                         </article>
-                        <article class=" col-lg-2 tm-article">
+                        <article class=" col-lg-4 tm-article">
                             <h3 class="tm-color-primary tm-article-title-1">결제수단</h3>
-                            <p class="box_subtitle">❖ 원하시는 결제수단을 선택해 주세요.</p>
-                            <input type="button" class="pay-btn" id="card" name="payCard" value="신용카드" onclick="selectPayType();">
-                            <input type="button" class="pay-btn" id="bank" name="payBank" value="계좌이체" onclick="selectPayType();">
+                            <p class="box_subtitle">❖ 카카오페이 간편결제를 통해 결제하실 수 있습니다.</p>
+                            <input type="button" class="pay-btn" id="card" name="payCard" value="카카오페이 결제">
                         </article>
 
-                        <article class="col-lg-3  tm-article">
-
-                            <h3 class="tm-color-primary tm-article-title-1">결제수단 세부항목</h3>
-                            <div class="select-pay" id="card-pay">
-                                <p class="box_subtitle">❖ 결제하실 카드사를 선택해 주세요.</p>
-                                <select name="pay-card-val" class="card-val" size="1">
-                                                <option value="">카드사선택</option>
-                                                <option value="C">군산카드</option>
-                                                <option value="C">국민카드</option>
-                                                <option value="C">하나카드</option>
-                                                <option value="C">신한카드</option>
-                                            </select>
-                            </div>
-                            <div class="select-pay" id="bank-pay">
-                                <p class="box_subtitle">❖ 결제하실 은행를 선택해 주세요.</p>
-                                <select name="pay-bank-val" class="card-val" size="1">
-                                                <option value="">은행선택</option>
-                                                <option value="W">군산은행</option>
-                                                <option value="W">국민은행</option>
-                                                <option value="W">하나은행</option>
-                                                <option value="W">신한은행</option>
-                                  </select>
-                            </div>
-
-                        </article>
-                        <article class=" col-lg-1">
-                            <input type="submit" value="결제완료" class="tm-color-white tm-btn-white-bordered" />
-                        </article>
+                    <div class="col"></div>
                     </div>
                 </form>
             </div>

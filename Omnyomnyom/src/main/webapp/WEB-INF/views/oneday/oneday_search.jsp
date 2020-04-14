@@ -91,7 +91,7 @@
                                 <c:forEach items="${oneday.onedayTimeList }" var="tl">
                                 <div class="ci-metas">
                                  <c:if test="${tl.onedayNoo eq oneday.onedayclassNo}">
-                                    <div class="ci-meta"><i class="material-icons">event_available</i>${tl.onedayTimeDate }</div>
+                                    <div class="ci-meta" style="display: none;"><i class="material-icons">event_available</i>${tl.onedayTimeDate }</div>
                                     <%-- <div class="ci-meta"><i class="material-icons">${tl.onedayNoo}</i></div> --%>
                                 </c:if>
                                 </div>

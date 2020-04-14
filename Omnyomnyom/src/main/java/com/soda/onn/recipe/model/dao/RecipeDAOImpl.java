@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
+import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.vo.Like;
 import com.soda.onn.recipe.model.vo.MenuCategory;
@@ -28,6 +29,23 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+
+	@Override
+	public int deleteRecipeList(int[] deleteList) {
+		Map<String,int[]> map = new HashMap<String, int[]>();
+		map.put("deleteList", deleteList);
+		return sqlSession.delete("recipe.deleteRecipeList", map);
+	}
+
+	@Override
+	public int insertDingDong(DingDong dd) {
+		return sqlSession.insert("recipe.insertDingDong", dd);
+	}
+
+	@Override
+	public String selectChefProfile(String chefId) {
+		return sqlSession.selectOne("recipe.selectChefProfile",chefId);
+	}
 
 	@Override
 	public int recipeUpdate(Recipe recipe) {

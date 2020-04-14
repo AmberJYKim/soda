@@ -32,30 +32,11 @@ function oneday_search(){
     <div class="container">
         <div class="event-filter-warp">
             <div class="row">
-                <div class="col-xl-2">
-                    <p>원데이클래스 검색</p>
-                </div>
-                <div class="col-xl-10">
-                    <form class="event-filter-form" method="get" action="${pageContext.request.contextPath }/oneday/oneday_search">
-                        <div class="ef-item">
-                            <i class="material-icons">event_available</i>
-                            <!-- <input type="text" id="onedayTimeDate" name="onedayTimeDate" placeholder="날짜로 검색" class="event-date"> -->
-                       		<input
-									class="input__field input__field--yoshiko datepicker-here"
-									type="text" id="input-date" name="onedayTimeDate" data-language='kr' data-date-format='yy/mm/dd'
-									data-timepicker="" autocomplete="off" />
-                        </div>
-                        <div class="ef-item">
-                            <i class="material-icons">map</i>
-                            <input type="text" id="detailedAddr" name="detailedAddr" placeholder="위치로 검색">
-                        </div>
-                        <div class="ef-item">
-                            <i class="material-icons">search</i>
-                            <input type="text" id="onedayName" name="onedayName" placeholder="검색어를 입력하세요.">
-                        </div>
-                       <!-- 아무것도 입력하지 않으면 업로드 순 -->
-                       <!-- 해당 값 입력시 입력 값에 대한 정보 불러옴 -->
-                        <input class="site-btn sb-gradient" type="submit" value="클래스 검색">
+                
+                <div class="col-xl-12">
+                    <form class="event-filter-form" method="get" action="${pageContext.request.contextPath }/oneday/oneday_All">
+                        
+                        <input class="site-btn sb-gradient" type="submit" value="원데이 클래스 자세히보기">
                     </form>
                 </div>
             </div>
@@ -79,23 +60,6 @@ function oneday_search(){
     <!-- 원데이 클래스 Section -->
     <section class="classes-section spad">
         <div class="container">
-
-            <div class="row">
-                <div class="col-md-9">
-                    <span>인기순</span>
-                    <sapn>가나다순</sapn>
-                </div>
-                <div class="col-md-3">
-                    <select class="circle-select">
-                            <option data-display="한식">한식</option>
-                            <option value="2">양식</option>
-                            <option value="2">일식</option>
-                            <option value="2">중식</option>
-                            <option value="2">밀식</option>
-                            <option value="2">기타식</option>
-                        </select>
-                </div>
-            </div>
             <div class="section-title text-center">
                 <h2>인기 클래스</h2>
                 <p>영상에서 부족했던 부분을 오프라인에서 해결해 보세요. 인기있는 셰프님과의 만남을 가져보세요.</p>

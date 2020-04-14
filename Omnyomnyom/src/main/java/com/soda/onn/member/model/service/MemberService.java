@@ -31,6 +31,8 @@ public interface MemberService {
 
 	int updateInfo(Map<String, Object> params);
 
+	Member searchNick(String memberId);
+
 
 
 

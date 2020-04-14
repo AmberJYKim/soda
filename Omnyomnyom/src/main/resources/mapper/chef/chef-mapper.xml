@@ -16,7 +16,8 @@
 <resultMap type="chefRequest" id="chefReqMap" >
 	<result column="member_id" property="chefId"/>
 	<result column="member_nick" property="chefNickName"/>
-	<result column="chef_sns" property="sns" typeHandler="strArrTypeHandler"/>
+	<result column="chef_sns" property="sns"/>
+	<result column="chef_appeal_video" property="chefApVideo"/>
 </resultMap>
 
 <resultMap type="Notice" id="noticeMap" >
@@ -40,12 +41,33 @@ where chef_nick = #{chefNickName}
 
 <!-- 전체 셰프 리스트 -->
 <update id="chefRequestUpdate">
-	update 
-		tb_chef_req
-	set
-		chef_req_ok	= #{variable}
-	where
-		member_id = #{chefId}
+{call
+	declare
+		begin
+			update 
+				tb_chef_req
+			set
+				chef_req_ok	=#{chefReqOk}
+			where
+				member_id = #{chefId};
+			
+		<if test='chefReqOk == "Y" '>
+		insert into 
+			tb_chef
+			values(
+				#{chefId},
+				#{chefApVideo},
+				#{sns},
+				#{chefProfile},
+				#{menuPrCategory},
+				sysdate,
+				#{businessInfo},
+				#{chefContent}
+				);
+		</if>
+			commit;
+		end
+	}
 </update>
 
 
@@ -86,12 +108,14 @@ where chef_nick = #{chefNickName}
 	where M.member_nick = #{chefNickName}
 		
 </select>
+
 <select id="selectChefRequestList" resultMap="chefReqMap">
 	select
 		*
 	from
 		tb_chef_req c
-		join tb_member m using(member_id)
+		join tb_member m 
+		using(member_id)
 	order by
 		c.regdate
 </select>

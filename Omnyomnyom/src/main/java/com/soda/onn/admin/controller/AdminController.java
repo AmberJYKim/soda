@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,13 @@ import com.soda.onn.mall.model.vo.BuyHistory;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.service.MypageService;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.recipe.model.service.RecipeService;
+import com.soda.onn.recipe.model.vo.Recipe;
+import com.soda.onn.recipe.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,6 +52,9 @@ public class AdminController {
 	private ChefService chefService;
 	
 	@Autowired
+	private MypageService mypageService;
+	
+	@Autowired
 	private OnedayService onedayService;
 
 	@Autowired
@@ -58,11 +66,47 @@ public class AdminController {
 	@Autowired
 	private ChatService chatService;
 	
+	@Autowired
+	private RecipeService recipeService;
+	
 	final int NUMPERPAGE = 15;
 	final int PAGEBARSIZE = 10;
 
 	
 	private RowBounds rowBounds = null;
+	
+	
+	@GetMapping("/adminMain")
+	public void mypageadminMain() {
+		log.debug("관리자 마이페이지 메인 첫 화면 입니다");
+	}
+	
+	@GetMapping("/adminQnaMsg")
+	public void adminQnaMsg() {
+		
+	}
+	
+	@GetMapping("/chefInsertList")
+	public void chefInsertList(HttpSession session) {
+		
+	}
+	
+	//판매자의 판매목록들
+			@GetMapping("/sellList")
+			public void adminBuyList(HttpSession session, Model model) {
+				Member member = (Member)session.getAttribute("memberLoggedIn");
+				String memberId = member.getMemberId();
+				
+				List<BuyHistory> sellList = mallService.selectAdminBuyList(memberId);
+				log.debug("sellsList={}",sellList);
+				model.addAttribute("sellList", sellList);
+			}
+		
+			
+		@GetMapping("/sendDingdong")
+		public void sendDingdong() {
+			
+		}
 	
 	//셰프목록
 	@GetMapping("/chefList")
@@ -77,45 +121,89 @@ public class AdminController {
 	}
 	
 	//셰프신청목록
-	@GetMapping("/chefRequestList")
-	public ModelAndView chefRequestList(@RequestParam(value="cPage", defaultValue="1") int cPage, 
-										HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView();
-		
-		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
-		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
-		int pageEnd = pageStart+PAGEBARSIZE-1;
-		int totalCount = chefService.selectChefRequestListCnt();
-		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
-		String url = request.getRequestURL().toString();
-		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		@GetMapping("/chefRequestList")
+		public ModelAndView chefRequestList(@RequestParam(value="cPage", defaultValue="1") int cPage, 
+											HttpServletRequest request) {
+			ModelAndView mav = new ModelAndView();
+			
+			rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
+			int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+			int pageEnd = pageStart+PAGEBARSIZE-1;
+			int totalCount = chefService.selectChefRequestListCnt();
+			int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+			String url = request.getRequestURL().toString();
+			String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
 
+			
+			List<ChefRequest> chefRequestList = chefService.selectChefRequestList(rowBounds); 
+			
+			log.debug("chefRequestList={}",chefRequestList);
+			mav.addObject("paging", paging);
+			mav.addObject("chefRequestList", chefRequestList);
+			mav.setViewName("admin/chefRequestList");
+			
+			return mav;
+		}
 		
-		List<ChefRequest> chefRequestList = chefService.selectChefRequestList(rowBounds); 
-		mav.addObject("paging", paging);
-		mav.addObject("chefRequestList", chefRequestList);
-		mav.setViewName("admin/chefRequestList");
+		@GetMapping("/{memberId}/chefRequestView")
+		public ModelAndView chefRequestView(@PathVariable(value="memberId")String memberId,
+											ModelAndView mav) {
+			
+			ChefRequest chefRequest = chefService.selectChefRequest(memberId);
+			log.debug("chefRequest@goView={}",chefRequest);
+			
+		    Gson gson = new Gson();
+		    Map<String,String> snsMap = gson.fromJson(chefRequest.getSns(),  new TypeToken<Map<String,String>>(){}.getType());
+		    List<Map<String,String>> categoryList = gson.fromJson(chefRequest.getMenuPrCategory(),  new TypeToken<List<Map<String,String>>>(){}.getType());
+		    log.debug("snsMap={}",snsMap);
+		    log.debug("categoryListMap={}",categoryList);
+		    
+		    
+		    String categoryStr = "";
+		    for(int i=0; i<categoryList.size(); i++) {
+		    	String category = (categoryList.get(i)).get("value");
+		    	categoryStr += ","+category;
+		    }
+		    mav.addObject("chefRequest", chefRequest);
+		    mav.addObject("snsMap", snsMap);
+		    mav.addObject("categoryStr", categoryStr);
+			mav.setViewName("/admin/chefRequestView");
+			return mav;
+		}
 		
-		return mav;
-	}
-	@PostMapping("/chefRequest")
-	public String chefRequest(@RequestParam("variable") String variable,
-							  @RequestParam("chefId") String chefId) {
-		log.debug("셰프신청 수락여부 결정 진행중");
-		log.debug("chefId={}",chefId);
-		log.debug("variable={}",variable);
-		Map<String, String> chefReq = new HashMap<>();
-		chefReq.put("chefId",chefId);
-		chefReq.put("variable",variable);
-		int result = chefService.chefRequestUpdate(chefReq);
-		log.debug("result={}",result);
-		return "redirect:/admin/chefRequestList";
-	}
+		@PostMapping("/chefRequest")
+		public String chefRequest(@RequestParam("variable") String variable,
+								  @RequestParam("chefId") String chefId) {
+			log.debug("셰프신청 수락여부 결정 진행중");
+			log.debug("chefId={}",chefId);
+			log.debug("variable={}",variable);
+			Map<String, String> chefReq = new HashMap<>();
+			chefReq.put("chefId",chefId);
+			chefReq.put("variable",variable);
+			
+			
+			ChefRequest chefreq = chefService.selectChefRequest(chefId);
+			chefreq.setChefReqOk(variable);
+			
+			int result1 = chefService.chefRequestUpdate(chefreq);
+			log.debug("result1={}",result1);
+			return "redirect:/admin/chefRequestList";
+		}
 
 	//신고목록
 	@GetMapping("/reportList")
-	public void reportList() {
+	public ModelAndView reportList(@RequestParam (value="dingdongNo", defaultValue="-1") int dingdongNo) {
 		
+		List<Report> list = recipeService.selectReportList();
+		
+		if(dingdongNo != -1) {
+			int result = mypageService.dingdongUpdate(dingdongNo);
+		}
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("list", list);
+		mav.setViewName("admin/reportList");
+		
+		return mav;
 	}
 	
 	@GetMapping("/chat/list")
@@ -239,4 +327,9 @@ public class AdminController {
 		
 		return mav;
 	}
+	
+	@GetMapping("/ingredientInsert")
+  	public void ingredientInsert() {
+  		
+  	}
 }

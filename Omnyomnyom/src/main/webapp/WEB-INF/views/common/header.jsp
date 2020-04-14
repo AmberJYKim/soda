@@ -196,6 +196,7 @@ $(document).ready(function(){
 </script>
 
 </c:if>
+
   
 </head>
 <body>
@@ -227,6 +228,9 @@ $(document).ready(function(){
 	                </div>
            		<c:if test="${not empty memberLoggedIn}">
            		<div class="hb-switch">
+           		<div style="width:20px; height:20px; background-color:gray; border-radius:50%; position: absolute; top: 28px;  text-align:center;">
+           			<p style="color:white;" id="dingdongNum">1</p>
+           		</div>
            		<span class="material-icons  ${memberLoggedIn ==''?'':'infor-switch' }"  style="color:red;"> local_post_office </span>
            		</div>
            		<div class="hb-switch">
@@ -333,29 +337,7 @@ $(document).ready(function(){
                     </div>
                 </div>
                 <!-- 로그	인/회원가입 form end-->
-                <script>
-                $("#signIn").click(function(){
-                	if($("#loginId")=''){
-                		return;
-                	}
-                	
-                	let memberId = $("#loginId").val();
-                	console.log(memberId);
-                	$.ajax({
-                		url:"${pageContext.request.contextPath}/member/dingDong",
-                		data:{"memberId":memberId},
-                		method:"POST",
-                		datatype:"json",
-                		success:data =>{
-                			
-                			$(".toast-header").empty();
-                			
-                			
-                		}
-                		
-                	});
-                });
-                </script>
+              
                </c:if>
             </div>
             <div class="container">
@@ -395,27 +377,21 @@ $(document).ready(function(){
 				<!-- 로그인 후 간단한 회원정보 출력해줌 -->
 				<c:choose>
 					<c:when test="${memberLoggedIn.memberRoll eq 'A' }">
-						<a href="#" class="infor-logo">
-							<img src="img/user.png" alt="">
-						</a>
-						<p><a href="${pageContext.request.contextPath }/mypage/adminMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+						<p style="position : relative; margin-top:-50px;"><a href="${pageContext.request.contextPath }/admin/adminMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. <br/> 행복한 하루 되세요!</p>
 					</c:when>
 					<c:when test="${memberLoggedIn.memberRoll eq 'C' }">
-						<a href="#" class="infor-logo">
-							<img src="img/user.png" alt="">
-						</a>
-						<p><a href="${pageContext.request.contextPath }/mypage/chefMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>
+						
+						<p style="position : relative; margin-top:-50px;"><a href="${pageContext.request.contextPath }/chef/chefMain">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. <br/> 행복한 하루 되세요!</p>
 					</c:when>
 					<c:otherwise>
-						<a href="#" class="infor-logo">
-							<img src="img/user.png" alt="">
-						</a>
-						<p><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. 행복한 하루 되세요!</p>	
+						
+						<p style="position : relative; margin-top:-50px;"><a href="${pageContext.request.contextPath }/mypage/main">${memberLoggedIn.memberNick }</a>, 오늘도 옴뇸뇸을 방문해 주셔서 감사합니다. <br/> 행복한 하루 되세요!</p>	
 					</c:otherwise>
 				</c:choose>
 
 				<!-- 바로가기기능 -->
 				<div class="insta-imgs">
+				<input type="hidden" value="${memberLoggedIn.memberId }" id="loggedMemberId">
 							<!-- 유저 등급에 따른 리모컨 분기처리 -->
 					<c:choose>
 						<c:when test="${memberLoggedIn.memberRoll eq 'A' }">
@@ -486,7 +462,7 @@ $(document).ready(function(){
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/chef/chefpage">
+										<a href="${pageContext.request.contextPath }/chef/${memberLoggedIn.memberNick }/chefPage">
 											<p>채널가기</p>
 										</a>
 										</div>
@@ -559,7 +535,7 @@ $(document).ready(function(){
 									<div class="insta-img">
 										<img src="img/infor/back.PNG" alt="">
 										<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/mypage/onedayList">
+										<a href="${pageContext.request.contextPath }/chef/reservationStatus">
 											<p>예약현황</p>
 										</a>
 										</div>
@@ -596,32 +572,80 @@ $(document).ready(function(){
 				</div>
 				<!-- 알림창 -->
 				
-					<p>알리미</p>
-				
-						<div class="toast-header">
+					<p style="margin-top:-50px; font-size: 16px; font-weight: 600; ">알리미</p>
+				 
+						<div class="toast-header row" id="toast-header">
 						  <span class="material-icons">sms</span>
 						  <strong class="mr-auto">새로운 알림이 있습니다!</strong>
 						  <small>11 mins ago</small>
-						  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
-						  </button>
 						</div>
-						<div class="toast-body">
-						  Hello, world! This is a toast message.
-						</div>
-				
+						<c:if test="${paging != null }">
+							${paging}
+						</c:if>
+						
+				 
 				<script>
 				$('#myToast').on('hidden.bs.toast', function () {
 				// do something...
-				})
+				});
+				
+				$(document).ready(function(){
+					
+					$(".toast-header").empty();
+	            	 $.ajax({
+							url:"${pageContext.request.contextPath}/mypage/dingDongList?cPage=1",
+							method:"GET",
+							datatype:"json",
+							success: data => {
+								
+								let dingdongNum = (data.dingList).length;
+								
+								$("#dingdongNum").empty();
+								$("#dingdongNum").text(dingdongNum);
+								$.each(data.dingList,function(index,item){
+									
+									let p ='<div class="col-lg-12" style="display: flex;"><a href="${pageContext.request.contextPath }/'+item.dingdongLink+'?dingdongNO='+item.dingdongNo+'"><span class="material-icons">sms</span>'+
+									'<strong class="mr-auto">'+item.dingdongContent+'</strong>'+
+									 '<small>'+item.dingRegDate+'</small>'+
+									  '</a></div>';
+									  
+									 $(".toast-header").append(p);
+								});
+									$()
+								    $("#toast-header").after("<p onclick='dingdongMore();'>더보기</p>");
+									
+							},
+							error : (x,s,e) =>{
+								console.log(x,s,e);
+							}
+							
+						 });
+	            	 
+	            	
+				 });
+				
+			/* 	function readed(dingdongNo){
+           		 
+					alert(dingdongNo);
+					
+					$.ajax({
+						url :"${pageContext.request.contextPath }/mypage/dingdongReadUpdate",
+						data: {"dingdongNo":dingdongNO},
+						method:"POST",
+						success :data =>{
+							console.log()
+						},
+						error : (x,s,e) =>{
+							console.log(x,s,e);
+						}
+					});
+        	 	} */
+				
+				function dingdongMore(){
+					location.href ="${pageContext.request.contextPath}/mypage/dingdongList"
+				};
 				</script>  
-
-				<div class="insta-social">
-					<a href="#"><i class="fa fa-linkedin"></i></a>
-					<a href="#"><i class="fa fa-twitter"></i></a>
-					<a href="#"><i class="fa fa-instagram"></i></a>
-					<a href="#"><i class="fa fa-facebook"></i></a>
-				</div>
 			</div>
 		</div>
 	</div>

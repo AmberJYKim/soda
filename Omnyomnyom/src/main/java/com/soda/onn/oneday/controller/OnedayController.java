@@ -2,10 +2,6 @@ package com.soda.onn.oneday.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,19 +15,12 @@ import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -40,10 +29,14 @@ import com.google.gson.Gson;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.common.util.Utils;
+import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.service.MypageService;
+import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Attachment;
 import com.soda.onn.oneday.model.vo.Oneday;
+import com.soda.onn.oneday.model.vo.OnedayReview;
 import com.soda.onn.oneday.model.vo.OnedayTime;
 import com.soda.onn.oneday.model.vo.Reservation;
 import com.soda.onn.oneday.model.vo.ReservationRequest;
@@ -59,7 +52,12 @@ public class OnedayController {
 	private OnedayService onedayService;
 	@Autowired
 	private ChefService chefservice;
-
+	@Autowired
+	private MypageService mypageService;
+	@Autowired 
+	private MemberService memberService;
+	
+	
 	
 //	원데이 클래스 메인뷰로 이동 
 	@GetMapping("/oneday")
@@ -196,9 +194,17 @@ public class OnedayController {
 	}
 	
 //	클래스 검색 결과뷰 로 이동 
-	@GetMapping("/oneday_search")
-	public void search() {
+	@GetMapping("/oneday_All")
+	public ModelAndView search(ModelAndView mav) {
 		log.debug("oneday_search @ ondayController = 원데이클래스 검색!");
+		log.debug("oneday_search @ ondayController = 전체목록 조회!");
+		
+		List<Oneday> selectAllList = onedayService.selectAll();
+		
+		log.debug("selectAllList={}", selectAllList);
+		
+		
+		return mav.addObject("selectAllList", selectAllList);
 	}
 	
 //	클래스 검색
@@ -239,10 +245,11 @@ public class OnedayController {
 		
 		List<OnedayTime> list = onedayService.selectTimeList(onedayclassNo);
 		
+		List<OnedayReview> ReviewList = onedayService.selectReviewList(onedayclassNo);
 		
 		log.debug("list={}", list);
 
-		
+		model.addAttribute("ReviewList", ReviewList);
 		model.addAttribute("oneday", oneday);
 		model.addAttribute("list", list);
 	}
@@ -259,22 +266,23 @@ public class OnedayController {
 									HttpSession session
 									) {
 		log.debug("클래스 넘버={}", onedayclassNo);
-		log.debug("타임 넘버={}", onedayclassNo);
-		
+		log.debug("타임 넘버={}", onedayTimeNo);
 		String memberId = ((Member) session.getAttribute("memberLoggedIn")).getMemberId();
 			
 //		reservation.setReserMemberId(memberId);
-		
+		Oneday oday= onedayService.selectOne(onedayclassNo);
+				
 		reservationrequest.setReserMemberId(memberId);
 		reservationrequest.setOnedayclassNo(onedayclassNo);
 		reservationrequest.setOnedaytimeNo(onedayTimeNo);
-		
+		reservationrequest.setOneday(oday);
+
 		System.out.println(reservationrequest);
 		System.out.println(reservation);
 		session.setAttribute("reservationrequest", reservationrequest);
 		
-//		int result = onedayService.insertReservation(reservationrequest);
-		mav.addObject("Oneday", oneday);
+		session.setAttribute("oneday", oday);
+		
 		mav.addObject("reservationrequest", reservationrequest);
 		
 		return mav;
@@ -294,19 +302,71 @@ public class OnedayController {
 	public ModelAndView pay(@ModelAttribute ModelAndView mav,HttpSession session) {
 		
 		ReservationRequest reservationrequest = (ReservationRequest) session.getAttribute("reservationrequest");
-		
+		log.debug("onedayname ===={}", reservationrequest.getOneday());
+
 		mav.addObject("reservationrequest", reservationrequest);
+		mav.addObject("oneday", reservationrequest.getOneday());
+		return mav;
+		
+	}
+	
+	
+	//결제 요청 전 예약가능여부 확인 ajax요청
+	@GetMapping("/checkvacancy")
+	@ResponseBody
+	public String checkVacancy(@RequestParam int onedayNo, @RequestParam int onedaytimeNo) {
+		Map<String, Integer> maps =  new HashMap<>();
+		maps.put("onedayNo", onedayNo);
+		maps.put("onedaytimeNo", onedaytimeNo);
+		int reserved = onedayService.checkVacancy(maps);
+		maps.put("reserved", reserved);
+		return new Gson().toJson(maps);
+	}
+	
+	//결제 성공 시 자동으로 insert처리하기. ajax요청
+	@PostMapping("/paycompletion")
+	@ResponseBody
+	public void insertReserv(@ModelAttribute ModelAndView mav, HttpSession session) {
+		
+		
+		//결제 관련 정보 꺼내기
+		ReservationRequest reservRequest = (ReservationRequest)session.getAttribute("reservationrequest");
+		log.debug("reservationRequest===={}", reservRequest.toString());
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		
+		reservRequest.setMemberId(member.getMemberId());
+		//예약정보 insert
+		int result = onedayService.insertReservation(reservRequest);
+		session.setAttribute("reservationRequest", reservRequest);
+		session.setAttribute("reservationInsertResult", result);
+		String content =  "원데이 클래스 예약 알림: (예약번호 :"+reservRequest.getReservationNo()+")";
+		//결제정보 알림 insert
+		DingDong dd = new DingDong(-1, member.getMemberId(), content, "/mypage/onedayList" , 1, null);
+		int ddResult = mypageService.insertPayDing(dd);
+		log.debug("dingdongInsertResult======================", ddResult);
+		
+	}
+	
+	
+//	원데이 클래스 예약완료 뷰로 이동 
+	@GetMapping("/result")
+	public ModelAndView result(@ModelAttribute ModelAndView mav, HttpSession session) {
+		Oneday oneday = (Oneday)session.getAttribute("oneday");
+		
+		Member chefInfo = memberService.searchNick(oneday.getMemberId());
+		//세션에서 예약정보와 원데이정보 삭제 및 mav에담기.
+		mav.addObject("reservationrequest", (ReservationRequest)session.getAttribute("reservationrequest"));
+		mav.addObject("oneday", oneday);
+		mav.addObject("chefNick", chefInfo);
+		
+		mav.setViewName("/oneday/oneday_result");
+		session.removeAttribute("reservationrequest");
+		session.removeAttribute("oneday");
+		
 		
 		return mav;
 		
 	}
-//	원데이 클래스 예약완료 뷰로 이동 
-	@PostMapping("/result.do")
-	public String result() {
-		return "oneday/oneday_result";
-		
-	}
-	
 	
 	//원데이클래스 Insert 하기
 	@PostMapping("/insert.do")
@@ -381,34 +441,57 @@ public class OnedayController {
 		mav.addObject("memberNickName", memberNickName);
 		mav.addObject("memberId", memberId);
 		mav.addObject("onedayTimeM", onedayTimeM);
-		mav.setViewName("redirect:/");
+		mav.setViewName("redirect:/oneday/oneday_detail?onedayclassNo="+oneday.getOnedayclassNo());
 		
 		return mav;
 	}
 	
-
+	@GetMapping("class_reviewWrite_go")
+	public ModelAndView ReiveWrite( @ModelAttribute ModelAndView mav,
+													HttpSession session,
+									@RequestParam(value="onedayclassNo") int onedayclassNo) {
+		String memberId = ((Member) session.getAttribute("memberLoggedIn")).getMemberId();
+		log.debug("reviewWrite@ Controller= 리뷰작성페이지로 이동합니다.");
+		log.debug("reivewWrite@onedayclassNo ="+ onedayclassNo);
+		log.debug("reivewWrite@memberId ="+ memberId);
+		
+		
+		
+		mav.addObject("onedayclassNo", onedayclassNo);
+		return mav;
+	}
+	
+	
+	
+	@PostMapping("reviewWrite")
+	public ModelAndView ReviewWrite(@ModelAttribute OnedayReview onedayReview, 
+									@ModelAttribute ReservationRequest reservationRequest,
+									ModelAndView mav, 
+									HttpSession session,
+									RedirectAttributes redirectAttributes,
+									@RequestParam(value="onedayclassNo") int onedayclassNo
+									
+									) {
+		String memberId = ((Member) session.getAttribute("memberLoggedIn")).getMemberId();
+		
+		log.debug("reviewWrite @ memberId = "+memberId);
+		log.debug("reviewWrite @ onedayclassNo = " + onedayclassNo);
+		
+		
+		
+		int result = onedayService.insertReview(onedayReview);
+		
+		log.debug("controller@onedayReview={}", onedayReview);
+		
+		String msg="";
+		redirectAttributes.addFlashAttribute("msg",result>0?"후기 등록완료!":"후기 등록실패!");
+		
+		mav.addObject("memberId", memberId);
+		mav.setViewName("redirect:/oneday/oneday_detail?onedayclassNo="+onedayclassNo);
+		return mav;
+	}
 	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
