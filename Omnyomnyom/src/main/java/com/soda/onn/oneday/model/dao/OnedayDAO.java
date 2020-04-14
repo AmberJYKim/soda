@@ -60,6 +60,8 @@ public interface OnedayDAO {
 
 	int checkVacancy(Map<String, Integer> maps);
 
+	List<ReservationRequest> selectReservationListUser(String memberId, RowBounds rowBounds);
+
 
 
 
