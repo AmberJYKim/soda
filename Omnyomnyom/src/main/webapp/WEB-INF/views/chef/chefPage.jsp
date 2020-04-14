@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/> <!-- 인코딩설정 안해주면 한글 깨짐  -->
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="" name="pageTitle"/>
+	<jsp:param value="채널가기" name="pageTitle"/>
 </jsp:include>
 <!--  -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/chefpage.css">
@@ -294,8 +294,8 @@
                             </div>
                             <c:if test="${memberLoggedIn.memberRoll eq 'C' and memberLoggedIn.memberNick eq chef.chefNickName}"> 
 	                            <div class="col-lg-6">
-	                                <button type="button" class="btn btn-outline-danger">클래스 관리</button>
-	                                <button type="button" class="btn btn-outline-danger">클래스 업로드</button>
+	                                <button type="button" class="btn btn-outline-danger" onclick="classManage();">클래스 관리</button>
+	                                <button type="button" class="btn btn-outline-danger" onclick="classUpload();">클래스 업로드</button>
 	                            </div>
                             </c:if>
                         </div>

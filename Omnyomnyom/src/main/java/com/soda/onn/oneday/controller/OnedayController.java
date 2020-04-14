@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.Chef;
+import com.soda.onn.common.base.PageBar;
 import com.soda.onn.common.util.Utils;
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
@@ -56,15 +58,35 @@ public class OnedayController {
 	private MypageService mypageService;
 	@Autowired 
 	private MemberService memberService;
+
+	
+	final int NUMPERPAGE = 20;
+	final int PAGEBARSIZE = 10;
+	
+	private RowBounds rowBounds = null;
+
 	
 	
+
 	
 //	원데이 클래스 메인뷰로 이동 
 	@GetMapping("/oneday")
-	public void oneday() {
+	public ModelAndView oneday(ModelAndView mav, HttpSession session) {
 		
 		log.debug("@oneday @ onedayController = 원데이클래스 메인페이지로 이동합니다!" );
+		
+		List<Oneday> AllList = onedayService.onedayselect(); 
+		List<OnedayReview> reviewList = onedayService.reviewAll();
+		
+		mav.addObject("reviewList", reviewList);
+		mav.addObject("AllList", AllList);
+		
+		return mav;
 	}
+	
+	
+	
+	
 //	원데이 클래스 생성뷰로 이동
 	@GetMapping("/class_insert")
 	public void classinsert() {
@@ -195,40 +217,56 @@ public class OnedayController {
 	
 //	클래스 검색 결과뷰 로 이동 
 	@GetMapping("/oneday_All")
-	public ModelAndView search(ModelAndView mav) {
+	public ModelAndView search(ModelAndView mav,
+							   @RequestParam(value="cPage", defaultValue="1") int cPage,
+							   HttpServletRequest request) {
 		log.debug("oneday_search @ ondayController = 원데이클래스 검색!");
 		log.debug("oneday_search @ ondayController = 전체목록 조회!");
 		
-		List<Oneday> selectAllList = onedayService.selectAll();
+		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+		int pageEnd = pageStart+PAGEBARSIZE-1;
+		
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
+		int totalCount = onedayService.selectOnedayclassListCnt();
+		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		
+		List<Oneday> selectAllList = onedayService.selectAll(rowBounds);
 		
 		log.debug("selectAllList={}", selectAllList);
 		
+		mav.addObject("paging", paging);
+		mav.addObject("selectAllList", selectAllList);
+		mav.setViewName("oneday/oneday_All");
+		return mav;
 		
-		return mav.addObject("selectAllList", selectAllList);
 	}
 	
 //	클래스 검색
 	@PostMapping("/oneday_search")
 	public ModelAndView search(@ModelAttribute ModelAndView mav,
+						@RequestParam(value = "menuList") String menuList,
 						@RequestParam(value = "detailedAddr")String detailedAddr,
 						@RequestParam(value = "onedayName")String onedayName,
-						@RequestParam(value = "onedayTimeDate") String onedayTimeDate) {
+						@RequestParam(value = "onedayTimeDate") String onedayTimeDate,
+						@RequestParam(value="cPage", defaultValue="1") int cPage,
+						HttpServletRequest request) {
 		
-		
+		System.out.println("메뉴=" + menuList);
 		System.out.println("일정 =" + onedayTimeDate);
 		System.out.println("상세주소 = "+ detailedAddr);
 		System.out.println("클래스 이름 = " + onedayName);
 		
 		Map<String, String> sec = new HashMap<>();
-	
-		
+		sec.put("menuList", menuList);
 		sec.put("detailedAddr", detailedAddr);
 		sec.put("onedayName", onedayName);
 		sec.put("onedayTimeDate", onedayTimeDate);
 		
 		List<Oneday> list = onedayService.selectDateList(sec);
+		
 		mav.addObject("list", list);
-		System.out.println("[["+list+"]]");
 		
 		return mav;
 	}
