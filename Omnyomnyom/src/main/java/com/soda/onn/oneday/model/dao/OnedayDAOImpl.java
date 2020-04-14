@@ -106,9 +106,27 @@ public class OnedayDAOImpl implements OnedayDAO{
 	}
 
 	@Override
-	public List<Oneday> selectAll() {
+	public List<Oneday> selectAll(RowBounds rowBounds) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("oneday.selectAll");
+		return sqlSession.selectList("oneday.selectAll", null, rowBounds);
+	}
+
+	@Override
+	public int selectOnedayclassListCnt() {
+		// TODO Auto-generated method stub
+		return Integer.parseInt(sqlSession.selectOne("oneday.selectOnedayclassListCnt"));
+	}
+
+	@Override
+	public List<Oneday> onedayselect() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("oneday.onedayselect");
+	}
+
+	@Override
+	public List<OnedayReview> reviewAll() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("oneday.reviewAll");
 	}
 
 //	---akim

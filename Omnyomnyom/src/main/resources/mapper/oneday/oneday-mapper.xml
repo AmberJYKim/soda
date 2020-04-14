@@ -57,6 +57,23 @@ tb_onedayclass
 where onedayclass_no = #{onedayclassNo}
 </select>
 
+
+<select id="onedayselect" resultType="Oneday">
+select*from
+tb_onedayclass
+order by onedayclass_no desc
+
+</select>
+
+<select id="reviewAll" resultType="OnedayReview">
+
+select*from
+tb_oneday_review
+order by review_no desc
+
+</select>
+
+
 <select id="selectAll" resultType="Oneday">
 select*from
 tb_onedayclass
@@ -130,18 +147,21 @@ order by onedayclass_no desc
 <select id="selectDateList"  resultType="Oneday">
 select *
 from
-TB_onedayclass oc
+TB_onedayclass
 <where>
+<if test="menuList != null">
+and menu_list like '%${menuList}%'
+</if>
+
 <if test="detailedAddr != null">
 and detailed_addr like '%${detailedAddr}%'
 </if>
 <if test="onedayName != null">
 and oneday_name like '%${onedayName}%'
 </if>
-<!-- 일정부분 뽑는 것  -->
-<!-- <if test="onedayTimeDate != null">
+<if test="onedayTimeDate != null">
 
-</if> -->
+</if>
 
 </where>
 order by onedayclass_no desc
@@ -214,6 +234,13 @@ values(
 </select>
 
 <!-- 셰프 자신의 클래스 예약 현황 확인  -->
+<select id="selectOnedayclassListCnt" resultType="String">
+	select
+		count(*)
+	from
+		TB_onedayclass
+</select>
+
 <select id="selectAllReservationList" resultMap="ReservationListMap">
 	select
 		od.oneday_name,
@@ -228,7 +255,6 @@ values(
                           left join tb_reservation res on odct.onedayclass_no = res.onedayclass_no
 	where
 		od.member_id = #{memberId}
-
 </select>
 
 <resultMap id="ReservationListMap" type="ReservationRequest">

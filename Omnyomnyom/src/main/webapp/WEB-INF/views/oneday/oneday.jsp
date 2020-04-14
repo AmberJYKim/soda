@@ -8,6 +8,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
 	<jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
 </jsp:include>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chefList.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/datepicker.min.css" />	
 
 
@@ -34,7 +35,7 @@ function oneday_search(){
             <div class="row">
                 
                 <div class="col-xl-12">
-                    <form class="event-filter-form" method="get" action="${pageContext.request.contextPath }/oneday/oneday_All">
+                    <form class="event-filter-form viewGo" method="get" action="${pageContext.request.contextPath }/oneday/oneday_All" style="text-align: center;">
                         
                         <input class="site-btn sb-gradient" type="submit" value="원데이 클래스 자세히보기">
                     </form>
@@ -88,120 +89,40 @@ function oneday_search(){
                         <a href="${pageContext.request.contextPath }/oneday/detail.do" class="site-btn sb-gradient">예약하러 가기</a>
                     </div>
                 </div>
-                <div class="classes-item">
-                    <div class="ci-img">
-                        <img src="img/classes/cook.jpg" alt="">
-                    </div>
-                    <div class="ci-text">
-                        <h4>클래스명2</h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                    </div>
-                    <div class="ci-bottom">
-                        <div class="ci-author">
-                            <img src="img/classes/author/2.jpg" alt="">
-                            <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
-                            </div>
-                        </div>
-                        <a href="" class="site-btn sb-gradient">예약하러 가기</a>
-                    </div>
-                </div>
-                <div class="classes-item">
-                    <div class="ci-img">
-                        <img src="img/classes/cook.jpg" alt="">
-                    </div>
-                    <div class="ci-text">
-                        <h4>클래스명3</h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                    </div>
-                    <div class="ci-bottom">
-                        <div class="ci-author">
-                            <img src="img/classes/author/3.jpg" alt="">
-                            <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
-                            </div>
-                        </div>
-                        <a href="/on" class="site-btn sb-gradient">예약하러 가기</a>
-                    </div>
-                </div>
-                <div class="classes-item">
-                    <div class="ci-img">
-                        <img src="img/classes/cook.jpg" alt="">
-                    </div>
-                    <div class="ci-text">
-                        <h4>클래스명4</h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                    </div>
-                    <div class="ci-bottom">
-                        <div class="ci-author">
-                            <img src="img/classes/author/2.jpg" alt="">
-                            <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
-                            </div>
-                        </div>
-                        <a href="" class="site-btn sb-gradient">예약하러 가기</a>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
     <!-- 원데이 클래스 end -->
     <!-- Review Section -->
     <section class="review-section spad set-bg" data-setbg="img/review-bg.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 m-auto">
-                    <div class="review-slider owl-carousel">
-                        <div class="review-item">
-                            <div class="ri-img">
-                                <img src="img/classes/author/1.jpg" alt="">
-                            </div>
-                            <div class="ri-text text-white">
-                                <p>국가는 농업 및 어업을 보호·육성하기 위하여 농·어촌종합개발과 그 지원등 필요한 계획을 수립·시행하여야 한다. 국무총리 또는 행정각부의 장은 소관사무에 관하여 법률이나 대통령령의 위임 또는 직권으로 총리령 또는 부령을 발할 수 있다.</p>
-                                <h4>클래스명 - 셰프이름</h4>
-                                <h6>회원명</h6>
-                            </div>
-                        </div>
-                        <div class="review-item">
-                            <div class="ri-img">
-                                <img src="img/classes/author/2.jpg" alt="">
-                            </div>
-                            <div class="ri-text text-white">
-                                <p>국가는 농업 및 어업을 보호·육성하기 위하여 농·어촌종합개발과 그 지원등 필요한 계획을 수립·시행하여야 한다. 국무총리 또는 행정각부의 장은 소관사무에 관하여 법률이나 대통령령의 위임 또는 직권으로 총리령 또는 부령을 발할 수 있다.</p>
-                                <h4>클래스명 - 셰프이름</h4>
-                                <h6>회원명</h6>
-                            </div>
-                        </div>
-                        <div class="review-item">
-                            <div class="ri-img">
-                                <img src="img/classes/author/3.jpg" alt="">
-                            </div>
-                            <div class="ri-text text-white">
-                                <p>국가는 농업 및 어업을 보호·육성하기 위하여 농·어촌종합개발과 그 지원등 필요한 계획을 수립·시행하여야 한다. 국무총리 또는 행정각부의 장은 소관사무에 관하여 법률이나 대통령령의 위임 또는 직권으로 총리령 또는 부령을 발할 수 있다.</p>
-                                <h4>클래스명 - 셰프이름</h4>
-                                <h6>회원명</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 m-auto">
+          <div class="review-slider owl-carousel">
+          <c:forEach items="${reviewList }" var="review">
+            <div class="review-item">
+              <div class="ri-img">
+                <img src="${pageContext.request.contextPath }/resources/images/classes/author/1.jpg" alt="">
+              </div>
+              <div class="ri-text text-white">
+                <h6>${review.memberId }</h6>
+          <c:forEach items="${AllList }" var="oneday">
+          		<c:if test="${review.onedayclassNo eq oneday.onedayclassNo}">      
+                <h4>${oneday.onedayName }</h4>
+                </c:if>
+          </c:forEach>      
+                <p>${review.reviewContent }</p>
+               
+              </div>
             </div>
+ 		  </c:forEach>
+ 
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
+    
     <!-- Review Section end -->
 
     <!-- 원데이 클래스 Section -->
@@ -211,101 +132,42 @@ function oneday_search(){
                 <h2>신규 클래스</h2>
                 <p>영상에서 부족했던 부분을 오프라인에서 해결해 보세요. 인기있는 셰프님과의 만남을 가져보세요.</p>
             </div>
+            
             <div class="classes-slider owl-carousel">
+           <c:forEach items="${AllList }" var="oneday" end="5">
+      
                 <div class="classes-item">
                     <div class="ci-img">
-                        <img src="img/classes/cook.jpg" alt="">
+                         <img src="${pageContext.request.contextPath }/resources/upload/onedayclass/${oneday.onedayImg}" alt="클래스 사진">
                     </div>
                     <div class="ci-text">
-                        <h4><a href="classes-details.html">클래스명1</a></h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
+                        <h4><a href="classes-details.html">${oneday.onedayName }</a></h4>
+                        <c:if test="${not empty oneday.onedayTimeList}">
+                                <c:forEach items="${oneday.onedayTimeList }" var="tl">
+                                <div class="ci-metas">
+                                 <c:if test="${tl.onedayNoo eq oneday.onedayclassNo}">
+                                    <div class="ci-meta" style="display: none;"><i class="material-icons">event_available</i>${tl.onedayTimeDate }</div>
+                                    <%-- <div class="ci-meta"><i class="material-icons">${tl.onedayNoo}</i></div> --%>
+                                </c:if>
+                                </div>
+                                </c:forEach>
+                         </c:if>
+                        <p>${oneday.onedayContent}</p>
                     </div>
                     <div class="ci-bottom">
                         <div class="ci-author">
                             <img src="img/classes/author/1.jpg" alt="">
                             <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
+                                <h6>${oneday.onedayName }</h6>
+                                <p>${oneday.memberId }</p>
                             </div>
                         </div>
-                        <a href="" class="site-btn sb-gradient">예약하러 가기</a>
+                        <a href="${pageContest.request.contextPath }/oneday/oneday_detail?onedayclassNo=${oneday.onedayclassNo}" class="site-btn sb-gradient">예약하러 가기</a>
                     </div>
-                </div>
-                <div class="classes-item">
-                    <div class="ci-img">
-                        <img src="img/classes/cook.jpg" alt="">
-                    </div>
-                    <div class="ci-text">
-                        <h4>클래스명2</h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                    </div>
-                    <div class="ci-bottom">
-                        <div class="ci-author">
-                            <img src="img/classes/author/2.jpg" alt="">
-                            <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
-                            </div>
-                        </div>
-                        <a href="" class="site-btn sb-gradient">예약하러 가기</a>
-                    </div>
-                </div>
-                <div class="classes-item">
-                    <div class="ci-img">
-                        <img src="img/classes/cook.jpg" alt="">
-                    </div>
-                    <div class="ci-text">
-                        <h4>클래스명3</h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                    </div>
-                    <div class="ci-bottom">
-                        <div class="ci-author">
-                            <img src="img/classes/author/3.jpg" alt="">
-                            <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
-                            </div>
-                        </div>
-                        <a href="" class="site-btn sb-gradient">예약하러 가기</a>
-                    </div>
-                </div>
-                <div class="classes-item">
-                    <div class="ci-img">
-                        <img src="img/classes/cook.jpg" alt="">
-                    </div>
-                    <div class="ci-text">
-                        <h4>클래스명4</h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                    </div>
-                    <div class="ci-bottom">
-                        <div class="ci-author">
-                            <img src="img/classes/author/2.jpg" alt="">
-                            <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
-                            </div>
-                        </div>
-                        <a href="" class="site-btn sb-gradient">예약하러 가기</a>
-                    </div>
+  	              </div>
+                    </c:forEach>
                 </div>
             </div>
-        </div>
     </section>
     <!-- 원데이 클래스 end -->
     
