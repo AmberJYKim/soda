@@ -12,13 +12,12 @@
 
 <link href="${pageContext.request.contextPath }/resources/css/datepicker.min.css" rel="stylesheet" type="text/css">
 <!-- 스크립트 -->
-<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/datepicker.kr.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/class_insert.js"></script>
 <script src="${pageContext.request.contextPath }/resources/js/classie.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<!-- Event Details Section -->
+<script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
 
 <style>
 .top{
@@ -40,9 +39,6 @@
             </div>
         </div>
     </section>
-
-</style>
-
 
 
 <form action="reviewWrite" method="post" enctype="multipart/form-data">
@@ -75,7 +71,10 @@
 		<div class="col-lg-12">
 		<!-- ck에디터 -->
 			<div class="event-details w-100">
-				<textarea name="reviewContent"></textarea>
+				<textarea id="reviewContent" name="reviewContent"></textarea>
+				<script>
+				CKEDITOR.replace('reviewContent');
+				</script>
 			</div>
 		</div>
 	</div>
