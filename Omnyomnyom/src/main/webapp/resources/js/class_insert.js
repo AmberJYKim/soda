@@ -65,15 +65,9 @@
 		$("#image_section").hide();
 
 		//CK에디터 불러오기
-		CKEDITOR.replace('reviewContent');
+		CKEDITOR.replace('onedayContent',{filebrowserUploadUrl:'/mine/imageUpload.do'});
 		
-		CKEDITOR.replace('reviewContent',{
-			filebrowserUploadUrl:"${pageContext.request.contextPath}/imageUpload.do"
-			
-		});
-		window.parent.CKEDITOR.tool.scallFunction(1, "${url}", "전송완료");
-		
-		
+
 		if (!String.prototype.trim) {
 			(function() {
 				// Make sure we trim BOM and NBSP
