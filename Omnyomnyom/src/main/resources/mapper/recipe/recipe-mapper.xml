@@ -322,6 +322,26 @@
 		where
 			recipe_no = #{recipeNo}
 	</delete>
+	<insert id="insertDingDong">
+		insert into TB_dingdong
+		values(
+			seq_dingdong.nextval,
+			#{dingMemberId},
+			#{dingdongContent},
+			#{dingdongLink},
+			1,
+			default
+		)
+	</insert>
+	<delete id="deleteRecipeList">
+		delete from
+			tb_recipe
+		where
+			recipe_no in
+			<foreach collection="deleteList" item="recipeNo" open="(" separator="," close=")">
+				#{recipeNo}
+			</foreach>
+	</delete>
 	<!-- PJM section end  -->	
 	<select id="selectReport" resultMap="reportMap">
 		select

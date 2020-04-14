@@ -115,6 +115,9 @@ order by onedayclass_no desc
 				default,
 				#{resPrice}
 		)
+		<selectKey keyProperty="reservationNo" resultType="_int" order="AFTER">
+				select seq_reservation.currval from dual
+		</selectKey>
 </insert>
 
 
@@ -204,7 +207,6 @@ values(
 		where onedayclass_No = #{onedayclassNo}
 </select>
 
-
 <select id="selectAllReservationList" resultMap="ReservationListMap">
 	select
 		od.oneday_name,
@@ -233,7 +235,19 @@ values(
 	<result column="oneday_price" property="price"/>
 </resultMap>
 
-
+	<!-- 결제관련 작업부 시작 -->
+	
+	<select id="selectOnedayOne" resultType="OnedayTime">
+		select * from tb_onedayclasstime where onedaytime_no = #{onedayTimeNo}
+	</select>
+	
+	
+	<select id="checkVacancy" parameterType="_int" resultType="_int">
+		select nvl(sum(personnel), 0) from tb_reservation where onedayclass_no = #{onedayNo} and onedaytime_no = #{onedaytimeNo}
+	
+	</select>
+	
+	<!-- 결제관련 작업부 종료 -->
 
 
 

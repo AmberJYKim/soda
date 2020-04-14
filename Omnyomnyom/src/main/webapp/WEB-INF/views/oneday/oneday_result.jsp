@@ -37,32 +37,31 @@
                             <h3>원데이 클래스를 이용해 주셔서 감사합니다.</h3>
                             <div class="ticket">
                                 <div class="stub">
-                                    <div class="number">1</div>
-                                    <div class="invite">셰프명</div>
+                                    <div class="invite">${chefNick.memberNick}</div>
                                 </div>
                                 <div class="check">
-                                    <div class="big">맛있는 양식클래스</div>
-                                    <div class="number">123456787654321</div>
+                                    <div class="big">${oneday.onedayName }</div>
+                                    <div class="number">${oneday.onedayclassNo }</div>
                                     <div class="info">
                                         <section>
-                                            <div class="title">시작일</div>
-                                            <div>2020/3/27 - 10:00</div>
+                                            <div class="title">예약일</div>
+                                            <div>${reservationreqeust.regDate }</div>
                                         </section>
                                         <section>
                                             <div class="title">위치</div>
-                                            <div>서울특별시 강남구 강남구 테헤란로14길 6 </div>
+                                            <div>${oneday.addr}, ${oneday.detailedAddr } </div>
                                         </section>
                                         <section>
                                             <div class="title">셰프 문의처</div>
-                                            <div>1544-9970</div>
+                                            <div>${chefNick.phone }</div>
                                         </section>
                                     </div>
                                 </div>
                             </div>
                             <!-- 이동버튼  -->
 
-                            <a href="index.html" class=" tm-btn-white-bordered">메인화면</a>
-                            <a href="" class=" tm-btn-white-bordered">예약현황</a>
+                            <a href="${pageContext.request.contextPath }" class=" tm-btn-white-bordered">메인화면</a>
+                            <a href="${pageContext.request.contextPath }/mypage/onedayList" class=" tm-btn-white-bordered">예약현황</a>
                         </article>
 
                     </div>
