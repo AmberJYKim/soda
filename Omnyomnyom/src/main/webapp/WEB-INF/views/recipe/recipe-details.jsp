@@ -397,14 +397,14 @@
                         <h3 class="goods-add-product-title">뇸뇸몰</h3>
                         <button type="button" class="goods-add-product-move goods-add-product-move-left __slide-go-left">왼쪽으로 슬라이드 이동</button>
                         <button type="button" class="goods-add-product-move goods-add-product-move-right __slide-go-right">오른쪽으로 슬라이드 이동</button>
-                        <div class="goods-add-product-list-wrapper" style="height:320px">
+                        <div class="goods-add-product-list-wrapper" style="height:275px">
                             <ul class="goods-add-product-list __slide-mover" style="left: 0px;">
 								<c:forEach items="${ingrMallList}" var="ingrMall" varStatus="vs">
 	                                <li class="goods-add-product-item __slide-item">
 	                                    <div class="goods-add-product-item-figure">
 	                                        <a href="${pageContext.request.contextPath }/mall/productDetail?ingMallNo=${ingrMall.ingMallNo}" target="_blank">
 	                                        	<img src="${pageContext.request.contextPath }/resources/images/ingredient/${ingrMall.prevImg}" class="goods-add-product-item-image" 
-	                                        		 onerror="this.src='${pageContext.request.contextPath }/resources/images/mall/ing_info_default.png'">
+	                                        		 onerror="this.src='${pageContext.request.contextPath }/resources/images/ingredient/Ingredient_default.png'">
 	                                        </a>
 	                                    </div>
 	                                    <div class="goods-add-product-item-content">

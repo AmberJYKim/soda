@@ -375,7 +375,7 @@ function frmValidate(){
 				<div class="row recipe-editor">
 					<div class="col">
 
-						<textarea name="recipeContent" style="width: 100%;"></textarea>
+						<textarea name="recipeContent" rows="20" style="width: 100%;"></textarea>
 
 					</div>
 				</div>
