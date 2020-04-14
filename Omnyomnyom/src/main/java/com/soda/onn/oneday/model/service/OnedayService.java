@@ -39,9 +39,15 @@ public interface OnedayService {
 
 	List<OnedayReview> selectReviewList(int onedayclassNo);
 
-	List<Oneday> selectAll();
+	List<Oneday> selectAll(RowBounds rowBounds);
 	
 	List<Reservation> selectAllReservationList(String memberId);
+
+	int selectOnedayclassListCnt();
+
+	List<Oneday> onedayselect();
+
+	List<OnedayReview> reviewAll();
 
 }
 

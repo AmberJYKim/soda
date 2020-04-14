@@ -22,15 +22,24 @@
 
 <style>
 .top{
-	margin-top: 200px;
+	margin-top: 100px;
 	
 }
 .review_btn{
 	float: right;
 }
-
-
 </style>
+
+    <section class="page-top-section page-sp set-bg" data-setbg="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 m-auto text-white">
+                    <h2>원데이 클래스 후기</h2>
+                   
+                </div>
+            </div>
+        </div>
+    </section>
 
 <form action="reviewWrite" method="post" enctype="multipart/form-data">
 <div class="container">

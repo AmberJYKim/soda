@@ -285,8 +285,8 @@
                             </div>
                             <c:if test="${memberLoggedIn.memberRoll eq 'C' and memberLoggedIn.memberNick eq chef.chefNickName}"> 
 	                            <div class="col-lg-6">
-	                                <button type="button" class="btn btn-outline-danger">클래스 관리</button>
-	                                <button type="button" class="btn btn-outline-danger">클래스 업로드</button>
+	                                <button type="button" class="btn btn-outline-danger" onclick="classManage();">클래스 관리</button>
+	                                <button type="button" class="btn btn-outline-danger" onclick="classUpload();">클래스 업로드</button>
 	                            </div>
                             </c:if>
                         </div>
