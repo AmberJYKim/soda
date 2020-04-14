@@ -402,14 +402,14 @@
 								<c:forEach items="${ingrMallList}" var="ingrMall" varStatus="vs">
 	                                <li class="goods-add-product-item __slide-item">
 	                                    <div class="goods-add-product-item-figure">
-	                                        <a href="${pageContext.request.contextPath }/mall/productDetail?ingMallNo=${ingMall.ingMallNo}" target="_blank">
+	                                        <a href="${pageContext.request.contextPath }/mall/productDetail?ingMallNo=${ingrMall.ingMallNo}" target="_blank">
 	                                        	<img src="${pageContext.request.contextPath }/resources/images/ingredient/${ingrMall.prevImg}" class="goods-add-product-item-image" 
 	                                        		 onerror="this.src='${pageContext.request.contextPath }/resources/images/mall/ing_info_default.png'">
 	                                        </a>
 	                                    </div>
 	                                    <div class="goods-add-product-item-content">
 	                                        <div class="goods-add-product-item-content-wrapper">
-	                                            <p class="goods-add-product-item-name">${ingrMall.ingMallName} </p>
+	                                            <p class="goods-add-product-item-name">${ingrMall.ingMallNo }.${ingrMall.ingMallName} </p>
 	                                            <p class="goods-add-product-item-price">${ingrMall.price}원</p>
 	                                        </div>
 	
