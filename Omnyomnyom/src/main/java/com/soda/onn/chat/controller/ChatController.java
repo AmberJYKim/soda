@@ -118,7 +118,7 @@ public class ChatController {
 	}	
 	
 	@MessageMapping("/chat/{chatId}")
-	@SendTo(value={"/chat/{chatId}"})
+	@SendTo("/chat/{chatId}")
 	public Msg sendEcho(Msg fromMessage, 
 						@DestinationVariable String chatId){
 		log.debug("fromMessage={}",fromMessage);
