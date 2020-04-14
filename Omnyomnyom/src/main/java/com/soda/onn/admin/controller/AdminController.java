@@ -12,16 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.soda.onn.admin.model.service.AdminService;
+import com.soda.onn.chat.controller.ChatController;
+import com.soda.onn.chat.model.service.ChatService;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.common.base.PageBar;
@@ -62,6 +62,9 @@ public class AdminController {
 
 	@Autowired
 	private MallService mallService;
+
+	@Autowired
+	private ChatService chatService;
 	
 	@Autowired
 	private RecipeService recipeService;
@@ -203,6 +206,17 @@ public class AdminController {
 		return mav;
 	}
 	
+	@GetMapping("/chat/list")
+	public String admin(Model model){
+		
+		//최근 사용자 채팅메세지 목록
+//		List<Map<String, String>> recentList = chatService.findRecentList();
+//		log.debug("recentList={}",recentList);
+//		
+//		model.addAttribute("recentList", recentList);
+		
+		return "admin/chatList";
+	}
 	
 	//예약현황목록
 	@GetMapping("/reservationList")
