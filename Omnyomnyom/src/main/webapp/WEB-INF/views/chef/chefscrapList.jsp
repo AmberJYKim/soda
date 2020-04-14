@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
-	<jsp:param value="" name="pageTitle"/>
+	<jsp:param value="스크랩 목록" name="pageTitle"/>
 </jsp:include>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/user-list.css"/>
 
@@ -24,7 +24,7 @@
 					<%-- <a href="${pageContext.request.contextPath}/chef/sendDingdongList"><p class="nav_text">알림 보내기</p></a> --%>
 				</div>
 				<div class="col-10">
-					<h4 class="border_bottom">셰프 스크랩 목록</h4>
+					<h4 class="border_bottom">스크랩 목록</h4>
 					<br>
 					<table class="table">
 						<thead>

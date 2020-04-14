@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
-	<jsp:param value="" name="pageTitle"/>
+	<jsp:param value="셰프신청" name="pageTitle"/>
 </jsp:include>
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mypage/chef-list.css"/>
 
@@ -16,9 +16,9 @@
 			<div class="row">
 				<div class="col side_nav">
 					<p class="nav_text ">내 정보보기</p>
-					<p class="nav_text ">예약목록</p>
+					<p class="nav_text ">예약확인</p>
 					<p class="nav_text ">구매목록</p>
-					<p class="nav_text ">1:1 문의</p>
+					<p class="nav_text ">문의내역</p>
 					<p class="nav_text selected_nav">셰프신청</p>
 				</div>
 				<div class="col-10">

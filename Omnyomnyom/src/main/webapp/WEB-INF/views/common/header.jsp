@@ -502,7 +502,7 @@ $(document).ready(function(){
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath }/mypage/buyList">
+									<a href="${pageContext.request.contextPath }/chef/chefbuyList">
 										<p>구매목록</p>
 									</a>
 									</div>
@@ -522,7 +522,7 @@ $(document).ready(function(){
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-									<a href="${pageContext.request.contextPath}/mypage/scrapList">
+									<a href="${pageContext.request.contextPath}/chef/chefscrapList">
 										<p>스크랩 목록</p>
 									</a>
 									</div>
