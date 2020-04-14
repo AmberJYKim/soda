@@ -134,7 +134,7 @@ public class MypageController {
 		String memberId = member.getMemberId();
 		
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
-		List<ReservationRequest> reservationList = onedayService.selectReservationList(memberId,rowBounds);
+		List<ReservationRequest> reservationList = onedayService.selectReservationListUser(memberId,rowBounds);
 		if(dingdongNo != -1) {
 			int result = mypageService.dingdongUpdate(dingdongNo);
 		}

@@ -488,7 +488,51 @@ $(document).ready(function(){
 										</div>
 									</div>
 								</div>
+								<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath }/chef/onedayList">
+										<p>예약확인</p>
+									</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath }/mypage/buyList">
+										<p>구매목록</p>
+									</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath }/mall/cart">
+										<p>장바구니</p>
+									</a>
+									</div>
+								</div>
+							</div>
+							<div class="insta-item">
+								<div class="insta-img">
+									<img src="img/infor/back.PNG" alt="">
+									<div class="insta-hover">
+									<a href="${pageContext.request.contextPath}/mypage/scrapList">
+										<p>스크랩 목록</p>
+									</a>
+									</div>
+								</div>
+							</div>
+								
+								
+								<!-- dsflkjasdfljdsklfjsdflk -->
 							</c:if>
+							<c:if test="${memberLoggedIn.memberRoll eq 'M' }">
 							<div class="insta-item">
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
@@ -529,7 +573,7 @@ $(document).ready(function(){
 									</div>
 								</div>
 							</div>
-							
+							</c:if>
 							<c:if test="${memberLoggedIn.memberRoll eq 'C' }">
 								<div class="insta-item">
 									<div class="insta-img">
