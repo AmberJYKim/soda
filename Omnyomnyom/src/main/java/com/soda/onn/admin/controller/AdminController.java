@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.soda.onn.admin.model.service.AdminService;
+import com.soda.onn.chat.model.service.ChatService;
 import com.soda.onn.chef.model.service.ChefService;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.common.base.PageBar;
@@ -33,9 +34,8 @@ import com.soda.onn.member.model.vo.Member;
 import com.soda.onn.mypage.model.service.MypageService;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.OnedayReview;
-import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.ReservationRequest;
 import com.soda.onn.recipe.model.service.RecipeService;
-import com.soda.onn.recipe.model.vo.Recipe;
 import com.soda.onn.recipe.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +62,9 @@ public class AdminController {
 
 	@Autowired
 	private MallService mallService;
+
+	@Autowired
+	private ChatService chatService;
 	
 	@Autowired
 	private RecipeService recipeService;
@@ -203,6 +206,17 @@ public class AdminController {
 		return mav;
 	}
 	
+	@GetMapping("/chat/list")
+	public String admin(Model model){
+		
+		//최근 사용자 채팅메세지 목록
+//		List<Map<String, String>> recentList = chatService.findRecentList();
+//		log.debug("recentList={}",recentList);
+//		
+//		model.addAttribute("recentList", recentList);
+		
+		return "admin/chatList";
+	}
 	
 	//예약현황목록
 	@GetMapping("/reservationList")
@@ -220,7 +234,7 @@ public class AdminController {
 		String url = request.getRequestURL().toString();
 		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
 
-		List<Reservation> reservationList = onedayService.selectReservationList(null, rowBounds);
+		List<ReservationRequest> reservationList = onedayService.selectReservationList(null, rowBounds);
 		
 		mav.addObject("paging", paging);
 		mav.addObject("reservationList", reservationList);

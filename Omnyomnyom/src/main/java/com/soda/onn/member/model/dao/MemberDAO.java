@@ -31,6 +31,8 @@ public interface MemberDAO {
 
 	int updateInfo(Map<String, Object> params);
 
+	Member searchNick(String memberId);
+
 
 	
 

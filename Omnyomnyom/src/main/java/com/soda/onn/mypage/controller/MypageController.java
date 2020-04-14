@@ -33,6 +33,7 @@ import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.oneday.model.service.OnedayService;
 import com.soda.onn.oneday.model.vo.Reservation;
+import com.soda.onn.oneday.model.vo.ReservationRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -92,7 +93,7 @@ public class MypageController {
 	
 	//일반 유저의 구매목록들
 	@GetMapping("/buyList")
-	public void buyList(@RequestParam (value="dingdongNo", defaultValue="-1")int dingdongNo,
+	public ModelAndView buyList(@RequestParam (value="dingdongNo", defaultValue="-1")int dingdongNo,
 						HttpSession session, 
 						Model model) {
 		System.out.println("buyList 메소드입니다");
@@ -105,7 +106,11 @@ public class MypageController {
 		
 		List<BuyHistory> buyList = mallService.selectBuyList(memberId);
 		log.debug("buyList={}",buyList);
-		model.addAttribute("buyList", buyList);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("buyList", buyList);
+		mav.setViewName("mypage/buyList");
+//		model.addAttribute("buyList", buyList);
+		return mav;
 	}
 	
 	
@@ -129,7 +134,7 @@ public class MypageController {
 		String memberId = member.getMemberId();
 		
 		RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
-		List<Reservation> reservationList = onedayService.selectReservationList(memberId,rowBounds);
+		List<ReservationRequest> reservationList = onedayService.selectReservationList(memberId,rowBounds);
 		if(dingdongNo != -1) {
 			int result = mypageService.dingdongUpdate(dingdongNo);
 		}
@@ -185,9 +190,16 @@ public class MypageController {
 	//스크랩 삭제
 	@GetMapping("/deleteScrap")
 	public String deleteScrap(@RequestParam("recipeNo") int recipeNo,
-							  RedirectAttributes redirectAttributes) {
+							  RedirectAttributes redirectAttributes,
+							  HttpSession session) {
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
 		
-		int result = mypageService.deleteScrap(recipeNo);
+		Map mmap = new HashMap();
+		mmap.put("memberId", memberId);
+		mmap.put("recipeNo", recipeNo);
+		
+		int result = mypageService.deleteScrap(mmap);
 		redirectAttributes.addFlashAttribute("msg", result>0?"스크랩이 삭제 됐습니다.":"삭제 할 스크랩이 없습니다.");
 		
 		return "redirect:/mypage/scrapList";

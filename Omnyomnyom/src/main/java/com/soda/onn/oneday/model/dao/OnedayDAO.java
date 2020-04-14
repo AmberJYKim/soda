@@ -22,7 +22,7 @@ public interface OnedayDAO {
 
 	Oneday selectOne(int onedayclassNo);
 
-	List<Reservation> selectReservationList(String memberId, RowBounds rowBounds);
+	List<ReservationRequest> selectReservationList(String memberId, RowBounds rowBounds);
 
 	List<OnedayReview> selectOnedayReviewList(RowBounds rowBounds);
 
@@ -47,6 +47,12 @@ public interface OnedayDAO {
 	List<OnedayReview> selectReviewList(int onedayclassNo);
 
 	List<Oneday> selectAll();
+
+	//	---akim
+	
+	OnedayTime selectOnedayTimeOne(int onedayTimeNo);
+
+	int checkVacancy(Map<String, Integer> maps);
 
 
 

@@ -19,127 +19,184 @@
 <html lang="utf-8">
 
 <head>
-    <title>${param.pageTitle}</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="Ahana Yoga HTML Template">
-    <meta name="keywords" content="yoga, html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 로그인 모달창 라이브러리 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/nice-select.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/magnific-popup.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/slicknav.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/animate.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/util.css" />
+<title>${param.pageTitle}</title>
+<meta charset="UTF-8">
+<meta name="description" content="Ahana Yoga HTML Template">
+<meta name="keywords" content="yoga, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 로그인 모달창 라이브러리 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<!-- Stylesheets -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/nice-select.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/magnific-popup.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/slicknav.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/animate.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/util.css" />
 
-    <!-- Main Stylesheets -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
-    <!-- login.css -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/login.css" />
+<!-- Main Stylesheets -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
+<!-- login.css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/login.css" />
 
-    <!-- [if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif] -->
-	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.2.1.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/jquery.slicknav.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/owl.carousel.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/jquery.nice-select.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/jquery-ui.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/jquery.magnific-popup.min.js"></script>
-    
-    <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
-    <!-- 회원가입 js -->
-    <c:if test="${empty memberLoggedIn}">
-    <script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
-	
-	<script>
-		//사용 가능한 아이디, 닉네임인지 확인 하는 스크립트
-		$(document).ready(function(){
+<!-- [if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif] -->
+<script src="${pageContext.request.contextPath }/resources/js/jquery-3.2.1.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/jquery.slicknav.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/owl.carousel.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/jquery.nice-select.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/jquery-ui.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/jquery.magnific-popup.min.js"></script>
 
-			//memberId input창에서 아이디를 입력 할 경우
-			$("#memberId").on("keyup", function(){
-				console.log("memberId keyup");  /* 여기는 값 들어옴 */
-				memberId = $(this).val().trim();
+<script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
+<!-- 회원가입 js -->
+<c:if test="${not empty memberLoggedIn}">
 
-				console.log($(this).val());  /* 실시간으로 아이디 값 들어오는거 확인 */
+<!-- WebSocket:sock.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
 
-				//회원가입 아이디 input창에 값이 없으면 문구 숨김
-				if($("#memberId").val()==''){
-					$(".guide.error").hide();
-					$(".guide.ok").hide();
-				} 	
-				signupFun(this);
-			});
+<!-- WebSocket: stomp.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
 
-			//memberNick input창에서 닉네임을 입력 할 경우
-			$("#memberNick").on("keyup", function(){
-				console.log("memberNick keyup");
-				memberNick = $(this).val().trim();
+<script>
+const memberId = '${memberLoggedIn.memberId}';
+   
+//웹소켓 선언 및 연결
+//1.최초 웹소켓 생성 url: /onn
+let socket = new SockJS('<c:url value="/chat" />');
+/* let socket = new SockJS('/onn/chat'); */
+let chatClient = Stomp.over(socket);
 
-				console.log($(this).val());
+let sessionId;
+chatClient.connect({}, function(frame) {
+	console.log('connected stomp over sockjs');
+	console.log(frame);
 
-				//회원가입 닉네임 input창에 값이 없으면 문구 숨김
-				if($("#memberNick").val()==''){
-					$(".nickGuide.error").hide();
-					$(".nickGuide.ok").hide();
+	//(미사용)websocket sessionId 값 추출하기
+	let url = chatClient.ws._transport.url;
+	url = url.replace("ws://"+location.host+"/${pageContext.request.contextPath}/chat/","");
+	url = url.replace(/^\d+\//,"");
+	url = url.replace("/websocket","");
+	sessionId = url;
+
+	//2. stomp에서는 구독개념으로 세션을 관리한다. 핸들러 메소드의 @SendTo어노테이션과 상응한다.
+	//전체공지
+	chatClient.subscribe('/notice', function(message) {
+		console.log("receive from subscribe /notice :", message);
+
+		//notice 뱃지 보임 처리
+		$("#noticeLink").fadeIn(500);
+		//전역변수 notice에 보관
+		notice = JSON.parse(message.body);
+	});
+
+
+	//3. 개인공지 구독신청
+	chatClient.subscribe('/notice/'+memberId, function(message) {
+		console.log("receive from subscribe /notice/"+memberId+" :", message);
+
+		//notice 뱃지 보임 처리
+		$("#noticeLink").fadeIn(500);
+		//전역변수 notice에 보관
+		notice = JSON.parse(message.body);
+	});
+
+});
+</script>
+</c:if>
+<c:if test="${empty memberLoggedIn}">
+<script src="${pageContext.request.contextPath }/resources/js/signup.js"></script>
+
+<script>
+
+//사용 가능한 아이디, 닉네임인지 확인 하는 스크립트
+$(document).ready(function(){
+
+	//memberId input창에서 아이디를 입력 할 경우
+	$("#memberId").on("keyup", function(){
+		console.log("memberId keyup");  /* 여기는 값 들어옴 */
+		memberId = $(this).val().trim();
+
+		console.log($(this).val());  /* 실시간으로 아이디 값 들어오는거 확인 */
+
+		//회원가입 아이디 input창에 값이 없으면 문구 숨김
+		if($("#memberId").val()==''){
+			$(".guide.error").hide();
+			$(".guide.ok").hide();
+		} 	
+		signupFun(this);
+	});
+
+	//memberNick input창에서 닉네임을 입력 할 경우
+	$("#memberNick").on("keyup", function(){
+		console.log("memberNick keyup");
+		memberNick = $(this).val().trim();
+
+		console.log($(this).val());
+
+		//회원가입 닉네임 input창에 값이 없으면 문구 숨김
+		if($("#memberNick").val()==''){
+			$(".nickGuide.error").hide();
+			$(".nickGuide.ok").hide();
+		}
+
+		signupFun(this);
+	});
+
+
+	//ajax 실행 메소드
+	function signupFun(e){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/member/checkMember/"+$(e).attr('id')+"/"+$(e).val(),
+			type: "GET",
+			success: data => {
+				console.log(data);			
+				if($(e).attr('id') == "memberId"){	
+					if(data.isUsable != "ok"){
+						$(".guide.error").hide();
+						$(".guide.ok").show();
+						$("#idDuplicateCheck").val(1);
+					}
+					else{
+						$(".guide.error").show();
+						$(".guide.ok").hide();
+						$("#idDuplicateCheck").val(0);
+					}
 				}
 
-				signupFun(this);
-			});
-
-
-			//ajax 실행 메소드
-			function signupFun(e){
-				$.ajax({
-					url:"${pageContext.request.contextPath}/member/checkMember/"+$(e).attr('id')+"/"+$(e).val(),
-					type: "GET",
-					success: data => {
-						console.log(data);			
-						if($(e).attr('id') == "memberId"){	
-							if(data.isUsable != "ok"){
-								$(".guide.error").hide();
-								$(".guide.ok").show();
-								$("#idDuplicateCheck").val(1);
-							}
-							else{
-								$(".guide.error").show();
-								$(".guide.ok").hide();
-								$("#idDuplicateCheck").val(0);
-							}
-						}
-
-						if($(e).attr('id') == "memberNick"){
-							if(data.isUsable != "ok"){
-								$(".nickGuide.error").hide();
-								$(".nickGuide.ok").show();
-								$("#idDuplicateCheck").val(1);
-							}
-							else{
-								$(".nickGuide.error").show();
-								$(".nickGuide.ok").hide();
-								$("#idDuplicateCheck").val(0);
-							}
-						}
-					},
-					error: (x,s,e) => {
-						console.log(x,s,e);
+				if($(e).attr('id') == "memberNick"){
+					if(data.isUsable != "ok"){
+						$(".nickGuide.error").hide();
+						$(".nickGuide.ok").show();
+						$("#idDuplicateCheck").val(1);
 					}
-			});
-		}
-			
-		
-	});				
-	</script>
-	
-    </c:if>
+					else{
+						$(".nickGuide.error").show();
+						$(".nickGuide.ok").hide();
+						$("#idDuplicateCheck").val(0);
+					}
+				}
+			},
+			error: (x,s,e) => {
+				console.log(x,s,e);
+			}
+		});
+	}
+});				
+
+
+
+</script>
+
+</c:if>
+
   
 </head>
 <body>

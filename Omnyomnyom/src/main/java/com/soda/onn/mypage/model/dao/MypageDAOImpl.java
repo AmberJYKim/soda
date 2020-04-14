@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ import com.soda.onn.mypage.model.vo.Scrap;
 public class MypageDAOImpl implements MypageDAO {
 	
 	@Autowired
-	private SqlSession sqlSession;
+	private SqlSessionTemplate sqlSession;
 
 	@Override
 	public List<Scrap> selectScrapList(String memberId, RowBounds rowBounds) {
@@ -23,8 +24,8 @@ public class MypageDAOImpl implements MypageDAO {
 	}
 
 	@Override
-	public int deleteScrap(int recipeNo) {
-		return sqlSession.delete("mypage.deleteScrap", recipeNo);
+	public int deleteScrap(Map mmap) {
+		return sqlSession.delete("mypage.deleteScrap", mmap);
 	}
 
 	@Override
@@ -41,5 +42,10 @@ public class MypageDAOImpl implements MypageDAO {
 	public int dingdongUpdate(int dingdongNo) {
 		
 		return sqlSession.update("mypage.dingdongUpdate",dingdongNo);
+	}
+
+	@Override
+	public int insertPayDing(DingDong dd) {
+		return sqlSession.insert("mypage.insertPayDing", dd);
 	}
 }
