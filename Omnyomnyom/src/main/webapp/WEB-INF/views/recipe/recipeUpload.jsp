@@ -6,7 +6,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/> <!-- 인코딩설정 안해주면 한글 깨짐  -->
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="" name="pageTitle"/>
+	<jsp:param value="레시피 등록" name="pageTitle"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/recipeUpload.css"/>
 <script src="${pageContext.request.contextPath }/resources/js/upload.js"></script>
@@ -375,7 +375,7 @@ function frmValidate(){
 				<div class="row recipe-editor">
 					<div class="col">
 
-						<textarea name="recipeContent" style="width: 100%;"></textarea>
+						<textarea name="recipeContent" rows="20" style="width: 100%;"></textarea>
 
 					</div>
 				</div>

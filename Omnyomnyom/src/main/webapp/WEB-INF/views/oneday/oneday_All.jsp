@@ -17,6 +17,7 @@
             <div class="row">
                 <div class="col-lg-7 m-auto text-white">
                     <h2>원데이 클래스</h2>
+                    <p>여러분들이 원하는 클래스를 찾아보세요.</p>
                 </div>
             </div>
         </div>
@@ -26,11 +27,22 @@
     <div class="container">
         <div class="event-filter-warp">
             <div class="row">
-                <div class="col-xl-2">
+                <!-- <div class="col-xl-2">
                     <p>원데이클래스 검색</p>
-                </div>
-                <div class="col-xl-10">
-                    <form class="event-filter-form" method="post" action="${pageContext.request.contextPath }/oneday/oneday_search">
+                </div> -->
+                <div class="col-xl-12">
+                    <form class="event-filter-form serach" method="post" action="${pageContext.request.contextPath }/oneday/oneday_search">
+                  
+                    <select class="ef-item circle-select" id="menuList" name="menuList">
+                            <option value="">분류</option>
+                            <option value="한식">한식</option>
+                            <option value="양식">양식</option>
+                            <option value="일식">일식</option>
+                            <option value="중식">중식</option>
+                            <option value="밀식">밀식</option>
+                            <option value="기타식">기타식</option>
+                        </select>
+				
                         <div class="ef-item">
                             <i class="material-icons">event_available</i>
                            <!--  <input type="text" id="onedayTimeDate" name="onedayTimeDate" placeholder="날짜로 검색" class="event-date"> -->
@@ -57,23 +69,7 @@
     <!-- Events Section -->
     <section class="events-page-section spad">
         <div class="container">
-            <div class="row">
-                <div class="col-md-9">
-                    <span>인기순</span>
-                    <span>|</span>
-                    <sapn>가나다순</sapn>
-                </div>
-                <div class="col-md-3">
-                    <select class="circle-select">
-                            <option data-display="한식">한식</option>
-                            <option value="2">양식</option>
-                            <option value="2">일식</option>
-                            <option value="2">중식</option>
-                            <option value="2">밀식</option>
-                            <option value="2">기타식</option>
-                        </select>
-                </div>
-            </div>
+            
             <!-- 클래스 목록들 start -->
             <div class="row">
             <c:forEach items="${selectAllList }" var="oneday" varStatus="vs">
@@ -114,11 +110,9 @@
                             
             </c:forEach>
             </div>
-            <div class="site-pagination pt-3.5">
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#"><i class="material-icons">keyboard_arrow_right</i></a>
-            </div>
+            <c:if test="${paging != null }">
+						${paging}
+			</c:if>
         </div>
     </section>
     <!-- Events Section end -->

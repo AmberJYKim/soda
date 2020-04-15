@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
+import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.dao.RecipeDAO;
 import com.soda.onn.recipe.model.vo.Like;
@@ -31,6 +32,16 @@ public class RecipeServiceImpl implements RecipeService {
 	
 	@Autowired
 	private RecipeDAO recipeDAO;
+
+	@Override
+	public int deleteRecipeList(int[] deleteList) {
+		return recipeDAO.deleteRecipeList(deleteList);
+	}
+
+	@Override
+	public int insertDingDong(DingDong dd) {
+		return recipeDAO.insertDingDong(dd);
+	}
 
 	@Override
 	public String selectChefProfile(String chefId) {

@@ -20,10 +20,13 @@
 </resultMap>
 
 <delete id="deleteScrap">
-	delete from
+	delete
+	 from
 		tb_scrap
 	where
-		where recipe_no	= #{recipeNo}
+		recipe_no = #{recipeNo}
+			AND
+		member_id = #{memberId}
 </delete>
 
 <update id="updateScrap">
@@ -44,8 +47,9 @@
 	set
 		dingdong_read  = 0
 	where 
-		dingdongNo = #{dingdongNo}
+		dingdong_no = #{dingdongNo}
 </update>
+
 <select id="selectDingList" resultMap="dingMap">
 	select
 		*

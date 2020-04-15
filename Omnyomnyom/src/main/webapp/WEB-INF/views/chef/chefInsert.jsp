@@ -193,7 +193,51 @@
 
     </section>
     <script>
-   
+    function frmValidate(){
+
+    	if(!$("input[name=chefNickName]").val().trim()){
+    		alert('로그인 먼저 해주세요.');
+    		location.href="/onn/";
+    		return false;
+    	}
+    	
+    
+    	
+    	if(!$("input[name=chefApRink]").val().trim() && !$("input[name=chefApVideoimg]").val().trim()){
+    		alert('영상파일, 혹은 유튜브 링크를 입력해주세요.');
+    		return false;
+    	}
+    	
+    	if($("input[name=chefApRink]").val().trim()){
+    		let $videoLink = $("input[name=chefApRink]");
+    		
+    		if($videoLink.val().indexOf("youtu.be/") != -1){
+    			
+    			let subString = $videoLink.val().substr($videoLink.val().indexOf("youtu.be/")+9,11); 
+    			
+    			$videoLink.val(subString);
+    			
+    			console.log("videoLink="+$videoLink.val());
+    		}else if($videoLink.val().indexOf("watch?v=") != -1){
+    			
+    			let subString = $videoLink.val().substr($videoLink.val().indexOf("watch?v=")+8,11);
+    			
+    			$videoLink.val(subString);
+    			
+    			console.log("videoLink="+$videoLink.val());
+    		}else{
+    			alert("알맞은 유튜브 링크를 올리세요.");
+    			$videoLink.val('').focus();
+    			return false;
+    		} 
+    		
+    		
+    	}
+
+    	if($("input[name=uploadFile]").val().trim())
+    		alert("영상 업로드에 시간이 걸릴 수 있습니다. 잠시만 기다려주세요.");
+    	return true;
+    };
     </script>
     <!-- 페이지 titile end -->
     <!-- Event Details Section -->
@@ -201,7 +245,7 @@
         <div class="container">
             <form action="${pageContext.request.contextPath}/chef/chefInsert" 
             	  method="POST"
-            	  onsubmit=""
+            	  onsubmit="return frmValidate();"
             	  enctype="multipart/form-data">
               <%-- <%Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
               	System.out.println(memberLoggedIn.getMemberId());%> --%>

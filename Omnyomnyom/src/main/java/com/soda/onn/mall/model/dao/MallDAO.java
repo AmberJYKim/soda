@@ -12,11 +12,13 @@ import com.soda.onn.mall.model.vo.Cart;
 
 public interface MallDAO {
 
-	List<IngredientMall> selectIngredientList(String column);
+	List<IngredientMall> selectIngredientList(String subCtg);
 
 	List<BuyHistory> selectBuyList(String memberId);
 
 	int selectBuyHistoryListCnt();
+	
+	int updateIngMall(List<Map<String,String>> list);
 
 	List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds);
 
@@ -41,6 +43,12 @@ public interface MallDAO {
 	int insertBuyItem(List<BuyItem> bItems);
 
 	int deletePaid(List<Cart> cList);
+
+	int ingredientInsert(Map map);
+
+	String prCategory(String pr);
+
+	String crCategory(String cr);
 
 
 }

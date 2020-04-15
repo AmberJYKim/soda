@@ -168,6 +168,8 @@
 				success : function(data) {
 					if(data == 't'){
 						alert('신고가 접수되었습니다.');
+					}else{
+						alert('신고에 실패했습니다. 다시 시도해주세요.')
 					}
 				},
 				error : function(x, s, e) {
@@ -395,19 +397,19 @@
                         <h3 class="goods-add-product-title">뇸뇸몰</h3>
                         <button type="button" class="goods-add-product-move goods-add-product-move-left __slide-go-left">왼쪽으로 슬라이드 이동</button>
                         <button type="button" class="goods-add-product-move goods-add-product-move-right __slide-go-right">오른쪽으로 슬라이드 이동</button>
-                        <div class="goods-add-product-list-wrapper" style="height:320px">
+                        <div class="goods-add-product-list-wrapper" style="height:275px">
                             <ul class="goods-add-product-list __slide-mover" style="left: 0px;">
 								<c:forEach items="${ingrMallList}" var="ingrMall" varStatus="vs">
 	                                <li class="goods-add-product-item __slide-item">
 	                                    <div class="goods-add-product-item-figure">
-	                                        <a href="${pageContext.request.contextPath }/mall/productDetail?ingMallNo=${ingMall.ingMallNo}" target="_blank">
+	                                        <a href="${pageContext.request.contextPath }/mall/productDetail?ingMallNo=${ingrMall.ingMallNo}" target="_blank">
 	                                        	<img src="${pageContext.request.contextPath }/resources/images/ingredient/${ingrMall.prevImg}" class="goods-add-product-item-image" 
-	                                        		 onerror="this.src='${pageContext.request.contextPath }/resources/images/mall/ing_info_default.png'">
+	                                        		 onerror="this.src='${pageContext.request.contextPath }/resources/images/ingredient/Ingredient_default.png'">
 	                                        </a>
 	                                    </div>
 	                                    <div class="goods-add-product-item-content">
 	                                        <div class="goods-add-product-item-content-wrapper">
-	                                            <p class="goods-add-product-item-name">${ingrMall.ingMallName} </p>
+	                                            <p class="goods-add-product-item-name">${ingrMall.ingMallNo }.${ingrMall.ingMallName} </p>
 	                                            <p class="goods-add-product-item-price">${ingrMall.price}원</p>
 	                                        </div>
 	
@@ -532,6 +534,8 @@
 		                        <textarea name="questionContent" placeholder="댓글 작성"></textarea>
 		                        <input name="highQuestionNo" type="number" value="${question.questionNo}" hidden/>
 		                        <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+		                        <input name="memberId" type="text" value="${question.memberId}" hidden/>
+		                        <input name="chefId" type="text" value="${recipe.chefId}" hidden/>
 		                        <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
 		                    </div>
 		                </form>
@@ -559,6 +563,8 @@
 				                        <textarea name="questionContent" placeholder="댓글 작성"></textarea>
 				                        <input name="highQuestionNo" type="number" value="${question.questionNo}" hidden/>
 				                        <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+				                        <input name="memberId" type="text" value="${question.memberId}" hidden/>
+				                        <input name="chefId" type="text" value="${recipe.chefId}" hidden/>
 				                        <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
 				                    </div>
 				                </form>
@@ -577,6 +583,7 @@
                 	<div class="mb-3">
                         <textarea name="questionContent" placeholder="댓글 작성"></textarea>
                         <input name="recipeNo" type="number" value="${recipe.recipeNo }" hidden/>
+                        <input name="chefId" type="text" value="${recipe.chefId}" hidden/>
                         <a onclick="insertReply(this);" class="site-btn sb-gradient">댓글 달기</a>
                     </div>
                 </form>

@@ -152,16 +152,14 @@ public class MallController {
 
 	@GetMapping("/paymentInfo")
 	public void paymentInfo() {
-		
-		
-
-	}
+  }
 
 	@GetMapping("/delivery")
 	public void delivery() {
 	}
 
 // 뇸뇸몰 상품등록 페이지 이동 
+
 	@GetMapping("/productInsert")
 	public String productInsert() {
 		return "mall/productInsert";
@@ -225,6 +223,14 @@ public class MallController {
 		log.debug("삭제수 ============{}", delResult);
 	}
 	
-	
-	
+
+  	@GetMapping("/productInsert")
+  	public String productInsert() {
+  		return "mall/productInsert";
+  	}
+  	
+  	@GetMapping("/paymentResult")
+  	public void paymentResult() {}
+  
+  
 }

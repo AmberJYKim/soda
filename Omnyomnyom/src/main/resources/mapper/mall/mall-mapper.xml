@@ -6,11 +6,15 @@
 
 <select id="selectBuyList" resultMap="BuyHistoryMap">
 	select
-		*
-	from
-		tb_buy_list
-	where
-		member_id = #{buyMemberId}
+		i.ingredient_name,
+		n.stock,
+		n.price, 
+		b.regdate, 
+		b.buy_status
+	from tb_buy_no n join tb_buy_list b on n.buy_no = b.buy_no
+                     join tb_ingredient i on n.ingredient_no = i.ingredient_no
+	where 
+		b.member_id = #{buyMemberId}
 </select>
 
 
@@ -22,9 +26,10 @@
 </select>
 
 <resultMap id="BuyHistoryMap" type="BuyHistory">
-<!-- 	<result column="member_id" property="buyMemberId"/> -->
-	<result column="REGDATE" property="buyRegdate"/>
-<!-- 	<result column="email" property="buyEmail"/> -->
+    <result column="ingredient_name" property="buyMemberId"/>
+    <result column="stock" property="buyStock"/>
+	<result column="price" property="totalPrice"/>
+	<result column="regdate" property="buyRegdate"/>
 </resultMap>
 
 
@@ -171,4 +176,60 @@
 	</insert>
 
 
+<select id="prCategory" resultType="String">
+	select 
+	eng_pr_category 
+	from 
+	(select 
+		eng_pr_category 
+	 from 
+	 	tb_ingredient 
+	 where 
+	 ing_pr_category =#{pr})
+	 group by eng_pr_category
+
+</select>
+<select id="crCategory" resultType="String">
+select 
+	eng_cd_category 
+from (select 
+		eng_cd_category 
+	  from tb_ingredient 
+	  where ing_cd_category = #{cr})
+	   group by eng_cd_category
+</select>
+<insert id="ingredientInsert">
+{call
+	declare
+		begin
+		
+			insert into 
+				tb_ingredieont
+			values(
+				seq_Ingredient.nextval(),
+				#{ingPrCategory},
+				#{ingPrCategory},
+				#{ingredientName},
+				#{ingfileName},
+				#{engPrCategory},
+				#{engPrCategory}
+			);
+			
+			insert	into
+				tb_ingredient_mall
+			values(
+				seq_ingredient.currval(),
+				#{price},
+				#{stock},
+				#{minUnit},
+				#{ingOrigin},
+				#{shelfLife},
+				#{ingInfo}
+			);
+			
+			commit;
+	end
+}
+
+</insert>
 </mapper>

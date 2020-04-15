@@ -28,4 +28,6 @@ public class BuyHistory implements Serializable{
 	private String buyEmail;
 	private String buyMemberName;
 	private String memo;
+	private String buyIngredIentName;
+	private int buyStock;
 }
