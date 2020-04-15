@@ -45,7 +45,7 @@
                                     <div class="info">
                                         <section>
                                             <div class="title">예약일</div>
-                                            <div>${reservationreqeust.regDate }</div>
+                                            <div>${reservationrequest.regDate }</div>
                                         </section>
                                         <section>
                                             <div class="title">위치</div>
