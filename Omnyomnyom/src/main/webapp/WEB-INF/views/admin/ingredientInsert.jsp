@@ -53,43 +53,9 @@
                         <option value="기타">기타</option>
                     </select>
                     <input type="text" id="enPrcategory"name="engPrCategory" hidden/>
-                    <script>
-                    $("#pr_category").change(function(){
-                    	let pr = $(this).val();	
-                    	console.log(pr);
-                    	
-                    	$.ajax({
-                    		url:"${pageContext.request.contextPath }/admin/prCategory",
-                    		method : "GET",
-                    		data :{"prCategory":pr},
-                    		success : data =>{
-                    			
-                    			$("#enPrcategory").val(data.engPrcategory);
-                    			
-                    			console.log($("#enPrcategory").val());
-                    			
-                    			$("#subCt").remove();
-                    			
-                    			let p =  ' <option data-display="중분류">중분류</option>';
-                                   
-                    			$.each(data.subCtgList ,function(idx,item){
-
-                                      p = +'<option value="'+item[idx]+'">'+item[idx]+'</option>'
-                                      	
-                    			});
-
-                    			$("#subCt").append(p);
-                    				
-                    		},error : (x,s,e) =>{
-								console.log(x,s,e);
-							}
-                    	}); 
-                    });
-                    </script>
-
-                    </div>
-                    <div class="col-lg-3">
-                        <select class="circle-select" id="subCt"name ="ingcdCategory">
+             </div>
+                    <div class="col-lg-3 here">
+                        <select class="circle-select subCt" id="" name ="ingcdCategory">
                             <option data-display="중분류">중분류</option>
                             <option value="잎채소">잎채소</option>
                             <option value="열매채소">열매채소</option>
@@ -98,7 +64,60 @@
                             <option value="나물/허브류">나물/허브류</option>
                          </select>
                     </div>
+                    <input type="text" id="enCrcategory" name="engCrCategory" hidden/>
                 </div>
+                  <script>
+                    $("#pr_category").change(function(){
+                    	let pr = $(this).val();	
+                    	console.log(pr);
+                    	
+                    	$.ajax({
+                    		url:"${pageContext.request.contextPath }/admin/prCategory",
+                    		method : "GET",
+                    		sycn:false,
+                    		data :{"prCategory":pr},
+                    		success : data =>{
+                    			console.log(data);
+                    			$("#enPrcategory").val(data.engPrcategory);
+                    			
+                    			console.log($("#enPrcategory").val());
+                    			
+                    			$(".subCt").remove();
+                    			
+                    			//append할 코드 
+                    			let p =  '<select class="circle-select subCt" id="" name ="ingcdCategory"> '
+                    						+'<option data-display="중분류">중분류</option>';
+                                   
+                    			$.each(data.subCtgList ,function(idx,item){
+                                      p += '<option value="'+item+'">'+item+'</option>' ;                                   	
+                    			});
+								console.log(p);
+								p += '</select>';
+								
+                    			$(".here").append(p);
+                    				
+                    		},error : (x,s,e) =>{
+								console.log(x,s,e);
+							}
+                    	}); 
+                    });
+                    
+                    $(".here").change(function(){
+                    	
+                    	$.ajax({
+                    		url:"${pageContext.request.contextPath }/admin/crCategory",
+                    		method : "GET",
+                    		data :{"prCategory":pr},
+                    		success : data =>{
+                    			console.log(data);
+                    			$("#enPrcategory").val(data);
+	
+                    		},error : (x,s,e) =>{
+								console.log(x,s,e);
+							}
+                    	}); 
+                    });
+                    </script>
                 <div class="row">
                     <div class="col-lg-5">
                         <!-- 이미지 등록 -->

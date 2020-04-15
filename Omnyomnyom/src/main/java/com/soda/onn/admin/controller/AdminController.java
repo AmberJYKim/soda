@@ -353,7 +353,16 @@ public class AdminController {
 		
 		return map;
 	}
+	
+	@GetMapping("crCategory")
+	@ResponseBody
+	public String crCategory(@RequestParam(value="crCategory")String cr) {
 		
+		String engCrcategory = mallService.crCategory(cr);
+
+		return engCrcategory;
+	}
+			
 	@PostMapping("/ingredientInsert")
   	public ModelAndView ingredientInsert(Ingredient ingredient , 
   								         IngredientMall ingredientMall,

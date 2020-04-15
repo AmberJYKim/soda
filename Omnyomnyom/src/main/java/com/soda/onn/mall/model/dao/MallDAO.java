@@ -41,5 +41,7 @@ public interface MallDAO {
 
 	String prCategory(String pr);
 
+	String crCategory(String cr);
+
 
 }

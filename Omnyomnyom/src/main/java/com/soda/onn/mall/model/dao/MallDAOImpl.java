@@ -95,4 +95,9 @@ public class MallDAOImpl implements MallDAO {
 		return sqlSession.selectOne("mall.prCategory", pr);
 	}
 
+	@Override
+	public String crCategory(String cr) {
+		return sqlSession.selectOne("mall.crCategory",cr);
+	}
+
 }
