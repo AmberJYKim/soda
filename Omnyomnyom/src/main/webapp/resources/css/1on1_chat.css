@@ -214,6 +214,9 @@ li{
   height: 0;
 }
 
-
+.chat_thumbnail{
+	border-radius: 50%;
+    max-width: 45%;
+}
 
 
