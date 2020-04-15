@@ -295,23 +295,17 @@
                 <hr>
                
                 <div class="row">
-                    <div class="col-lg-12 m-auto">
-                        
-  
-    '
-                            <video alt="" controls id="video_section" width="500px" height="300px">
-                                <source class="image_section_src" src="https://www.youtube.com/watch?v=${chefRequest.chefApVideo}"  type='video/webm; codecs="vp8.0, vorbis"'>
-                                <source class="image_section_src" src="https://www.youtube.com/watch?v=${chefRequest.chefApVideo}" type='video/ogg; codecs="theora, vorbis"'> 
-                                <source class="image_section_src" src="https://www.youtube.com/watch?v=${chefRequest.chefApVideo}"  type='video/mp4'> 
-                            </video>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/${chefRequest.chefApVideo}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="col-lg-12" style="text-algin:center;">
+
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/${chefRequest.chefApVideo}"
+                           style="margin:auto; " frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             
                           
                     </div>
                 </div>
                 <hr>
-                <h3 class="mall_isnert_title title_auto">자기소개 등록</h3>
-                <p class="title_info">셰프님의 간략한 자기 소개 부탁드립니다. </p>
+                <h3 class="mall_isnert_title title_auto">셰프님 자기소개 </h3>
+                <p class="title_info">셰프님의 간략한 자기 소개 입니다. </p>
                 <hr>
                 <div cols="118" rows="10" name="chefContent">${chefRequest.chefContent }</div>
                 <div class="sb-widget">

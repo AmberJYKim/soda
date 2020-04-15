@@ -188,35 +188,34 @@ public class ChefController {
 		
 	}
 	
-// 셰프채널 메인 이동 
-	@GetMapping("/chefList")
-	public ModelAndView chefList() {
-		ModelAndView mav = new ModelAndView();
-		List<Chef> chefList = chefservice.selectChefAllList();
-		
-		
-		for(Chef ch: chefList) {
-			List<Map<String,String>> list = (List<Map<String,String>>) new Gson().fromJson(ch.getChefCategory(), 
-											 new TypeToken<List<Map<String,String>>>(){}.getType());
+	// 셰프채널 메인 이동 
+		@GetMapping("/chefList")
+		public ModelAndView chefList() {
+			ModelAndView mav = new ModelAndView();
+			List<Chef> chefList = chefservice.selectChefAllList();
 			
-			List<String> categoryList = new ArrayList<String>();
 			
-			for(Map<String,String> map: list) {
-//	            log.debug(map.get("value"));
-	            categoryList.add(map.get("value"));
-	        }
+			for(Chef ch: chefList) {
+				List<Map<String,String>> list = (List<Map<String,String>>) new Gson().fromJson(ch.getChefCategory(), 
+												 new TypeToken<List<Map<String,String>>>(){}.getType());
+				
+				List<String> categoryList = new ArrayList<String>();
+				
+				for(Map<String,String> map: list) {
+//		            log.debug(map.get("value"));
+		            categoryList.add(map.get("value"));
+		        }
+				
+				ch.setChefCategoryList(categoryList);
+				
+			}
 			
-			ch.setChefCategoryList(categoryList);
-			
+	        
+			log.debug("chefList ={}",chefList);
+			mav.addObject("chefList", chefList);
+			mav.setViewName("/chef/chefList");
+			return mav;
 		}
-		
-        
-		log.debug("chefList ={}",chefList);
-		mav.addObject("chefList", chefList);
-		mav.setViewName("/chef/chefList");
-		return mav;
-	}
-	
 	
 	
 //	셰프 닉네임으로 검색 
