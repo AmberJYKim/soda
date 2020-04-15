@@ -2,6 +2,8 @@ $().ready(function(){
 		console.log('jquery로드 완료');
 		subCtgload();
 		selectedDelfn();
+		selectedTagDel();
+		
 		
 		//페이지 로드 시 서브 카테고리 선택효과 주기
 		$(".main-ctg-menu>li").children(":first").trigger('click');
@@ -13,6 +15,7 @@ $().ready(function(){
 	function selectedTagDel(){
 		$(document).on('click', '.selected-ingredients>p', function(){
 			let tname = $(this).text();
+			console.log(tname);
 			$('img[alt='+tname+']').removeClass("active");
 			$(this).detach();
 		});
@@ -31,7 +34,7 @@ $().ready(function(){
 				
 				console.log(ingredientNo);
 				
-				let tags = '<p class="'+tname+'" data-ingredientno="'+ingredientNo+'"> <i class="fab fa-slack-hash" />'+tname+'</p><p><small><i class="fas fa-times"></i></small></p>';
+				let tags = '<p class="'+tname+'" data-ingredientno="'+ingredientNo+'"> <i class="fab fa-slack-hash" />'+tname+'<small><i class="fas fa-times"></i></small></p>';
 				$(".selected-ingredients").append(tags);
 			}
 			else{

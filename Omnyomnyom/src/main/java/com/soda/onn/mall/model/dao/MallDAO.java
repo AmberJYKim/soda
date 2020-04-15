@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 
 import com.soda.onn.mall.model.vo.BuyHistory;
+import com.soda.onn.mall.model.vo.BuyItem;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mall.model.vo.Cart;
 
@@ -36,6 +37,12 @@ public interface MallDAO {
 	int deleteCart(Cart cart);
 
 	List<BuyHistory> selectAdminBuyList(String memberId);
+
+	int insertBuyHistory(BuyHistory bHis);
+
+	int insertBuyItem(List<BuyItem> bItems);
+
+	int deletePaid(List<Cart> cList);
 
 	int ingredientInsert(Map map);
 
