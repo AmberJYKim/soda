@@ -158,14 +158,7 @@ public class MallController {
 	public void delivery() {
 	}
 
-// 뇸뇸몰 상품등록 페이지 이동 
 
-	@GetMapping("/productInsert")
-	public String productInsert() {
-		return "mall/productInsert";
-	}
-
-	
 	//결제에 따른 테이블인서트 및 델레트 진행
 	@PostMapping("/updatePaidData")
 	@ResponseBody
@@ -223,7 +216,7 @@ public class MallController {
 		log.debug("삭제수 ============{}", delResult);
 	}
 	
-
+// 뇸뇸몰 상품등록 페이지 이동 
   	@GetMapping("/productInsert")
   	public String productInsert() {
   		return "mall/productInsert";
