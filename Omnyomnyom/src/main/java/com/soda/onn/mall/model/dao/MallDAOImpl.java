@@ -84,9 +84,15 @@ public class MallDAOImpl implements MallDAO {
 		return sqlSession.selectList("mall.selectAdminBuyList", memberId);
 	}
 
-	
-	
+	@Override
+	public int ingredientInsert(Map map) {
+		
+		return sqlSession.insert("mall.ingredientInsert",map);
+	}
 
-	
+	@Override
+	public String prCategory(String pr) {
+		return sqlSession.selectOne("mall.prCategory", pr);
+	}
 
 }

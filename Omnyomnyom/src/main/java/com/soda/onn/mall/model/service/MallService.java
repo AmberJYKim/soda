@@ -37,4 +37,8 @@ public interface MallService {
 
 	List<BuyHistory> selectAdminBuyList(String memberId);
 
+	int ingredientInsert(Map map);
+
+	String prCategory(String pr);
+
 }

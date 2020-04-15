@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -29,6 +30,7 @@ import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.common.base.PageBar;
 import com.soda.onn.mall.model.service.MallService;
 import com.soda.onn.mall.model.vo.BuyHistory;
+import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.service.MemberService;
 import com.soda.onn.member.model.vo.Member;
@@ -174,18 +176,18 @@ public class AdminController {
 		
 		@PostMapping("/chefRequest")
 		public String chefRequest(@RequestParam("variable") String variable,
-								  @RequestParam("chefId") String chefId) {
+								  @RequestParam("chefId") String memberId) {
 			log.debug("셰프신청 수락여부 결정 진행중");
-			log.debug("chefId={}",chefId);
+			log.debug("chefId={}",memberId);
 			log.debug("variable={}",variable);
 			Map<String, String> chefReq = new HashMap<>();
-			chefReq.put("chefId",chefId);
+			chefReq.put("chefId",memberId);
 			chefReq.put("variable",variable);
 			
 			
-			ChefRequest chefreq = chefService.selectChefRequest(chefId);
+			ChefRequest chefreq = chefService.selectChefRequest(memberId);
 			chefreq.setChefReqOk(variable);
-			
+			log.debug("chefreq chefid={}",chefreq);
 			int result1 = chefService.chefRequestUpdate(chefreq);
 			log.debug("result1={}",result1);
 			return "redirect:/admin/chefRequestList";
@@ -334,5 +336,54 @@ public class AdminController {
 	@GetMapping("/ingredientInsert")
   	public void ingredientInsert() {
   		
+  	}
+	
+	@GetMapping("prCategory")
+	@ResponseBody
+	public Map prCategory(@RequestParam(value="prCategory")String pr) {
+		log.debug("pr={}",pr);
+		String engPrcategory = mallService.prCategory(pr);
+		List<String> subCtgList = recipeService.selectIngSubCtg(pr);
+		log.debug(engPrcategory);
+		log.debug("subCtgList={}",subCtgList);
+		
+		Map map = new HashMap();
+		map.put("engPrcategory",engPrcategory);
+		map.put("subCtgList",subCtgList);
+		
+		return map;
+	}
+		
+	@PostMapping("/ingredientInsert")
+  	public ModelAndView ingredientInsert(Ingredient ingredient , 
+  								         IngredientMall ingredientMall,
+  								         HttpServletRequest httpServletRequest,
+  								         @RequestParam(value="ingFilename",required=false) MultipartFile ingFilename,
+  								         @RequestParam(value="ingInfo", required=false) MultipartFile ingInfo,
+  								         ModelAndView mav) {
+  		
+		ingredient.setIngredientName(httpServletRequest.getParameter("ingredientName"));
+		ingredient.setIngPrCategory(httpServletRequest.getParameter("ingPrCategory"));
+		ingredient.setIngCdCategory(httpServletRequest.getParameter("ingcdCategory"));
+		
+//		재료 이미지 
+		String ingFileName = ingFilename.getOriginalFilename();
+		String ingFileNameSaveDirectory = httpServletRequest.getServletContext().getRealPath("/resources/images/ingredient");
+		ingredient.setIngFilename(httpServletRequest.getParameter(ingFileName));
+		
+		ingredientMall.setIngMallName(httpServletRequest.getParameter("ingredientName"));
+		ingredientMall.setPrice(Integer.parseInt((httpServletRequest.getParameter("price"))));
+		ingredientMall.setMinUnit(httpServletRequest.getParameter("minUnit"));
+		ingredientMall.setIngOrigin(httpServletRequest.getParameter("ingOrigin"));
+		ingredientMall.setShelfLife(Integer.parseInt((httpServletRequest.getParameter("shelfLife"))));
+		
+		Map map = new HashMap();
+		map.put("ingredient",ingredient);
+		map.put("ingredientMall",ingredientMall);
+		
+		int result = mallService.ingredientInsert(map);
+		
+		mav.setViewName("/admin/ingredientList");
+		return mav;
   	}
 }

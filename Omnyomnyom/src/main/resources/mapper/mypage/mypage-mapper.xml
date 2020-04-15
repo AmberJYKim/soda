@@ -47,8 +47,9 @@
 	set
 		dingdong_read  = 0
 	where 
-		dingdongNo = #{dingdongNo}
+		dingdong_no = #{dingdongNo}
 </update>
+
 <select id="selectDingList" resultMap="dingMap">
 	select
 		*
