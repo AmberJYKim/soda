@@ -122,7 +122,9 @@ public class MallServiceImpl implements MallService {
 	@Override
 	public int deletePaid(List<Cart> cList) {
 		return mallDAO.deletePaid(cList);
+	}
 
+	@Overried
 	public int ingredientInsert(Map map) {	
 		return mallDAO.ingredientInsert(map);
 	}
