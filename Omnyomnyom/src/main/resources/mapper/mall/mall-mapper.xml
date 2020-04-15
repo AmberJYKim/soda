@@ -169,6 +169,6 @@
 	    </foreach>
 	select * from dual
 	</insert>
-	
+
 
 </mapper>
