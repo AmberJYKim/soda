@@ -329,11 +329,11 @@ public class ChefController {
 							@RequestParam(value="chefApRink", required=true) String chefApRink,
 							RedirectAttributes redirectAttribute) {
 		
-//		System.out.println(chefRequest);
+		System.out.println(chefRequest);
 //		
 //		log.debug("facebook={}",facebook);
 //		log.debug("insta={}",insta);
-
+		log.debug("menuPrCategory={}",chefRequest.getMenuPrCategory());
 		// sns map객체 -> gson으로 넘김 
 		Map<String,String> snsMap = new HashMap<String, String>();
 		snsMap.put("facebook", facebook);

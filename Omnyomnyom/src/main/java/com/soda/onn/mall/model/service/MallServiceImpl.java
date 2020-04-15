@@ -115,4 +115,10 @@ public class MallServiceImpl implements MallService {
 		return mallDAO.prCategory(pr);
 	}
 
+	@Override
+	public String crCategory(String cr) {
+		
+		return mallDAO.crCategory(cr);
+	}
+
 }

@@ -39,4 +39,6 @@ public interface MallService {
 
 	String prCategory(String pr);
 
+	String crCategory(String cr);
+
 }

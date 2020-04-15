@@ -169,7 +169,15 @@
 	 group by eng_pr_category
 
 </select>
-
+<select id="crCategory" resultType="String">
+select 
+	eng_cd_category 
+from (select 
+		eng_cd_category 
+	  from tb_ingredient 
+	  where ing_cd_category = #{cr})
+	   group by eng_cd_category
+</select>
 <insert id="ingredientInsert">
 {call
 	declare
