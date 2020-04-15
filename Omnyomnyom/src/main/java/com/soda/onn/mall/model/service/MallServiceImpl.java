@@ -21,8 +21,8 @@ public class MallServiceImpl implements MallService {
 	private MallDAO mallDAO;
 	
 	@Override
-	public List<IngredientMall> selectIngredientList(String column) {
-		return mallDAO.selectIngredientList(column);
+	public List<IngredientMall> selectIngredientList(String subCtg) {
+		return mallDAO.selectIngredientList(subCtg);
 	}
 
 	@Override
@@ -33,6 +33,11 @@ public class MallServiceImpl implements MallService {
 	@Override
 	public int selectBuyHistoryListCnt() {
 		return mallDAO.selectBuyHistoryListCnt();
+	}
+	
+	@Override
+	public int updateIngMall(List<Map<String,String>> list) {
+		return mallDAO.updateIngMall(list);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -92,21 +93,21 @@ public class AdminController {
 	}
 	
 	//판매자의 판매목록들
-			@GetMapping("/sellList")
-			public void adminBuyList(HttpSession session, Model model) {
-				Member member = (Member)session.getAttribute("memberLoggedIn");
-				String memberId = member.getMemberId();
-				
-				List<BuyHistory> sellList = mallService.selectAdminBuyList(memberId);
-				log.debug("sellsList={}",sellList);
-				model.addAttribute("sellList", sellList);
-			}
+	@GetMapping("/sellList")
+	public void adminBuyList(HttpSession session, Model model) {
+		Member member = (Member)session.getAttribute("memberLoggedIn");
+		String memberId = member.getMemberId();
 		
+		List<BuyHistory> sellList = mallService.selectAdminBuyList(memberId);
+		log.debug("sellsList={}",sellList);
+		model.addAttribute("sellList", sellList);
+	}
+	
 			
-		@GetMapping("/sendDingdong")
-		public void sendDingdong() {
-			
-		}
+	@GetMapping("/sendDingdong")
+	public void sendDingdong() {
+		
+	}
 	
 	//셰프목록
 	@GetMapping("/chefList")
@@ -248,18 +249,22 @@ public class AdminController {
 	public void ingredientList() {}
 	
 	//재료목록 Ajax
-	@GetMapping("/ingredientList.A")
+	@GetMapping("/ingredientList.ajax")
 	@ResponseBody 
-	public List<IngredientMall> ingredientListA(@RequestParam(value = "column",defaultValue = "과일") String column) {
-		ModelAndView mav = new ModelAndView();
-		log.debug("jsp 미완성");
+	public List<IngredientMall> ingredientListA(@RequestParam(value = "subCtg") String subCtg) {
 		
-		List<IngredientMall> ingredientList = mallService.selectIngredientList(column);
-		
-		mav.addObject("ingredientList", ingredientList);
-		mav.setViewName("admin/ingredientList");
+		List<IngredientMall> ingredientList = mallService.selectIngredientList(subCtg);
 		
 		return ingredientList;
+	}
+	
+	//재료 업데이트
+	@PostMapping(value =  "/ingMallUpdate", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public int ingMallUpdate(@RequestParam("updateList") String updateList) {
+		List<Map<String,String>> list = new Gson().fromJson(updateList, List.class);
+		int result = mallService.updateIngMall(list); 
+		return result;
 	}
 
 	//판매번호로그
@@ -283,9 +288,7 @@ public class AdminController {
 		mav.addObject("buyHistoryListList", buyHistoryListList);
 		mav.setViewName("admin/ingredientList");
 
-		
 		return mav;
-
 	}
 		
 	//회원목록

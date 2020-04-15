@@ -1,6 +1,7 @@
 package com.soda.onn.mall.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -18,8 +19,8 @@ public class MallDAOImpl implements MallDAO {
 	private SqlSessionTemplate sqlSession;
 	
 	@Override
-	public List<IngredientMall> selectIngredientList(String column) {
-		return sqlSession.selectList("mall.selectIngredientList", column);
+	public List<IngredientMall> selectIngredientList(String subCtg) {
+		return sqlSession.selectList("mall.selectIngredientList", subCtg);
 	}
 
 	@Override
@@ -31,6 +32,12 @@ public class MallDAOImpl implements MallDAO {
 	public int selectBuyHistoryListCnt() {
 		return Integer.parseInt(sqlSession.selectOne("mall.selectBuyHistoryListCnt"));
 	}
+	
+	@Override
+	public int updateIngMall(List<Map<String,String>> list) {
+		return sqlSession.update("mall.updateIngMall", list); 
+	}
+
 
 	@Override
 	public List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds) {
