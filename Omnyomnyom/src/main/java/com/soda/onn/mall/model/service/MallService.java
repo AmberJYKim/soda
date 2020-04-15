@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 
 import com.soda.onn.mall.model.vo.BuyHistory;
+import com.soda.onn.mall.model.vo.BuyItem;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mall.model.vo.Cart;
 
@@ -34,5 +35,11 @@ public interface MallService {
 	List<IngredientMall> selectIngMallList(List<Map<String, String>> list);
 
 	List<BuyHistory> selectAdminBuyList(String memberId);
+
+	int insertBuyHistory(BuyHistory bHis);
+
+	int insertBuyItems(List<BuyItem> bItems);
+
+	int deletePaid(List<Cart> cList);
 
 }

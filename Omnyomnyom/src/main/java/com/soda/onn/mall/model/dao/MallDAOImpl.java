@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.soda.onn.mall.model.vo.BuyHistory;
+import com.soda.onn.mall.model.vo.BuyItem;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mall.model.vo.Cart;
 
@@ -75,6 +76,26 @@ public class MallDAOImpl implements MallDAO {
 	@Override
 	public List<BuyHistory> selectAdminBuyList(String memberId) {
 		return sqlSession.selectList("mall.selectAdminBuyList", memberId);
+	}
+
+	@Override
+	public int insertBuyHistory(BuyHistory bHis) {
+		return sqlSession.insert("mall.insertBuyHistory", bHis);
+	}
+
+	@Override
+	public int insertBuyItem(List<BuyItem> bItems) {
+		return sqlSession.insert("mall.insertBuyItem", bItems);
+	}
+
+	@Override
+	public int deletePaid(List<Cart> cList) {
+		int result = 0;
+		for(Cart c: cList) {
+		 result += sqlSession.delete("mall.deleteCart", c);
+		
+		}
+		return result;
 	}
 
 	

@@ -72,7 +72,7 @@
       		            pay_method : 'card',	// 결제 수단
       		            popup : true,
       		            merchant_uid : 'merchant_' + new Date().getTime(),
-      		           	name : '주문명: 결제 테스트',	// order 테이블에 들어갈 주문명 혹은 주문 번호
+      		           	name : '${oneday.onedayName} 예약결제',	// order 테이블에 들어갈 주문명 혹은 주문 번호
       		            amount : '${reservationrequest.resPrice}',	// 결제 금액 
       		            buyer_email : '${memberLoggedIn.email}',	// 구매자 email
       		           	buyer_name :  '${memberLoggedIn.memberName}',	// 구매자 이름

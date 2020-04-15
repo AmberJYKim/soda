@@ -142,4 +142,33 @@
 		i.INGREDIENT_NAME like '%'||#{keyword}||'%'
 </select>
 
+
+	<insert id="insertBuyHistory">
+		insert into tb_buy_list values (
+			seq_buy.nextval,
+			#{buyMemberId},
+			#{totalPrice},
+			default,
+			#{buyStatus},
+			#{shippingAddress},
+			#{receiverPhone},
+			#{buyEmail},
+			#{memo}
+		)
+		<selectKey keyColumn="buy_no" keyProperty="buyNo" resultType="_int" order="AFTER">
+			select seq_buy.currval from dual
+		</selectKey>
+	</insert>
+
+	
+	<insert id="insertBuyItem" parameterType="_int">
+    INSERT All 
+	    <foreach collection="list" item="item" separator=" " >
+	        INTO tb_buy_no (buy_no, ingredient_no, stock, price) VALUES
+	        (${item.buyNo}, ${item.ingredientNo}, ${item.stock}, ${item.price})
+	    </foreach>
+	select * from dual
+	</insert>
+	
+
 </mapper>
