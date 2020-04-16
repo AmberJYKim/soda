@@ -24,7 +24,7 @@
 						<div class="col-12 row " id="${chefRequest.chefId}">
 							<div class="col-2">
 								<!-- <img src="1508_008.jpg" alt="" class="chef_list_img"> -->
- 								<img src="${pageContext.request.contextPath}/resources/upload/profile/${chefRequest.chefProfile}" alt="${chefRequest.chefId}" class="chefRstView chef_list_img">
+ 								<img src="${pageContext.request.contextPath}/resources/upload/profile/${chefRequest.chefProfile}" id="${chefRequest.chefId}" class="chefRstView chef_list_img">
 							</div>
 							<div class="col-4">
 								<p>닉네임 : ${chefRequest.chefNickName}</p>

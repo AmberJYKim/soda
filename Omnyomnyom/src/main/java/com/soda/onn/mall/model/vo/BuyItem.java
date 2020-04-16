@@ -16,8 +16,10 @@ import lombok.ToString;
 public class BuyItem implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-
+	
+	private int buyNo;
 	private int ingredientNo;
 	private int stock;
 	private int price;
+	
 }

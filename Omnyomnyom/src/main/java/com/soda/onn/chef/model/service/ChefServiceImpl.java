@@ -104,5 +104,10 @@ public class ChefServiceImpl implements ChefService {
 	}
 
 
+
+	@Override
+	public Chef chefSelectId(String memberId) {
+		return chefDAO.chefSelectId(memberId);
+	}
 	
 }

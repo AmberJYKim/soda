@@ -56,16 +56,13 @@ public class MemberController {
 			if(bcrypt.matches(memberPwd, member.getMemberPwd())) {
 				session.setAttribute("memberLoggedIn", member);
 				log.debug(member.getMemberNick()+"("+member.getMemberId()+")님이 로그인을 했습니다.");
-			}else {
-				log.debug("비밀번호 틀림");
-				redirectAttributes.addFlashAttribute("msg", "입력한 아이디 또는 비밀번호가 일치하지 않습니다.");
-			}
+			}else 
+				session.setAttribute("msg", "입력한 아이디 또는 비밀번호가 일치하지 않습니다.");
 			
-		}else {
-			log.debug("아이디 틀림");
-			redirectAttributes.addFlashAttribute("msg", "입력한 아이디 또는 비밀번호가 일치하지 않습니다.");
-		}
-		log.info("현재 로그인 실패시 addFlashAttribute 작동하지 않음.");
+			
+		}else 
+			session.setAttribute("msg", "입력한 아이디 또는 비밀번호가 일치하지 않습니다.");
+		
 		
 		return "redirect:/";
 	}

@@ -45,6 +45,6 @@ public interface ChefService {
 
 	int chefRequestUpdate(ChefRequest chefreq);
 
-
+	Chef chefSelectId(String getter);
 
 }

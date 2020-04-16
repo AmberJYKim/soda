@@ -69,6 +69,7 @@ import com.google.gson.JsonObject;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.member.model.vo.Member;
+import com.soda.onn.mypage.model.service.MypageService;
 import com.soda.onn.mypage.model.vo.DingDong;
 import com.soda.onn.mypage.model.vo.Scrap;
 import com.soda.onn.recipe.model.service.RecipeService;
@@ -90,7 +91,9 @@ public class RecipeController {
 
 	@Autowired
 	private RecipeService recipeService;
-
+	
+	@Autowired
+	private MypageService mypageService;
 	final int NUMPERPAGE = 12;
 	final int PAGEBARSIZE = 10;
 
@@ -291,10 +294,16 @@ public class RecipeController {
 	//레시피 뷰
 	@GetMapping("/recipe-details")
 	public String recipedetails(
+							@RequestParam (value="dingdongNo", defaultValue="-1")int dingdongNo,
 							@RequestParam("recipeNo")int recipeNo,
 							  HttpServletRequest request,
 							  HttpServletResponse response,
 							  Model model) {
+		
+		if(dingdongNo != -1) {
+			int result = mypageService.dingdongUpdate(dingdongNo);
+			log.debug("dingResult={}",result);
+		}
 		
 		//뷰 카운터를 위한 쿠키
 		Cookie[] cookies = request.getCookies();
@@ -722,7 +731,7 @@ public class RecipeController {
 			
 			log.debug(" 카테고리 설정 받아온값 mainCtg=={} subCtg== {}", mainCtg, subCtg);
 			log.debug(" 카테고리 설정 후 mainCtg=={} subCtg== {}", maps.get("mainCtg"), maps.get("subCtg"));
-			ingList = recipeService.selectPopIngredient(maps);
+			ingList = recipeService.selectPopIngredient(maps); 
 		}else {
 			ingList = recipeService.selectIngredients(subCtg, cPage, NUMPERPAGE);
 		}
@@ -774,22 +783,37 @@ public class RecipeController {
 		String gsonresult = new Gson().toJson(result);
 		 
 		return gsonresult;
-  }
+	}
+	
+	
 	//선택한 재료로 레시피 검색하기
 	@GetMapping(value="recipeSerachByIng", produces="text/plain;charset=UTF-8")
 	@ResponseBody
-	public String recipeSerachByIng(@RequestParam("ingNoArr[]") List<Integer> ingNoArr) {
+	public String recipeSerachByIng(@RequestParam("ingNoArr[]") List<Integer> ingNoArr, @RequestParam(value="cPage", defaultValue="1") int cPage) {
 		
 		log.debug("ingredientNo======={}", ingNoArr);
 		
 		Map<String, Object> maps = new HashMap<>();
 		maps.put("ingNoArr", ingNoArr);
-				
-		List<RecipeWithIngCnt> rlist = recipeService.recipeSerachByIng(maps);
+		
+		//키워드를 포함한 영상 총 갯수 조회
+		int rcpCnt = recipeService.selectRecipeCnt(maps);
+		
+		//카테고리 갯수에 따른 페이징 여부 (12개 이하일 경우 페이징 하지 않음)
+		if(rcpCnt > 12) {
+			rcpCnt = (int)Math.ceil((double)rcpCnt/12);
+		} else {
+			rcpCnt = 1;
+		}
+		
+		log.debug("====================================\\");
+		log.debug("====================================\\\\");
+		List<RecipeWithIngCnt> rlist = recipeService.recipeSerachByIng(maps, cPage, NUMPERPAGE);
 		log.debug("rlist================{}", rlist.toString());
 		
-		maps.put("recipeList", rlist);
-		
+		maps.put("recipeList", rlist);	
+		maps.put("rcpCnt", rcpCnt);
+		maps.put("cPage", cPage);
 		return new Gson().toJson(maps);
 		
 	}

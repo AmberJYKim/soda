@@ -152,8 +152,8 @@
                         <div class="col-1"></div>
                         <div class="col-6">
                             <h6 class="chefSelectOne" id="${chef.chefNickName}">${chef.chefNickName}</h6>
-                            <c:forEach items="${chef.chefCategoryList}" var="vs">
-                            	<span class="color-2">#${vs}</span>
+                            <c:forEach items="${chef.chefCategoryList}" var="item">
+                            	<span class="color-2">#${item}</span>
                             </c:forEach>
                         </div>
                         <div class="col-4 align-self-center">

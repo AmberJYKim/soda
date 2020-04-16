@@ -33,26 +33,22 @@
                     <br>
                     <div class="row">
                     
-                    <%
-                    	List<Chef> chefList = (List<Chef>)request.getAttribute("chefList");
-                    	
-                    	for(Chef chef : chefList){
-                    %>
+                    <c:forEach items="${chefList }" var="chef">
+                    
+                    
 	                    <div class="col-6 row chef-content">
 	                        <div class="col-6">
-	                            <img src="${pageContext.request.contextPath}/resources/upload/profile/<%=chef.getChefProfile()%>" 
-	                            alt="" class="chef_list_img" value="<%=((Member)chef).getMemberId()%>">
+	                            <a href="${pageContext.request.contextPath }/chef/${chef.chefNickName}/chefPage"><img src="${pageContext.request.contextPath}/resources/upload/profile/${chef.chefProfile}" 
+	                            alt="" class="chef_list_img"></a>
 	                        </div>
 	                        <div class="col-4 che-list-p">
-	                            <p><%=((Member)chef).getMemberNick()%></p>
-	                            <p><%=((Member)chef).getEmail()%></p>
-	                            <p><%=chef.getChefCategory() %></p>
+	                            <p>${chef.chefNickName}</p>
+	                            <p>${chef.chefEmail }</p>
+	                            <p><jstr>${chef.chefCategory }</jstr></p>
 	                        </div>
 	                        <div class="col-2"></div>
 	                    </div>
-	                <%
-	                	}
-	                %>
+                    </c:forEach>
 	
 
 	                </div>
@@ -61,6 +57,10 @@
         </div>
     </div>
 
-
+<script>
+$("jstr").each(function(index,jstr){
+	$(this).text($(this).text().replace(/\{|\}|\[|\]|\"|:|value/g,""));
+});
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

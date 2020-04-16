@@ -92,6 +92,10 @@ public class ChefDAOImpl implements ChefDAO {
 	public int chefRequestUpdate(ChefRequest chefreq) {
 			return sqlSession.update("chef.chefRequestUpdate", chefreq);
 	}
+	@Override
+	public Chef chefSelectId(String memberId) {
+		return sqlSession.selectOne("chef.chefSelectId", memberId);
+	}
 
 
 }

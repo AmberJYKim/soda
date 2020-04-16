@@ -6,16 +6,19 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 
 import com.soda.onn.mall.model.vo.BuyHistory;
+import com.soda.onn.mall.model.vo.BuyItem;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mall.model.vo.Cart;
 
 public interface MallDAO {
 
-	List<IngredientMall> selectIngredientList(String column);
+	List<IngredientMall> selectIngredientList(String subCtg);
 
 	List<BuyHistory> selectBuyList(String memberId);
 
 	int selectBuyHistoryListCnt();
+	
+	int updateIngMall(Map<String,String> map);
 
 	List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds);
 
@@ -35,9 +38,20 @@ public interface MallDAO {
 
 	List<BuyHistory> selectAdminBuyList(String memberId);
 
-	int ingredientInsert(Map map);
+	int ingredientInsert(IngredientMall ingredientMall);
+
+	int insertBuyHistory(BuyHistory bHis);
+
+	int insertBuyItem(List<BuyItem> bItems);
+
+	int deletePaid(List<Cart> cList);
 
 	String prCategory(String pr);
+
+	List<IngredientMall> selectBuyItemOne(int buyNo);
+
+	String crCategory(String cr);
+
 
 
 }
