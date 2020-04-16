@@ -223,7 +223,21 @@ public class MallController {
   	}
   	
   	@GetMapping("/paymentResult")
-  	public void paymentResult() {}
+  	public void paymentResult() {
+  		
+  		//세션내용 비우기
+  		//견제 완료 페이지에서 보여줄 내용 보내기
+  	}
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
   
   
 }

@@ -32,10 +32,9 @@
 		<div class="container tm-pt-5 tm-pb-4">
 			<div class="wizard">
               	<a><span class="badge">01</span>장바구니</a> 
-              	<a ><span class="badge">02</span> 선택된 상품 리스트</a> 
-				<a><span class="badge">03</span> 배송지 정보</a> 
-				<a ><span class="badge ">04</span>결제 정보</a> 
-				<a class="current badge-inverse"><span class="badge ">05</span>결제 완료</a>
+              	<a><span class="badge">02</span> 선택된 상품 리스트</a> 
+				<a><span class="badge">03</span>결제 정보</a> 
+				<a class="current badge-inverse"><span class="badge ">04</span>결제 완료</a>
             </div>
 		</div>
 

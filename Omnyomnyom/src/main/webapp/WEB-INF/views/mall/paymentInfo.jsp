@@ -58,7 +58,7 @@
       		       
       	 		}); //아임포트 끝 
 	        	updatePaidData();
-           }); //click
+       	    }); //click
 		
            
            function updatePaidData(){
@@ -71,7 +71,7 @@
       	      	$.ajax({
        	      	url: "${pageContext.request.contextPath }/mall/updatePaidData",
 				method : "Post",
-				data : sendData,
+				data : sendData,	
 				success : data =>{
 					alert("결제 확인 페이지로 이동합니다.");
         			//location.href = "${pageContext.request.contextPath }/mall/result";
