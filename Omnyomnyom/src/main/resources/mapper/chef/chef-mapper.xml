@@ -5,6 +5,9 @@
   
 <mapper namespace="chef">
 
+
+
+
 <resultMap type="chef" id="chefMap">
 <result column="member_id" property="chefId"/>
 <result column="member_nick" property="chefNickName"/>
