@@ -24,6 +24,15 @@
 	from
 		tb_buy_list
 </select>
+<update id="updateIngMall" >
+	update 
+		tb_ingredient_mall 
+	set 
+		price = #{price}, 
+		stock = #{stock}, 
+		min_unit = #{minUnit}
+	where ingredient_no = #{ingNo}
+</update>
 
 <resultMap id="BuyHistoryMap" type="BuyHistory">
     <result column="ingredient_name" property="buyMemberId"/>
@@ -52,10 +61,11 @@
 </select>
 
 <select id="selectBuyHistoryList" resultType="buyHistory">
-	select
-		*
-	from
-		tb_buy_list 
+select 
+	b.*,
+	(select member_name from tb_member where b.member_id = member_id) buyMemberName
+from 
+	tb_buy_list b
 </select>
 
 <select id="selectIngMallOne" resultMap="ingMallMap">
@@ -67,6 +77,23 @@
 		
 	where
 		ingredient_no = #{ingMallNo}
+</select>
+
+<select id="selectBuyItemOne" resultMap="ingMallMap">
+	select 
+	    i.INGREDIENT_NO,
+	    i.INGREDIENT_NAME,
+	    b.price,
+	    b.stock,
+	    i.ENG_PR_CATEGORY,
+	    i.ENG_CD_CATEGORY,
+	    i.ING_FILENAME
+	from 
+	    tb_buy_no b
+	    join 
+	    TB_INGREDIENT i on b.INGREDIENT_NO = i.INGREDIENT_NO
+	where
+	    buy_no = #{buyNo}
 </select>
 <resultMap type="IngredientMall" id="ingMallMap">
 	<id column="ingredient_no" property="ingMallNo"/>
@@ -146,6 +173,35 @@
 	where
 		i.INGREDIENT_NAME like '%'||#{keyword}||'%'
 </select>
+
+
+	<insert id="insertBuyHistory">
+		insert into tb_buy_list values (
+			seq_buy.nextval,
+			#{buyMemberId},
+			#{totalPrice},
+			default,
+			#{buyStatus},
+			#{shippingAddress},
+			#{receiverPhone},
+			#{buyEmail},
+			#{memo}
+		)
+		<selectKey keyColumn="buy_no" keyProperty="buyNo" resultType="_int" order="AFTER">
+			select seq_buy.currval from dual
+		</selectKey>
+	</insert>
+
+	
+	<insert id="insertBuyItem" parameterType="_int">
+    INSERT All 
+	    <foreach collection="list" item="item" separator=" " >
+	        INTO tb_buy_no (buy_no, ingredient_no, stock, price) VALUES
+	        (${item.buyNo}, ${item.ingredientNo}, ${item.stock}, ${item.price})
+	    </foreach>
+	select * from dual
+	</insert>
+
 
 <select id="prCategory" resultType="String">
 	select 

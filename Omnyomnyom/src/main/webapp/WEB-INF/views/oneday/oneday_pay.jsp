@@ -37,11 +37,12 @@
        	      	let ticketQty = ${reservationrequest.personnel};
        	      	
        	      	
-       	      	console.log(maxSeat);
+       	      	console.log(maxSeat,"최대인원");
        	      	console.log(onedayNo);
        	      	console.log("ajax시작전");
        	      	let forwarding = {"onedayNo" : onedayNo, "onedaytimeNo" :onedaytimeNo};
        	      	console.log(forwarding, "===forwarding");
+       	      //예약마감 체크하기 ajax로 실시간검사하여 return값 주기
        	      	$.ajax({
 	       	      	url: "${pageContext.request.contextPath }/oneday/checkvacancy",
 					dataType: "json",
@@ -49,55 +50,57 @@
 					data : forwarding,
 					success : data =>{
 						
-						//이부분 작동안함 확인해야함.
-					 if(data.reserved <= maxSeat ){
+					 if(data.reserved >= maxSeat ){
+						 console.log(data.reserved, "이미 예약된 인원")
 						 alert("잔여 좌석이 부족합니다. 다시 확인해주세요");
 						 return;
 					 }else if ( data.reserve+ticketQty > maxSeat){
+						 console.log(data.reserve+ticketQty, "예약요청인원 ")
 						 alert("잔여 좌석이 부족합니다. 다시 확인해주세요");
 						 return;
 					 }	
+						 console.log(data.reserved, "이미 예약된 인원")
+						 
+						   
+			       	      console.log("결제모듈 로딩");
+			       	      	IMP.request_pay({
+			      	        		pg : 'kakaopay', // 결제방식
+			      		            pay_method : 'card',	// 결제 수단
+			      		            popup : true,
+			      		            merchant_uid : 'merchant_' + new Date().getTime(),
+			      		           	name : '${oneday.onedayName} 예약결제',	// order 테이블에 들어갈 주문명 혹은 주문 번호
+			      		            amount : '${reservationrequest.resPrice}',	// 결제 금액 
+			      		            buyer_email : '${memberLoggedIn.email}',	// 구매자 email
+			      		           	buyer_name :  '${memberLoggedIn.memberName}',	// 구매자 이름
+			      		            buyer_tel :  '${memberLoggedIn.phone}',	// 구매자 전화번호
+			      		            buyer_addr :  '${memberLoggedIn.address}',	// 구매자 주소
+			      		            buyer_postcode :  '',	// 구매자 우편번호
+			      		        }, function(rsp) {
+			      		          if ( rsp.success ) {
+			      		        	  
+			      		        	var msg = '결제가 완료되었습니다.';
+				        			msg += '  결제 금액 : ' + rsp.paid_amount;
+				        			msg += ',  확인 버튼을 눌러 예약 확인페이지로 이동해주세요';
+			  		        		paymentResult = true;
+				        			alert(msg);
+				        			insertReserv();
+				        			
+			      		        } else {
+			      		            var msg = '결제에 실패하였습니다.';
+			      		            msg += '에러내용 : ' + rsp.error_msg;
+			      		            
+			      		            alert(msg);
+			      		    			     paymentResult = false;
+			      		        }
+			      		       
+			      	 		}); //아임포트 끝 
 					},
 					error : (x,s,e) =>{
 						console.log(x,s,e);
 					}
        	      	});
        	      
-       	      
-       	      console.log("결제모듈 로딩");
-      	    
-       	      //예약마감 체크하기 ajax로 실시간검사하여 return값 주기
-       	      	IMP.request_pay({
-      	        		pg : 'kakaopay', // 결제방식
-      		            pay_method : 'card',	// 결제 수단
-      		            popup : true,
-      		            merchant_uid : 'merchant_' + new Date().getTime(),
-      		           	name : '주문명: 결제 테스트',	// order 테이블에 들어갈 주문명 혹은 주문 번호
-      		            amount : '${reservationrequest.resPrice}',	// 결제 금액 
-      		            buyer_email : '${memberLoggedIn.email}',	// 구매자 email
-      		           	buyer_name :  '${memberLoggedIn.memberName}',	// 구매자 이름
-      		            buyer_tel :  '${memberLoggedIn.phone}',	// 구매자 전화번호
-      		            buyer_addr :  '${memberLoggedIn.address}',	// 구매자 주소
-      		            buyer_postcode :  '',	// 구매자 우편번호
-      		        }, function(rsp) {
-      		          if ( rsp.success ) {
-      		        	  
-      		        	var msg = '결제가 완료되었습니다.';
-	        			msg += ',결제 금액 : ' + rsp.paid_amount;
-	        			msg += ',확인 버튼을 눌러 예약 확인페이지로 이동해주세요';
-  		        		paymentResult = true;
-	        			alert(msg);
-	        			insertReserv();
-	        			
-      		        } else {
-      		            var msg = '결제에 실패하였습니다.';
-      		            msg += '에러내용 : ' + rsp.error_msg;
-      		            
-      		            alert(msg);
-      		    			     paymentResult = false;
-      		        }
-      		       
-      	 		}); //아임포트 끝
+       	    
 	        	
            }); //click
 		

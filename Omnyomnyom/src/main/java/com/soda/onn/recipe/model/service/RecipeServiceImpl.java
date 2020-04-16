@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -182,8 +183,8 @@ public class RecipeServiceImpl implements RecipeService {
 	
 
 	@Override
-	public List<Report> selectReportList() {
-		return recipeDAO.selectReportList();
+	public List<Report> selectReportList(RowBounds rowBounds) {
+		return recipeDAO.selectReportList(rowBounds);
   }
   
   @Override
@@ -214,9 +215,7 @@ public class RecipeServiceImpl implements RecipeService {
 			log.debug("{}",addList);
 			mallList.addAll(addList);
 		}
-		
-		
-		
+
 		return mallList;
 	}
 
@@ -264,8 +263,8 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 	
 	@Override
-	public List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps) {
-		return recipeDAO.recipeSerachByIng(maps);
+	public List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps, int cPage, int NUMPERPAGE) {
+		return recipeDAO.recipeSerachByIng(maps, cPage, NUMPERPAGE);
 	}
 
 	@Override
@@ -296,7 +295,12 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public int ingredientInsert(Ingredient ingredient) {
-		// TODO Auto-generated method stub
 		return recipeDAO.ingrdientInsert(ingredient);
+  }
+  
+  @Override
+	public int selectRecipeCnt(Map<String, Object> maps) {
+		return recipeDAO.selectRecipeCnt(maps);
 	}
+  
 }

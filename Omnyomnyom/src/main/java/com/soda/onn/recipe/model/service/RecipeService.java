@@ -2,6 +2,9 @@ package com.soda.onn.recipe.model.service;
 
 import java.util.List;
 import java.util.Map;
+
+import org.apache.ibatis.session.RowBounds;
+
 import com.soda.onn.recipe.model.vo.Report;
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
@@ -66,7 +69,7 @@ public interface RecipeService {
 
 	int insertScrap(Scrap scrap);
 	
- 	List<Report> selectReportList();
+ 	List<Report> selectReportList(RowBounds rowBounds);
 
     List<IngredientMall> selectingrMallList(List<RecipeIngredient> ingredientList);
 
@@ -74,7 +77,7 @@ public interface RecipeService {
 
 	List<RecipeReply> selectReplyList(int recipeNo);
 	
-	List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps);
+	List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps, int cPage, int NUMPERPAGE);
 
 	List<RecipeWithIngCnt> selectPopRecipe();
 
@@ -91,4 +94,7 @@ public interface RecipeService {
 	List<Recipe> recipeSelectAll(String chefNickName);
 
 	int ingredientInsert(Ingredient ingredient);
+
+	int selectRecipeCnt(Map<String, Object> maps);
+
 }

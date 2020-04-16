@@ -30,6 +30,17 @@
 	
 </resultMap>
 
+<select id="chefSelectId" resultMap="chefMap">
+select
+	*
+from
+	tb_chef c
+	join
+	tb_member m on c.member_id = m.member_id
+where
+	c.member_id = #{memberId}
+</select>
+
 <select id="recipeSelectAll" parameterType="String" resultType="Recipe">
 select
 	*

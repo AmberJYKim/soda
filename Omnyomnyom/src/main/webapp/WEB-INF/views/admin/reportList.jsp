@@ -14,7 +14,7 @@
 		<div class="section">
 			<div class="row">
 			<jsp:include page="/WEB-INF/views/common/adminSidenav.jsp">
-				<jsp:param value="예약목록" name="sidanav"/>
+				<jsp:param value="신고현황" name="sidenav"/>
 			</jsp:include>
 
 				<div class="col-10">
@@ -32,18 +32,17 @@
 						<c:forEach var="Report" items="${list }">
 						  <tr>
 							<td>${Report.repMemberId }</td>
-							<td>이거 너무 맛있어요</td>
-							<td>2020.20.20 15:34</td>
+							<td>${Report.reportReason }</td>
+							<td>${Report.reportDate }</td>
 						  </tr>
 						</c:forEach>
 						 
 						</tbody>
 					  </table>
-					  <div class="site-pagination pt-3.5">
-						<a href="#" class="active">1</a>
-						<a href="#">2</a>
-						<a href="#"><i class="material-icons">keyboard_arrow_right</i></a>
-					</div>
+	  				<c:if test="${paging != null }">
+						${paging}
+					</c:if>	
+					  
 				</div>
 			</div>
 		</div>

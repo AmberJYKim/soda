@@ -458,6 +458,7 @@
 		<result column="member_id" property="repMemberId"/>
 	</resultMap>
 	
+
 	<insert id="ingredientInsert">
 		insert into 
 				tb_ingredieont
@@ -471,4 +472,20 @@
 				#{engCdCategory}
 			)
 	</insert>
+
+	<select id="selectRecipeCnt" resultType="_int">
+		    SELECT count(*) 
+		    	FROM TB_RECIPE R JOIN 
+		    		(SELECT COUNT(*) INCLUDE_NO, T.RECIPE_NO 
+		    			FROM (SELECT * FROM TB_REC_INGREDIENTS WHERE INGREDIENT_NO IN
+							<if test="ingNoArr != null">				
+							<foreach collection="ingNoArr" item="item" open="(" separator="," close=")">
+								#{item}
+							</foreach>
+							</if>
+							) T GROUP BY RECIPE_NO ORDER BY 1) J 
+                ON R.RECIPE_NO = J.RECIPE_NO
+                LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID
+	</select>
+	
 </mapper>
