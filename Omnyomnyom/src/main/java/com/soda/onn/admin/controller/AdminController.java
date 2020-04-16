@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import com.soda.onn.admin.model.service.AdminService;
 import com.soda.onn.chat.model.service.ChatService;
 import com.soda.onn.chef.model.service.ChefService;
+import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.chef.model.vo.ChefRequest;
 import com.soda.onn.common.base.PageBar;
 import com.soda.onn.mall.model.service.MallService;
@@ -78,6 +79,15 @@ public class AdminController {
 	
 	private RowBounds rowBounds = null;
 	
+	public String paging(int cPage, String url) {
+		
+		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+		int pageEnd = pageStart+PAGEBARSIZE-1;
+		int totalCount = mallService.selectBuyHistoryListCnt();
+		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+		
+		return PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+	}
 	
 	@GetMapping("/adminMain")
 	public void mypageadminMain() {
@@ -94,17 +104,15 @@ public class AdminController {
 		
 	}
 	
-	//판매자의 판매목록들
-	@GetMapping("/sellList")
-	public void adminBuyList(HttpSession session, Model model) {
-		Member member = (Member)session.getAttribute("memberLoggedIn");
-		String memberId = member.getMemberId();
-		
-		List<BuyHistory> sellList = mallService.selectAdminBuyList(memberId);
-		log.debug("sellsList={}",sellList);
-		model.addAttribute("sellList", sellList);
-	}
-	
+//	//판매자의 판매목록들
+//	@GetMapping("/sellList")
+//	public void adminBuyList(HttpSession session, Model model) {
+//		Member member = (Member)session.getAttribute("memberLoggedIn");
+//		String memberId = member.getMemberId();
+//		
+//		List<BuyHistory> sellList = mallService.selectAdminBuyList(memberId);
+//		model.addAttribute("sellList", sellList);
+//	}
 			
 	@GetMapping("/sendDingdong")
 	public void sendDingdong() {
@@ -116,88 +124,103 @@ public class AdminController {
 	public ModelAndView chefList() {
 		ModelAndView mav = new ModelAndView();
 		
-//		List<Chef> chefList = chefService.selectChefAllList();
-//		mav.addObject("chefList", chefList);
+		List<Chef> chefList = chefService.selectChefAllList();
+		mav.addObject("chefList", chefList);
 		mav.setViewName("admin/chefList");
 		
 		return mav;
 	}
 	
-	//셰프신청목록
-		@GetMapping("/chefRequestList")
-		public ModelAndView chefRequestList(@RequestParam(value="cPage", defaultValue="1") int cPage, 
-											HttpServletRequest request) {
-			ModelAndView mav = new ModelAndView();
-			
-			rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
-			int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
-			int pageEnd = pageStart+PAGEBARSIZE-1;
-			int totalCount = chefService.selectChefRequestListCnt();
-			int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
-			String url = request.getRequestURL().toString();
-			String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+	@GetMapping("buyList")
+	public void buyList(Model model,
+						@RequestParam(value = "cPage",defaultValue = "1") int cPage,
+						HttpServletRequest request) {
 
-			
-			List<ChefRequest> chefRequestList = chefService.selectChefRequestList(rowBounds); 
-			
-			log.debug("chefRequestList={}",chefRequestList);
-			mav.addObject("paging", paging);
-			mav.addObject("chefRequestList", chefRequestList);
-			mav.setViewName("admin/chefRequestList");
-			
-			return mav;
-		}
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = paging(cPage, url);
 		
-		@GetMapping("/{memberId}/chefRequestView")
-		public ModelAndView chefRequestView(@PathVariable(value="memberId")String memberId,
-											ModelAndView mav) {
-			
-			ChefRequest chefRequest = chefService.selectChefRequest(memberId);
-			log.debug("chefRequest@goView={}",chefRequest);
-			
-		    Gson gson = new Gson();
-		    Map<String,String> snsMap = gson.fromJson(chefRequest.getSns(),  new TypeToken<Map<String,String>>(){}.getType());
-		    List<Map<String,String>> categoryList = gson.fromJson(chefRequest.getMenuPrCategory(),  new TypeToken<List<Map<String,String>>>(){}.getType());
-		    log.debug("snsMap={}",snsMap);
-		    log.debug("categoryListMap={}",categoryList);
-		    
-		    
-		    String categoryStr = "";
-		    for(int i=0; i<categoryList.size(); i++) {
-		    	String category = (categoryList.get(i)).get("value");
-		    	categoryStr += ","+category;
-		    }
-		    mav.addObject("chefRequest", chefRequest);
-		    mav.addObject("snsMap", snsMap);
-		    mav.addObject("categoryStr", categoryStr);
-			mav.setViewName("/admin/chefRequestView");
-			return mav;
-		}
+		List<BuyHistory> buyHisotyList = mallService.selectBuyHistoryList(rowBounds);
 		
-		@PostMapping("/chefRequest")
-		public String chefRequest(@RequestParam("variable") String variable,
-								  @RequestParam("chefId") String memberId) {
-			log.debug("셰프신청 수락여부 결정 진행중");
-			log.debug("chefId={}",memberId);
-			log.debug("variable={}",variable);
-			Map<String, String> chefReq = new HashMap<>();
-			chefReq.put("chefId",memberId);
-			chefReq.put("variable",variable);
-			
-			
-			ChefRequest chefreq = chefService.selectChefRequest(memberId);
-			chefreq.setChefReqOk(variable);
-			log.debug("chefreq chefid={}",chefreq);
-			int result1 = chefService.chefRequestUpdate(chefreq);
-			log.debug("result1={}",result1);
-			return "redirect:/admin/chefRequestList";
-		}
+		model.addAttribute("paging", paging);
+		model.addAttribute("buyHisotyList", buyHisotyList);
+	}
+	
+	//셰프신청목록
+	@GetMapping("/chefRequestList")
+	public ModelAndView chefRequestList(@RequestParam(value="cPage", defaultValue="1") int cPage, 
+										HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = paging(cPage, url);
+		
+		List<ChefRequest> chefRequestList = chefService.selectChefRequestList(rowBounds); 
+		
+		log.debug("chefRequestList={}",chefRequestList);
+		mav.addObject("paging", paging);
+		mav.addObject("chefRequestList", chefRequestList);
+		mav.setViewName("admin/chefRequestList");
+		
+		return mav;
+	}
+		
+	@GetMapping("/{memberId}/chefRequestView")
+	public ModelAndView chefRequestView(@PathVariable(value="memberId")String memberId,
+										ModelAndView mav) {
+		
+		ChefRequest chefRequest = chefService.selectChefRequest(memberId);
+		log.debug("chefRequest@goView={}",chefRequest);
+		
+	    Gson gson = new Gson();
+	    Map<String,String> snsMap = gson.fromJson(chefRequest.getSns(),  new TypeToken<Map<String,String>>(){}.getType());
+	    List<Map<String,String>> categoryList = gson.fromJson(chefRequest.getMenuPrCategory(),  new TypeToken<List<Map<String,String>>>(){}.getType());
+	    log.debug("snsMap={}",snsMap);
+	    log.debug("categoryListMap={}",categoryList);
+	    
+	    
+	    String categoryStr = "";
+	    for(int i=0; i<categoryList.size(); i++) {
+	    	String category = (categoryList.get(i)).get("value");
+	    	categoryStr += ","+category;
+	    }
+	    mav.addObject("chefRequest", chefRequest);
+	    mav.addObject("snsMap", snsMap);
+	    mav.addObject("categoryStr", categoryStr);
+		mav.setViewName("/admin/chefRequestView");
+		return mav;
+	}
+		
+	@PostMapping("/chefRequest")
+	public String chefRequest(@RequestParam("variable") String variable,
+							  @RequestParam("chefId") String memberId) {
+		log.debug("셰프신청 수락여부 결정 진행중");
+		log.debug("chefId={}",memberId);
+		log.debug("variable={}",variable);
+		Map<String, String> chefReq = new HashMap<>();
+		chefReq.put("chefId",memberId);
+		chefReq.put("variable",variable);
+		
+		
+		ChefRequest chefreq = chefService.selectChefRequest(memberId);
+		chefreq.setChefReqOk(variable);
+		log.debug("chefreq chefid={}",chefreq);
+		int result1 = chefService.chefRequestUpdate(chefreq);
+		log.debug("result1={}",result1);
+		return "redirect:/admin/chefRequestList";
+	}
 
 	//신고목록
 	@GetMapping("/reportList")
-	public ModelAndView reportList(@RequestParam (value="dingdongNo", defaultValue="-1") int dingdongNo) {
-		
-		List<Report> list = recipeService.selectReportList();
+	public ModelAndView reportList(@RequestParam (value="dingdongNo", defaultValue="-1") int dingdongNo,
+								   @RequestParam (value="cPage", defaultValue="1") int cPage,
+								  HttpServletRequest request) {
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = paging(cPage, url);
+
+		List<Report> list = recipeService.selectReportList(rowBounds);
 		
 		if(dingdongNo != -1) {
 			int result = mypageService.dingdongUpdate(dingdongNo);
@@ -208,34 +231,17 @@ public class AdminController {
 		
 		return mav;
 	}
-	
-	@GetMapping("/chat/list")
-	public String admin(Model model){
-		
-		//최근 사용자 채팅메세지 목록
-//		List<Map<String, String>> recentList = chatService.findRecentList();
-//		log.debug("recentList={}",recentList);
-//		
-//		model.addAttribute("recentList", recentList);
-		
-		return "admin/chatList";
-	}
-	
+	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	
+
 	//예약현황목록
 	@GetMapping("/reservationList")
 	public ModelAndView reservationList(@RequestParam(value="cPage", defaultValue="1") int cPage,
 										HttpServletRequest request) {
-		log.debug("jsp 미완성");
-
 		ModelAndView mav = new ModelAndView();
 		
 		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
-		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
-		int pageEnd = pageStart+PAGEBARSIZE-1;
-		int totalCount = chefService.selectChefRequestListCnt();
-		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
 		String url = request.getRequestURL().toString();
-		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		String paging = paging(cPage, url);
 
 		List<ReservationRequest> reservationList = onedayService.selectReservationList(null, rowBounds);
 		
@@ -245,7 +251,8 @@ public class AdminController {
 		
 		return mav;
 	}
-	
+	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	
+
 	//재료목록
 	@GetMapping("/ingredientList")
 	public void ingredientList() {}
@@ -261,37 +268,15 @@ public class AdminController {
 	}
 	
 	//재료 업데이트
-	@PostMapping(value =  "/ingMallUpdate", produces = "text/plain;charset=UTF-8")
+	@PostMapping(value =  "/ingMallUpdate", produces = {"text/plain;charset=UTF-8","application/json" })
 	@ResponseBody
-	public int ingMallUpdate(@RequestParam("updateList") String updateList) {
+	public String ingMallUpdate(@RequestParam("updateList") String updateList) {
 		List<Map<String,String>> list = new Gson().fromJson(updateList, List.class);
+		log.debug(list.toString());
 		int result = mallService.updateIngMall(list); 
-		return result;
+		return ""+result;
 	}
 
-	//판매번호로그
-	@GetMapping("/mallManage")
-	public ModelAndView buyList(@RequestParam(value="cPage", defaultValue="1") int cPage,
-								   HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView();
-		log.debug("jsp 미완성");
-		//판매현황
-		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
-		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
-		int pageEnd = pageStart+PAGEBARSIZE-1;
-		int totalCount = mallService.selectBuyHistoryListCnt();
-		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
-		String url = request.getRequestURL().toString();
-		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
-		
-		List<BuyHistory> buyHistoryListList = mallService.selectBuyHistoryList(rowBounds);
-		
-		mav.addObject("paging", paging);
-		mav.addObject("buyHistoryListList", buyHistoryListList);
-		mav.setViewName("admin/ingredientList");
-
-		return mav;
-	}
 		
 	//회원목록
 	@GetMapping("/memberList")
@@ -300,14 +285,9 @@ public class AdminController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
-		int pageEnd = pageStart+PAGEBARSIZE-1;
-		
 		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
-		int totalCount = memberService.selectMemberListCnt();
-		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
 		String url = request.getRequestURL().toString();
-		String paging = PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+		String paging = paging(cPage, url);
 		
 		List<Member> memberList = memberService.selectMemberList(rowBounds);
 		
@@ -316,23 +296,25 @@ public class AdminController {
 		mav.setViewName("admin/memberList");
 		return mav;
 	}
-	
+	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	
+
 	//후기목록
 	@GetMapping("/onedayReviewList")
-	public ModelAndView onedayReviewList(@RequestParam(value="cPage", defaultValue="1") int cPage) {
-		log.debug("미완성");
-
-		ModelAndView mav = new ModelAndView();
+	public void onedayReviewList(@RequestParam(value="cPage", defaultValue="1") int cPage,
+								 HttpServletRequest request,
+								 Model model) {
 		
 		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
-		
+		String url = request.getRequestURL().toString();
+		String paging = paging(cPage, url);
+
 		List<OnedayReview> onedayReviewList = onedayService.selectOnedayReviewList(rowBounds);
-		mav.addObject("onedayReview", onedayReviewList);
-		mav.setViewName("admin/onedayReviewList");
 		
-		return mav;
+		model.addAttribute("onedayReview", onedayReviewList);
+		model.addAttribute("paging", paging);
 	}
-	
+	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	//////	
+
 	@GetMapping("/ingredientInsert")
   	public void ingredientInsert() {
   		

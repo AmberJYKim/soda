@@ -106,11 +106,13 @@ chatClient.connect({}, function(frame) {
 			<div class="chat">
 				<div class="chat-header clearfix">
 					<img
-						src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg"
-						alt="avatar" />
+						src="${pageContext.request.contextPath }/resources/upload/profile/${chef.chefProfile}"
+						alt="avatar"
+						class="chat_thumbnail"
+						style="width: 55px"/>
 		
 					<div class="chat-about">
-						<div class="chat-with">상대방 닉네임</div>
+						<div class="chat-with">${chef.chefNickName }</div>
 						<div class="chat-num-messages" ><span id="msg-count">${fn:length(chatList)}</span> Message</div>
 					</div>
 					<!-- <i class="fa fa-star"></i> -->
@@ -138,7 +140,7 @@ chatClient.connect({}, function(frame) {
 								<li>
 									<div class="message-data">
 										<span class="message-data-name"><i
-											class="fa fa-circle online"></i> ${chat.memberId }</span> <span
+											class="fa fa-circle online"></i> ${chat.memberNick }</span> <span
 											class="message-data-time">${chat.time }</span>
 									</div>
 									<div class="message my-message">${chat.msg }</div>

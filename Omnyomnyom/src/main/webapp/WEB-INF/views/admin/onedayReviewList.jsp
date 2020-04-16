@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
-	<jsp:param value="" name="pageTitle"/>
+	<jsp:param value="후기목록" name="pageTitle"/>
 </jsp:include>
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mypage/user-list.css" />
     <script>
@@ -22,7 +22,7 @@
         <div class="section">
             <div class="row">
 				<jsp:include page="/WEB-INF/views/common/adminSidenav.jsp">
-					<jsp:param value="예약목록" name="sidanav"/>
+					<jsp:param value="후기목록" name="sidenav"/>
 				</jsp:include>
                 <div class="col-10">
                     <h4 class="border_bottom">후기목록</h4>
@@ -30,7 +30,7 @@
                     <table class="table">
                         <thead>
                             <tr class="row">
-                                <th class="col-2">레시피 제목</th>
+                                <th class="col-2">원데이 클래스</th>
                                 <th class="col-8">후기내용</th>
                                 <th class="col-2">작성자<br>날짜</th>
                             </tr>
@@ -41,7 +41,7 @@
                                 <td class="col-8">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet voluptas autem iusto nisi in asperiores ab, consequuntur quia. Quae molestiae quibusdam illo reprehenderit iusto provident nisi corrupti, necessitatibus sit
                                     amet?
                                 </td>
-                                <td class="col-2">2020원<br>2020.03.20<br>15:34</td>
+                                <td class="col-2">2020.03.20<br>15:34</td>
                             </tr>
                         </tbody>
                     </table>

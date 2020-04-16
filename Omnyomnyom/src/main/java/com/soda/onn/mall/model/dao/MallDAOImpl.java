@@ -34,8 +34,8 @@ public class MallDAOImpl implements MallDAO {
 	}
 	
 	@Override
-	public int updateIngMall(List<Map<String,String>> list) {
-		return sqlSession.update("mall.updateIngMall", list); 
+	public int updateIngMall(Map<String,String> map) {
+		return sqlSession.update("mall.updateIngMall", map); 
 	}
 
 
@@ -93,6 +93,11 @@ public class MallDAOImpl implements MallDAO {
 	@Override
 	public String prCategory(String pr) {
 		return sqlSession.selectOne("mall.prCategory", pr);
+	}
+
+	@Override
+	public List<IngredientMall> selectBuyItemOne(int buyNo) {
+		return sqlSession.selectList("mall.selectBuyItemOne", buyNo);
 	}
 
 }
