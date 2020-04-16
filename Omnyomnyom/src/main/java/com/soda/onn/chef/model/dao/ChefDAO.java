@@ -47,5 +47,6 @@ public interface ChefDAO {
 
 	Chef chefSelectId(String memberId);
 
+
 }
 

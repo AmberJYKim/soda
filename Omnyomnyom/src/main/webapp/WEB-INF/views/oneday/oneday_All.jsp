@@ -11,6 +11,16 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/datepicker.min.css" />
     <script src="${pageContext.request.contextPath}/resources/js/datepicker.kr.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/datepicker.min.js"></script>
+<style>
+.classinfo h4{
+	padding: 0 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+</style>
+
+
 <!-- Page top Section start -->
     <section class="page-top-section page-sp set-bg" data-setbg="">
         <div class="container">
@@ -78,9 +88,14 @@
                     <div class="classes-item-warp">
                         <div class="classes-item item_rate">
                             <div class="ci-img">
+                            <c:if test="${oneday.onedayImg != null}">
                                 <img src="${pageContext.request.contextPath }/resources/upload/onedayclass/${oneday.onedayImg}" alt="클래스 사진">
+                            </c:if>
+                            <c:if test="${oneday.onedayImg == null }">
+                            	 <img src="${pageContext.request.contextPath }/resources/images/onedayclassdefualtImg.PNG" alt="클래스 사진">
+                            </c:if>
                             </div>
-                            <div class="ci-text">
+                            <div class="ci-text classinfo">
                                 <h4>${oneday.onedayName}</h4>
                                 <c:if test="${not empty oneday.onedayTimeList}">
                                 <c:forEach items="${oneday.onedayTimeList }" var="tl">
@@ -96,9 +111,22 @@
                             </div>
                             <div class="ci-bottom">
                                 <div class="ci-author">
-                                    <img src="${pageContext.request.contextPath }/resources/images/blog/1.jsp" alt="셰프 사진">
+                                <c:forEach items="${chefList }" var="chef">
+                                <c:if test="${oneday.memberId eq chef.chefId }">
+                                	<c:if test="${chef.chefProfile != null}">
+                                    <img src="${pageContext.request.contextPath }/resources/upload/profile/${chef.chefProfile}" alt="셰프 사진">
+                               		</c:if>
+                               		<c:if test="${chef.chefProfile == null }">
+                               		<img src="${pageContext.request.contextPath }/resources/images/classes/author/1.jpg" alt="셰프 사진">
+                               		</c:if>
+                               	</c:if>	
+                                </c:forEach>
                                     <div class="author-text">
-                                        <h6>${oneday.memberId }</h6>
+                                    <c:forEach items="${memberList  }" var="member">
+                                    <c:if test="${member.memberId eq oneday.memberId }">
+                                        <h6>${member.memberNick }</h6>
+                                    </c:if> 
+                                    </c:forEach>   
                                         <p>${oneday.memberId }</p>
                                     </div>
                                 </div>
