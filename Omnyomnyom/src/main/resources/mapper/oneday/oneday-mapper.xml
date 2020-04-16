@@ -151,7 +151,7 @@ order by review_score
 </insert>
 
 
-<select id="selectDateList"  resultType="Oneday">
+<select id="onedaySearch"  resultType="Oneday">
 select *
 from
 TB_onedayclass
@@ -166,9 +166,9 @@ and detailed_Addr like '%'||#{detailedAddr}||'%'
 and oneday_name like '%'||#{onedayName}||'%'
 </if>
 <if test="onedayTimeDate != ''">
-and onedayclass_no in (select onedayclass_no from tb_onedayclasstime where onedaytime_date = to_date(#{onedayTimeDate},'yyyy/mm/dd'))
+and onedayclass_no in 
+(select onedayclass_no from tb_onedayclasstime where onedaytime_date = to_date(#{onedayTimeDate},'yyyy/mm/dd'))
 </if>
- 
 </where>
 order by onedayclass_no desc
 </select>

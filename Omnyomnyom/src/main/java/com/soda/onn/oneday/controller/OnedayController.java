@@ -267,11 +267,6 @@ public class OnedayController {
 						@RequestParam(value="cPage", defaultValue="1") int cPage,
 						HttpServletRequest request) {
 		
-		System.out.println("메뉴=" + menuList);
-		System.out.println("일정 =" + onedayTimeDate);
-		System.out.println("주소 = "+ detailedAddr);
-		System.out.println("클래스 이름 = " + onedayName);
-		
 		Map<String, String> sec = new HashMap<>();
 		sec.put("menuList", menuList);
 		sec.put("detailedAddr", detailedAddr);
@@ -281,7 +276,7 @@ public class OnedayController {
 		
 		List<Chef> chefList = chefservice.selectChefAllList();
 		List<Member> memberList = memberService.selectMemberList(rowBounds);
-		List<Oneday> list = onedayService.selectDateList(sec);
+		List<Oneday> list = onedayService.onedaySearch(sec);
 		
 		
 		mav.addObject("chefList", chefList);
