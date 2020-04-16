@@ -104,5 +104,8 @@ public interface RecipeDAO {
 
 	List<Recipe> recipeSelectAll(String chefNickName);
 
+	int ingrdientInsert(Ingredient ingredient);
+
 	int selectRecipeCnt(Map<String, Object> maps);
+
 }

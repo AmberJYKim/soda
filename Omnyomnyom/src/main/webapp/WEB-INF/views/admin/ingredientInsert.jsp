@@ -46,10 +46,12 @@
                     <div class="col-lg-3">
                      <select class="circle-select pr_category" id="pr_category"  name="ingPrCategory">
                         <option data-display="대분류 ">대분류</option>
+                         <option value="채소/과일">채소/과일</option>
                         <option value="육류">육류</option>
                         <option value="수산물">수산물</option>
                         <option value="곡물/견과류">곡물/견과류</option>
                         <option value="양념/소스">양념/소스</option>
+                        <option value="가공/유제품">가공/유제품</option>
                         <option value="기타">기타</option>
                     </select>
                     <input type="text" id="enPrcategory"name="engPrCategory" hidden/>
@@ -103,14 +105,14 @@
                     });
                     
                     $(".here").change(function(){
-                    	
+                    	let pr = $(".subCt").val();	
                     	$.ajax({
                     		url:"${pageContext.request.contextPath }/admin/crCategory",
                     		method : "GET",
-                    		data :{"prCategory":pr},
+                    		data :{"crCategory":pr},
                     		success : data =>{
                     			console.log(data);
-                    			$("#enPrcategory").val(data);
+                    			$("#enCrcategory").val(data);
 	
                     		},error : (x,s,e) =>{
 								console.log(x,s,e);
@@ -163,7 +165,17 @@
                                         <span class="input__label-content input__label-content--yoshiko" data-content="판매단위/중량/용량">판매단위/중량/용량</span>
                         </label>
                         </span>
-
+						
+						<!-- 상품 판매단위/중량/용량 입력란 -->
+                        <span class="input input--yoshiko">
+                                    <!-- 판매단위/중량/용량  input -->
+                                    <input class="input__field input__field--yoshiko" type="text" id="input-class-cost" name="stock"/>
+                                    <!-- 판매단위/중량/용량  라벨 -->
+                                    <label class="input__label input__label--yoshiko" for="input-class-cost">
+                                    <span class="input__label-content input__label-content--yoshiko" data-content="재고량">제고량</span>
+                        </label>
+                        </span>
+                        
                         <!-- 상품 원산지 입력란 -->
                         <span class="input input--yoshiko">
                             <!-- 상품 원산지 input -->

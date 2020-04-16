@@ -93,5 +93,8 @@ public interface RecipeService {
 
 	List<Recipe> recipeSelectAll(String chefNickName);
 
+	int ingredientInsert(Ingredient ingredient);
+
 	int selectRecipeCnt(Map<String, Object> maps);
+
 }

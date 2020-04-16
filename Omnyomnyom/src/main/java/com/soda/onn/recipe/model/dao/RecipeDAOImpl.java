@@ -256,7 +256,12 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	}
 
 	@Override
+	public int ingrdientInsert(Ingredient ingredient) {
+		return sqlSession.insert("recipe.ingredientInsert",ingredient);
+    
+ 	@Override
 	public int selectRecipeCnt(Map<String, Object> maps) {
 		return sqlSession.selectOne("recipe.selectRecipeCnt", maps);
+
 	}
 }

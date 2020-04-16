@@ -86,6 +86,12 @@ public class MallDAOImpl implements MallDAO {
 	}
 
 	@Override
+	public int ingredientInsert(IngredientMall ingredientMall) {
+		
+		return sqlSession.insert("mall.ingredientInsert",ingredientMall);
+  }
+  
+  @Override
 	public int insertBuyHistory(BuyHistory bHis) {
 		return sqlSession.insert("mall.insertBuyHistory", bHis);
 	}
@@ -103,10 +109,6 @@ public class MallDAOImpl implements MallDAO {
 		
 		}
 		return result;
-	}
-  @Override
-	public int ingredientInsert(Map map) {	
-		return sqlSession.insert("mall.ingredientInsert",map);
 	}
 
 	@Override

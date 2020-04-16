@@ -215,9 +215,7 @@ public class RecipeServiceImpl implements RecipeService {
 			log.debug("{}",addList);
 			mallList.addAll(addList);
 		}
-		
-		
-		
+
 		return mallList;
 	}
 
@@ -296,7 +294,13 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
+	public int ingredientInsert(Ingredient ingredient) {
+		return recipeDAO.ingrdientInsert(ingredient);
+  }
+  
+  @Override
 	public int selectRecipeCnt(Map<String, Object> maps) {
 		return recipeDAO.selectRecipeCnt(maps);
 	}
+  
 }

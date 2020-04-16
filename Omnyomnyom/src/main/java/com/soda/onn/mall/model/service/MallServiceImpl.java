@@ -120,6 +120,10 @@ public class MallServiceImpl implements MallService {
 	}
 
 	@Override
+	public int ingredientInsert(IngredientMall ingredientMall) {
+		
+		return mallDAO.ingredientInsert(ingredientMall);
+  }
 
 	public int insertBuyHistory(BuyHistory bHis) {
 		return mallDAO.insertBuyHistory(bHis);
@@ -133,11 +137,6 @@ public class MallServiceImpl implements MallService {
 	@Override
 	public int deletePaid(List<Cart> cList) {
 		return mallDAO.deletePaid(cList);
-	}
-
-	@Override
-	public int ingredientInsert(Map map) {	
-		return mallDAO.ingredientInsert(map);
 	}
 
 	@Override
