@@ -290,7 +290,7 @@
                     <div class="tab-pane fade" id="onedayclass" role="tabpanel" aria-labelledby="contact-tab">
                         <div class="row f-class">
                             <div class="col-lg-6">
-                                <h6 class="">신규 클래스</h6>
+                                <h6 class="" style="width:200px;">신규 클래스</h6>
                             </div>
                             <c:if test="${memberLoggedIn.memberRoll eq 'C' and memberLoggedIn.memberNick eq chef.chefNickName}"> 
 	                            <div class="col-lg-6">
