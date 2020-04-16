@@ -85,9 +85,9 @@ public class MallDAOImpl implements MallDAO {
 	}
 
 	@Override
-	public int ingredientInsert(Map map) {
+	public int ingredientInsert(IngredientMall ingredientMall) {
 		
-		return sqlSession.insert("mall.ingredientInsert",map);
+		return sqlSession.insert("mall.ingredientInsert",ingredientMall);
 	}
 
 	@Override

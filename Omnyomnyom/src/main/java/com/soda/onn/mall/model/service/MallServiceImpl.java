@@ -108,10 +108,10 @@ public class MallServiceImpl implements MallService {
 	}
 
 	@Override
-	public int ingredientInsert(Map map) {
+	public int ingredientInsert(IngredientMall ingredientMall) {
 		
 		
-		return mallDAO.ingredientInsert(map);
+		return mallDAO.ingredientInsert(ingredientMall);
 	}
 
 	@Override

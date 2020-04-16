@@ -101,4 +101,6 @@ public interface RecipeDAO {
 	int insertReport(Report rp);
 
 	List<Recipe> recipeSelectAll(String chefNickName);
+
+	int ingrdientInsert(Ingredient ingredient);
 }

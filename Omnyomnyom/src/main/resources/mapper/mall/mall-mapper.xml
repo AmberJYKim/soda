@@ -170,22 +170,6 @@ from (select
 	   group by eng_cd_category
 </select>
 <insert id="ingredientInsert">
-{call
-	declare
-		begin
-		
-			insert into 
-				tb_ingredieont
-			values(
-				seq_Ingredient.nextval(),
-				#{ingPrCategory},
-				#{ingPrCategory},
-				#{ingredientName},
-				#{ingfileName},
-				#{engPrCategory},
-				#{engPrCategory}
-			);
-			
 			insert	into
 				tb_ingredient_mall
 			values(
@@ -196,11 +180,6 @@ from (select
 				#{ingOrigin},
 				#{shelfLife},
 				#{ingInfo}
-			);
-			
-			commit;
-	end
-}
-
+			)
 </insert>
 </mapper>

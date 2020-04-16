@@ -251,4 +251,9 @@ public class RecipeDAOImpl  implements RecipeDAO{
 		return sqlSession.selectList("recipe.recipeSelectAll",chefNickName);
 
 	}
+
+	@Override
+	public int ingrdientInsert(Ingredient ingredient) {
+		return sqlSession.insert("recipe.ingredientInsert",ingredient);
+	}
 }

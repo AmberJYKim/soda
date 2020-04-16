@@ -1,5 +1,7 @@
 package com.soda.onn.admin.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -367,31 +369,54 @@ public class AdminController {
   	public ModelAndView ingredientInsert(Ingredient ingredient , 
   								         IngredientMall ingredientMall,
   								         HttpServletRequest httpServletRequest,
+  								         @RequestParam(value="engPrCategory") String engPrCategory,
+  								         @RequestParam(value="engCrCategory") String engCrCategory,
   								         @RequestParam(value="ingFilename",required=false) MultipartFile ingFilename,
   								         @RequestParam(value="ingInfo", required=false) MultipartFile ingInfo,
   								         ModelAndView mav) {
-  		
-		ingredient.setIngredientName(httpServletRequest.getParameter("ingredientName"));
+		
 		ingredient.setIngPrCategory(httpServletRequest.getParameter("ingPrCategory"));
 		ingredient.setIngCdCategory(httpServletRequest.getParameter("ingcdCategory"));
-		
+		ingredient.setEngPrCategory(httpServletRequest.getParameter(engPrCategory));
+		ingredient.setEngCdCategory(httpServletRequest.getParameter(engCrCategory));
+		ingredient.setIngredientName(httpServletRequest.getParameter("ingredientName"));
 //		재료 이미지 
 		String ingFileName = ingFilename.getOriginalFilename();
-		String ingFileNameSaveDirectory = httpServletRequest.getServletContext().getRealPath("/resources/images/ingredient");
-		ingredient.setIngFilename(httpServletRequest.getParameter(ingFileName));
+		log.debug("ingFileName={}",ingFileName);
+		String ingFileNameSaveDirectory = httpServletRequest.getServletContext().getRealPath("/resources/images/ingredient")+"/"+engPrCategory+"/"+engCrCategory;
+		
+		
+		 try {
+			ingFilename.transferTo(new File(ingFileNameSaveDirectory,ingFileName));
+		} catch (IllegalStateException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		 ingredient.setIngFilename(ingFileName);
+		log.debug("ingredient={}",ingredient);
 		
 		ingredientMall.setIngMallName(httpServletRequest.getParameter("ingredientName"));
+		String ingInfoFileName = ingInfo.getOriginalFilename();
+		String ingInfoSaveDirectory = httpServletRequest.getServletContext().getRealPath("/resources/images/mall");
+		ingredientMall.setIngInfo(ingInfoFileName);
+		try {
+			ingInfo.transferTo(new File(ingInfoSaveDirectory,ingInfoFileName ));
+		} catch (IllegalStateException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ingredientMall.setPrice(Integer.parseInt((httpServletRequest.getParameter("price"))));
+		ingredientMall.setStock(Integer.parseInt((httpServletRequest.getParameter("stock"))));
 		ingredientMall.setMinUnit(httpServletRequest.getParameter("minUnit"));
 		ingredientMall.setIngOrigin(httpServletRequest.getParameter("ingOrigin"));
 		ingredientMall.setShelfLife(Integer.parseInt((httpServletRequest.getParameter("shelfLife"))));
 		
-		Map map = new HashMap();
-		map.put("ingredient",ingredient);
-		map.put("ingredientMall",ingredientMall);
 		
-		int result = mallService.ingredientInsert(map);
+		log.debug("ingredientMall={}",ingredientMall);
 		
+		int result = mallService.ingredientInsert(ingredientMall);
+		int resultt = recipeService.ingredientInsert(ingredient);
 		mav.setViewName("/admin/ingredientList");
 		return mav;
   	}

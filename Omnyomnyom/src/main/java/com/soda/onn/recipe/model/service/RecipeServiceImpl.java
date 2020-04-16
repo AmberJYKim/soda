@@ -293,4 +293,10 @@ public class RecipeServiceImpl implements RecipeService {
    	public List<Recipe> recipeSelectAll(String chefNickName) {
 		return recipeDAO.recipeSelectAll(chefNickName);
 	}
+
+	@Override
+	public int ingredientInsert(Ingredient ingredient) {
+		// TODO Auto-generated method stub
+		return recipeDAO.ingrdientInsert(ingredient);
+	}
 }

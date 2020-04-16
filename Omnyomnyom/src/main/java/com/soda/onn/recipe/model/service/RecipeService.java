@@ -89,4 +89,6 @@ public interface RecipeService {
 	int insertReport(Report rp);
 
 	List<Recipe> recipeSelectAll(String chefNickName);
+
+	int ingredientInsert(Ingredient ingredient);
 }

@@ -458,5 +458,17 @@
 		<result column="member_id" property="repMemberId"/>
 	</resultMap>
 	
-
+	<insert id="ingredientInsert">
+		insert into 
+				tb_ingredieont
+			values(
+				seq_Ingredient.nextval(),
+				#{ingPrCategory},
+				#{ingCdCategory},
+				#{ingredientName},
+				#{ingFileName},
+				#{engPrCategory},
+				#{engCdCategory}
+			)
+	</insert>
 </mapper>

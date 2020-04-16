@@ -37,7 +37,7 @@ public interface MallDAO {
 
 	List<BuyHistory> selectAdminBuyList(String memberId);
 
-	int ingredientInsert(Map map);
+	int ingredientInsert(IngredientMall ingredientMall);
 
 	String prCategory(String pr);
 
