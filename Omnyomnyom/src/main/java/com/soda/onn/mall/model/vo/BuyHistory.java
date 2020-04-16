@@ -2,6 +2,7 @@ package com.soda.onn.mall.model.vo;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
