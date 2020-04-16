@@ -20,6 +20,20 @@
 .trainer-item .ti-img img{
 	margin-top: -177px;
 }
+.onedayContentst{
+	padding: 0 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	height: 90px;
+}
+.review{
+	padding: 0 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	height: 90px;
+}
 </style>
  <!-- 로그인 메뉴 -->
     <!-- main.css, util.css추가 -->
@@ -144,7 +158,9 @@
                                 </div>
                                 </c:forEach>
                          </c:if>
+                        <div class="onedayContentst">
                         <p>${oneday.onedayContent}</p>
+                        </div> 
                     </div>
                     <div class="ci-bottom">
                         <div class="ci-author">
@@ -183,9 +199,10 @@
 				          		<c:if test="${review.onedayclassNo eq oneday.onedayclassNo}">      
 				                <h4>${oneday.onedayName }</h4>
 				                </c:if>
-				          </c:forEach>      
+				          </c:forEach>
+				          <div class="review">     
 				                <p>${review.reviewContent }</p>
-				               
+				          </div>      
 				              </div>
                         </div>
                         </c:forEach>
