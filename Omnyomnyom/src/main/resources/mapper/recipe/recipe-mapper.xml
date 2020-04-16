@@ -473,7 +473,7 @@
 			)
 	</insert>
 
-	<select id="selectRecipeCnt" resultType="_int">
+<select id="selectRecipeCnt" resultType="_int">
 		    SELECT count(*) 
 		    	FROM TB_RECIPE R JOIN 
 		    		(SELECT COUNT(*) INCLUDE_NO, T.RECIPE_NO 
