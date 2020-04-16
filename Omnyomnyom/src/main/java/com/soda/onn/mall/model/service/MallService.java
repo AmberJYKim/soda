@@ -50,4 +50,6 @@ public interface MallService {
 
 	String crCategory(String cr);
 
+	List<BuyHistory> selectBuyHistoryList(String memberId, RowBounds rowBounds);
+
 }
