@@ -35,11 +35,6 @@
        	      	let onedayNo= ${oneday.onedayclassNo};
        	      	let onedaytimeNo = ${reservationrequest.onedaytimeNo};
        	      	let ticketQty = ${reservationrequest.personnel};
-       	      	
-       	      	
-       	      	console.log(maxSeat,"최대인원");
-       	      	console.log(onedayNo);
-       	      	console.log("ajax시작전");
        	      	let forwarding = {"onedayNo" : onedayNo, "onedaytimeNo" :onedaytimeNo};
        	      	console.log(forwarding, "===forwarding");
        	      //예약마감 체크하기 ajax로 실시간검사하여 return값 주기
@@ -54,7 +49,7 @@
 						 console.log(data.reserved, "이미 예약된 인원")
 						 alert("잔여 좌석이 부족합니다. 다시 확인해주세요");
 						 return;
-					 }else if ( data.reserve+ticketQty > maxSeat){
+					 }else if ( data.reserved+ticketQty > maxSeat){
 						 console.log(data.reserve+ticketQty, "예약요청인원 ")
 						 alert("잔여 좌석이 부족합니다. 다시 확인해주세요");
 						 return;
@@ -88,11 +83,9 @@
 			      		        } else {
 			      		            var msg = '결제에 실패하였습니다.';
 			      		            msg += '에러내용 : ' + rsp.error_msg;
-			      		            
 			      		            alert(msg);
 			      		    			     paymentResult = false;
 			      		        }
-			      		       
 			      	 		}); //아임포트 끝 
 					},
 					error : (x,s,e) =>{
