@@ -468,7 +468,22 @@
 		<result column="member_id" property="repMemberId"/>
 	</resultMap>
 	
-	<select id="selectRecipeCnt" resultType="_int">
+
+	<insert id="ingredientInsert">
+		insert into 
+				tb_ingredieont
+			values(
+				seq_Ingredient.nextval(),
+				#{ingPrCategory},
+				#{ingCdCategory},
+				#{ingredientName},
+				#{ingFileName},
+				#{engPrCategory},
+				#{engCdCategory}
+			)
+	</insert>
+
+<select id="selectRecipeCnt" resultType="_int">
 		    SELECT count(*) 
 		    	FROM TB_RECIPE R JOIN 
 		    		(SELECT COUNT(*) INCLUDE_NO, T.RECIPE_NO 
@@ -482,7 +497,6 @@
                 ON R.RECIPE_NO = J.RECIPE_NO
                 LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID
 	</select>
-	
 	
 	<select id="rcpCntByMenu" resultType="_int">
 	
@@ -498,4 +512,5 @@
 				</when>			
 			</choose>
 	</select>
+
 </mapper>

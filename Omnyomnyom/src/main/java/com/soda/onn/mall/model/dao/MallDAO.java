@@ -18,7 +18,7 @@ public interface MallDAO {
 
 	int selectBuyHistoryListCnt();
 	
-	int updateIngMall(List<Map<String,String>> list);
+	int updateIngMall(Map<String,String> map);
 
 	List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds);
 
@@ -38,17 +38,20 @@ public interface MallDAO {
 
 	List<BuyHistory> selectAdminBuyList(String memberId);
 
+	int ingredientInsert(IngredientMall ingredientMall);
+
 	int insertBuyHistory(BuyHistory bHis);
 
 	int insertBuyItem(List<BuyItem> bItems);
 
 	int deletePaid(List<Cart> cList);
 
-	int ingredientInsert(Map map);
-
 	String prCategory(String pr);
 
+	List<IngredientMall> selectBuyItemOne(int buyNo);
+
 	String crCategory(String cr);
+
 
 
 }

@@ -68,16 +68,15 @@ $(document).ready(function(){
 
 	//memberId input창에서 아이디를 입력 할 경우
 	$("#memberId").on("keyup", function(){
-		console.log("memberId keyup");  /* 여기는 값 들어옴 */
 		memberId = $(this).val().trim();
-
-		console.log($(this).val());  /* 실시간으로 아이디 값 들어오는거 확인 */
 
 		//회원가입 아이디 input창에 값이 없으면 문구 숨김
 		if($("#memberId").val()==''){
 			$(".guide.error").hide();
 			$(".guide.ok").hide();
 		} 	
+		if(memberId.length < 4)
+			return;
 		signupFun(this);
 	});
 
@@ -186,7 +185,6 @@ $(document).ready(function(){
            		<script>
            		function logout(){
            			location.href = "${pageContext.request.contextPath}/member/logout";
-           			console.log('1');
            		}
            		</script>
            		</c:if>
@@ -198,7 +196,7 @@ $(document).ready(function(){
                     <div id="ex1" class="modal">
                         <div class="login_container" id="login_container">
                             <div class="form-container sign-up-container">
-                                <form action="${pageContext.request.contextPath }/member/enroll" method="POST" onsubmit="return enrollValidate();">
+                                <form action="${pageContext.request.contextPath }/member/enroll" method="POST" onsubmit="return validate();">
                                     <h1>회원가입</h1>
                                     
                                     <input type="text" placeholder="아이디를 입력하세요" id="memberId" name="memberId" required/>
@@ -356,7 +354,7 @@ $(document).ready(function(){
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/admin/mallManage"> 
+										<a href="${pageContext.request.contextPath }/admin/ingredientList"> 
 										<p>상품관리</p>
 										</a>
 									</div>
@@ -571,11 +569,6 @@ $(document).ready(function(){
 						  <small>11 mins ago</small>
 							<span aria-hidden="true">&times;</span>
 						</div>
-						<c:if test="${paging != null }">
-							${paging}
-						</c:if>
-						
-				 
 				<script>
 				$('#myToast').on('hidden.bs.toast', function () {
 				// do something...

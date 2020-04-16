@@ -27,6 +27,8 @@ import com.soda.onn.chat.model.service.ChatService;
 import com.soda.onn.chat.model.vo.ChatMember;
 import com.soda.onn.chat.model.vo.ChatRoom;
 import com.soda.onn.chat.model.vo.Msg;
+import com.soda.onn.chef.model.service.ChefService;
+import com.soda.onn.chef.model.vo.Chef;
 import com.soda.onn.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +40,10 @@ public class ChatController {
 
 	@Autowired
 	private ChatService chatService;
+	
+	@Autowired
+	private ChefService chefService;
+	
 	
 	//메세지 
 	@GetMapping("/msg/{getter}")
@@ -70,7 +76,10 @@ public class ChatController {
 			
 			model.addAttribute("chatList",chatList);
 		}
-
+		
+		Chef chef = chefService.chefSelectId(getter);
+		model.addAttribute("chef", chef);
+		
 		//최근 사용자 채팅메세지 목록
 		List<Map<String, String>> recentList = chatService.findRecentList(memberId);
 		model.addAttribute("recentList", recentList);

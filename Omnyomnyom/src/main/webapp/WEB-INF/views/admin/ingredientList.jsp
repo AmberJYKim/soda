@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
-	<jsp:param value="" name="pageTitle"/>
+	<jsp:param value="재고관리" name="pageTitle"/>
 </jsp:include>
 <link rel="stylesheet" href="css/user-list.css"/>
 
@@ -19,7 +19,7 @@
     <div class="section">
         <div class="row">
 		<jsp:include page="/WEB-INF/views/common/adminSidenav.jsp">
-			<jsp:param value="예약목록" name="sidanav"/>
+			<jsp:param value="재고관리" name="sidenav"/>
 		</jsp:include>
             <div class="col-10">
                 <h4 class="border_bottom">재고관리</h4>
@@ -95,7 +95,7 @@ $("#mall-update").click(function(){
 		let $chk = $(item).find("[type=checkbox]");
 		if($chk.attr("checked"))
 			updateList[i++] = {"ingNo":$(item).attr("value"),
-					    	   "munUnit":$(item).find("[type=text]").val(),
+					    	   "minUnit":$(item).find("[type=text]").val(),
 							   "price":$(item).find("[name=price]").val(),
 							   "stock":$(item).find("[name=stock]").val()}
 	});
@@ -104,18 +104,19 @@ $("#mall-update").click(function(){
 		url:"${pageContext.request.contextPath}/admin/ingMallUpdate",
 		method:"POST",
 		data:{"updateList":updateList},
-		success: function(date){
-			alert(data+"");
+		dataType:"text",
+		success: function(data){
+			alert(data+"개의 상품이 수정되었습니다!");
+			$(".sub-ctg-menu").find(".active").trigger("click");
 		},
-		error:()=>{
-			
+		error:function(){
+			alert("상품 수정에 실패했습니다");
 		}
 	})
 });
 $("#mall-insert").click(function(){
 	location.href="${pageContext.request.contextPath }/admin/ingredientInsert";
 });
-alert(1+"ff");
 function cd_category(e){
 	let mainCtg = {'mainCtg':$(e).html()};
 	$.ajax({
@@ -171,7 +172,7 @@ function ingredient_list(e){
 		                +'<input type="number" name="price" class="form-control input-number" value="'+item.price+'" step="10">'
 		                +'</div>'
 		                +'<div class="col-2 inner-col">'
-		                +'<input type="number" name="stock" class="form-control input-number" value="123123">'
+		                +'<input type="number" name="stock" class="form-control input-number" value="'+item.stock+'">'
 		                +'</div>'
 		                +'</div>'
 		    	$(".list-category").append(ingMall); 

@@ -24,6 +24,15 @@
 	from
 		tb_buy_list
 </select>
+<update id="updateIngMall" >
+	update 
+		tb_ingredient_mall 
+	set 
+		price = #{price}, 
+		stock = #{stock}, 
+		min_unit = #{minUnit}
+	where ingredient_no = #{ingNo}
+</update>
 
 <resultMap id="BuyHistoryMap" type="BuyHistory">
     <result column="ingredient_name" property="buyMemberId"/>
@@ -52,10 +61,11 @@
 </select>
 
 <select id="selectBuyHistoryList" resultType="buyHistory">
-	select
-		*
-	from
-		tb_buy_list 
+select 
+	b.*,
+	(select member_name from tb_member where b.member_id = member_id) buyMemberName
+from 
+	tb_buy_list b
 </select>
 
 <select id="selectIngMallOne" resultMap="ingMallMap">
@@ -67,6 +77,23 @@
 		
 	where
 		ingredient_no = #{ingMallNo}
+</select>
+
+<select id="selectBuyItemOne" resultMap="ingMallMap">
+	select 
+	    i.INGREDIENT_NO,
+	    i.INGREDIENT_NAME,
+	    b.price,
+	    b.stock,
+	    i.ENG_PR_CATEGORY,
+	    i.ENG_CD_CATEGORY,
+	    i.ING_FILENAME
+	from 
+	    tb_buy_no b
+	    join 
+	    TB_INGREDIENT i on b.INGREDIENT_NO = i.INGREDIENT_NO
+	where
+	    buy_no = #{buyNo}
 </select>
 <resultMap type="IngredientMall" id="ingMallMap">
 	<id column="ingredient_no" property="ingMallNo"/>
@@ -199,22 +226,6 @@ from (select
 	   group by eng_cd_category
 </select>
 <insert id="ingredientInsert">
-{call
-	declare
-		begin
-		
-			insert into 
-				tb_ingredieont
-			values(
-				seq_Ingredient.nextval(),
-				#{ingPrCategory},
-				#{ingPrCategory},
-				#{ingredientName},
-				#{ingfileName},
-				#{engPrCategory},
-				#{engPrCategory}
-			);
-			
 			insert	into
 				tb_ingredient_mall
 			values(
@@ -225,11 +236,6 @@ from (select
 				#{ingOrigin},
 				#{shelfLife},
 				#{ingInfo}
-			);
-			
-			commit;
-	end
-}
-
+			)
 </insert>
 </mapper>

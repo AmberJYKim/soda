@@ -3,6 +3,8 @@
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
+
 import com.soda.onn.mall.model.vo.Ingredient;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mypage.model.vo.DingDong;
@@ -72,7 +74,7 @@ public interface RecipeDAO {
 
 	int insertScrap(Scrap scrap);
 	
- 	List<Report> selectReportList();
+ 	List<Report> selectReportList(RowBounds rowBounds);
 
     int increaseReadCount(int recipeNo);
 
@@ -102,7 +104,10 @@ public interface RecipeDAO {
 
 	List<Recipe> recipeSelectAll(String chefNickName);
 
+	int ingrdientInsert(Ingredient ingredient);
+
 	int selectRecipeCnt(Map<String, Object> maps);
 
 	int rcpCntByMenu(Map<String, Object> maps);
+
 }

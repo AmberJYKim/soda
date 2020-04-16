@@ -175,8 +175,8 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	}
 	
 	@Override
-	public List<Report> selectReportList() {
-		return sqlSession.selectList("recipe.selectReportList");
+	public List<Report> selectReportList(RowBounds rowBounds) {
+		return sqlSession.selectList("recipe.selectReportList",null,rowBounds);
  	}
   
   	@Override
@@ -259,12 +259,18 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	}
 
 	@Override
+	public int ingrdientInsert(Ingredient ingredient) {
+		return sqlSession.insert("recipe.ingredientInsert",ingredient);
+	}
+
+	@Override
 	public int selectRecipeCnt(Map<String, Object> maps) {
 		return sqlSession.selectOne("recipe.selectRecipeCnt", maps);
 	}
-
+  
 	@Override
 	public int rcpCntByMenu(Map<String, Object> maps) {
 		return sqlSession.selectOne("recipe.rcpCntByMenu", maps);
 	}
+
 }

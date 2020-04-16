@@ -5,8 +5,8 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="footer-widget">
                         <div class="about-widget">
-                            <img src="${pageContext.request.contextPath }/resources/images/logo-3.png" alt="">
-                            <p>Lorem ipsum dolor sit amet, consec-tetur adipiscing elit sed.</p>
+                            <img src="${pageContext.request.contextPath }/resources/images/onn_logo_red.png" alt="회사로고">
+                            <p>여러분들의 소중한 입맛을 책임질 욤욤뇸입니다. 먹고싶은 요리를 손쉽게 만들어보세요!</p>
                             <ul>
                                 <li><i class="material-icons">phone</i>(965) 436 3274</li>
                                 <li><i class="material-icons">email</i>ahana.yoga@gmail.com</li>

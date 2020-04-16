@@ -69,6 +69,7 @@
 
 <resultMap id="dingMap" type="dingdong">
 	<result column="member_id" property="dingMemberId"/>
+	<result column="regdate" property="dingRegDate"/>
 </resultMap>
 
 

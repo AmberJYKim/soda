@@ -400,44 +400,43 @@ public class RecipeController {
 							 @RequestParam(value = "ingr_number") int[] ingNo,
 							 @ModelAttribute("memberLoggedIn")Member member) {
 		
-//		log.debug("{}",chef);
-//		recipe.setChefId(chef.getMemberId());
-//		recipe.setChefNick(chef.getMemberNick());
 		recipe.setChefId(chefId);
 		recipe.setChefNick(chefNick);
-		
-		log.debug("{}",member);
-		
-		log.debug("{}",recipe);
 		
 		if (!uploadFile.isEmpty()) {
 			log.debug("{}",uploadFile.getOriginalFilename());
 			
+			//유튜브 서비스 이용을 위한 객체
 			YouTube youtubeService = null;
 			try {
+				//서비스 이용을 위한 권한 얻기
 				youtubeService = getService();
 			} catch (GeneralSecurityException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
-			// Define the Video object, which will be uploaded as the request body.
+			//유튜브에 제목, 내용등의 형식을 집어넣기 위한 객체
 			Video video = new Video();
-
+			
+			//video객체에 넣기 위한 status객체
 			VideoStatus status = new VideoStatus();
-
+			
+			//영상 공개 상태, 현재 일부 공개 상태
 			status.setPrivacyStatus("unlisted");
 
 			video.setStatus(status);
-
+			
+			//유튜브의 제목, 내용, 태그 등록을 위한 객체 
 			VideoSnippet snippet = new VideoSnippet();
-
+			
+			//영상 제목
 			snippet.setTitle(recipe.getVideoTitle());
+			//영상 내용
 			snippet.setDescription(recipe.getRecipeContent());
-
+			
+			//영상 태그
 //        List<String> tags = new ArrayList<String>();
 //        tags.add("이게");
 //        tags.add("되면");
@@ -451,18 +450,22 @@ public class RecipeController {
 			// The maximum file size for this operation is 128GB.
 			// File mediaFile = new
 			// File(httpRequest.getServletContext().getRealPath("resources"),"KakaoTalk_Video_20190719_1734_13_287.mp4");
+			//업로드한 영상을 등록할 객체, 영상 최대 크기는 128GB
 			InputStreamContent mediaContent;
 			try {
 				mediaContent = new InputStreamContent("video/*", new BufferedInputStream(uploadFile.getInputStream()));
 				mediaContent.setLength(uploadFile.getSize());
 
-				// Define and execute the API request
+				//영상 업로드 API 선언
 				YouTube.Videos.Insert request = youtubeService.videos().insert("snippet,statistics,status", video,
 						mediaContent);
-
+				
+				//영상 업로드 API 실행
 				Video response = request.execute();
-				log.debug("youtubeId={}",response.getId());
+				
+				//업로드한 유튜브 ID를 레시피 객체에 등록
 				recipe.setVideoLink(response.getId());
+				
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -474,22 +477,22 @@ public class RecipeController {
 		
 		
 		
-		
+		//레시피 재료 리스트 작성 과정
 		List<RecipeIngredient> ingredientList = new ArrayList<RecipeIngredient>();
 		
 		for(int i =0;i<ingrName.length ;i++) {
 			RecipeIngredient ingr = new RecipeIngredient(ingNo[i], ingrMass[i], ingrName[i], 0);
 			ingredientList.add(ingr);
 		}
-		log.debug(ingredientList.toString());
-		
+
+		//json으로 된 레시피 분류(한식/국물요리 등)를 해체하는 과정
 		List<Map<String,String>> list = (List<Map<String,String>>)new Gson().fromJson(recipe.getCategory(), new TypeToken<List<Map<String,String>>>(){}.getType());
 		
 		if(!list.isEmpty()) {
-			log.debug(list.get(0).get("value"));
 			recipe.setCategory(list.get(0).get("value"));
 		}
 		
+		//레시피 타임라인 등록
 		recipe.setTimeline("");
 		for(int i =0;i < cookTime.length ;i++) {
 			
@@ -500,11 +503,8 @@ public class RecipeController {
 			recipe.setTimeline(recipe.getTimeline() + cookTime[i]+"∮"+cookery[i]);
 		}
 		
-		log.debug("{}",recipe);
-		
+		//레시피 및 레시피 재료를 DB에 등록
 		int result = recipeService.recipeUpload(recipe,ingredientList);
-		
-		log.debug("insert Result={}", result>0?true:false);
 		
 		if(result<=0)
 			return "redirect:/recipe/recipeUpload";

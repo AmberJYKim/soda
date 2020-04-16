@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
-	<jsp:param value="" name="pageTitle"/>
+	<jsp:param value="관리자 정보" name="pageTitle"/>
 </jsp:include>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/chef-list.css"/>
 
@@ -13,13 +13,9 @@
 	<div class="container">
 		<div class="section">
 			<div class="row">
-				<div class="col side_nav">
-					<a href="${pageContext.request.contextPath}/admin/adminMain"><p class="nav_text selected_nav">내 정보보기</p></a>
-					<a href="${pageContext.request.contextPath}/admin/sellList"><p class="nav_text ">판매목록</p></a>
-					<a href="${pageContext.request.contextPath}/admin/adminQnaMsg"><p class="nav_text ">1:1 문의</p></a>
-					<a href="${pageContext.request.contextPath}/admin/chefInsertList"><p class="nav_text">셰프신청목록</p></a>
-					<a href="${pageContext.request.contextPath}/admin/sendDingdong"><p class="nav_text">알림보내기</p></a>
-				</div>
+				<jsp:include page="/WEB-INF/views/common/adminSidenav.jsp">
+					<jsp:param value="관리자 정보" name="sidenav"/>
+				</jsp:include>
 				
 				
 				<div class="col-10">
@@ -59,13 +55,13 @@
 
 	</div>
 
-	<script>
-		$(function(){
-			$(".side_nav").children().click(function(){
-				// console.log($(this).html());
-				location.href=$(this).html()+".html";
-			});
-		});
-	</script>
+<script>
+$(function(){
+	$(".side_nav").children().click(function(){
+		// console.log($(this).html());
+		location.href=$(this).html()+".html";
+	});
+});
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
