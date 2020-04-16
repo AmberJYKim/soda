@@ -104,7 +104,7 @@
 
                 <!--form 태그 시작 -->
 
-                <form action="/gunsan/service/TourServiceRingServlet" id="sv_form" class="sv_form" method="POST">
+                
                     <div class="row text-center">
                         <article class="col-xl-4 tm-article" id="infoView">
                             <h3 class="tm-color-primary tm-article-title-1">클래스 소개</h3>
@@ -152,7 +152,7 @@
                         <input type="hidden" name="member_no" value="gn200217_0003" />
                         <input type="hidden" name="childPrice" value="75000" />
                         <input type="hidden" name="adultPrice" value="50000" />
-                </form>
+               
                 <article class=" col-xl-1.5">
                     <a href="${pageContext.request.contextPath }/oneday/oneday_detail?onedayclassNo=${reservationrequest.onedayclassNo}" class="tm-color-white tm-btn-white-bordered">이전</a>
                     <a href="${pageContext.request.contextPath }/oneday/oneday_agree" class="tm-color-white tm-btn-white-bordered">다음</a>

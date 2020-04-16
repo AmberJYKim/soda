@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chefList.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/datepicker.min.css" />	
 <style>
-.onedaycard p{
+.onedaycard p, h4 {
 	padding: 0 5px;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -22,6 +22,20 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+.onedaycard .onedayContentst{
+	padding: 0 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	height: 90px;
+}
+.review{
+	padding: 0 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	height: 90px;
 }
 </style>
 
@@ -83,7 +97,9 @@ function oneday_search(){
                                 </div>
                                 </c:forEach>
                          </c:if>
+                        <div class="onedayContentst">   
                         <p>${oneday.onedayContent}</p>
+                        </div>
                     </div>
                     <div class="ci-bottom">
                         <div class="ci-author">
@@ -123,9 +139,11 @@ function oneday_search(){
           		<c:if test="${review.onedayclassNo eq oneday.onedayclassNo}">      
                 <h4>${oneday.onedayName }</h4>
                 </c:if>
-          </c:forEach>      
+          </c:forEach>
+          
+          	<div class="review">      
                 <p>${review.reviewContent }</p>
-               
+            </div>   
               </div>
             </div>
  		  </c:forEach>
@@ -165,7 +183,9 @@ function oneday_search(){
                                 </div>
                                 </c:forEach>
                          </c:if>
+                      <div class="onedayContentst">   
                         <p>${oneday.onedayContent}</p>
+                      </div>  
                     </div>
                     <div class="ci-bottom">
                         <div class="ci-author">
