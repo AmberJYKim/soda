@@ -8,6 +8,7 @@
 <jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
 </jsp:include>
  <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mall_delivery_info.css" />
+ <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/js/classie.js" />
  <!-- Event Details Section -->
     <section class="event-details-section spad overflow-hidden">
         <div class="tm-section-2">
@@ -79,6 +80,40 @@
                 </div>
 
             </div>
+<script src="${pageContext.request.contextPath }/resources/js/classie.js"></script>
+<script>
+      (function() {
+          // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+          if (!String.prototype.trim) {
+              (function() {
+                  // Make sure we trim BOM and NBSP
+                  var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+                  String.prototype.trim = function() {
+                      return this.replace(rtrim, '');
+                  };
+              })();
+          }
+          [].slice.call(document.querySelectorAll('input.input__field')).forEach(function(inputEl) {
+              // in case the input is already filled..
+              if (inputEl.value.trim() !== '') {
+                  classie.add(inputEl.parentNode, 'input--filled');
+              }
+              // events:
+              inputEl.addEventListener('focus', onInputFocus);
+              inputEl.addEventListener('blur', onInputBlur);
+          });
+
+          function onInputFocus(ev) {
+              classie.add(ev.target.parentNode, 'input--filled');
+          }
+
+          function onInputBlur(ev) {
+              if (ev.target.value.trim() === '') {
+                  classie.remove(ev.target.parentNode, 'input--filled');
+              }
+          }
+      })();
+  </script>
     </section>
     <!-- Event Details Section end -->
 

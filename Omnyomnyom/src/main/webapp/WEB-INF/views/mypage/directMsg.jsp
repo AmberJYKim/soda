@@ -246,7 +246,6 @@ function chatSubscribe(){
 	//페이지별로 구독신청 처리
 	let iii = 1;
 	let connectionDone = false;
-	console.log(iii%2);
 	let intervalId = setInterval(()=>{
 		if(connectionDone == true)
 			clearInterval(intervalId);
@@ -256,12 +255,8 @@ function chatSubscribe(){
 			//stomp에서는 구독개념으로 세션을 관리한다. 핸들러 메소드의 @SendTo어노테이션과 상응한다.
 			chatClient.subscribe('/chat/'+chatId, function(message) {
 
-				console.log("receive from subscribe /chat/"+chatId+":", message);
 				let messsageBody = JSON.parse(message.body);
 				
-				console.log('--------------------');
-				console.log(messsageBody);
-				console.log('--------------------');
 				if(iii%2 != 0){
 				if(memberId == messsageBody.memberId){
 				    $("#msg-target").append(''
@@ -274,11 +269,10 @@ function chatSubscribe(){
 				    $("#msg-target").append(''
 						+'<li>'
 						+'<div class="message-data">'
-						+'<span class="message-data-name"><i class="fa fa-circle online"></i>'+messsageBody.memberId+'</span>'
+						+'<span class="message-data-name"><i class="fa fa-circle online"></i>'+messsageBody.memberNick+'</span>'
 						+'<span class="message-data-time">'+dateTransform(messsageBody.time)+'</span>'
 						+'</div> <div class="message my-message">'+messsageBody.msg+'</div>'
 						+'</li>'); 
-					
 				}
 				scrollTop();
 				$("#msg-count").text(Number($("#msg-count").text())+1);
@@ -286,13 +280,10 @@ function chatSubscribe(){
 				iii++;
 			});
 			connectionDone = true;
-			
 		}	
-		
-		
 	},1000);
-	
 }
+
 function dateTransform(time){
 	
 	var now = new Date(Number(time));
