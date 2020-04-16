@@ -222,11 +222,8 @@ public class MallController {
   		return "mall/productInsert";
   	}
   	
-  	@GetMapping("/paymentResult")
+  	@GetMapping("/result")
   	public void paymentResult() {
-  		
-  		//세션내용 비우기
-  		//견제 완료 페이지에서 보여줄 내용 보내기
   	}
   	
   	

@@ -46,7 +46,6 @@
 	        			msg += ',확인 버튼을 눌러 예약 확인페이지로 이동해주세요';
   		        		paymentResult = true;
 	        			alert(msg);
-	        			insertReserv();
 	        			updatePaidData();
 	        			
       		        } else {
