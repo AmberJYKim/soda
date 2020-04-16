@@ -80,6 +80,16 @@ tb_onedayclass
 order by onedayclass_no desc
 </select>
 
+<select id="popList" resultType="Oneday">
+select * from tb_onedayclass odn left join 
+(select avg(review_score) review_score, onedayclass_no from tb_oneday_review  group by onedayclass_no) ocn 
+on  odn.onedayclass_no = ocn.onedayclass_no
+order by review_score
+</select>
+
+
+
+
 
 
 <select id="selectOnedayReviewList" resultType="onedayReview">
@@ -108,7 +118,7 @@ order by onedayclass_no desc
 				#{onedayImg},
 				<!-- gson 배열로 받음 -->
 				#{menuList},
-				#{Addr}
+				#{addr}
 			)
 			<selectKey keyProperty="onedayclassNo" resultType="_int" order="AFTER">
 				select seq_oneday_class.currval from dual
@@ -152,7 +162,6 @@ TB_onedayclass
 <if test="menuList != ''">
 and menu_list like '%${menuList}%'
 </if>
-
 <if test="detailedAddr != ''">
 and detailed_Addr like '%'||#{detailedAddr}||'%'
 </if>

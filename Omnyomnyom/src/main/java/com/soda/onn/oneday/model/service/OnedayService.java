@@ -56,6 +56,8 @@ public interface OnedayService {
 
 	List<OnedayReview> reviewAll();
 
+	List<Oneday> popList();
+
 }
 
 
