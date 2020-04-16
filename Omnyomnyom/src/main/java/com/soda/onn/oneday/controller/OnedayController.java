@@ -109,8 +109,7 @@ public class OnedayController {
 		Chef chef = chefservice.chefSelectOne(MemberNickName);
 		String chefId = chef.getChefId();
 		List<Oneday> onedayList = chefservice.onedaySelectAll(chefId);
-		log.debug("onedayList = {}",onedayList);
-		
+
 		mav.addObject("onedayList",onedayList);
 		return mav;
 	}
@@ -127,13 +126,9 @@ public class OnedayController {
 		
 		Oneday oneday = onedayService.selectOne(onedayclassNo);
 		
-		log.debug("oneday@controller(update)/selectOne={}", oneday);
-		
-		
 		List<OnedayTime> list = onedayService.selectTimeList(onedayclassNo);
 		
 		
-		log.debug("update@list={}", list);
 		
 		mav.addObject("memberId",memberId);
 		mav.addObject("list", list);
