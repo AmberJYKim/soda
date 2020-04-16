@@ -37,17 +37,22 @@
                 </div>
             </div>
             <!-- 클래스 리스트 시작 -->
-            <form role="form" method="POST">
+            <form role="form" method="post">
             <div class="row">
                 <div class="row">
                          <c:forEach items="${onedayList }" var="oneday" varStatus="vs">
 			                <div class="col-md-3">
 			                    <div class="classes-item-warp">
 			                        <div class="classes-item item_rate">
-			                <input type="checkbox" id="onedayclassNo" name="onedayclassNo" value="${oneday.onedayclassNo}"/>
-			                            <div class="ci-img">
-			                                <img src="${pageContext.request.contextPath }/resources/upload/onedayclass/${oneday.onedayImg}" alt="클래스 사진">
-			                            </div>
+			                			<input type="checkbox" id="onedayclassNo" name="onedayclassNo" value="${oneday.onedayclassNo}"/>
+			                             <div class="ci-img">
+				                            <c:if test="${oneday.onedayImg != null}">
+				                                <img src="${pageContext.request.contextPath }/resources/upload/onedayclass/${oneday.onedayImg}" alt="클래스 사진">
+				                            </c:if>
+				                            <c:if test="${oneday.onedayImg == null }">
+				                            	 <img src="${pageContext.request.contextPath }/resources/images/onedayclassdefualtImg.PNG" alt="클래스 사진">
+				                            </c:if>
+				                          </div>
 			                            <div class="ci-text">
 			                                <h4>${oneday.onedayName}</h4>
 			                                <c:if test="${not empty oneday.onedayTimeList}">
@@ -64,14 +69,14 @@
 			                            </div>
 			                            <div class="ci-bottom">
 			                                <div class="ci-author">
-			                                    <img src="${pageContext.request.contextPath }/resources/upload/profile/chef_default.png" alt="셰프 사진">
+			                                    <img src="${pageContext.request.contextPath }/resources/upload/profile/${chef.chefProfile}" alt="셰프 사진">
 			                                    <div class="author-text">
 			                                        <h6>${chef.chefNickName}</h6>
 			                                        <p>${oneday.memberId }</p>
 			                                    </div>
 			                                </div>
 			                                <!--  -->
-			                                <a href= "${pageContext.request.contextPath }/oneday/oneday_detail?onedayclassNo=${oneday.onedayclassNo}" class="site-btn sb-gradient">예약하기</a>
+			                                <a href= "${pageContext.request.contextPath }/oneday/oneday_update?onedayclassNo=${oneday.onedayclassNo}" class="site-btn sb-gradient">예약하기</a>
 			                            </div>
 			                        </div>
 			                    </div>

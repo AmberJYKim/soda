@@ -5,6 +5,9 @@
   
 <mapper namespace="chef">
 
+
+
+
 <resultMap type="chef" id="chefMap">
 <result column="member_id" property="chefId"/>
 <result column="member_nick" property="chefNickName"/>
@@ -55,29 +58,38 @@ where chef_nick = #{chefNickName}
 {call
 	declare
 		begin
-			update 
-				tb_chef_req
-			set
-				chef_req_ok	=#{chefReqOk}
-			where
-				member_id = #{chefId};
-			
-		<if test='chefReqOk == "Y" '>
-		insert into 
-			tb_chef
-			values(
-				#{chefId},
-				#{chefApVideo},
-				#{sns},
-				#{chefProfile},
-				#{menuPrCategory},
-				sysdate,
-				#{businessInfo},
-				#{chefContent}
-				);
-		</if>
+				update 
+					tb_chef_req
+				set
+					chef_req_ok	=#{chefReqOk}
+				where
+					member_id = #{chefId};
+				
+				<if test='chefReqOk == "Y" '>
+				update 
+					tb_member
+				set
+					member_roll = 'C'
+				where
+					member_id = #{chefId};
+				
+						
+				insert into 
+					tb_chef
+					values(
+						#{chefId},
+						#{chefApVideo},
+						#{sns},
+						#{chefProfile},
+						#{menuPrCategory},
+						sysdate,
+						#{businessInfo},
+						#{chefContent}
+						);
+				</if>
 			commit;
 		end
+		
 	}
 </update>
 

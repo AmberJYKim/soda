@@ -94,7 +94,7 @@ public interface RecipeDAO {
 
 	List<Ingredient> selectPopIngredient(Map<String, Object> maps);
 
-	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
+	List<RecipeWithIngCnt> recipeSearchByMenu(Map<String, Object> maps, int cPage, int NUMPERPAGE);
 
 	List<String> selectMenuSubCtg(String mainCtg);
 
@@ -107,5 +107,7 @@ public interface RecipeDAO {
 	int ingrdientInsert(Ingredient ingredient);
 
 	int selectRecipeCnt(Map<String, Object> maps);
+
+	int rcpCntByMenu(Map<String, Object> maps);
 
 }

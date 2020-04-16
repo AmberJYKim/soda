@@ -31,7 +31,7 @@ public interface OnedayDAO {
 
 	List<OnedayTime> selectTimeList(int onedayclassNo);
 
-	List<Oneday> selectDateList(Map<String, String> sec);
+	List<Oneday> onedaySearch(Map<String, String> sec);
 
 	List<OnedayTime> detailTime(int onedayclassNo);
 
@@ -61,6 +61,10 @@ public interface OnedayDAO {
 	int checkVacancy(Map<String, Integer> maps);
 
 	List<ReservationRequest> selectReservationListUser(String memberId, RowBounds rowBounds);
+
+	List<Oneday> popList();
+
+
 
 
 

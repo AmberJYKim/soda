@@ -569,11 +569,6 @@ $(document).ready(function(){
 						  <small>11 mins ago</small>
 							<span aria-hidden="true">&times;</span>
 						</div>
-						<c:if test="${paging != null }">
-							${paging}
-						</c:if>
-						
-				 
 				<script>
 				$('#myToast').on('hidden.bs.toast', function () {
 				// do something...

@@ -97,4 +97,5 @@ public class ChefDAOImpl implements ChefDAO {
 		return sqlSession.selectOne("chef.chefSelectId", memberId);
 	}
 
+
 }

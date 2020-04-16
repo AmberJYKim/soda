@@ -406,7 +406,7 @@
 		SELECT * FROM(
 			SELECT ROWNUM RNUM, P.* FROM (
 				SELECT R.*, C.CHEF_PROFILE FROM TB_RECIPE R LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID ORDER BY VIEW_COUNT DESC) P
-			)WHERE RNUM &lt; 11
+			)WHERE RNUM &lt; 13
 	</select>
 	
 	<select id="selectPopIngredient" resultType="Ingredient">
@@ -429,7 +429,17 @@
 	<select id="recipeSearchByMenu" resultType="recipeWithIngCnt">
 		SELECT R.*, C.CHEF_PROFILE FROM TB_RECIPE R 
 								LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID 
-			WHERE MENU_NAME LIKE '%'||#{searchKey}||'%' OR video_title like '%'||#{searchKey}||'%'
+			where (video_title like '%'||#{searchKey}||'%' or menu_name like '%'||#{searchKey}||'%')
+			
+			<choose>
+				<when test="searchSCtg != null">
+					 and category like #{searchMCtg}||'/'||#{searchSCtg}
+				</when>			
+				<when test="searchSCtg == null">
+					 and category like #{searchMCtg}||'%'
+				</when>			
+			</choose>
+			
 	</select>
 	
 
@@ -473,7 +483,7 @@
 			)
 	</insert>
 
-	<select id="selectRecipeCnt" resultType="_int">
+<select id="selectRecipeCnt" resultType="_int">
 		    SELECT count(*) 
 		    	FROM TB_RECIPE R JOIN 
 		    		(SELECT COUNT(*) INCLUDE_NO, T.RECIPE_NO 
@@ -488,4 +498,19 @@
                 LEFT JOIN TB_CHEF C ON R.CHEF_ID = C.MEMBER_ID
 	</select>
 	
+	<select id="rcpCntByMenu" resultType="_int">
+	
+	SELECT count(*) FROM TB_RECIPE 
+			where (video_title like '%'||#{searchKey}||'%' or menu_name like '%'||#{searchKey}||'%')
+			
+			<choose>
+				<when test="searchMCtg != null and searchSCtg != null">
+					 and category like #{searchMCtg}||'/'||#{searchSCtg}
+				</when>			
+				<when test="searchMCtg != null and searchSCtg == null">
+					 and category like #{searchMCtg}||'%'
+				</when>			
+			</choose>
+	</select>
+
 </mapper>
