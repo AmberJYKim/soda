@@ -288,14 +288,14 @@
                     
                  <!-- 클래스 목록들 start -->
                     <div class="tab-pane fade" id="onedayclass" role="tabpanel" aria-labelledby="contact-tab">
-                        <div class="row f-class">
+                       <div class="row" style="width:1100px; margin-top:40px;">
                             <div class="col-lg-6">
-                                <h6 class="" style="width:200px;">신규 클래스</h6>
+                                <h6 class="" >신규 클래스</h6>
                             </div>
                             <c:if test="${memberLoggedIn.memberRoll eq 'C' and memberLoggedIn.memberNick eq chef.chefNickName}"> 
 	                            <div class="col-lg-6">
-	                                <button type="button" class="btn btn-outline-danger" onclick="classManage();">클래스 관리</button>
-	                                <button type="button" class="btn btn-outline-danger" onclick="classUpload();">클래스 업로드</button>
+	                                <button type="button" class="btn btn-outline-danger" onclick="classManage();" style="width:200px; flaot:right;">클래스 관리</button>
+	                                <button type="button" class="btn btn-outline-danger" onclick="classUpload();" style="width:200px; flaot:right;">클래스 업로드</button>
 	                            </div>
                             </c:if>
                         </div>
@@ -323,7 +323,7 @@
 			                            </div>
 			                            <div class="ci-bottom">
 			                                <div class="ci-author">
-			                                    <img src="${pageContext.request.contextPath }/resources/upload/profile/chef_default.png" alt="셰프 사진">
+			                                    <img src="${pageContext.request.contextPath }/resources/upload/profile/${chef.profile}" alt="셰프 사진">
 			                                    <div class="author-text">
 			                                        <h6>${chef.chefNickName}</h6>
 			                                        <p>${oneday.memberId }</p>
@@ -334,26 +334,13 @@
 			                            </div>
 			                        </div>
 			                    </div>
-			                </div>
-			                            
+			                </div>                
 			            </c:forEach>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <h6 class="f-class">신규 클래스</h6>
-                            </div>
-                            
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="site-pagination pt-3.5">
-                                            <a href="#" class="active">1</a>
-                                            <a href="#">2</a>
-                                            <a href="#"><i class="material-icons">keyboard_arrow_right</i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+
+                       
+                          
     </section>
 
 
