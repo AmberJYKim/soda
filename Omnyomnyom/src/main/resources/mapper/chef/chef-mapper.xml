@@ -62,6 +62,7 @@ where chef_nick = #{chefNickName}
 				tb_chef_req
 			set
 				chef_req_ok	=#{chefReqOk}
+				member_roll = 'C'
 			where
 				member_id = #{chefId};
 			
