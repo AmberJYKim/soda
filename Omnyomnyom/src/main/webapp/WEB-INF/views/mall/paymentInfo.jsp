@@ -47,6 +47,7 @@
   		        		paymentResult = true;
 	        			alert(msg);
 	        			insertReserv();
+	        			updatePaidData();
 	        			
       		        } else {
       		            var msg = '결제에 실패하였습니다.';
@@ -57,7 +58,7 @@
       		        }
       		       
       	 		}); //아임포트 끝 
-	        	updatePaidData();
+	        
        	    }); //click
 		
            
@@ -74,7 +75,7 @@
 				data : sendData,	
 				success : data =>{
 					alert("결제 확인 페이지로 이동합니다.");
-        			//location.href = "${pageContext.request.contextPath }/mall/result";
+        			location.href = "${pageContext.request.contextPath }/mall/result";
 				},
 				error : (x,s,e) =>{
 					console.log(x,s,e);
