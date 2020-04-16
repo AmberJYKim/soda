@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -182,8 +183,8 @@ public class RecipeServiceImpl implements RecipeService {
 	
 
 	@Override
-	public List<Report> selectReportList() {
-		return recipeDAO.selectReportList();
+	public List<Report> selectReportList(RowBounds rowBounds) {
+		return recipeDAO.selectReportList(rowBounds);
   }
   
   @Override

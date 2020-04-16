@@ -23,6 +23,7 @@ public class BuyHistory implements Serializable{
 	private int totalPrice;
 	private Date buyRegdate;
 	private String buyStatus;
+  private List<IngredientMall> ingMallList;
 	private String shippingAddress;
 	private String receiverPhone;
 	private String buyEmail;

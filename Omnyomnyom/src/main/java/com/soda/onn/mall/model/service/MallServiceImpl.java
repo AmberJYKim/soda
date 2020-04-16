@@ -38,12 +38,23 @@ public class MallServiceImpl implements MallService {
 	
 	@Override
 	public int updateIngMall(List<Map<String,String>> list) {
-		return mallDAO.updateIngMall(list);
+		int result = 0;
+		for(Map<String,String> map:list) 
+			result += mallDAO.updateIngMall(map);
+		
+		return result;
 	}
 
 	@Override
 	public List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds) {
-		return mallDAO.selectBuyHistoryList(rowBounds);
+		List<BuyHistory> buyHisotyList = mallDAO.selectBuyHistoryList(rowBounds);
+		int max = rowBounds.getLimit()-rowBounds.getOffset();
+		for (int i = 0; i < buyHisotyList.size(); i++) {
+			BuyHistory bh = buyHisotyList.get(i);
+			bh.setIngMallList(mallDAO.selectBuyItemOne(bh.getBuyNo()));
+			buyHisotyList.set(i, bh);
+		}
+		return buyHisotyList;
 	}
 
 	@Override

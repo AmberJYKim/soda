@@ -175,8 +175,8 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	}
 	
 	@Override
-	public List<Report> selectReportList() {
-		return sqlSession.selectList("recipe.selectReportList");
+	public List<Report> selectReportList(RowBounds rowBounds) {
+		return sqlSession.selectList("recipe.selectReportList",null,rowBounds);
  	}
   
   	@Override

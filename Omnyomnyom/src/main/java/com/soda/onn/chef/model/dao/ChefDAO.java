@@ -45,5 +45,7 @@ public interface ChefDAO {
 
 	int chefRequestUpdate(ChefRequest chefreq);
 
+	Chef chefSelectId(String memberId);
+
 }
 
