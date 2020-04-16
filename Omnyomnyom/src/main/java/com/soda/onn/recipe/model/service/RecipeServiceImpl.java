@@ -279,8 +279,8 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey) {
-		return recipeDAO.recipeSearchByMenu(searchKey);
+	public List<RecipeWithIngCnt> recipeSearchByMenu(Map<String, Object> maps, int cPage, int NUMPERPAGE) {
+		return recipeDAO.recipeSearchByMenu(maps, cPage, NUMPERPAGE);
 	}
 
 	@Override
@@ -297,5 +297,10 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public int selectRecipeCnt(Map<String, Object> maps) {
 		return recipeDAO.selectRecipeCnt(maps);
+	}
+
+	@Override
+	public int rcpCntByMenu(Map<String, Object> maps) {
+		return recipeDAO.rcpCntByMenu(maps);
 	}
 }

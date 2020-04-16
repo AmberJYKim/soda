@@ -522,11 +522,10 @@ public class RecipeController {
 	
 	//메뉴검색 페이지 요청 시 인기영상과 메뉴 카테고리 가져가기
 	@GetMapping("/recipe-menu-search")
-	public ModelAndView recipemenusearch(ModelAndView mav) {
+	public ModelAndView recipemenusearch(ModelAndView mav, HttpSession session) {
 		List<RecipeWithIngCnt> popRecipe = recipeService.selectPopRecipe();
 		
-		
-		mav.addObject("popRecipe", popRecipe);
+		session.setAttribute("popRecipe", popRecipe);
 		mav.setViewName("recipe/recipe-menu-search");
 		
 		return mav;
@@ -806,10 +805,7 @@ public class RecipeController {
 			rcpCnt = 1;
 		}
 		
-		log.debug("====================================\\");
-		log.debug("====================================\\\\");
 		List<RecipeWithIngCnt> rlist = recipeService.recipeSerachByIng(maps, cPage, NUMPERPAGE);
-		log.debug("rlist================{}", rlist.toString());
 		
 		maps.put("recipeList", rlist);	
 		maps.put("rcpCnt", rcpCnt);
@@ -819,23 +815,38 @@ public class RecipeController {
 	}
 	
 	//메뉴이름으로 레시피 검색하기
-	@GetMapping("searchByMenu")
-	public ModelAndView recipeSearchByMenu(@RequestParam("searchKeyword") String searchKey) {
-		ModelAndView mav = new ModelAndView();
+	@GetMapping(value="searchByMenu", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String recipeSearchByMenu(@RequestParam("searchKey") String searchKey, @RequestParam(value="cPage", defaultValue="1") int cPage , String searchMCtg, String searchSCtg) {
+		Map<String, Object> maps = new HashMap<>();
+		
+		log.debug("{}=====================searchKey", searchKey);
+		log.debug("{}=====================ctgM", searchMCtg);
+		log.debug("{}=====================ctgS", searchSCtg);
+		maps.put("searchKey", searchKey);
+		maps.put("searchMCtg", searchMCtg);
+		maps.put("searchSCtg", searchSCtg);
+		List<RecipeWithIngCnt> rList = recipeService.recipeSearchByMenu(maps, cPage, NUMPERPAGE);	
+		
+		int rcpCnt = recipeService.rcpCntByMenu(maps);
+		
+		//카테고리 갯수에 따른 페이징 여부 (12개 이하일 경우 페이징 하지 않음)
+		if(rcpCnt > 12) {
+			rcpCnt = (int)Math.ceil((double)rcpCnt/12);
+		} else {
+			rcpCnt = 1;
+		}
 		
 		
-		log.debug(searchKey);
+		log.debug("죄회된 영상 리스트"+rList.toString());
+	
+		maps.put("searchKey", searchKey);	
+		maps.put("searchedList", rList);
+		maps.put("cPage", cPage);
+		maps.put("rcpCnt", rcpCnt);
 		
-		List<RecipeWithIngCnt> rList = recipeService.recipeSearchByMenu(searchKey);	
-		List<RecipeWithIngCnt> popRecipe = recipeService.selectPopRecipe();
 		
-		log.debug(""+rList.toString());
-		mav.addObject("searchKey", searchKey);
-		mav.addObject("searchedList", rList);
-		mav.addObject("popRecipe", popRecipe);
-		mav.setViewName("/recipe/recipe-menu-search");
-		
-		return mav;
+		return new Gson().toJson(maps);
 	}
 	
 	//중분류카테고리 가져오기 처리용 -메뉴
