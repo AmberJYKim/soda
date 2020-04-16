@@ -27,7 +27,8 @@ public interface OnedayService {
 
 //	List<Oneday> selectDateList(String detailedAddr, String onedayName);
 
-	List<Oneday> selectDateList(Map<String, String> sec);
+
+	List<Oneday> onedaySearch(Map<String, String> sec);
 
 	List<OnedayTime> selectTimeList(int onedayclassNo);
 
@@ -57,6 +58,7 @@ public interface OnedayService {
 	List<OnedayReview> reviewAll();
 
 	List<Oneday> popList();
+
 
 }
 

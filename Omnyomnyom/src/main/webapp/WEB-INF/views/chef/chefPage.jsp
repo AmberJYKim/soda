@@ -338,7 +338,22 @@
 			                            
 			            </c:forEach>
                         </div>
-
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h6 class="f-class">신규 클래스</h6>
+                            </div>
+                            
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="site-pagination pt-3.5">
+                                            <a href="#" class="active">1</a>
+                                            <a href="#">2</a>
+                                            <a href="#"><i class="material-icons">keyboard_arrow_right</i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
     </section>
 
 
