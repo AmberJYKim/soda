@@ -46,7 +46,7 @@
 	        			msg += ',확인 버튼을 눌러 예약 확인페이지로 이동해주세요';
   		        		paymentResult = true;
 	        			alert(msg);
-	        			insertReserv();
+	        			updatePaidData();
 	        			
       		        } else {
       		            var msg = '결제에 실패하였습니다.';
@@ -57,8 +57,8 @@
       		        }
       		       
       	 		}); //아임포트 끝 
-	        	updatePaidData();
-           }); //click
+	        
+       	    }); //click
 		
            
            function updatePaidData(){
@@ -71,10 +71,10 @@
       	      	$.ajax({
        	      	url: "${pageContext.request.contextPath }/mall/updatePaidData",
 				method : "Post",
-				data : sendData,
+				data : sendData,	
 				success : data =>{
 					alert("결제 확인 페이지로 이동합니다.");
-        			//location.href = "${pageContext.request.contextPath }/mall/result";
+        			location.href = "${pageContext.request.contextPath }/mall/result";
 				},
 				error : (x,s,e) =>{
 					console.log(x,s,e);
