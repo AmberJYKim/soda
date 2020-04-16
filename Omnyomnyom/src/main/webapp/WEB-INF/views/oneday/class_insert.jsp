@@ -125,8 +125,10 @@
 							<!-- 클래스 주소 입력란 -->
 							<!-- 클래스 주소 input -->
 							<span class="input input--yoshiko"> 
+							<p>도로명/지번 주소</p>
+							
 								<input class="input__field input__field--yoshiko" type="text"
-								id="sample6_address" name="Addr" onclick="sample6_execDaumPostcode()" required="required" readonly="readonly"/> 
+								id="sample6_address" name="addr" onclick="sample6_execDaumPostcode()" required="required" readonly="readonly"/> 
 								<!-- 클래스 주소 라벨 --> 
 								<label class="input__label input__label--yoshiko" for="input-class-adress"> 
 								<span class="input__label-content input__label-content--yoshiko" data-content=""></span>	

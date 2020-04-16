@@ -200,6 +200,13 @@ public class OnedayServiceImpl implements OnedayService {
 	}
 
 
+	@Override
+	public List<Oneday> popList() {
+		// TODO Auto-generated method stub
+		return onedayDAO.popList();
+	}
+
+
 }
 
 
