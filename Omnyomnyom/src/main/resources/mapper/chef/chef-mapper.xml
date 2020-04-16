@@ -132,14 +132,16 @@ where chef_nick = #{chefNickName}
 </select>
 
 
-
 <select id="selectChefRequest" resultMap="chefReqMap">
 	select
-		*
+		C.*,
+        M.member_nick
 	from
-		TB_chef_req
+		tb_chef_req C
+		join tb_member M
+		on C.member_Id = M.member_Id	
 	where
-		member_id = #{memberId}
+		C.member_id = #{memberId}
 </select>
 
 <select id="selectChefRequestListCnt" resultType="string">

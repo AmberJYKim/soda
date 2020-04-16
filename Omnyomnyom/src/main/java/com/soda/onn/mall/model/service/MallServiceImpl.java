@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.soda.onn.mall.model.dao.MallDAO;
 import com.soda.onn.mall.model.vo.BuyHistory;
+import com.soda.onn.mall.model.vo.BuyItem;
 import com.soda.onn.mall.model.vo.Cart;
 import com.soda.onn.mall.model.vo.IngredientMall;
 
@@ -119,9 +120,23 @@ public class MallServiceImpl implements MallService {
 	}
 
 	@Override
-	public int ingredientInsert(Map map) {
-		
-		
+
+	public int insertBuyHistory(BuyHistory bHis) {
+		return mallDAO.insertBuyHistory(bHis);
+	}
+
+	@Override
+	public int insertBuyItems(List<BuyItem> bItems) {
+		return mallDAO.insertBuyItem(bItems);
+	}
+
+	@Override
+	public int deletePaid(List<Cart> cList) {
+		return mallDAO.deletePaid(cList);
+	}
+
+	@Override
+	public int ingredientInsert(Map map) {	
 		return mallDAO.ingredientInsert(map);
 	}
 
@@ -129,6 +144,12 @@ public class MallServiceImpl implements MallService {
 	public String prCategory(String pr) {
 		
 		return mallDAO.prCategory(pr);
+	}
+
+	@Override
+	public String crCategory(String cr) {
+		
+		return mallDAO.crCategory(cr);
 	}
 
 }

@@ -88,7 +88,7 @@ public interface RecipeDAO {
 
 	List<Recipe> selectRelRecipeListAll(RelRecipeSelecter rrs, int i);
 	
-	List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps);
+	List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps, int cPage, int nUMPERPAGE);
 
 	List<RecipeWithIngCnt> selectPopRecipe();
 
@@ -103,4 +103,6 @@ public interface RecipeDAO {
 	int insertReport(Report rp);
 
 	List<Recipe> recipeSelectAll(String chefNickName);
+
+	int selectRecipeCnt(Map<String, Object> maps);
 }

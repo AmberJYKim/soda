@@ -128,7 +128,7 @@
 								<div class="col-8">
 									<img
 										src="${pageContext.request.contextPath }/resources/upload/profile/${rec.chefProfile }"
-										class="" alt=""
+										class="" alt="" onerror="${pageContext.request.contextPath }/resources/upload/profile/chef_default1"
 										style="width: 40px; height: 40px; border-radius: 50%;">
 									<span class="chef-min-name">${rec.chefNick }</span>
 								</div>
@@ -140,6 +140,10 @@
 					</c:forEach>
 				</c:if>
 			</div>
+			
+			<div class="site-pagination pt-3.5">
+			</div>
+			
 		</div>
 		<!-- end-->
 	</div>

@@ -291,11 +291,6 @@ public class MypageController {
 		
 	}
 	
-//	@PostMapping("/dingdongReadUpdate")
-//	public int dingdongReadUpdate(@RequestParam(value="dingdongNo")int dingdongNo) {
-//		log.debug("dingdongNo={}",dingdongNo);
-//		return 1;
-//
-//	}
+
 	
 }

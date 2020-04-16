@@ -77,7 +77,7 @@ public interface RecipeService {
 
 	List<RecipeReply> selectReplyList(int recipeNo);
 	
-	List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps);
+	List<RecipeWithIngCnt> recipeSerachByIng(Map<String, Object> maps, int cPage, int NUMPERPAGE);
 
 	List<RecipeWithIngCnt> selectPopRecipe();
 
@@ -92,4 +92,6 @@ public interface RecipeService {
 	int insertReport(Report rp);
 
 	List<Recipe> recipeSelectAll(String chefNickName);
+
+	int selectRecipeCnt(Map<String, Object> maps);
 }
