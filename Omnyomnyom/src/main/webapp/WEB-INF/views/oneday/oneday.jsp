@@ -10,7 +10,20 @@
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chefList.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/datepicker.min.css" />	
-
+<style>
+.onedaycard p{
+	padding: 0 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.classinfo h6{
+	padding: 0 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+</style>
 
 
 <!-- 원데이 클래스 검색 -->
@@ -43,54 +56,54 @@ function oneday_search(){
             </div>
         </div>
     </div>
-
     <!-- Page top Section -->
-    <!-- <section class="page-top-section page-sp set-bg" data-setbg="img/page-top-bg.jpg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-7 m-auto text-white">
-					<h2>원데이 클래스</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-				</div>
-			</div>
-		</div>
-	</section> -->
-    <!-- Page top Section end -->
-
-
     <!-- 원데이 클래스 Section -->
     <section class="classes-section spad">
+    
         <div class="container">
             <div class="section-title text-center">
                 <h2>인기 클래스</h2>
                 <p>영상에서 부족했던 부분을 오프라인에서 해결해 보세요. 인기있는 셰프님과의 만남을 가져보세요.</p>
             </div>
             <div class="classes-slider owl-carousel">
+    		<c:forEach items="${popList }" var="oneday" end="6">
                 <div class="classes-item">
                     <div class="ci-img">
-                        <img src="img/classes/cook.jpg" alt="">
+                         <img src="${pageContext.request.contextPath }/resources/upload/onedayclass/${oneday.onedayImg}" alt="클래스 사진">
                     </div>
-                    <div class="ci-text">
-                        <h4><a href="classes-details.html">클래스명1</a></h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
+                    <div class="ci-text onedaycard">
+                        <h4><a href="classes-details.html">${oneday.onedayName }</a></h4>
+                        <c:if test="${not empty oneday.onedayTimeList}">
+                                <c:forEach items="${oneday.onedayTimeList }" var="tl">
+                                <div class="ci-metas">
+                                 <c:if test="${tl.onedayNoo eq oneday.onedayclassNo}">
+                                    <div class="ci-meta" style="display: none;"><i class="material-icons">event_available</i>${tl.onedayTimeDate }</div>
+                                    <%-- <div class="ci-meta"><i class="material-icons">${tl.onedayNoo}</i></div> --%>
+                                </c:if>
+                                </div>
+                                </c:forEach>
+                         </c:if>
+                        <p>${oneday.onedayContent}</p>
                     </div>
                     <div class="ci-bottom">
                         <div class="ci-author">
-                            <img src="img/classes/author/1.jpg" alt="">
-                            <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
+                        <c:forEach items="${chefList }" var="chef">
+                        <c:if test="${oneday.memberId eq chef.chefId }">
+                            <img src="${pageContext.request.contextPath }/resources/upload/profile/${chef.chefProfile}" alt="셰프 사진">
+                        </c:if>
+                        </c:forEach>
+                            <div class="author-text classinfo">
+                                <h6>${oneday.menuList }</h6>
+                                <p>${oneday.memberId }</p>
                             </div>
                         </div>
-                        <a href="${pageContext.request.contextPath }/oneday/detail.do" class="site-btn sb-gradient">예약하러 가기</a>
+						<a href= "${pageContext.request.contextPath }/oneday/oneday_detail?onedayclassNo=${oneday.onedayclassNo}" class="site-btn sb-gradient">예약하기</a>                    
                     </div>
-                </div>
+  	              </div>
+     		</c:forEach>   
             </div>
         </div>
+        
     </section>
     <!-- 원데이 클래스 end -->
     <!-- Review Section -->
@@ -140,7 +153,7 @@ function oneday_search(){
                     <div class="ci-img">
                          <img src="${pageContext.request.contextPath }/resources/upload/onedayclass/${oneday.onedayImg}" alt="클래스 사진">
                     </div>
-                    <div class="ci-text">
+                    <div class="ci-text onedaycard">
                         <h4><a href="classes-details.html">${oneday.onedayName }</a></h4>
                         <c:if test="${not empty oneday.onedayTimeList}">
                                 <c:forEach items="${oneday.onedayTimeList }" var="tl">
@@ -156,13 +169,17 @@ function oneday_search(){
                     </div>
                     <div class="ci-bottom">
                         <div class="ci-author">
-                            <img src="img/classes/author/1.jpg" alt="">
-                            <div class="author-text">
-                                <h6>${oneday.onedayName }</h6>
+                        <c:forEach items="${chefList }" var="chef">
+                        <c:if test="${oneday.memberId eq chef.chefId }">
+                            <img src="${pageContext.request.contextPath }/resources/upload/profile/${chef.chefProfile}" alt="셰프 사진">
+                        </c:if>
+                        </c:forEach>
+                            <div class="author-text classinfo">
+                                <h6>${oneday.menuList }</h6>
                                 <p>${oneday.memberId }</p>
                             </div>
                         </div>
-                        <a href="${pageContest.request.contextPath }/oneday/oneday_detail?onedayclassNo=${oneday.onedayclassNo}" class="site-btn sb-gradient">예약하러 가기</a>
+						<a href= "${pageContext.request.contextPath }/oneday/oneday_detail?onedayclassNo=${oneday.onedayclassNo}" class="site-btn sb-gradient">예약하기</a>                    
                     </div>
   	              </div>
                     </c:forEach>

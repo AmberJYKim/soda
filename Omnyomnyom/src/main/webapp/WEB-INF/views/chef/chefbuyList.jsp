@@ -30,68 +30,35 @@
 
 					<div class="row"> 
 						<div class="col-10 ">
-							
-						<!-- 주문번호별 분류 -->
 							<div class="row font-17 th_border">
-                                <div class="col">2020.02.20</div>
-								<div class="col floatRight">
+								
+								<div class="col-3">상품명</div>
+								<div class="col-3">결제일</div>
+								<div class="col-2">구매갯수</div>
+								<div class="col-2">총 가격</div>
+								<div class="col-2">상태</div>
+
+							</div>
+						<!-- 주문번호별 분류 -->
+							<c:forEach var="BuyHistory" items="${buyList }">
+							<div class="row font-17 th_border">
+                                <div class="col-3">${BuyHistory.buyMemberId }</div>
+                                <div class="col-3">${BuyHistory.buyRegdate }</div>
+                                <div class="col-2">${BuyHistory.buyStock }</div>
+								<div class="col-2 floatRight">
 									<span>
-										346,000 원
+										${BuyHistory.totalPrice }원
 									</span>	
 								</div>
-							</div>
-							<!-- 주문갯수/배송상태 -->
-							<div class="row">
-								<div class="col-10 row">
-									<div class="col-10 row">
-										<div class="col-2"><img src="프로젝트용 소스/육류/돼지고기/구이용.png" alt=""></div>
-									<div class="col">고기고기꼬기 / 7개<br> 49,000원(7,000원)</div>
-									</div>
-									<div class="col-10 row">
-										<div class="col-2"><img src="프로젝트용 소스/채소과일/열매채소/단호박.jfif" alt=""></div>
-										<div class="col">단호박 / 1개<br> 10,000원(10,000원)</div>
-									</div>
-									<div class="col-10 row">
-										<div class="col-2"><img src="프로젝트용 소스/채소과일/과일/라즈베리.jfif" alt=""></div>
-										<div class="col">라즈베리 / 2개 <br> 4,000원(2,000원)</div>
-									</div>
-								</div>
-								<div class="col-2">
-									<span class="align-middle">middle</span>
+								<div class="col-2 floatRight">
+									<span>
+										${BuyHistory.buyStatus }
+									</span>	
 								</div>
 							</div>
 							<hr>
 							<br>
-							<div class="row font-17 th_border">
-                                <div class="col">2020.02.20</div>
-								<div class="col floatRight">
-									<span>
-										346,000 원
-									</span>	
-								</div>
-							</div>
-							<!-- 주문갯수/배송상태 -->
-							<div class="row">
-								<div class="col-10 row">
-									<div class="col-10 row">
-										<div class="col-2"><img src="프로젝트용 소스/육류/돼지고기/구이용.png" alt=""></div>
-									<div class="col">고기고기꼬기 / 7개<br> 49,000원(7,000원)</div>
-									</div>
-									<div class="col-10 row">
-										<div class="col-2"><img src="프로젝트용 소스/채소과일/열매채소/단호박.jfif" alt=""></div>
-										<div class="col">단호박 / 1개<br> 10,000원(10,000원)</div>
-									</div>
-									<div class="col-10 row">
-										<div class="col-2"><img src="프로젝트용 소스/채소과일/과일/라즈베리.jfif" alt=""></div>
-										<div class="col">라즈베리 / 2개 <br> 4,000원(2,000원)</div>
-									</div>
-								</div>
-								<div class="col-2">
-									<span class="align-middle">middle</span>
-								</div>
-							</div>
-							<hr>
-							
+						</c:forEach>	
 					</div>
 				</div>
 			</div>

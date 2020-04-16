@@ -62,6 +62,8 @@ public interface OnedayDAO {
 
 	List<ReservationRequest> selectReservationListUser(String memberId, RowBounds rowBounds);
 
+	List<Oneday> popList();
+
 
 
 

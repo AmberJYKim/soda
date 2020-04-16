@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.soda.onn.mall.model.dao.MallDAO;
 import com.soda.onn.mall.model.vo.BuyHistory;
+import com.soda.onn.mall.model.vo.BuyItem;
 import com.soda.onn.mall.model.vo.Cart;
 import com.soda.onn.mall.model.vo.IngredientMall;
 
@@ -21,8 +22,8 @@ public class MallServiceImpl implements MallService {
 	private MallDAO mallDAO;
 	
 	@Override
-	public List<IngredientMall> selectIngredientList(String column) {
-		return mallDAO.selectIngredientList(column);
+	public List<IngredientMall> selectIngredientList(String subCtg) {
+		return mallDAO.selectIngredientList(subCtg);
 	}
 
 	@Override
@@ -34,10 +35,26 @@ public class MallServiceImpl implements MallService {
 	public int selectBuyHistoryListCnt() {
 		return mallDAO.selectBuyHistoryListCnt();
 	}
+	
+	@Override
+	public int updateIngMall(List<Map<String,String>> list) {
+		int result = 0;
+		for(Map<String,String> map:list) 
+			result += mallDAO.updateIngMall(map);
+		
+		return result;
+	}
 
 	@Override
 	public List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds) {
-		return mallDAO.selectBuyHistoryList(rowBounds);
+		List<BuyHistory> buyHisotyList = mallDAO.selectBuyHistoryList(rowBounds);
+		int max = rowBounds.getLimit()-rowBounds.getOffset();
+		for (int i = 0; i < buyHisotyList.size(); i++) {
+			BuyHistory bh = buyHisotyList.get(i);
+			bh.setIngMallList(mallDAO.selectBuyItemOne(bh.getBuyNo()));
+			buyHisotyList.set(i, bh);
+		}
+		return buyHisotyList;
 	}
 
 	@Override
@@ -103,16 +120,35 @@ public class MallServiceImpl implements MallService {
 	}
 
 	@Override
-	public int ingredientInsert(Map map) {
+	public int ingredientInsert(IngredientMall ingredientMall) {
 		
-		
-		return mallDAO.ingredientInsert(map);
+		return mallDAO.ingredientInsert(ingredientMall);
+  }
+
+	public int insertBuyHistory(BuyHistory bHis) {
+		return mallDAO.insertBuyHistory(bHis);
+	}
+
+	@Override
+	public int insertBuyItems(List<BuyItem> bItems) {
+		return mallDAO.insertBuyItem(bItems);
+	}
+
+	@Override
+	public int deletePaid(List<Cart> cList) {
+		return mallDAO.deletePaid(cList);
 	}
 
 	@Override
 	public String prCategory(String pr) {
 		
 		return mallDAO.prCategory(pr);
+	}
+
+	@Override
+	public String crCategory(String cr) {
+		
+		return mallDAO.crCategory(cr);
 	}
 
 }

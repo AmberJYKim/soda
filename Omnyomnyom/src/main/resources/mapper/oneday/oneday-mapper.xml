@@ -5,29 +5,26 @@
 <mapper namespace="oneday">
 
 <!-- 셰프가 다른 원데이클래스 예약 할 때  -->
-<select id="selectReservationList" resultMap="ReservationListMap">
+<select id="selectReservationList" resultType="ReservationRequest">
 	
-	select
-		res.reservation_no,
-		od.oneday_name,
-		odct.onedaytime_date,
-		res.personnel,
-		od.oneday_price*res.personnel,
-		res.CANCEL_CHECK,
-		od.oneday_price
-	from
-		tb_onedayclass od left join tb_onedayclasstime odct on od.onedayclass_no = odct.onedayclass_no
-                          left join tb_reservation res on odct.onedayclass_no = res.onedayclass_no
-   
+    select
+        r.RESERVATION_NO,
+        (select ONEDAY_NAME from TB_ONEDAYCLASS where ONEDAYCLASS_NO = r.ONEDAYCLASS_NO) ONEDAY_CLASS_NAME,
+        (select ONEDAYTIME_DATE from TB_ONEDAYCLASSTIME where ONEDAYTIME_NO = r.ONEDAYTIME_NO) ONEDAY_TIME,
+        r.MEMBER_ID,
+        (select MEMBER_NAME from TB_MEMBER where MEMBER_ID = r.MEMBER_ID) MEMBER_NAME,
+        r.PERSONNEL,
+        r.RES_PRICE total_price,
+        r.REGDATE
+    from 
+        TB_RESERVATION r   
    <where>
 		<if test="value != null">
-			res.member_id = #{reserMemberId}
+			r.member_id = #{reserMemberId}
 		</if>
-			<!-- AND
-			res.res.reservation_no = #{reservationNo} -->
 	</where>
-	<!-- order by 
-		reservation_no desc -->
+	order by 
+		reservation_no desc
 </select>
 
 <!-- 일반유저가 원데이클래스 예약할 때 -->
@@ -80,6 +77,16 @@ tb_onedayclass
 order by onedayclass_no desc
 </select>
 
+<select id="popList" resultType="Oneday">
+select * from tb_onedayclass odn left join 
+(select avg(review_score) review_score, onedayclass_no from tb_oneday_review  group by onedayclass_no) ocn 
+on  odn.onedayclass_no = ocn.onedayclass_no
+order by review_score
+</select>
+
+
+
+
 
 
 <select id="selectOnedayReviewList" resultType="onedayReview">
@@ -108,7 +115,7 @@ order by onedayclass_no desc
 				#{onedayImg},
 				<!-- gson 배열로 받음 -->
 				#{menuList},
-				#{Addr}
+				#{addr}
 			)
 			<selectKey keyProperty="onedayclassNo" resultType="_int" order="AFTER">
 				select seq_oneday_class.currval from dual
@@ -152,7 +159,6 @@ TB_onedayclass
 <if test="menuList != ''">
 and menu_list like '%${menuList}%'
 </if>
-
 <if test="detailedAddr != ''">
 and detailed_Addr like '%'||#{detailedAddr}||'%'
 </if>
@@ -258,7 +264,6 @@ values(
 </select>
 
 <resultMap id="ReservationListMap" type="ReservationRequest">
-	<result column="member_id" property="reserMemberId"/>
 	<result column="oneday_name" property="onedayClassName"/>
 	<result column="onedaytime_date" property="regDate"/>
 	<result column="PERSONNEL" property="personnel"/>

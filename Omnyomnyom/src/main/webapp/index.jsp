@@ -8,6 +8,19 @@
 	<jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
 </jsp:include>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
+<style>
+.toprecipe>h6{
+	width: 180px;
+	padding: 0 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	
+}
+.trainer-item .ti-img img{
+	margin-top: -177px;
+}
+</style>
  <!-- 로그인 메뉴 -->
     <!-- main.css, util.css추가 -->
     <!-- ${pageContext.request.contextPath }/resources/images/ui에 다수의 png 추가 -->
@@ -45,7 +58,8 @@
                                     <div class="hs-text">
                                         <h2>냉장고를 부탁해</h2>
                                         <p>요리와 썸 타고 있는 당신을 위해 <br/>냉장고 속 재료들로 완벽한 한끼 식사를 추천해 드립니다. </p>
-                                        <div class="site-btn sb-white">냉장고 털어가기</div>
+                                        <a class="site-btn sb-white" href="${pageContext.request.contextPath }/recipe/ingredientsSelection">냉장고 털어가기</a>
+                                    	
                                     </div>
                                 </div>
                             </div>
@@ -60,7 +74,7 @@
                             <h2>레시피 속 재료</h2>
                             <p>레시피 영상 속 재료, 쿠킹박스, 주방도구가 확인 하고 원 클릭으로 내 집 앞으로 올 수 있게 실현해 보세요.
                                 </p>
-                                    <div class="site-btn sb-white">구매하러 가기</div>
+                                    <a class="site-btn sb-white" href="${pageContext.request.contextPath }/mall/main">구매하러 가기</a>
                         </div>
                     </div>
                     <div class="hs-img">
@@ -81,66 +95,24 @@
                 <p>오늘 인기 있는 셔프 레시피 영상 TOP5!<br/>최근 인기 셰프 및 레시피 TOP6 입니다. 영상 속 레시피를 완벽한 한끼를 준비해 보세요.</p>
             </div>
             <div class="trainer-slider owl-carousel">
+            <c:if test="${not empty popRecipe}">
+            <c:forEach items="${popRecipe}" var="rec">
                 <div class="ts-item">
                     <div class="trainer-item">
                         <div class="ti-img">
-                            <img src="${pageContext.request.contextPath }/resources/images/thumbnail/thumbnail.jpg" alt="">
+                            <a
+							href="${pageContext.request.contextPath }/recipe/recipe-details?recipeNo=${rec.recipeNo }"><img
+							src="https://img.youtube.com/vi/${rec.videoLink }/mqdefault.jpg" alt=""
+							class="chef-Thumbnail"></a>
                         </div>
-                        <div class="ti-text">
-                            <h4>영상제목1</h4>
-                            <h6>조회수 25만회</h6>
-                            <p>영상소개 글 올 자리입니다.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="ts-item">
-                    <div class="trainer-item">
-                        <div class="ti-img">
-                            <img src="${pageContext.request.contextPath }/resources/images/thumbnail/thumbnail.jpg" alt="">
-                        </div>
-                        <div class="ti-text">
-                            <h4>영상제목2</h4>
-                            <h6>조회수 25만회</h6>
-                            <p>영상소개 글 올 자리입니다.</p>
+                        <div class="ti-text toprecipe">
+                            <h6 style="color: black;">${rec.videoTitle }</h6>
+                            <h6>조회수 : ${rec.viewCount }</h6>
                         </div>
                     </div>
                 </div>
-                <div class="ts-item">
-                    <div class="trainer-item">
-                        <div class="ti-img">
-                            <img src="${pageContext.request.contextPath }/resources/images/thumbnail/thumbnail.jpg" alt="">
-                        </div>
-                        <div class="ti-text">
-                            <h4>영상제목3</h4>
-                            <h6>조회수 25만회</h6>
-                            <p>영상소개 글</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="ts-item">
-                    <div class="trainer-item">
-                        <div class="ti-img">
-                            <img src="${pageContext.request.contextPath }/resources/images/thumbnail/thumbnail.jpg" alt="">
-                        </div>
-                        <div class="ti-text">
-                            <h4>영상제목4</h4>
-                            <h6>조회수 25만회</h6>
-                            <p>영상소개 글 올 자리입니다.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="ts-item">
-                    <div class="trainer-item">
-                        <div class="ti-img">
-                            <img src="${pageContext.request.contextPath }/resources/images/thumbnail/thumbnail.jpg" alt="">
-                        </div>
-                        <div class="ti-text">
-                            <h4>영상제목5</h4>
-                            <h6>조회수 20만회</h6>
-                            <p>영상소개 글 올 자리입니다.</p>
-                        </div>
-                    </div>
-                </div>
+            </c:forEach>
+            </c:if>    
             </div>
         </div>
     </section>
@@ -148,104 +120,48 @@
 
     <!-- 원데이 클래스 Section -->
     <section class="classes-section spad">
+    
         <div class="container">
             <div class="section-title text-center">
                 <h2>ONEDAY CLASSES</h2>
                 <p>영상에서 부족했던 부분을 오프라인에서 해결해 보세요. 인기있는 셰프님과의 만남을 가져보세요.</p>
             </div>
-            <div class="classes-slider owl-carousel">
+                        <div class="classes-slider owl-carousel">
+    		<c:forEach items="${popList }" var="oneday" end="6">
                 <div class="classes-item">
                     <div class="ci-img">
-                        <img src="${pageContext.request.contextPath }/resources/images/classes/cook.jpg" alt="">
+                         <img src="${pageContext.request.contextPath }/resources/upload/onedayclass/${oneday.onedayImg}" alt="클래스 사진">
                     </div>
-                    <div class="ci-text">
-                        <h4><a href="classes-details.html">클래스명1</a></h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
+                    <div class="ci-text onedaycard">
+                        <h4><a href="classes-details.html">${oneday.onedayName }</a></h4>
+                        <c:if test="${not empty oneday.onedayTimeList}">
+                                <c:forEach items="${oneday.onedayTimeList }" var="tl">
+                                <div class="ci-metas">
+                                 <c:if test="${tl.onedayNoo eq oneday.onedayclassNo}">
+                                    <div class="ci-meta" style="display: none;"><i class="material-icons">event_available</i>${tl.onedayTimeDate }</div>
+                                    <%-- <div class="ci-meta"><i class="material-icons">${tl.onedayNoo}</i></div> --%>
+                                </c:if>
+                                </div>
+                                </c:forEach>
+                         </c:if>
+                        <p>${oneday.onedayContent}</p>
                     </div>
                     <div class="ci-bottom">
                         <div class="ci-author">
-                            <img src="${pageContext.request.contextPath }/resources/images/classes/author/1.jpg" alt="">
-                            <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
+                        <c:forEach items="${chefList }" var="chef">
+                        <c:if test="${oneday.memberId eq chef.chefId }">
+                            <img src="${pageContext.request.contextPath }/resources/upload/profile/${chef.chefProfile}" alt="셰프 사진">
+                        </c:if>
+                        </c:forEach>
+                            <div class="author-text classinfo">
+                                <h6>${oneday.menuList }</h6>
+                                <p>${oneday.memberId }</p>
                             </div>
                         </div>
-                        <a href="" class="site-btn sb-gradient">예약하러 가기</a>
+						<a href= "${pageContext.request.contextPath }/oneday/oneday_detail?onedayclassNo=${oneday.onedayclassNo}" class="site-btn sb-gradient">예약하기</a>                    
                     </div>
-                </div>
-                <div class="classes-item">
-                    <div class="ci-img">
-                        <img src="${pageContext.request.contextPath }/resources/images/classes/cook.jpg" alt="">
-                    </div>
-                    <div class="ci-text">
-                        <h4>클래스명2</h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                    </div>
-                    <div class="ci-bottom">
-                        <div class="ci-author">
-                            <img src="${pageContext.request.contextPath }/resources/images/classes/author/2.jpg" alt="">
-                            <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
-                            </div>
-                        </div>
-                        <a href="" class="site-btn sb-gradient">예약하러 가기</a>
-                    </div>
-                </div>
-                <div class="classes-item">
-                    <div class="ci-img">
-                        <img src="${pageContext.request.contextPath }/resources/images/classes/cook.jpg" alt="">
-                    </div>
-                    <div class="ci-text">
-                        <h4>클래스명3</h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                    </div>
-                    <div class="ci-bottom">
-                        <div class="ci-author">
-                            <img src="${pageContext.request.contextPath }/resources/images/classes/author/3.jpg" alt="">
-                            <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
-                            </div>
-                        </div>
-                        <a href="" class="site-btn sb-gradient">예약하러 가기</a>
-                    </div>
-                </div>
-                <div class="classes-item">
-                    <div class="ci-img">
-                        <img src="${pageContext.request.contextPath }/resources/images/classes/cook.jpg" alt="">
-                    </div>
-                    <div class="ci-text">
-                        <h4>클래스명4</h4>
-                        <div class="ci-metas">
-                            <div class="ci-meta"><i class="material-icons">event_available</i>월, 수, 금</div>
-                            <div class="ci-meta"><i class="material-icons">alarm_on</i>06:30pm - 07:45pm</div>
-                        </div>
-                        <p>이번 클래스는 욤뇸뇸할 수 있는 메뉴를 만들어 볼까합니다. 진행을 원하시는 분들은 어서어서 예약해주세요!</p>
-                    </div>
-                    <div class="ci-bottom">
-                        <div class="ci-author">
-                            <img src="${pageContext.request.contextPath }/resources/images/classes/author/2.jpg" alt="">
-                            <div class="author-text">
-                                <h6>클래스명</h6>
-                                <p>셰프이름</p>
-                            </div>
-                        </div>
-                        <a href="" class="site-btn sb-gradient">예약하러 가기</a>
-                    </div>
-                </div>
+  	              </div>
+     		</c:forEach>   
             </div>
         </div>
     </section>
@@ -256,36 +172,23 @@
             <div class="row">
                 <div class="col-lg-8 m-auto">
                     <div class="review-slider owl-carousel">
+                        <c:forEach items="${reviewList }" var="review">
                         <div class="review-item">
                             <div class="ri-img">
                                 <img src="${pageContext.request.contextPath }/resources/images/classes/author/1.jpg" alt="">
                             </div>
                             <div class="ri-text text-white">
-                                <p>국가는 농업 및 어업을 보호·육성하기 위하여 농·어촌종합개발과 그 지원등 필요한 계획을 수립·시행하여야 한다. 국무총리 또는 행정각부의 장은 소관사무에 관하여 법률이나 대통령령의 위임 또는 직권으로 총리령 또는 부령을 발할 수 있다.</p>
-                                <h4>클래스명 - 셰프이름</h4>
-                                <h6>회원명</h6>
-                            </div>
+				                <h6>${review.memberId }</h6>
+				          <c:forEach items="${AllList }" var="oneday">
+				          		<c:if test="${review.onedayclassNo eq oneday.onedayclassNo}">      
+				                <h4>${oneday.onedayName }</h4>
+				                </c:if>
+				          </c:forEach>      
+				                <p>${review.reviewContent }</p>
+				               
+				              </div>
                         </div>
-                        <div class="review-item">
-                            <div class="ri-img">
-                                <img src="${pageContext.request.contextPath }/resources/images/classes/author/2.jpg" alt="">
-                            </div>
-                            <div class="ri-text text-white">
-                                <p>국가는 농업 및 어업을 보호·육성하기 위하여 농·어촌종합개발과 그 지원등 필요한 계획을 수립·시행하여야 한다. 국무총리 또는 행정각부의 장은 소관사무에 관하여 법률이나 대통령령의 위임 또는 직권으로 총리령 또는 부령을 발할 수 있다.</p>
-                                <h4>클래스명 - 셰프이름</h4>
-                                <h6>회원명</h6>
-                            </div>
-                        </div>
-                        <div class="review-item">
-                            <div class="ri-img">
-                                <img src="${pageContext.request.contextPath }/resources/images/classes/author/3.jpg" alt="">
-                            </div>
-                            <div class="ri-text text-white">
-                                <p>국가는 농업 및 어업을 보호·육성하기 위하여 농·어촌종합개발과 그 지원등 필요한 계획을 수립·시행하여야 한다. 국무총리 또는 행정각부의 장은 소관사무에 관하여 법률이나 대통령령의 위임 또는 직권으로 총리령 또는 부령을 발할 수 있다.</p>
-                                <h4>클래스명 - 셰프이름</h4>
-                                <h6>회원명</h6>
-                            </div>
-                        </div>
+                        </c:forEach>
                     </div>
                 </div>
             </div>

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.soda.onn.mall.model.vo.BuyHistory;
+import com.soda.onn.mall.model.vo.BuyItem;
 import com.soda.onn.mall.model.vo.IngredientMall;
 import com.soda.onn.mall.model.vo.Cart;
 
@@ -19,8 +20,8 @@ public class MallDAOImpl implements MallDAO {
 	private SqlSessionTemplate sqlSession;
 	
 	@Override
-	public List<IngredientMall> selectIngredientList(String column) {
-		return sqlSession.selectList("mall.selectIngredientList", column);
+	public List<IngredientMall> selectIngredientList(String subCtg) {
+		return sqlSession.selectList("mall.selectIngredientList", subCtg);
 	}
 
 	@Override
@@ -32,6 +33,12 @@ public class MallDAOImpl implements MallDAO {
 	public int selectBuyHistoryListCnt() {
 		return Integer.parseInt(sqlSession.selectOne("mall.selectBuyHistoryListCnt"));
 	}
+	
+	@Override
+	public int updateIngMall(Map<String,String> map) {
+		return sqlSession.update("mall.updateIngMall", map); 
+	}
+
 
 	@Override
 	public List<BuyHistory> selectBuyHistoryList(RowBounds rowBounds) {
@@ -79,14 +86,44 @@ public class MallDAOImpl implements MallDAO {
 	}
 
 	@Override
-	public int ingredientInsert(Map map) {
+	public int ingredientInsert(IngredientMall ingredientMall) {
 		
-		return sqlSession.insert("mall.ingredientInsert",map);
+		return sqlSession.insert("mall.ingredientInsert",ingredientMall);
+  }
+  
+  @Override
+	public int insertBuyHistory(BuyHistory bHis) {
+		return sqlSession.insert("mall.insertBuyHistory", bHis);
+	}
+
+	@Override
+	public int insertBuyItem(List<BuyItem> bItems) {
+		return sqlSession.insert("mall.insertBuyItem", bItems);
+	}
+
+	@Override
+	public int deletePaid(List<Cart> cList) {
+		int result = 0;
+		for(Cart c: cList) {
+		 result += sqlSession.delete("mall.deleteCart", c);
+		
+		}
+		return result;
 	}
 
 	@Override
 	public String prCategory(String pr) {
 		return sqlSession.selectOne("mall.prCategory", pr);
 	}
+
+	@Override
+	public List<IngredientMall> selectBuyItemOne(int buyNo) {
+		return sqlSession.selectList("mall.selectBuyItemOne", buyNo);
+  }
+  
+  @Override
+	public String crCategory(String cr) {
+		return sqlSession.selectOne("mall.crCategory",cr);
+  }
 
 }

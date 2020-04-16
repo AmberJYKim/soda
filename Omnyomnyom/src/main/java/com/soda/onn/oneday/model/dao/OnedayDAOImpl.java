@@ -33,7 +33,7 @@ public class OnedayDAOImpl implements OnedayDAO{
 		
 		return sqlSession.insert("oneday.insertOneday", oneday);
 		
-		
+
 		
 	}
 	@Override
@@ -144,6 +144,12 @@ public class OnedayDAOImpl implements OnedayDAO{
 	@Override
 	public List<ReservationRequest> selectReservationListUser(String memberId, RowBounds rowBounds) {
 		return sqlSession.selectList("oneday.selectReservationListUser", memberId);
+	}
+
+	@Override
+	public List<Oneday> popList() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("oneday.popList");
 	}
 
 

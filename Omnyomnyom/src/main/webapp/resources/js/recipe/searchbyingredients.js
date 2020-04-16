@@ -2,6 +2,8 @@ $().ready(function(){
 		console.log('jquery로드 완료');
 		subCtgload();
 		selectedDelfn();
+		selectedTagDel();
+		
 		
 		//페이지 로드 시 서브 카테고리 선택효과 주기
 		$(".main-ctg-menu>li").children(":first").trigger('click');
@@ -13,6 +15,7 @@ $().ready(function(){
 	function selectedTagDel(){
 		$(document).on('click', '.selected-ingredients>p', function(){
 			let tname = $(this).text();
+			console.log(tname);
 			$('img[alt='+tname+']').removeClass("active");
 			$(this).detach();
 		});
@@ -31,7 +34,7 @@ $().ready(function(){
 				
 				console.log(ingredientNo);
 				
-				let tags = '<p class="'+tname+'" data-ingredientno="'+ingredientNo+'"> <i class="fab fa-slack-hash" />'+tname+'</p><p><small><i class="fas fa-times"></i></small></p>';
+				let tags = '<p class="'+tname+'" data-ingredientno="'+ingredientNo+'"> <i class="fab fa-slack-hash" />'+tname+'<small><i class="fas fa-times"></i></small></p>';
 				$(".selected-ingredients").append(tags);
 			}
 			else{
@@ -198,20 +201,37 @@ $().ready(function(){
 	function recipeSearchByIng(){
 		console.log("버튼 클릭됨");
 		let pTagList = $('.selected-ingredients').children('p');
+		let cPage; 
+		let forwardingData;
+		
 		let ingNoArr = new Array();
 		$.each(pTagList, function(index, item){
 			ingNoArr[index] = $(item).data('ingredientno');
 		});
-		let forwardingData = {"ingNoArr" : ingNoArr};
+		forwardingData = {"ingNoArr" : ingNoArr};
+		
+		console.log(ingNoArr);
+		//영상용 pagination
+		if($(this).hasClass('rcpPaging')){
+			if( $("a.rcpCurPage").text() != undefined && $("a.rcpCurPage").text() != 0 && $("a.rcpCurPage").text() != null)  {
+				cPage = Number($("a.rcpCurPage").text());
+			} else{
+				cPage = Number(1);
+			}
+			cPage = cPage + Number($(this).children('a').attr("tabindex"));
+			forwardingData = {"ingNoArr" : ingNoArr, 'cPage' : cPage};
+		} else if(!$(this).hasClass('rcpPaging')){
+			forwardingData = {"ingNoArr" : ingNoArr, 'cPage' : cPage};
+		}	
+	
 		$.ajax({
 			url: contextPath+"/recipe/recipeSerachByIng",
 			dataType: "json",
 			method : "GET",
 			data: forwardingData,
 			success : data =>{
-			
 				console.log(data);
-				
+				let rcpCnt = data.rcpCnt;
 				RList = data.recipeList;
 				/* 검색된 영상 리스트  교체작업*/
 				$("div.Ylist").empty();
@@ -220,14 +240,43 @@ $().ready(function(){
 									'<a href="'+contextPath+'/recipe/recipe-details?recipeNo='+item.recipeNo+'"><img src="https://img.youtube.com/vi/'+item.videoLink+'/mqdefault.jpg" alt="" class="chef-Thumbnail">'+
 									'<div class="forTitle"><p class="chef-Thumbnail-title">'+item.videoTitle+'</p><p><small>(포함된 재료:'+item.includeNo+'개)</small></p></div></a>' +
 									'<div class="row"> <div class="col-8">'+
-									'<img src="'+item.chefProfile+'" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;"> <span class="chef-min-name">'+item.chefNick+'</span></div>' +						
+									'<img src="'+contextPath+'/resources/upload/profile/'+item.chefProfile+'" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;" onerror="${pageContext.request.contextPath }/resources/upload/profile/chef_default1"> <span class="chef-min-name">'+item.chefNick+'</span></div>' +						
 									'<div class="col-4 chef-view-count"> <span><small> 조회수 :'+item.viewCount+'</span> </small></div>'+
 									'</div> </div>';
 					
 					
-					$("div.Ylist").append(eachRecipe);
-				});
-				
+					$("div.Ylist").append(eachRecipe); // 영상리스트 교체작업 끝
+				});// 영상리스트 교체작업 끝
+				//페이징 처리
+				console.log("레시피 페이징 시작", rcpCnt);
+				let totalPage = '<a class="rcpPaging"><small>..totalPage : '+rcpCnt+'</small></a>';
+				let pagingPrevbtn = '<a class="rcpPaging" tabindex="-1" onclick="recipeSearchByIng();" > <i class="material-icons">keyboard_arrow_left</i></a>';
+				let pagingNextbtn = '<a class="rcpPaging" tabindex="1" onclick="recipeSearchByIng();" > <i class="material-icons">keyboard_arrow_right</i></a>';
+				let curPagebtn = '<a class="rcpPaging rcpCurPage" onclick="recipeSearchByIng();" >'+cPage+'</a>'
+				$("div.site-pagination").empty();
+				//페이지바 추가
+				if(rcpCnt == 1 && cPage == 1){
+				//1페이지가 전제일 경우
+					$("div.site-pagination").append(totalPage);
+				}else if(rcpCnt >= 2 && cPage != 1 && ingCnt != cPage){
+				//이전 페이지와 다음 페이지가 모두 존재할 경우
+					$("div.site-pagination").append(pagingPrevbtn);
+					$("div.site-pagination").append(curPagebtn);
+					$("div.site-pagination").append(pagingNextbtn);
+					$("div.site-pagination").append(totalPage);
+				}else if(rcpCnt >= 2 && cPage == 1 ){
+				//다음페이지가 있고 이전페이지가 없는경우
+					$("div.site-pagination").append(curPagebtn);
+					$("div.site-pagination").append(pagingNextbtn);
+					$("div.site-pagination").append(totalPage);
+				}else if(rcpCnt >= 2 && cPage == ingCnt){
+				//이전 페이지만 존재하는 경우
+					console.log("4");
+					$("div.site-pagination").append(pagingPrevbtn);
+					$("div.site-pagination").append(curPagebtn);
+					$("div.site-pagination").append(totalPage);	
+				};	
+				console.log("레시피 페이징 끝========================");
 			},
 			error : (x,s,e) =>{
 				console.log(x,s,e);

@@ -2,7 +2,39 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i,700,700i|Playfair+Display:400,400i,700,700i&display=swap");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+.videoTitle{
+	font-size: 1em;
+	font-weight: bold;
+}
+.Ylist p{
+	text-overflow: ellipsis;
+	min-height: 40px;
+    max-height: 50px;
+}
 
+.chef-Thumbnail-Title{
+	font-weight: bold;
+	font-size: 1em;
+}
+
+.chef_list{
+	padding: 20px;
+}
+
+.forTitle>p{
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	width: 200px;
+	height: 30px;
+}
+
+.btn-section{	
+	border-bottom: 20px;	
+}	
+.spad {	
+    padding-top: 20px;	
+}
 
 .major li {
 	border: black solid 1px;
@@ -25,6 +57,7 @@
 .sub-container {
 	border: indianred solid 5px;
 	border-radius: 20px;
+	min-height: 420px;	
 }
 
 .large-ctg-box {
@@ -34,8 +67,7 @@
 
 .selected-ingredients {
 	margin-top: 15px;
-	height: 80%;
-}
+	min-height: 75%;}
 
 /* 메인 카테고리 관련 */
 .main-ctg-menu {

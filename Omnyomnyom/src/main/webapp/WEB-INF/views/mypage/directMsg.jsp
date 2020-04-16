@@ -4,62 +4,76 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8" />
-<!-- 1:1문의 채팅 css -->
-
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="1:1 문의" name="pageTitle" />
 </jsp:include>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/1on1_chat.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/chef-list.css"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/chef-list.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mall_delivery_info.css" />
 	
+
 <!-- WebSocket:sock.js CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
 
 <!-- WebSocket: stomp.js CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
 
-<!-- Event Details Section -
-<section class="event-details-section spad overflow-hidden">
-	<div class="tm-section-2">
-		<div class="container">
-			<div class="row">
-				<div class="col text-center">
-					<h2 class="tm-section-title">1:1문의사항</h2>
-					<p class="tm-color-white tm-section-subtitle">불편하신 사항에 대해 글을
-						남겨주시면 답변을 남겨드리겠습니다</p>
-				</div>
-			</div>
-		</div>
-	</div>
+<script>
+const memberId = '${memberLoggedIn.memberId}';
+   
+//웹소켓 선언 및 연결
+//1.최초 웹소켓 생성 url: /onn
+let socket = new SockJS('<c:url value="/chat" />');
+/* let socket = new SockJS('/onn/chat'); */
+let chatClient = Stomp.over(socket);
+
+let sessionId;
+chatClient.connect({}, function(frame) {
+	console.log('connected stomp over sockjs');
+	console.log(frame);
+
+	//(미사용)websocket sessionId 값 추출하기
+	let url = chatClient.ws._transport.url;
+	url = url.replace("ws://"+location.host+"/${pageContext.request.contextPath}/chat/","");
+	url = url.replace(/^\d+\//,"");
+	url = url.replace("/websocket","");
+	sessionId = url;
+
+	//2. stomp에서는 구독개념으로 세션을 관리한다. 핸들러 메소드의 @SendTo어노테이션과 상응한다.
+	//전체공지
+	chatClient.subscribe('/notice', function(message) {
+		console.log("receive from subscribe /notice :", message);
+
+		//notice 뱃지 보임 처리
+		$("#noticeLink").fadeIn(500);
+		//전역변수 notice에 보관
+		notice = JSON.parse(message.body);
+	});
 
 
+	//3. 개인공지 구독신청
+	chatClient.subscribe('/notice/'+memberId, function(message) {
+		console.log("receive from subscribe /notice/"+memberId+" :", message);
 
-	<div class="tm-section tm-position-relative">
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
-			preserveAspectRatio="none" class="tm-section-down-arrow">
-                    <polygon fill="#4949e7" points="0,0  100,0  50,60"></polygon>
-                </svg>
-	</div>
-</section>
-<!-- Event Details Section end -->
-<style>
-.chat_thumbnail{
-	border-radius: 50%;
-    max-width: 45%;
-}
-</style>
+		//notice 뱃지 보임 처리
+		$("#noticeLink").fadeIn(500);
+		//전역변수 notice에 보관
+		notice = JSON.parse(message.body);
+	});
+
+});
+</script>
 <div class="container">
 	<div class="section">
 		<div class="row">
 
 			<div class="col-2 side_nav">
-				<a href="${pageContext.request.contextPath}/mypage/main"><p class="nav_text selected_nav">내 정보보기</p></a>
+				<a href="${pageContext.request.contextPath}/mypage/main"><p class="nav_text ">내 정보보기</p></a>
 				<a href="${pageContext.request.contextPath}/mypage/onedayList"><p class="nav_text ">예약목록</p></a>
 				<a href="${pageContext.request.contextPath}/mypage/buyList"><p class="nav_text ">구매목록</p></a>
-				<a href="${pageContext.request.contextPath}/mypage/qnaMsg"><p class="nav_text ">1:1 문의</p></a>
+				<a href="${pageContext.request.contextPath}/mypage/qnaMsg"><p class="nav_text selected_nav">1:1 문의</p></a>
 				<a href="${pageContext.request.contextPath}/mypage/scrapList"><p class="nav_text">스크랩 목록</p></a>
 				<a href="${pageContext.request.contextPath}/chef/chefInsert"><p class="nav_text">셰프신청</p></a>
 				<a href="${pageContext.request.contextPath}/mypage/dingdongList"><p class="nav_text">알림목록</p></a>
@@ -92,11 +106,13 @@
 			<div class="chat">
 				<div class="chat-header clearfix">
 					<img
-						src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg"
-						alt="avatar" />
+						src="${pageContext.request.contextPath }/resources/upload/profile/${chef.chefProfile}"
+						alt="avatar"
+						class="chat_thumbnail"
+						style="width: 55px"/>
 		
 					<div class="chat-about">
-						<div class="chat-with">상대방 닉네임</div>
+						<div class="chat-with">${chef.chefNickName }</div>
 						<div class="chat-num-messages" ><span id="msg-count">${fn:length(chatList)}</span> Message</div>
 					</div>
 					<!-- <i class="fa fa-star"></i> -->
@@ -124,7 +140,7 @@
 								<li>
 									<div class="message-data">
 										<span class="message-data-name"><i
-											class="fa fa-circle online"></i> ${chat.memberId }</span> <span
+											class="fa fa-circle online"></i> ${chat.memberNick }</span> <span
 											class="message-data-time">${chat.time }</span>
 									</div>
 									<div class="message my-message">${chat.msg }</div>
