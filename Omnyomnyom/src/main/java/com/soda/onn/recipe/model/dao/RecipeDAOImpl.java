@@ -240,8 +240,11 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	}
 
 	@Override
-	public List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey) {
-		return sqlSession.selectList("recipe.recipeSearchByMenu", searchKey);
+	public List<RecipeWithIngCnt> recipeSearchByMenu(Map<String, Object> maps, int cPage, int NUMPERPAGE) {
+		int offset = (cPage-1)*NUMPERPAGE;
+		int limit = NUMPERPAGE;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSession.selectList("recipe.recipeSearchByMenu", maps, rowBounds);
 	}
 
 	@Override
@@ -264,6 +267,10 @@ public class RecipeDAOImpl  implements RecipeDAO{
 	public int selectRecipeCnt(Map<String, Object> maps) {
 		return sqlSession.selectOne("recipe.selectRecipeCnt", maps);
 	}
-
+  
+	@Override
+	public int rcpCntByMenu(Map<String, Object> maps) {
+		return sqlSession.selectOne("recipe.rcpCntByMenu", maps);
+	}
 
 }

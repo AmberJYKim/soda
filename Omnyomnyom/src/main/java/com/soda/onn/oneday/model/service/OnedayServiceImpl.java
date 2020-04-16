@@ -75,12 +75,9 @@ public class OnedayServiceImpl implements OnedayService {
 	}
 
 
-
-
-
 	@Override
-	public List<Oneday> selectDateList(Map<String, String> sec) {
-		List<Oneday> list = onedayDAO.selectDateList(sec);
+	public List<Oneday> onedaySearch(Map<String, String> sec) {
+		List<Oneday> list = onedayDAO.onedaySearch(sec);
 		
 		for (Oneday one : list) {
 			one.setOnedayTimeList(onedayDAO.selectTimeList(one.getOnedayclassNo()));
@@ -205,6 +202,7 @@ public class OnedayServiceImpl implements OnedayService {
 		// TODO Auto-generated method stub
 		return onedayDAO.popList();
 	}
+
 
 
 }

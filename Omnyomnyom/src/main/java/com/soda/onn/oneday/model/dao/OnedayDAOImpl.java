@@ -67,9 +67,10 @@ public class OnedayDAOImpl implements OnedayDAO{
 		return sqlSession.selectList("oneday.selectTimeList", onedayclassNo);
 	}
 
+	
 	@Override
-	public List<Oneday> selectDateList(Map<String, String> sec) {
-		return sqlSession.selectList("oneday.selectDateList", sec);
+	public List<Oneday> onedaySearch(Map<String, String> sec) {
+		return sqlSession.selectList("oneday.onedaySearch", sec);
 	}
 
 	@Override
@@ -151,6 +152,8 @@ public class OnedayDAOImpl implements OnedayDAO{
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("oneday.popList");
 	}
+
+
 
 
 

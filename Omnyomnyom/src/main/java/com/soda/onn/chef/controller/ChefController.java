@@ -262,7 +262,6 @@ public class ChefController {
 		List<Recipe> popList = new ArrayList<Recipe>();
 		popList.addAll(recipeList);
 		
-		log.debug("RecipeList = {}",recipeList);
 		
 		Collections.sort(popList);
 		mav.addObject("onedayList",onedayList);

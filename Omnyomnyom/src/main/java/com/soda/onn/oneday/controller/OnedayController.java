@@ -109,8 +109,7 @@ public class OnedayController {
 		Chef chef = chefservice.chefSelectOne(MemberNickName);
 		String chefId = chef.getChefId();
 		List<Oneday> onedayList = chefservice.onedaySelectAll(chefId);
-		log.debug("onedayList = {}",onedayList);
-		
+
 		mav.addObject("onedayList",onedayList);
 		return mav;
 	}
@@ -127,13 +126,9 @@ public class OnedayController {
 		
 		Oneday oneday = onedayService.selectOne(onedayclassNo);
 		
-		log.debug("oneday@controller(update)/selectOne={}", oneday);
-		
-		
 		List<OnedayTime> list = onedayService.selectTimeList(onedayclassNo);
 		
 		
-		log.debug("update@list={}", list);
 		
 		mav.addObject("memberId",memberId);
 		mav.addObject("list", list);
@@ -267,11 +262,6 @@ public class OnedayController {
 						@RequestParam(value="cPage", defaultValue="1") int cPage,
 						HttpServletRequest request) {
 		
-		System.out.println("메뉴=" + menuList);
-		System.out.println("일정 =" + onedayTimeDate);
-		System.out.println("주소 = "+ detailedAddr);
-		System.out.println("클래스 이름 = " + onedayName);
-		
 		Map<String, String> sec = new HashMap<>();
 		sec.put("menuList", menuList);
 		sec.put("detailedAddr", detailedAddr);
@@ -281,7 +271,7 @@ public class OnedayController {
 		
 		List<Chef> chefList = chefservice.selectChefAllList();
 		List<Member> memberList = memberService.selectMemberList(rowBounds);
-		List<Oneday> list = onedayService.selectDateList(sec);
+		List<Oneday> list = onedayService.onedaySearch(sec);
 		
 		
 		mav.addObject("chefList", chefList);

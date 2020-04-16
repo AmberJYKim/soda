@@ -83,7 +83,7 @@ public interface RecipeService {
 
 	List<Ingredient> selectPopIngredient(Map<String, Object> maps);
 
-	List<RecipeWithIngCnt> recipeSearchByMenu(String searchKey);
+	List<RecipeWithIngCnt> recipeSearchByMenu(Map<String, Object> maps, int cPage, int nUMPERPAGE);
 	
 	List<String> selectMenuSubCtg(String mainCtg);
 
@@ -96,5 +96,7 @@ public interface RecipeService {
 	int ingredientInsert(Ingredient ingredient);
 
 	int selectRecipeCnt(Map<String, Object> maps);
+
+	int rcpCntByMenu(Map<String, Object> maps);
 
 }
