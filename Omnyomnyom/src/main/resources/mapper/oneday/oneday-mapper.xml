@@ -79,7 +79,8 @@ order by onedayclass_no desc
 
 <select id="popList" resultType="Oneday">
 select * from tb_onedayclass odn left join 
-(select avg(review_score) review_score, onedayclass_no from tb_oneday_review  group by onedayclass_no) ocn 
+(select avg(review_score) review_score, onedayclass_no from tb_oneday_review  
+group by onedayclass_no) ocn 
 on  odn.onedayclass_no = ocn.onedayclass_no
 order by review_score
 </select>
@@ -177,7 +178,9 @@ order by onedayclass_no desc
 
 
 <select id="selectTimeList" resultMap="timeCollection">
-	select onedaytime_no, onedayclass_no, to_char(onedaytime_date,'YYYY/MM/DD HH24:Mi') as time
+	select onedaytime_no, 
+		   onedayclass_no, 
+		   to_char(onedaytime_date,'YYYY/MM/DD HH24:Mi') as time
 	from tb_onedayclasstime
 	where onedayclass_no = #{onedayclassNo}
 </select>

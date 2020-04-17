@@ -8,6 +8,14 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"> 
 	<jsp:param value="안녕 옴뇸뇸!" name="pageTitle"/>
 </jsp:include>
+<style>
+.onedaycc h4{
+	padding: 0 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+</style>
 
 	<link href="${pageContext.request.contextPath }/resources/css/class-manager.css" rel="stylesheet" type="text/css">
     <!-- 원데이 클래스 관리 -->
@@ -53,7 +61,7 @@
 				                            	 <img src="${pageContext.request.contextPath }/resources/images/onedayclassdefualtImg.PNG" alt="클래스 사진">
 				                            </c:if>
 				                          </div>
-			                            <div class="ci-text">
+			                            <div class="ci-text onedaycc">
 			                                <h4>${oneday.onedayName}</h4>
 			                                <c:if test="${not empty oneday.onedayTimeList}">
 			                                <c:forEach items="${oneday.onedayTimeList }" var="tl">

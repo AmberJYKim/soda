@@ -9,6 +9,15 @@
 </jsp:include>
 <!--  -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/chefpage.css">
+<style>
+.onedaycc h4{
+	padding: 0 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+</style>
+    
     <script>
         var tag = document.createElement('script'); //이거 뭔지 모름
         tag.src = "https://www.youtube.com/iframe_api"; //api 주소
@@ -307,7 +316,7 @@
 			                            <div class="ci-img">
 			                                <img src="${pageContext.request.contextPath }/resources/upload/onedayclass/${oneday.onedayImg}" alt="클래스 사진">
 			                            </div>
-			                            <div class="ci-text">
+			                            <div class="ci-text onedaycc">
 			                                <h4>${oneday.onedayName}</h4>
 			                                <c:if test="${not empty oneday.onedayTimeList}">
 			                                <c:forEach items="${oneday.onedayTimeList }" var="tl">
