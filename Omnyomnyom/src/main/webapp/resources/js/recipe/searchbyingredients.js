@@ -133,19 +133,20 @@ $().ready(function(){
 				cPage = data.cPage
 				/* 재료 불러오기 및 교체작업*/
 				$.each(ingList, function(index, item){
+					
+					let onscr = "this.src='"+contextPath+"/resources/images/ingredient/ingredient_default.png '";
 					if(index < 6){
 						let ingredients =   '<div class="col-md-2 inner '+item.ingredientName+'">'+
-											'<img src="'+contextPath+'/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" data-ingredientno="'+item.ingredientNo+'" class="ingredimg '+item.ingredientName+'" >'+
+											'<img src="'+contextPath+'/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" data-ingredientno="'+item.ingredientNo+'" class="ingredimg '+item.ingredientName+'"  onerror="this.src=\'onn/resources/images/ingredient/ingredient_default.png\';"  />'+
 											'<p>'+item.ingredientName+'</p>'+
 											'</div>';
 						$(".firstline").append(ingredients);
 					}
 					else if (index >=6){
 						let ingredients =	'<div class="col-md-2 inner">'+
-											'<img src="'+contextPath+'/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" data-ingredientno="'+item.ingredientNo+'" class="ingredimg '+item.ingredientName+'">'+
+											'<img src="'+contextPath+'/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" data-ingredientno="'+item.ingredientNo+'" class="ingredimg '+item.ingredientName+'"  onerror="this.src=\'onn/resources/images/ingredient/ingredient_default.png\'" />'+
 											'<p>'+item.ingredientName+'</p>'+
 											'</div>';
-						
 						$(".secondline").append(ingredients);
 					} 
 				});
