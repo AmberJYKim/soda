@@ -20,64 +20,25 @@
 <!-- WebSocket: stomp.js CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
 
-<script>
-const memberId = '${memberLoggedIn.memberId}';
-   
-//웹소켓 선언 및 연결
-//1.최초 웹소켓 생성 url: /onn
-let socket = new SockJS('<c:url value="/chat" />');
-/* let socket = new SockJS('/onn/chat'); */
-let chatClient = Stomp.over(socket);
-
-let sessionId;
-chatClient.connect({}, function(frame) {
-	console.log('connected stomp over sockjs');
-	console.log(frame);
-
-	//(미사용)websocket sessionId 값 추출하기
-	let url = chatClient.ws._transport.url;
-	url = url.replace("ws://"+location.host+"/${pageContext.request.contextPath}/chat/","");
-	url = url.replace(/^\d+\//,"");
-	url = url.replace("/websocket","");
-	sessionId = url;
-
-	//2. stomp에서는 구독개념으로 세션을 관리한다. 핸들러 메소드의 @SendTo어노테이션과 상응한다.
-	//전체공지
-	chatClient.subscribe('/notice', function(message) {
-		console.log("receive from subscribe /notice :", message);
-
-		//notice 뱃지 보임 처리
-		$("#noticeLink").fadeIn(500);
-		//전역변수 notice에 보관
-		notice = JSON.parse(message.body);
-	});
-
-
-	//3. 개인공지 구독신청
-	chatClient.subscribe('/notice/'+memberId, function(message) {
-		console.log("receive from subscribe /notice/"+memberId+" :", message);
-
-		//notice 뱃지 보임 처리
-		$("#noticeLink").fadeIn(500);
-		//전역변수 notice에 보관
-		notice = JSON.parse(message.body);
-	});
-
-});
-</script>
 <div class="container">
 	<div class="section">
 		<div class="row">
-
-			<div class="col-2 side_nav">
-				<a href="${pageContext.request.contextPath}/mypage/main"><p class="nav_text ">내 정보보기</p></a>
-				<a href="${pageContext.request.contextPath}/mypage/onedayList"><p class="nav_text ">예약목록</p></a>
-				<a href="${pageContext.request.contextPath}/mypage/buyList"><p class="nav_text ">구매목록</p></a>
-				<a href="${pageContext.request.contextPath}/mypage/qnaMsg"><p class="nav_text selected_nav">1:1 문의</p></a>
-				<a href="${pageContext.request.contextPath}/mypage/scrapList"><p class="nav_text">스크랩 목록</p></a>
-				<a href="${pageContext.request.contextPath}/chef/chefInsert"><p class="nav_text">셰프신청</p></a>
-				<a href="${pageContext.request.contextPath}/mypage/dingdongList"><p class="nav_text">알림목록</p></a>
-			</div>
+			<c:if test="${memberLoggedIn.memberRoll eq 'A' }">
+				<jsp:include page="/WEB-INF/views/common/adminSidenav.jsp">
+					<jsp:param value="관리자 정보" name="sidenav"/>
+				</jsp:include>
+			</c:if>
+			<c:if test="${memberLoggedIn.memberRoll ne 'A' }">
+				<div class="col-2 side_nav">
+					<a href="${pageContext.request.contextPath}/mypage/main"><p class="nav_text ">내 정보보기</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/onedayList"><p class="nav_text ">예약목록</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/buyList"><p class="nav_text ">구매목록</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/qnaMsg"><p class="nav_text selected_nav">1:1 문의</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/scrapList"><p class="nav_text">스크랩 목록</p></a>
+					<a href="${pageContext.request.contextPath}/chef/chefInsert"><p class="nav_text">셰프신청</p></a>
+					<a href="${pageContext.request.contextPath}/mypage/dingdongList"><p class="nav_text">알림목록</p></a>
+				</div>
+			</c:if>
 			<div class="col-2 side_nav">
 				<c:forEach items="${recentList }" var="msg">
 				<div class="chat_thumbnail_box">
@@ -105,14 +66,24 @@ chatClient.connect({}, function(frame) {
 		
 			<div class="chat">
 				<div class="chat-header clearfix">
+					<c:if test="${memberLoggedIn.memberRoll eq 'A' }">
 					<img
 						src="${pageContext.request.contextPath }/resources/upload/profile/${chef.chefProfile}"
-						alt="avatar"
 						class="chat_thumbnail"
-						style="width: 55px"/>
+						style="width: 55px"
+						onerror='this.src="${pageContext.request.contextPath }/resources/images/member_default.png"'/>
+					</c:if>
+					<c:if test="${memberLoggedIn.memberRoll ne 'A' }">
+					<img
+						src="${pageContext.request.contextPath }/resources/upload/profile/${chef.chefProfile}"
+						class="chat_thumbnail"
+						style="width: 55px"
+						onerror='this.src="${pageContext.request.contextPath }/resources/images/member_default.png"'/>
+					</c:if>
+						
 		
 					<div class="chat-about">
-						<div class="chat-with">${chef.chefNickName }</div>
+						<div class="chat-with">${chef.chefNickName ne chef.chefNickName }</div>
 						<div class="chat-num-messages" ><span id="msg-count">${fn:length(chatList)}</span> Message</div>
 					</div>
 					<!-- <i class="fa fa-star"></i> -->
@@ -125,10 +96,6 @@ chatClient.connect({}, function(frame) {
 							<c:if test="${chat.memberId eq memberLoggedIn.memberId }">
 								<li class="clearfix">
 									<div class="message-data align-right">
-										<span class="message-data-name"></span>
-										<i 	class="fa fa-circle me"></i>
-										&nbsp;
-										&nbsp;  
 										<span class="message-data-time">${chat.time }</span> 
 				
 									</div>
@@ -233,8 +200,15 @@ chatClient.connect({}, function(frame) {
 
 
 <script>
-
+const memberId = '${memberLoggedIn.memberId}';
 const chatId = '${chatId}';
+
+//웹소켓 선언 및 연결
+//1.최초 웹소켓 생성 url: /onn
+let socket = new SockJS('<c:url value="/chat" />');
+let chatClient = Stomp.over(socket);
+
+chatClient.connect();
 
 /**
  * 각 페이지에서 작성하면, chat.js의 onload함수에서 호출함.
@@ -246,7 +220,6 @@ function chatSubscribe(){
 	//페이지별로 구독신청 처리
 	let iii = 1;
 	let connectionDone = false;
-	console.log(iii%2);
 	let intervalId = setInterval(()=>{
 		if(connectionDone == true)
 			clearInterval(intervalId);
@@ -255,13 +228,9 @@ function chatSubscribe(){
 			
 			//stomp에서는 구독개념으로 세션을 관리한다. 핸들러 메소드의 @SendTo어노테이션과 상응한다.
 			chatClient.subscribe('/chat/'+chatId, function(message) {
-
-				console.log("receive from subscribe /chat/"+chatId+":", message);
-				let messsageBody = JSON.parse(message.body);
 				
-				console.log('--------------------');
-				console.log(messsageBody);
-				console.log('--------------------');
+				let messsageBody = JSON.parse(message.body);
+				let nick = messsageBody.memberNick == null?'심관리자':messsageBody.memberNick;
 				if(iii%2 != 0){
 				if(memberId == messsageBody.memberId){
 				    $("#msg-target").append(''
@@ -274,11 +243,10 @@ function chatSubscribe(){
 				    $("#msg-target").append(''
 						+'<li>'
 						+'<div class="message-data">'
-						+'<span class="message-data-name"><i class="fa fa-circle online"></i>'+messsageBody.memberId+'</span>'
+						+'<span class="message-data-name"><i class="fa fa-circle online"></i>'+nick+'</span>'
 						+'<span class="message-data-time">'+dateTransform(messsageBody.time)+'</span>'
 						+'</div> <div class="message my-message">'+messsageBody.msg+'</div>'
 						+'</li>'); 
-					
 				}
 				scrollTop();
 				$("#msg-count").text(Number($("#msg-count").text())+1);
@@ -286,13 +254,10 @@ function chatSubscribe(){
 				iii++;
 			});
 			connectionDone = true;
-			
 		}	
-		
-		
 	},1000);
-	
 }
+
 function dateTransform(time){
 	
 	var now = new Date(Number(time));

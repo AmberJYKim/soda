@@ -151,4 +151,9 @@ public class MallServiceImpl implements MallService {
 		return mallDAO.crCategory(cr);
 	}
 
+	@Override
+	public List<BuyHistory> selectBuyHistoryList(String memberId, RowBounds rowBounds) {
+		return mallDAO.selectBuyHistoryList(memberId, rowBounds);
+	}
+
 }

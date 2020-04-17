@@ -27,33 +27,32 @@
 					<br>
 					<table class="table">
 						<thead>
-						  <tr>
-							<th>번호 </th>
-							<th>레시피</th>
-							<th>셰프</th>
-							<th>스크랩 날짜</th>
-							<th>스크랩 메모</th>
+						  <tr class="row">
+							<th class="col-4">레시피</th>
+							<th class="col-2">셰프</th>
+							<th class="col-2">스크랩 날짜</th>
+							<th class="col-2">스크랩 메모</th>
+							<td class="col"></td>
 						  </tr>
 						</thead>
 						<tbody>
 							<c:forEach var="scrap" varStatus="vs" items="${list }">
-							      <tr class="user-select-area">
-										<th scope="row">${scrap.recipeNo }</th>
-										<td class="user-id">${scrap.videoTitle}</td>
-										<td>${scrap.chefNick }</td>
-										<td>${scrap.regDate }</td>
-										<td><input type="text" value="${scrap.meMo }" id="scrapMemo${vs.count }"/></td>
-				    					<td><button type="submit" class="deleteScrap"  onclick="updateScrap(${scrap.recipeNo},'scrapMemo${vs.count }');">메모 수정</button></td>
-				    					<td><button type="button" class="deleteScrap" onclick="deleteScrap(${scrap.recipeNo});">스크랩 삭제</button></td>
+							      <tr class="user-select-area row">
+										<td class="col-4 user-id">${scrap.videoTitle}</td>
+										<td class="col-2">${scrap.chefNick }</td>
+										<td class="col-2">${scrap.regDate }</td>
+										<td class="col-2"><input type="text" value="${scrap.meMo }" id="scrapMemo${vs.count }"/></td>
+				    					<td class="col"><button type="submit" class=" btn btn-primary"  onclick="updateScrap(${scrap.recipeNo},'scrapMemo${vs.count }');">수정</button></td>
+				    					<td class="col"><button type="button" class="btn btn-danger" onclick="deleteScrap(${scrap.recipeNo});">삭제</button></td>
 								  </tr>
 							 </c:forEach>
 						</tbody>
 					  </table>
-					  <div class="site-pagination pt-3.5">
+					  <!-- <div class="site-pagination pt-3.5">
 						<a href="#" class="active">1</a>
 						<a href="#">2</a>
 						<a href="#"><i class="material-icons">keyboard_arrow_right</i></a>
-					</div>
+					</div> -->
 
 				</div>
 			</div>

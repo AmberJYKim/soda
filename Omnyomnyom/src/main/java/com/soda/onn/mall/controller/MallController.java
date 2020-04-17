@@ -222,8 +222,19 @@ public class MallController {
   		return "mall/productInsert";
   	}
   	
-  	@GetMapping("/paymentResult")
-  	public void paymentResult() {}
+  	@GetMapping("/result")
+  	public void paymentResult() {
+  	}
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
   
   
 }

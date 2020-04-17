@@ -256,10 +256,10 @@ $(document).ready(function(){
                                     <a href="">아이디/비밀번호 찾기</a>
                                     <button type="submit">옴뇸뇸 로그인</button>
                                     <div class="td-social">
-                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                      <!--   <a href="#"><i class="fa fa-facebook"></i></a>
                                         <a href="#"><i class="fa fa-instagram"></i></a>
                                         <a href="#"><i class="fa fa-twitter"></i></a>
-                                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                                        <a href="#"><i class="fa fa-linkedin"></i></a> -->
                                     </div>
                                 </form>
                             </div>
@@ -394,7 +394,7 @@ $(document).ready(function(){
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/admin/qnaMsg"> 
+										<a href="${pageContext.request.contextPath }/chat/msg/sims1"> 
 										<p>문의내역</p>
 										</a>
 									</div>
