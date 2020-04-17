@@ -223,7 +223,8 @@ public class MallController {
   	}
   	
   	@GetMapping("/result")
-  	public void paymentResult() {
+  	public String paymentResult() {
+  		return "mall/paymentResult";
   	}
   	
   	
