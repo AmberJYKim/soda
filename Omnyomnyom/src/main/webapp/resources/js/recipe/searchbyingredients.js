@@ -135,14 +135,14 @@ $().ready(function(){
 				$.each(ingList, function(index, item){
 					if(index < 6){
 						let ingredients =   '<div class="col-md-2 inner '+item.ingredientName+'">'+
-											'<img src="'+contextPath+'/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" data-ingredientno="'+item.ingredientNo+'" class="ingredimg '+item.ingredientName+'" onerror="this.src=\''+contextPath+'/resources/images/ingredient/ingredient_default.png\'">'+
+											'<img src="'+contextPath+'/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" data-ingredientno="'+item.ingredientNo+'" class="ingredimg '+item.ingredientName+'" >'+
 											'<p>'+item.ingredientName+'</p>'+
 											'</div>';
 						$(".firstline").append(ingredients);
 					}
 					else if (index >=6){
 						let ingredients =	'<div class="col-md-2 inner">'+
-											'<img src="'+contextPath+'/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" data-ingredientno="'+item.ingredientNo+'" class="ingredimg '+item.ingredientName+'" onerror="this.src=\''+contextPath+'/resources/images/ingredient/ingredient_default.png\'">'+
+											'<img src="'+contextPath+'/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" data-ingredientno="'+item.ingredientNo+'" class="ingredimg '+item.ingredientName+'">'+
 											'<p>'+item.ingredientName+'</p>'+
 											'</div>';
 						
@@ -235,11 +235,11 @@ $().ready(function(){
 				$("div.Ylist").empty();
 				$.each(RList, function(index, item){
 					let eachRecipe = '<div class="col-xs-6 col-sm-3 placeholder chef_list">' +
-					    				'<img src="'+contextPath+'/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" data-ingredientno="'+item.ingredientNo+'" class="ingredimg '+item.ingredientName+'"  onerror="this.src=\' '+contextPath+'/resources/images/ingredient/Ingredient_default.png\'"  >'+
+									'<a href="'+contextPath+'/recipe/recipe-details?recipeNo='+item.recipeNo+'"><img src="https://img.youtube.com/vi/'+item.videoLink+'/mqdefault.jpg" alt="" class="chef-Thumbnail">'+
 									'<div class="forTitle"><p class="chef-Thumbnail-title">'+item.videoTitle+'</p><p><small>(포함된 재료:'+item.includeNo+'개)</small></p></div></a>' +
 									'<div class="row"> <div class="col-8">'+
-									'<img src="'+contextPath+'/resources/images/ingredient/'+item.engPrCategory+'/'+ item.engCdCategory +'/'+item.ingFilename+'" alt="'+item.ingredientName+'" data-ingredientno="'+item.ingredientNo+'" class="ingredimg '+item.ingredientName+'"  onerror="this.src=\' '+contextPath+'/resources/images/ingredient/Ingredient_default.png\'"  >'+
-					    				'<div class="col-4 chef-view-count"> <span><small> 조회수 :'+item.viewCount+'</span> </small></div>'+
+									'<img src="'+contextPath+'/resources/upload/profile/'+item.chefProfile+'" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;" onerror="${pageContext.request.contextPath }/resources/upload/profile/chef_default1"> <span class="chef-min-name">'+item.chefNick+'</span></div>' +						
+									'<div class="col-4 chef-view-count"> <span><small> 조회수 :'+item.viewCount+'</span> </small></div>'+
 									'</div> </div>';
 					
 					
