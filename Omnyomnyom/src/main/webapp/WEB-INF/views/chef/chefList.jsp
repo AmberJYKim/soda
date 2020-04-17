@@ -49,7 +49,8 @@
           	                   '<p class="chef-Thumbnail-title">'+data[i].videoTitle+'</p></a>'+
           	                    '<div class="row">'+
           	                        '<div class="col-8">'+
-          	                            '<img src="${pageContext.request.contextPath }/resources/upload/profile/'+data[i].chefId+'.jpg" class="" alt="" style="width: 40px; height: 40px; border-radius: 50%;">'+
+          	                            '<img src="${pageContext.request.contextPath }/resources/upload/profile/'+data[i].chefId+'.jpg" class="" alt="" '+
+          	                            'style="width: 40px; height: 40px; border-radius: 50%;">'+
           	                            '<span class="chef-min-name">'+data[i].chefId +'</span>'+
           	                        '</div>'+
           	                        '<div class="col-4 chef-view-count">'+
