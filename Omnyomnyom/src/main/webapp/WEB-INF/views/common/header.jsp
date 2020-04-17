@@ -394,7 +394,7 @@ $(document).ready(function(){
 								<div class="insta-img">
 									<img src="img/infor/back.PNG" alt="">
 									<div class="insta-hover">
-										<a href="${pageContext.request.contextPath }/admin/qnaMsg"> 
+										<a href="${pageContext.request.contextPath }/chat/msg/sims1"> 
 										<p>문의내역</p>
 										</a>
 									</div>

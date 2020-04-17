@@ -31,23 +31,21 @@
 <select id="selectReservationListUser" resultMap="ReservationListMap">
 	select
 		res.reservation_no,
-		od.oneday_name,
-		odct.onedaytime_date,
-		res.personnel,
-		od.oneday_price*res.personnel,
-		res.CANCEL_CHECK,
-		od.oneday_price
+        (select oneday_name from tb_onedayclass where res.onedayclass_no = onedayclass_no) oneday_name,
+		(select onedaytime_date from tb_onedayclasstime where res.ONEDAYTIME_NO = ONEDAYTIME_NO) onedaytime_date,
+        personnel,
+		RES_PRICE,
+		CANCEL_CHECK,
+		(select oneday_price from tb_onedayclass where res.onedayclass_no = onedayclass_no) price
 	from
-		tb_onedayclass od left join tb_onedayclasstime odct on od.onedayclass_no = odct.onedayclass_no
-                          left join tb_reservation res on odct.onedayclass_no = res.onedayclass_no
-   
+    		tb_reservation res
    <where>
 		<if test="value != null">
 			res.member_id = #{reserMemberId}
 		</if>
 	</where>
 </select>
-
+	
 <select id="selectOne" resultType="Oneday">
 select * from
 tb_onedayclass
@@ -79,7 +77,8 @@ order by onedayclass_no desc
 
 <select id="popList" resultType="Oneday">
 select * from tb_onedayclass odn left join 
-(select avg(review_score) review_score, onedayclass_no from tb_oneday_review  group by onedayclass_no) ocn 
+(select avg(review_score) review_score, onedayclass_no from tb_oneday_review  
+group by onedayclass_no) ocn 
 on  odn.onedayclass_no = ocn.onedayclass_no
 order by review_score
 </select>
@@ -177,7 +176,9 @@ order by onedayclass_no desc
 
 
 <select id="selectTimeList" resultMap="timeCollection">
-	select onedaytime_no, onedayclass_no, to_char(onedaytime_date,'YYYY/MM/DD HH24:Mi') as time
+	select onedaytime_no, 
+		   onedayclass_no, 
+		   to_char(onedaytime_date,'YYYY/MM/DD HH24:Mi') as time
 	from tb_onedayclasstime
 	where onedayclass_no = #{onedayclassNo}
 </select>

@@ -78,10 +78,6 @@ public class OnedayController {
 		List<Chef> chefList = chefservice.selectChefAllList();
 		List<Oneday> popList = onedayService.popList();
 		
-//		List<Member> memberList = memberService.selectMemberList(rowBounds);
-		
-//		mav.addObject("memberList", memberList);
-		
 		mav.addObject("popList", popList);
 		mav.addObject("chefList", chefList);
 		mav.addObject("reviewList", reviewList);
@@ -127,8 +123,6 @@ public class OnedayController {
 		Oneday oneday = onedayService.selectOne(onedayclassNo);
 		
 		List<OnedayTime> list = onedayService.selectTimeList(onedayclassNo);
-		
-		
 		
 		mav.addObject("memberId",memberId);
 		mav.addObject("list", list);
@@ -284,19 +278,10 @@ public class OnedayController {
 //	원데이 클래스 디테일뷰 로 이동 
 	@GetMapping("/oneday_detail")
 	public void detail(@RequestParam(value="onedayclassNo") int onedayclassNo, Model model) {
-		
-		log.debug("oneday_detail @클래스 no = "+onedayclassNo);
-		
+	
 		Oneday oneday = onedayService.selectOne(onedayclassNo);
-		log.debug("controller@oneday/selectOne={}", oneday);
-		
-		
 		List<OnedayTime> list = onedayService.selectTimeList(onedayclassNo);
-		
 		List<OnedayReview> ReviewList = onedayService.selectReviewList(onedayclassNo);
-		
-		log.debug("list={}", list);
-
 		model.addAttribute("ReviewList", ReviewList);
 		model.addAttribute("oneday", oneday);
 		model.addAttribute("list", list);
@@ -319,7 +304,7 @@ public class OnedayController {
 			
 //		reservation.setReserMemberId(memberId);
 		Oneday oday= onedayService.selectOne(onedayclassNo);
-				
+		Oneday one = onedayService.selectOne(onedayclassNo);		
 		reservationrequest.setReserMemberId(memberId);
 		reservationrequest.setOnedayclassNo(onedayclassNo);
 		reservationrequest.setOnedaytimeNo(onedayTimeNo);
@@ -331,6 +316,7 @@ public class OnedayController {
 		
 		session.setAttribute("oneday", oday);
 		
+		mav.addObject("one", one);
 		mav.addObject("reservationrequest", reservationrequest);
 		
 		return mav;

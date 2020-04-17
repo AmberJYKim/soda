@@ -46,7 +46,7 @@
 	        			msg += ',확인 버튼을 눌러 예약 확인페이지로 이동해주세요';
   		        		paymentResult = true;
 	        			alert(msg);
-	        			insertReserv();
+	        			updatePaidData();
 	        			
       		        } else {
       		            var msg = '결제에 실패하였습니다.';
@@ -57,8 +57,8 @@
       		        }
       		       
       	 		}); //아임포트 끝 
-	        	updatePaidData();
-           }); //click
+	        
+       	    }); //click
 		
            
            function updatePaidData(){
@@ -71,10 +71,10 @@
       	      	$.ajax({
        	      	url: "${pageContext.request.contextPath }/mall/updatePaidData",
 				method : "Post",
-				data : sendData,
+				data : sendData,	
 				success : data =>{
 					alert("결제 확인 페이지로 이동합니다.");
-        			//location.href = "${pageContext.request.contextPath }/mall/result";
+        			location.href = "${pageContext.request.contextPath }/mall/result";
 				},
 				error : (x,s,e) =>{
 					console.log(x,s,e);
@@ -174,11 +174,15 @@
 							</div>
 							<div class="col order">
 							<%-- 	<a href="${pageContext.request.contextPath }/mall/delivery"> --%>
-								<button type="button" class="btn btn-primary mvToSelectedIngMall paymentbtn">집으로 주문하기</button>
-								</a>
+								<!-- <button type="button" class="btn btn-primary mvToSelectedIngMall paymentbtn">집으로 주문하기</button>
+								</a> -->
 							</div>
 						</div>
 						<div class="row">
+						<br />
+						<br />
+						<br />
+						<br />
 						<div class="col">
 						</div>
                             <span class="input input--yoshiko"> 
@@ -243,7 +247,40 @@
 		$("#total_price").text(String(totalPrice).replace(/\B(?=(\d{3})+(?!\d))/g, ",")); 
 	}
 </script>
+<script src="${pageContext.request.contextPath }/resources/js/classie.js"></script>
+<script>
+      (function() {
+          // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+          if (!String.prototype.trim) {
+              (function() {
+                  // Make sure we trim BOM and NBSP
+                  var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+                  String.prototype.trim = function() {
+                      return this.replace(rtrim, '');
+                  };
+              })();
+          }
+          [].slice.call(document.querySelectorAll('input.input__field')).forEach(function(inputEl) {
+              // in case the input is already filled..
+              if (inputEl.value.trim() !== '') {
+                  classie.add(inputEl.parentNode, 'input--filled');
+              }
+              // events:
+              inputEl.addEventListener('focus', onInputFocus);
+              inputEl.addEventListener('blur', onInputBlur);
+          });
 
+          function onInputFocus(ev) {
+              classie.add(ev.target.parentNode, 'input--filled');
+          }
+
+          function onInputBlur(ev) {
+              if (ev.target.value.trim() === '') {
+                  classie.remove(ev.target.parentNode, 'input--filled');
+              }
+          }
+      })();
+  </script>
 
 
 

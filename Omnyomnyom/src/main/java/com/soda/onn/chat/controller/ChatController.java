@@ -56,7 +56,6 @@ public class ChatController {
 		map.put("getter", getter);
 		
 		String chatId = chatService.findChatIdByMemberId(map);
-		log.debug(chatId);
 	
 		if(chatId == null) {
 			chatId = createChatId(20);
@@ -73,7 +72,6 @@ public class ChatController {
 		else{
 			//채팅내역
 			List<Msg> chatList = chatService.findChatListByChatId(chatId);
-			
 			model.addAttribute("chatList",chatList);
 		}
 		
@@ -84,7 +82,6 @@ public class ChatController {
 		List<Map<String, String>> recentList = chatService.findRecentList(memberId);
 		model.addAttribute("recentList", recentList);
 		
-		log.debug("memberId=[{}], chatId=[{}]",memberId, chatId);
 		model.addAttribute("chatId", chatId);
 		
 		return "mypage/directMsg";
@@ -130,8 +127,6 @@ public class ChatController {
 	@SendTo("/chat/{chatId}")
 	public Msg sendEcho(Msg fromMessage, 
 						@DestinationVariable String chatId){
-		log.debug("fromMessage={}",fromMessage);
-		
 		//db에 메세지로그
 		chatService.insertChatLog(fromMessage);
 

@@ -65,6 +65,17 @@ public class MypageController {
 	
 	private RowBounds rowBounds = null;
 
+	
+	public String paging(int cPage, String url) {
+		
+		int pageStart = ((cPage - 1)/PAGEBARSIZE) * PAGEBARSIZE +1;
+		int pageEnd = pageStart+PAGEBARSIZE-1;
+		int totalCount = mallService.selectBuyHistoryListCnt();
+		int totalPage =  (int)Math.ceil((double)totalCount/NUMPERPAGE);
+		
+		return PageBar.Paging(url, cPage, pageStart, pageEnd, totalPage);
+	}
+	
 	@GetMapping("/main")
 	public void mypageMain() {
 		log.debug("일반 유저 마이페이지 메인 첫 화면 입니다");
@@ -94,9 +105,13 @@ public class MypageController {
 	//일반 유저의 구매목록들
 	@GetMapping("/buyList")
 	public ModelAndView buyList(@RequestParam (value="dingdongNo", defaultValue="-1")int dingdongNo,
-						HttpSession session, 
-						Model model) {
-		System.out.println("buyList 메소드입니다");
+			   					@RequestParam (value="cPage", defaultValue="1") int cPage,
+			   					HttpServletRequest request,
+								HttpSession session,
+								Model model) {
+		rowBounds = new RowBounds((cPage-1)*NUMPERPAGE, NUMPERPAGE);
+		String url = request.getRequestURL().toString();
+		String paging = paging(cPage, url);
 		
 		if(dingdongNo != -1) {
 			int result = mypageService.dingdongUpdate(dingdongNo);
@@ -104,12 +119,11 @@ public class MypageController {
 		Member member = (Member)session.getAttribute("memberLoggedIn");
 		String memberId = member.getMemberId();
 		
-		List<BuyHistory> buyList = mallService.selectBuyList(memberId);
+		List<BuyHistory> buyList = mallService.selectBuyHistoryList(memberId, rowBounds);
 		log.debug("buyList={}",buyList);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("buyList", buyList);
 		mav.setViewName("mypage/buyList");
-//		model.addAttribute("buyList", buyList);
 		return mav;
 	}
 	

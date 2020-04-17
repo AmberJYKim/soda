@@ -106,16 +106,6 @@ public class AdminController {
 		
 	}
 	
-//	//판매자의 판매목록들
-//	@GetMapping("/sellList")
-//	public void adminBuyList(HttpSession session, Model model) {
-//		Member member = (Member)session.getAttribute("memberLoggedIn");
-//		String memberId = member.getMemberId();
-//		
-//		List<BuyHistory> sellList = mallService.selectAdminBuyList(memberId);
-//		model.addAttribute("sellList", sellList);
-//	}
-			
 	@GetMapping("/sendDingdong")
 	public void sendDingdong() {
 		

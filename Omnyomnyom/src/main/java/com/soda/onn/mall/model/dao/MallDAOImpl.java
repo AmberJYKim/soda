@@ -126,4 +126,9 @@ public class MallDAOImpl implements MallDAO {
 		return sqlSession.selectOne("mall.crCategory",cr);
   }
 
+@Override
+public List<BuyHistory> selectBuyHistoryList(String memberId, RowBounds rowBounds) {
+	return null;
+}
+
 }
