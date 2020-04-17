@@ -332,7 +332,7 @@
 			                            </div>
 			                            <div class="ci-bottom">
 			                                <div class="ci-author">
-			                                    <img src="${pageContext.request.contextPath }/resources/upload/profile/${chef.profile}" alt="셰프 사진">
+			                                    <img src="${pageContext.request.contextPath }/resources/upload/profile/${chef.chefProfile}" alt="셰프 사진">
 			                                    <div class="author-text">
 			                                        <h6>${chef.chefNickName}</h6>
 			                                        <p>${oneday.memberId }</p>
