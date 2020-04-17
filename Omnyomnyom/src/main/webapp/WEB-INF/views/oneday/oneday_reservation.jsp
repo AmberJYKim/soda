@@ -108,7 +108,7 @@
                     <div class="row text-center">
                         <article class="col-xl-4 tm-article" id="infoView">
                             <h3 class="tm-color-primary tm-article-title-1">클래스 소개</h3>
-                            <img src="${pageContext.request.contextPath}/resources/upload/onedayclass/${oneday.onedayImg}" alt="클래스 이미지">
+                            <img src="${pageContext.request.contextPath}/resources/upload/onedayclass/${one.onedayImg}" alt="클래스 이미지">
                         </article>
 
 
