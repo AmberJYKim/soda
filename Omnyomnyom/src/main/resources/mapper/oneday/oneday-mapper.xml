@@ -45,7 +45,7 @@
 		</if>
 	</where>
 </select>
-
+	
 <select id="selectOne" resultType="Oneday">
 select * from
 tb_onedayclass
