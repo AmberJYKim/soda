@@ -31,23 +31,21 @@
 <select id="selectReservationListUser" resultMap="ReservationListMap">
 	select
 		res.reservation_no,
-		od.oneday_name,
-		odct.onedaytime_date,
-		res.personnel,
-		od.oneday_price*res.personnel,
-		res.CANCEL_CHECK,
-		od.oneday_price
+        (select oneday_name from tb_onedayclass where res.onedayclass_no = onedayclass_no) oneday_name,
+		(select onedaytime_date from tb_onedayclasstime where res.ONEDAYTIME_NO = ONEDAYTIME_NO) onedaytime_date,
+        personnel,
+		RES_PRICE,
+		CANCEL_CHECK,
+		(select oneday_price from tb_onedayclass where res.onedayclass_no = onedayclass_no) price
 	from
-		tb_onedayclass od left join tb_onedayclasstime odct on od.onedayclass_no = odct.onedayclass_no
-                          left join tb_reservation res on odct.onedayclass_no = res.onedayclass_no
-   
+    		tb_reservation res
    <where>
 		<if test="value != null">
 			res.member_id = #{reserMemberId}
 		</if>
 	</where>
 </select>
-
+	
 <select id="selectOne" resultType="Oneday">
 select * from
 tb_onedayclass
