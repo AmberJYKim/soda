@@ -17,6 +17,13 @@
 	white-space: nowrap;
 	
 }
+.onedaycard h4{
+	width: 340px;
+	padding: 0 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 .trainer-item .ti-img img{
 	margin-top: -177px;
 }

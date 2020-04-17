@@ -258,7 +258,6 @@ public class ChefController {
 		List<Recipe> recipeList = recipeService.recipeSelectAll(chefNickName);
 		List<Notice> noticeList = chefservice.noticeSelectAll(chefId);
 		List<Oneday> onedayList = chefservice.onedaySelectAll(chefId);
-//		List<Recipe> popRecipeList = recipeList
 		List<Recipe> popList = new ArrayList<Recipe>();
 		popList.addAll(recipeList);
 		
@@ -328,10 +327,9 @@ public class ChefController {
 							RedirectAttributes redirectAttribute) {
 		
 		System.out.println(chefRequest);
-//		
-//		log.debug("facebook={}",facebook);
-//		log.debug("insta={}",insta);
+
 		log.debug("menuPrCategory={}",chefRequest.getMenuPrCategory());
+		
 		// sns map객체 -> gson으로 넘김 
 		Map<String,String> snsMap = new HashMap<String, String>();
 		snsMap.put("facebook", facebook);
